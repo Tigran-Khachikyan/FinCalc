@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/customPrimaryLoan"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tvDialLoanBank"
+        app:layout_constraintTop_toTopOf="@id/etDialLoanBank"
+        app:layout_constraintBottom_toBottomOf="@id/etDialLoanBank"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/etDialLoanBank"
+        android:layout_width="0dp"
+        android:gravity="center"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_height="wrap_content"
+        android:text="@string/bank"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/etDialLoanBank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="6"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="@string/bank"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/tvDialLoanType"
+        app:layout_constraintTop_toTopOf="@id/spinnerDialLoanType"
+        app:layout_constraintBottom_toBottomOf="@id/spinnerDialLoanType"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/spinnerDialLoanType"
+        android:layout_width="0dp"
+        android:gravity="center"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_height="wrap_content"
+        android:text="@string/LoanType"
+        android:textColor="@android:color/black" />
+
+    <Spinner
+        android:id="@+id/spinnerDialLoanType"
+        style="@style/currencyViewsSmall"
+
+        app:layout_constraintTop_toBottomOf="@id/etDialLoanBank"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="6"
+        android:layout_height="40dp"
+        android:text="@string/bank"
+        android:layout_marginEnd="10dp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/tvDialLoanCurrency"
+        app:layout_constraintTop_toTopOf="@id/spinnerDialLoanCurrency"
+        app:layout_constraintBottom_toBottomOf="@id/spinnerDialLoanCurrency"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/spinnerDialLoanCurrency"
+        android:layout_width="0dp"
+        android:gravity="center"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_height="wrap_content"
+        android:text="@string/LoanType"
+        android:textColor="@android:color/black" />
+
+    <Spinner
+        android:id="@+id/spinnerDialLoanCurrency"
+        style="@style/currencyViewsSmall"
+
+        app:layout_constraintTop_toBottomOf="@id/spinnerDialLoanType"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        android:layout_width="0dp"
+        app:layout_constraintHorizontal_weight="6"
+        android:layout_height="40dp"
+        android:text="@string/Currency"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

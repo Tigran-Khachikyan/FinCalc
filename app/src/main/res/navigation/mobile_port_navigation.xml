@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_balance">
+
+    <fragment
+        android:id="@+id/navigation_loans"
+        android:name="com.example.fincalc.ui.port.loans.LoansFragment"
+        android:label="@string/loans"
+        tools:layout="@layout/fragment_loans" />
+
+    <fragment
+        android:id="@+id/navigation_balance"
+        android:name="com.example.fincalc.ui.port.balance.BalanceFragment"
+        android:label="@string/balance"
+        tools:layout="@layout/fragment_balance" />
+
+    <fragment
+        android:id="@+id/navigation_deps"
+        android:name="com.example.fincalc.ui.port.deps.DepsFragment"
+        android:label="@string/deposits"
+        tools:layout="@layout/fragment_deps" />
+</navigation>

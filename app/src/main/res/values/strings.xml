@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">FinCalc</string>
+
+    -- Activity Main
+    <string name="contentDescriptionLoanLogo">Loan Logo</string>
+    <string name="contentDescriptionDepositLogo">Deposit Logo</string>
+    <string name="contentDescriptionCurrencyLogo">Currency Logo</string>
+    <string name="contentDescriptionPortfolioLogo">Portfolio Logo</string>
+    <string name="contentDescriptionMainFinanceImage">Portfolio Logo</string>
+
+    <string name="depositCalculator">DEPOSIT CALCULATOR</string>
+    <!--
+    <string name="depositCalculator">депозитный калькулятор</string>
+-->
+    <string name="loanCalculator">LOAN CALCULATOR</string>
+    <string name="currencyConverter">CURRENCY CONVERTER</string>
+    <string name="portfolio">PORTFOLIO</string>
+
+    <string name="depositCalculatorInfo">DEPOSIT CALCULATOR \nasasasas</string>
+    <string name="loanCalculatorInfo">LOAN CALCULATOR</string>
+    <string name="currencyConverterInfo">CURRENCY CONVERTER</string>
+    <string name="portfolioInfo">PORTFOLIO</string>
+
+    -- Activity Main />
+
+    -- Activity Loan
+    <string name="Amount">Amount</string>
+    <string name="HintAmount"> ex. 780000</string>
+    <string name="Term_months">Term (months)</string>
+    <string name="HintTerm"> ex. 36</string>
+    <string name="Interest_rate">Annual Interest rate</string>
+    <string name="HintRate"> ex. 9.1</string>
+    <string name="HintOtherCosts"> ex. 15000  </string>
+    <string name="Optional">Optional</string>
+    <string name="One_Time_Commission">One Time Commission</string>
+    <string name="Percent_of_Loan">% of Loan</string>
+    <string name="Percent_of_Balance">% of Balance</string>
+    <string name="But_Min">but Not Less Than</string>
+    <string name="ofTheAmount">of Amount</string>
+    <string name="ofTheBalance">of Balance</string>
+    <string name="Fixed_sum">Fixed sum</string>
+    <string name="Monthly_Commission">Monthly Commission</string>
+    <string name="Annual_Commission">Annual Commission</string>
+    <string name="Other_One_Time_Costs">Other One Time Costs</string>
+    <string name="Calculate">Calculate</string>
+    <string name="AdvancedCalculation">Advanced calculation</string>
+    <string name="SimpleCalculation">Simple calculation</string>
+    <string name="Clear">Clear</string>
+    <string name="Loan_Balance">Balance</string>
+    <string name="Percent">Percent</string>
+    <string name="Commission">Commission</string>
+    <string name="TOTAL">TOTAL</string>
+    <string name="InvalidInput">"Invalid input! \"Amount\" , \"Term\" and \"Interest rate\" fields are mandatory!"</string>
+    --
+
+    --Activity Currency
+    <string name="title_activity_currency">CurrencyActivity</string>
+    <string name="rates">Currencies</string>
+    <string name="precious_metals">Precious metals</string>
+    <string name="Current_Rate">Latest</string>
+    <string name="Currency_Live">Live converter</string>
+    <string name="ChooseDate">Choose Date</string>
+
+    --Activity Deposit--
+    <string name="DepositAmount">Deposit Amount</string>
+    <string name="DepPeriod">Period</string>
+    <string name="MonthlyPaymentDep">Monthly \npayment</string>
+    <string name="QuarterlyPaymentDep">Quarterly \npayment</string>
+    <string name="AtTheEndPayment">At the end of \nthe Contract</string>
+    <string name="replenishment">Right of replenishment</string>
+    <string name="taxRegulation">State tax Regulation</string>
+    <string name="Tax">Tax rate (%)</string>
+    <string name="Capitalization">Capitalization</string>
+    <string name="BalanceDep">Amount</string>
+    <string name="PercentDep">Percent</string>
+    <string name="PercentAfterTaxDep">Percent \nafter tax</string>
+    <string name="Payment">Payment</string>
+    <string name="Currency">Currency</string>
+    <string name="Result">Result</string>
+    <string name="ResultShowDep">Total income: </string>
+    <string name="InvalidInputPeriod">Mismatch between months \nand payment frequency|</string>
+    <string name="InvalidInputTax">Invalid Tax rate. \nShould be less than 100%|</string>
+
+    --Activity Portfolio--
+    <string name="title_activity_portfolio">PortfolioActivity</string>
+    <string name="balance">Balance</string>
+    <string name="loans">Loans</string>
+    <string name="deposits">Deposits</string>
+    <string name="bank">BANK</string>
+    <string name="LoanType">Type</string>
+    <string name="RepaymentProgram">Repayment program</string>
+    <string name="LoanDirectory">Loan Directory</string>
+    <string name="Credit">Credit</string>
+    <string name="Deposit">Deposit</string>
+    <string name="Loans">Loans</string>
+    <string name="Deposits">Deposits</string>
+    <string name="Balance">Balance</string>
+
+    <string name="MORTGAGE">MORTGAGE</string>
+    <string name="BUSINESS">BUSINESS</string>
+    <string name="CREDIT_LINES">CREDIT LINES</string>
+    <string name="GOLD_PLEDGE_SECURED">  GOLD PLEDGE SECURED</string>
+    <string name="DEPOSIT_SECURED">DEPOSIT SECURED</string>
+    <string name="UNSECURED">UNSECURED</string>
+    <string name="CAR_LOAN">CAR LOAN</string>
+    <string name="CONSUMER_LOAN">CONSUMER LOAN</string>
+    <string name="STUDENT_LOAN">STUDENT LOAN</string>
+    <string name="NONE">NONE</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    --dialogs--
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+</resources>

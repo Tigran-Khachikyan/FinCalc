@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccentTrans">#68D81B60</color>
+    <color name="colorAccentDark">#8A0531</color>
+    <color name="colorPrimaryLight">#39796b</color>
+
+
+
+    <color name="customPrimaryLoan">#6200ea</color>
+    <color name="customLightLoan">#9d46ff</color>
+    <color name="customDarkLoan">#0a00b6</color>
+
+    <color name="customPrimaryMain">#00407a</color>
+    <color name="customLightMain">#456aaa</color>
+    <color name="customDarkMain">#001b4d</color>
+
+    <color name="customPrimaryCurrency">#00407a</color>
+    <color name="customLightCurrency">#94456AAA</color>
+    <color name="customDarkCurrency">#001b4d</color>
+</resources>

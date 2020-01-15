@@ -1,0 +1,26 @@
+package com.example.fincalc.data.db
+
+import androidx.lifecycle.LiveData
+import androidx.room.*
+
+@Dao
+interface LoanDao {
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(loan: Loan)
+
+    @Delete
+    suspend fun delete(loan: Loan)
+
+    @Query("DELETE FROM loans")
+    suspend fun deleteAll()
+
+    @Query("SELECT * FROM loans WHERE _id = :id")
+    fun getLoanById(id: Int): LiveData<Loan>
+
+    @Query("SELECT * FROM loans WHERE type = :type")
+    fun getLoansByType(type: LoanType): LiveData<List<Loan>>
+
+    @Query("SELECT * FROM loans")
+    fun getLoans(): LiveData<List<Loan>>
+}

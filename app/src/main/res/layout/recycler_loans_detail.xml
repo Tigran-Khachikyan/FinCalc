@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/customPrimaryLoan"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:id="@+id/layInputLoanFr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvBankLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/bank" />
+
+                <TextView
+                    android:id="@+id/tvAmountLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Amount" />
+
+                <TextView
+                    android:id="@+id/tvTypeLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/LoanType" />
+
+                <TextView
+                    android:id="@+id/tvTermLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Term_months" />
+
+                <TextView
+                    android:id="@+id/tvRateLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Interest_rate" />
+
+                <TextView
+                    android:id="@+id/tvCurrencyLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Currency" />
+
+                <TextView
+                    android:id="@+id/tvOneTimeComLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/One_Time_Commission" />
+
+                <TextView
+                    android:id="@+id/tvMonthlyComLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Monthly_Commission" />
+
+                <TextView
+                    android:id="@+id/tvAnnualComLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Annual_Commission" />
+
+                <TextView
+                    android:id="@+id/tvCostsLoanFr"
+                    style="@style/textViewDetailRes"
+                    android:text="@string/Other_One_Time_Costs" />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layDeskLoanFr"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/layInputLoanFr">
+
+        <TextView
+            android:id="@+id/tvNumInfoLoanFr"
+            style="@style/textViewInfo"
+            tools:ignore="HardcodedText"
+            android:text="N"
+            app:layout_constraintHorizontal_weight="22"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tvBalanceInfoLoanFr"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvBalanceInfoLoanFr"
+            style="@style/textViewInfo"
+            android:text="@string/Loan_Balance"
+            app:layout_constraintHorizontal_weight="76"
+            app:layout_constraintLeft_toRightOf="@id/tvNumInfoLoanFr"
+            app:layout_constraintRight_toLeftOf="@id/tvLoanMonthlyInfoLoanFr"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLoanMonthlyInfoLoanFr"
+            style="@style/textViewInfo"
+            android:text="@string/Amount"
+            app:layout_constraintHorizontal_weight="68"
+            app:layout_constraintLeft_toRightOf="@id/tvBalanceInfoLoanFr"
+            app:layout_constraintRight_toLeftOf="@id/tvPercentMonthlyInfoLoanFr"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPercentMonthlyInfoLoanFr"
+            style="@style/textViewInfo"
+            android:text="@string/Percent"
+            app:layout_constraintHorizontal_weight="64"
+            app:layout_constraintLeft_toRightOf="@id/tvLoanMonthlyInfoLoanFr"
+            app:layout_constraintRight_toLeftOf="@id/tvComMonthlyInfoLoanFr"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvComMonthlyInfoLoanFr"
+            style="@style/textViewInfo"
+            android:text="@string/Commission"
+            app:layout_constraintHorizontal_weight="52"
+            app:layout_constraintLeft_toRightOf="@id/tvPercentMonthlyInfoLoanFr"
+            app:layout_constraintRight_toLeftOf="@id/tvTotPayMonInfoLoanFr"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTotPayMonInfoLoanFr"
+            style="@style/textViewInfo"
+            android:text="@string/Payment"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_weight="80"
+            app:layout_constraintLeft_toRightOf="@id/tvComMonthlyInfoLoanFr"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="40dp"
+        android:id="@+id/recScheduleLoanFr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_constraintTop_toBottomOf="@id/layDeskLoanFr"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

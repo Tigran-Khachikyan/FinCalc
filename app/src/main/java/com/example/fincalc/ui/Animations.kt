@@ -1,0 +1,47 @@
+package com.example.fincalc.ui
+
+import android.app.Activity
+import android.transition.Slide
+import android.transition.TransitionManager
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
+import com.example.fincalc.R
+import com.google.android.material.snackbar.Snackbar
+
+fun iconTrigger(view: View) {
+
+    val anim1 = AnimationUtils.loadAnimation(view.context, R.anim.icontriggerleft)
+
+    view.startAnimation(anim1)
+}
+
+fun showSnackbar(text:String, view: View) {
+    val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG
+    ).setAction("Action", null)
+    val sbView: View = snackbar.view
+    sbView.setBackgroundColor(view.context.resources.getColor(R.color.colorAccent))
+    snackbar.show()
+}
+
+fun toggle(hide: Boolean, viewChild: View, viewGroup: ViewGroup) {
+
+    val transition = Slide(Gravity.BOTTOM)
+    transition.duration = 500
+    transition.addTarget(viewChild)
+    TransitionManager.beginDelayedTransition(viewGroup, transition)
+    viewChild.visibility = if (hide) View.GONE else View.VISIBLE
+}
+
+fun hideKeyboard(activity: Activity) {
+    val imm =
+        activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    var view = activity.currentFocus
+    //If no view currently has focus, create a new one, just so we can grab a window token from it
+    if (view == null) {
+        view = View(activity)
+    }
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}

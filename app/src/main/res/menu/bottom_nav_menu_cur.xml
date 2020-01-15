@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_rates"
+        android:icon="@mipmap/currencyicon"
+        android:title="@string/rates" />
+
+    <item
+        android:id="@+id/navigation_metals"
+        android:icon="@drawable/ic_gold"
+        android:title="@string/precious_metals" />
+
+</menu>

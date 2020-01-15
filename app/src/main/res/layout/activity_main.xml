@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mainbackground"
+    tools:context=".ui.MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMain"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/customDarkMain"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:paddingEnd="30dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:drawableStart="@mipmap/consultants"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutContentMain"
+        android:layout_width="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="match_parent"
+        android:background="@mipmap/png_husanq">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imageViewMainImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="9"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layoutMainOptions"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutMainOptions"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintVertical_weight="12"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewMainImage">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutCardLoanButton"
+                style="@style/layoutCardMainButton"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_weight="1"
+                app:layout_constraintBottom_toTopOf="@id/layoutCardDepButton">
+
+                <ImageView
+                    android:id="@+id/ivLoanLogo"
+                    android:layout_width="44dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/contentDescriptionLoanLogo"
+                    android:src="@mipmap/loan_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLoanLogoTextBig"
+                    android:text="@string/loanCalculator"
+                    style="@style/textViewBigMain"
+                    app:layout_constraintBottom_toTopOf="@id/tvLoanLogoTextSmall"
+                    app:layout_constraintLeft_toRightOf="@id/ivLoanLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLoanLogoTextSmall"
+                    android:text="@string/loanCalculatorInfo"
+                    style="@style/textViewSmallMain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/ivLoanLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvLoanLogoTextBig" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutCardDepButton"
+                style="@style/layoutCardMainButton"
+                android:layout_width="match_parent"
+                app:layout_constraintVertical_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/layoutCardLoanButton"
+                app:layout_constraintBottom_toTopOf="@id/layoutCardCurButton">
+
+                <ImageView
+                    android:id="@+id/ivDepositLogo"
+                    android:layout_width="44dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/contentDescriptionDepositLogo"
+                    android:src="@mipmap/deposit_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvDepositLogoTextBig"
+                    android:text="@string/depositCalculator"
+                    style="@style/textViewBigMain"
+                    app:layout_constraintBottom_toTopOf="@id/tvDepositLogoTextSmall"
+                    app:layout_constraintLeft_toRightOf="@id/ivDepositLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvDepositLogoTextSmall"
+                    android:text="@string/depositCalculatorInfo"
+                    style="@style/textViewSmallMain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/ivDepositLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvDepositLogoTextBig" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutCardCurButton"
+                style="@style/layoutCardMainButton"
+                android:layout_width="match_parent"
+                app:layout_constraintVertical_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/layoutCardDepButton"
+                app:layout_constraintBottom_toTopOf="@id/layoutCardPortButton">
+
+                <ImageView
+                    android:id="@+id/ivCurrencyLogo"
+                    android:layout_width="44dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/contentDescriptionCurrencyLogo"
+                    android:src="@mipmap/exchange_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvCurrencyLogoTextBig"
+                    android:text="@string/currencyConverter"
+                    style="@style/textViewBigMain"
+                    app:layout_constraintBottom_toTopOf="@id/tvCurrencyLogoTextSmall"
+                    app:layout_constraintLeft_toRightOf="@id/ivCurrencyLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvCurrencyLogoTextSmall"
+                    android:text="@string/currencyConverterInfo"
+                    style="@style/textViewSmallMain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/ivCurrencyLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvCurrencyLogoTextBig" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutCardPortButton"
+                style="@style/layoutCardMainButton"
+                android:layout_width="match_parent"
+                app:layout_constraintVertical_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/layoutCardCurButton"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivPortfolioLogo"
+                    android:layout_width="44dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="@string/contentDescriptionPortfolioLogo"
+                    android:src="@mipmap/portfolio_logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPortfolioLogoTextBig"
+                    android:text="@string/portfolio"
+                    style="@style/textViewBigMain"
+                    app:layout_constraintBottom_toTopOf="@id/tvPortfolioLogoTextSmall"
+                    app:layout_constraintLeft_toRightOf="@id/ivPortfolioLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPortfolioLogoTextSmall"
+                    android:text="@string/currencyConverterInfo"
+                    style="@style/textViewSmallMain"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/ivPortfolioLogo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvPortfolioLogoTextBig" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

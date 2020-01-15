@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvNumberDep"
+        style="@style/textView"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tvDepBalance">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvDepBalance"
+        style="@style/textView"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintHorizontal_weight="9"
+        app:layout_constraintLeft_toRightOf="@id/tvNumberDep"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tvDepPercent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvDepPercent"
+        style="@style/textView"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintLeft_toRightOf="@id/tvDepBalance"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tvPercentAfterTax">
+    </TextView>
+
+    <TextView
+        android:id="@+id/tvPercentAfterTax"
+        style="@style/textView"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintHorizontal_weight="7"
+        app:layout_constraintLeft_toRightOf="@id/tvDepPercent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tvDepPayment">
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/tvDepPayment"
+        style="@style/textView"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintHorizontal_weight="10"
+        app:layout_constraintLeft_toRightOf="@id/tvPercentAfterTax"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </TextView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
