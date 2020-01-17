@@ -15,11 +15,13 @@ fun BoomMenuButton.initialize() {
     this.customPiecePlacePositions.add(PointF(-w05 - hm05, -h05 - vm05))
     this.customPiecePlacePositions.add(PointF(+w05 + hm05, -h05 - vm05))
     this.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
+    this.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
 }
 
 private val imageResources: IntArray = intArrayOf(
     R.drawable.ic_accounting,
     R.drawable.ic_accounting,
+    R.drawable.ic_expand_less_black_24dp,
     R.drawable.ic_expand_less_black_24dp
 )
 

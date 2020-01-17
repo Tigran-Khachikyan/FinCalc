@@ -1,15 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerLoanBalanceFr"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="300dp"
+        android:background="@android:color/holo_blue_bright"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layLoansMenuBalFr"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.nightonke.boommenu.BoomMenuButton
+            android:id="@+id/bmbLoansMenuBalFr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:bmb_buttonEnum="ham"
+            app:bmb_buttonPlaceEnum="buttonPlace_ham_4"
+            app:bmb_highlightedColor="@android:color/darker_gray"
+            app:bmb_normalColor="@color/colorAccent"
+            app:bmb_piecePlaceEnum="piecePlace_dot_4_2"
+            app:layout_constraintEnd_toEndOf="@id/layLoansMenuBalFr"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toTopOf="@id/layLoansMenuBalFr"
+            app:layout_constraintBottom_toBottomOf="@id/layLoansMenuBalFr"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutFilter"
+            app:layout_constraintTop_toBottomOf="@id/layLoansMenuBalFr"
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+            <TextView
+                android:id="@+id/tvLoanTypeFilterBalFr"
+                android:text="@string/selectedType"
+                android:layout_width="0dp"
+                android:visibility="gone"
+                android:layout_height="match_parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tvLoanCurFilterBalFr"/>
+
+            <TextView
+                android:id="@+id/tvLoanCurFilterBalFr"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/selectedCurrency"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/tvLoanTypeFilterBalFr"
+                app:layout_constraintRight_toLeftOf="@id/tvLoanSortFilterBalFr"/>
+
+            <TextView
+                android:id="@+id/tvLoanSortFilterBalFr"
+                android:layout_width="0dp"
+                android:text="@string/sortedByInterestRate"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/tvLoanCurFilterBalFr"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerLoanBalanceFr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_green_light"
+            app:layout_constraintTop_toBottomOf="@id/layoutFilter" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

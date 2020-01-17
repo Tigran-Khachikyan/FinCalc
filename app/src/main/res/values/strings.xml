@@ -106,6 +106,7 @@
     <string name="CONSUMER_LOAN">CONSUMER LOAN</string>
     <string name="STUDENT_LOAN">STUDENT LOAN</string>
     <string name="NONE">NONE</string>
+    <string name="SELECT_ALL">SELECT ALL</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -113,5 +114,14 @@
     --dialogs--
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="CLEAR">CLEAR ALL</string>
+    <string name="CurSpinnerText">Please select the currencies You want to filter with.</string>
+
+    --BalanceFragment-
+    <string name="selectedCurrency">Selected Currency</string>
+    <string name="selectedType">Selected Loan Type</string>
+    <string name="sortedByInterestRate">Sorted by interest rate</string>
+    <string name="ascending">ascending</string>
+    <string name="descending">descending</string>
 
 </resources>

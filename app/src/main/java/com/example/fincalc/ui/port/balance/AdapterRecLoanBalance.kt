@@ -53,7 +53,7 @@ class AdapterRecLoanBalance(
 
         holder.tv1.text = loanList[position].bank
         holder.tv2.text = loanList[position].type.name
-        holder.tv3.text = loanList[position].queryLoan.sum.toString()
+        holder.tv3.text = loanList[position].queryLoan.rate.toString()
 
         holder.fab.setOnClickListener {
             balanceViewModel.deleteLoan(loanList[position])
