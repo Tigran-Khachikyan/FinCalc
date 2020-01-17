@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/customPrimaryLoan">
+
+    <Button
+        android:id="@+id/btnDialLoanTypeMort"
+        style="@style/dialCheck"
+        android:text="@string/MORTGAGE"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeBus"
+        style="@style/dialCheck"
+        android:text="@string/BUSINESS"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeCrLines"
+        style="@style/dialCheck"
+        android:text="@string/CREDIT_LINES"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeGold"
+        style="@style/dialCheck"
+        android:text="@string/GOLD_PLEDGE_SECURED"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeDepSec"
+        style="@style/dialCheck"
+        android:text="@string/DEPOSIT_SECURED"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeUnsecured"
+        style="@style/dialCheck"
+        android:text="@string/UNSECURED"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeCar"
+        style="@style/dialCheck"
+        android:text="@string/CAR_LOAN"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeCons"
+        style="@style/dialCheck"
+        android:text="@string/CONSUMER_LOAN"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeStud"
+        style="@style/dialCheck"
+        android:text="@string/STUDENT_LOAN"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+    <Button
+        android:id="@+id/btnDialLoanTypeSelectAll"
+        style="@style/dialCheck"
+        android:text="@string/SELECT_ALL"
+        android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
+
+
+</LinearLayout>
