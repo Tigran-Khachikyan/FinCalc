@@ -2,9 +2,8 @@ package com.example.fincalc.ui.port.balance
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.opengl.Visibility
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +14,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.LoanType
 import com.example.fincalc.models.loan.getEnumFromSelection
 import com.example.fincalc.ui.initialize
-import com.example.fincalc.ui.port.NaviViewModel
+import com.example.fincalc.ui.loan.LoanActivity
+import com.example.fincalc.ui.port.NavSwitcher
+import com.example.fincalc.ui.port.NavViewModel
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
 import kotlinx.android.synthetic.main.fragment_balance.*
 
-private const val BUTTON_DIALOG_SYZE_PRESSED = 20F
-private const val BUTTON_DIALOG_SYZE_UNPRESSED = 18F
+private const val BUTTON_DIALOG_SIZE_PRESSED = 20F
+private const val BUTTON_DIALOG_SIZE_UNPRESSED = 18F
 
 class BalanceFragment : Fragment() {
 
@@ -54,6 +56,12 @@ class BalanceFragment : Fragment() {
         tvFilterCur = view.findViewById(R.id.tvLoanCurFilterBalFr)
         tvFilterSort = view.findViewById(R.id.tvLoanSortFilterBalFr)
 
+        fabRecBalanceAddLoan.setOnClickListener {
+            val intent = Intent(context, LoanActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateSpin(context)
+        }
+
         bmbLoansMenuBalFr.initialize()
 
 //holder click
@@ -67,7 +75,10 @@ class BalanceFragment : Fragment() {
         recyclerLoanBalanceFr.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
         recyclerLoanBalanceFr.adapter = adapterRecLoan
+    }
 
+    override fun onResume() {
+        super.onResume()
         balanceViewModel.getLoanList().observe(viewLifecycleOwner, Observer { loansFil ->
 
             val loans = loansFil.loanList
@@ -75,6 +86,14 @@ class BalanceFragment : Fragment() {
             val cur = loansFil.filtCur
 
             val isAcc = loansFil.sortByAcc
+
+            val textLoanHeader = when {
+                loans == null || loans.isEmpty() -> "${context?.getString(R.string.noLoanFound)}"
+                loans.size == 1 -> "1 ${context?.getString(R.string.loan)}"
+                else -> loans.size.toString() + " ${context?.getString(R.string.Loans)}"
+            }
+
+            layLoansMenuBalFr.text = textLoanHeader
 
 
             loans?.let {
@@ -94,15 +113,13 @@ class BalanceFragment : Fragment() {
                     balanceViewModel.setSortedByRateAcc(null)
                 }
 
-
-
                 adapterRecLoan.loanList = it
                 adapterRecLoan.notifyDataSetChanged()
 
                 adapterRecLoan.onViewHolderClick = object : OnViewHolderClick {
                     override fun openLoan(position: Int) {
-                        val selectedLoan = it[position]
-                        NaviViewModel.Container.setNavi(true, selectedLoan)
+
+                        NavViewModel.Container.setNav(NavSwitcher.LOANS, position)
                     }
                 }
 
@@ -121,7 +138,6 @@ class BalanceFragment : Fragment() {
                 }
             }
         })
-
     }
 
     @SuppressLint("InflateParams")
@@ -138,7 +154,7 @@ class BalanceFragment : Fragment() {
             fun btnCheck(btn: Button) {
                 btn.background = context.getDrawable(R.drawable.btncalculate)
                 btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bag, 0, 0, 0)
-                btn.textSize = BUTTON_DIALOG_SYZE_PRESSED
+                btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
                 val curEnum = getEnumFromSelection(btn.text.toString(), context)
                 checkedTypes.add(curEnum)
             }
@@ -146,14 +162,14 @@ class BalanceFragment : Fragment() {
             fun btnUncheck(btn: Button) {
                 btn.background = context.getDrawable(R.drawable.btnexpand)
                 btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                btn.textSize = BUTTON_DIALOG_SYZE_UNPRESSED
+                btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
                 val curEnum = getEnumFromSelection(btn.text.toString(), context)
                 if (checkedTypes.contains(curEnum))
                     checkedTypes.remove(curEnum)
 
             }
 
-            fun isBtnChecked(btn: Button): Boolean = btn.textSize == BUTTON_DIALOG_SYZE_PRESSED * 2
+            fun isBtnChecked(btn: Button): Boolean = btn.textSize == BUTTON_DIALOG_SIZE_PRESSED * 2
 
 
             val btnDialClickList = View.OnClickListener {
@@ -329,11 +345,9 @@ class BalanceFragment : Fragment() {
 
     }
 
-
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         balanceViewModel.removeSources()
     }
-
 
 }

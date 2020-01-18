@@ -99,4 +99,7 @@ dependencies {
     // activity animations
     implementation 'com.github.mohammadatif:Animatoo:master'
 
+    //cardView
+    implementation "androidx.cardview:cardview:1.0.0"
+
 }

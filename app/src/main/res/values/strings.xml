@@ -84,7 +84,7 @@
     --Activity Portfolio--
     <string name="title_activity_portfolio">PortfolioActivity</string>
     <string name="balance">Balance</string>
-    <string name="loans">Loans</string>
+    <string name="loan">Loan</string>
     <string name="deposits">Deposits</string>
     <string name="bank">BANK</string>
     <string name="LoanType">Type</string>
@@ -123,5 +123,6 @@
     <string name="sortedByInterestRate">Sorted by interest rate</string>
     <string name="ascending">ascending</string>
     <string name="descending">descending</string>
+    <string name="noLoanFound">No loan found</string>
 
 </resources>

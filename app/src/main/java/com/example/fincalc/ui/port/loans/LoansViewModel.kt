@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.fincalc.data.db.Loan
 import com.example.fincalc.data.repository.Repository
-import com.example.fincalc.ui.port.NaviViewModel
+import com.example.fincalc.ui.port.NavViewModel
 import kotlinx.coroutines.launch
 
 class LoansViewModel(application: Application) : AndroidViewModel(application) {
@@ -13,7 +13,7 @@ class LoansViewModel(application: Application) : AndroidViewModel(application) {
     private val medLiveData = MediatorLiveData<List<Loan>>()
     //  fun getLoanList() = repo?.getLoans()
 
-    private val selLoanLiveData = NaviViewModel.Container.navSelectedLoanLiveData
+    private val selLoanLiveData = NavViewModel.Container.navSelLoanIdLD
     private val loanListLiveData = repo?.getLoans()
 
 
@@ -31,19 +31,21 @@ class LoansViewModel(application: Application) : AndroidViewModel(application) {
         return medLiveData
     }
 
-    private fun combine(list: LiveData<List<Loan>>?, loan: LiveData<Loan?>): List<Loan>? {
+    private fun combine(list: LiveData<List<Loan>>?, id: LiveData<Int?>): List<Loan>? {
         val listValue = list?.value
-        val loanValue = loan.value
+        val loanId = id.value
         return when {
-            listValue != null && loanValue != null -> {
+            listValue != null && loanId != null -> {
                 val newList = listValue as ArrayList<Loan>
-                if (newList.contains(loanValue)) {
-                    newList.remove(loanValue)
-                    newList.add(0, loanValue)
-                }
+                for (lo in listValue)
+                    if (lo.id == loanId) {
+                        newList.remove(lo)
+                        newList.add(0, lo)
+                        break
+                    }
                 newList
             }
-            listValue != null && loanValue == null -> {
+            listValue != null && loanId == null -> {
                 listValue
             }
             else -> null

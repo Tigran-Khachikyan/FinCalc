@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_loans"
         android:icon="@mipmap/loan_logo"
-        android:title="@string/loans" />
+        android:title="@string/Loans" />
 
     <item
         android:id="@+id/navigation_deps"

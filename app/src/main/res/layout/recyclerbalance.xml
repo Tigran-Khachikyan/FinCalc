@@ -1,61 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="250dp"
-    android:layout_height="wrap_content">
+    android:layout_width="220dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="0dp"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="20dp"
+    android:outlineAmbientShadowColor="@android:color/black"
+    app:cardElevation="10dp">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRecBalanceDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_accounting"
-        app:rippleColor="@color/customDarkMain"/>
-
-
-    <TextView
-        android:id="@+id/tvRecBalance1"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.25"
-        android:text="UNIBANK"
-        android:textSize="24sp" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:paddingStart="4dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="2dp">
 
-    <TextView
-        android:id="@+id/tvRecBalance2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvRecBalance1"
-        android:text="@string/MORTGAGE"
-        android:textSize="24sp"
-        android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:id="@+id/tvRecBalance3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvRecBalance2"
-        android:text="990000 AMD"
-        android:textSize="24sp"
-        android:layout_marginTop="10dp"/>
-
-    <ImageView
-        android:id="@+id/ivRecBalance"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@mipmap/loan_logo"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvRecBalance3"
-        android:text="990000 AMD"
-        android:textSize="24sp"
-        android:layout_marginTop="10dp"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRecBalanceDelete"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/delete_filter"
+            android:src="@mipmap/delete_filter"
+            app:backgroundTint="@color/colorPrimary"
+            app:elevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/colorAccentDark" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvRecBalance1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:text="UNIBANK"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/ivRecBalance"
+            app:layout_constraintBottom_toTopOf="@id/tvRecBalance2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fabRecBalanceDelete" />
+
+        <TextView
+            android:id="@+id/tvRecBalance2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/MORTGAGE"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/ivRecBalance"
+            app:layout_constraintBottom_toTopOf="@id/tvRecBalance3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecBalance1" />
+
+        <TextView
+            android:id="@+id/tvRecBalance3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:text="990000 AMD"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/ivRecBalance"
+            app:layout_constraintBottom_toTopOf="@id/tvRecBalance4"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecBalance2" />
+
+        <TextView
+            android:id="@+id/tvRecBalance4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="4dp"
+            android:text="23.5 %"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/ivRecBalance"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRecBalance3"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivRecBalance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:src="@mipmap/mortgage"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tvRecBalance2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -182,4 +182,12 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="tvFilter">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:drawableEnd">@mipmap/delete</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

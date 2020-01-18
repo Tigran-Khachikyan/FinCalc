@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_loans"
         android:name="com.example.fincalc.ui.port.loans.LoansFragment"
-        android:label="@string/loans"
+        android:label="@string/Loans"
         tools:layout="@layout/fragment_loans" />
 
     <fragment

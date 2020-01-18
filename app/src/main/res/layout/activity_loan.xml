@@ -597,20 +597,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <!--<com.nightonke.boommenu.BoomMenuButton
-        android:id="@+id/bmb1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        app:bmb_buttonEnum="ham"
-        app:bmb_buttonPlaceEnum="buttonPlace_ham_3"
-        app:bmb_hamWidth="10dp"
-        app:bmb_highlightedColor="@android:color/darker_gray"
-        app:bmb_normalColor="@color/colorAccent"
-        app:bmb_piecePlaceEnum="piecePlace_dot_3_1" />-->
-
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -15,7 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class AdapterRecLoanBalance(
     var loanList: List<Loan>,
     _balanceViewModel: BalanceViewModel,
-     var onViewHolderClick: OnViewHolderClick
+    var onViewHolderClick: OnViewHolderClick
 ) :
     RecyclerView.Adapter<AdapterRecLoanBalance.Holder>() {
 
@@ -31,12 +31,14 @@ class AdapterRecLoanBalance(
         val tv1: TextView = itemView.findViewById(R.id.tvRecBalance1)
         val tv2: TextView = itemView.findViewById(R.id.tvRecBalance2)
         val tv3: TextView = itemView.findViewById(R.id.tvRecBalance3)
+        val tv4: TextView = itemView.findViewById(R.id.tvRecBalance4)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
         val fab: FloatingActionButton = itemView.findViewById(R.id.fabRecBalanceDelete)
 
         override fun onClick(p0: View?) {
             p0?.let {
-                mListener.openLoan(position = adapterPosition)
+                val loanId = loanList[adapterPosition].id
+                mListener.openLoan(loanId)
             }
         }
     }
@@ -53,7 +55,8 @@ class AdapterRecLoanBalance(
 
         holder.tv1.text = loanList[position].bank
         holder.tv2.text = loanList[position].type.name
-        holder.tv3.text = loanList[position].queryLoan.rate.toString()
+        holder.tv3.text = loanList[position].queryLoan.sum.toString()
+        holder.tv4.text = loanList[position].queryLoan.rate.toString()
 
         holder.fab.setOnClickListener {
             balanceViewModel.deleteLoan(loanList[position])
@@ -61,16 +64,16 @@ class AdapterRecLoanBalance(
 
         holder.iv.setImageResource(
             when (loanList[position].type) {
-                LoanType.MORTGAGE -> R.mipmap.loan_image
-                LoanType.BUSINESS -> R.mipmap.exchange_logo
-                LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.loan_image
-                LoanType.CAR_LOAN -> R.mipmap.loan_image
-                LoanType.DEPOSIT_SECURED -> R.mipmap.deposit_logo
-                LoanType.CONSUMER_LOAN -> R.mipmap.loan_image
-                LoanType.STUDENT_LOAN -> R.mipmap.deposit_logo
-                LoanType.UNSECURED -> R.mipmap.loan_image
-                LoanType.CREDIT_LINES -> R.mipmap.portfolio_logo
-                LoanType.NONE -> R.mipmap.loan_image
+                LoanType.MORTGAGE -> R.mipmap.mortgage
+                LoanType.BUSINESS -> R.mipmap.mortgage
+                LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.mortgage
+                LoanType.CAR_LOAN -> R.mipmap.mortgage
+                LoanType.DEPOSIT_SECURED -> R.mipmap.mortgage
+                LoanType.CONSUMER_LOAN -> R.mipmap.mortgage
+                LoanType.STUDENT_LOAN -> R.mipmap.mortgage
+                LoanType.UNSECURED -> R.mipmap.mortgage
+                LoanType.CREDIT_LINES -> R.mipmap.mortgage
+                LoanType.NONE -> R.mipmap.mortgage
             }
         )
     }
