@@ -1,6 +1,5 @@
 package com.example.fincalc.ui.dep
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -10,12 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
+import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.models.cur_met.currencyCodeList
 import com.example.fincalc.models.cur_met.currencyFlagList
-import com.example.fincalc.models.dep.PaymentInterval
-import com.example.fincalc.models.dep.QueryDep
-import com.example.fincalc.models.dep.ScheduleDep
-import com.example.fincalc.models.dep.getScheduleDep
+import com.example.fincalc.models.deposit.RepayFrequency
+import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,12 +21,12 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
+@Suppress("DEPRECATION")
 class DepositActivity : AppCompatActivity() {
 
     private lateinit var adapterRec: AdapterRecViewDep
     private lateinit var adapterSpin: AdapterSpinnerRates
-    private var scheduleDep: ScheduleDep? = null
-    private var period: PaymentInterval = PaymentInterval.MONTHLY
+    private var period: RepayFrequency = RepayFrequency.MONTHLY
     val dec = DecimalFormat("#,###.##")
 
 
@@ -42,86 +40,61 @@ class DepositActivity : AppCompatActivity() {
 
         recyclerDep.setHasFixedSize(true)
         recyclerDep.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-
-
-        adapterRec = AdapterRecViewDep(
-            getScheduleDep(
-                QueryDep(
-                    250000, 12, 6.4F, PaymentInterval.MONTHLY,
-                    false, 10.0F
-                )
-            )
-        )
+        adapterRec = AdapterRecViewDep(null)
         recyclerDep.adapter = adapterRec
 
         btnClearDep.setOnClickListener {
-            etSumDep.text.clear()
-            etRateDep.text.clear()
-            etTermDep.text.clear()
-            layoutDepResult.visibility = View.GONE
+            clear()
         }
 
-
         btnCalculateDep.setOnClickListener {
-
-            hideKeyboard(this)
-            val currentQuery: QueryDep? = getQueryDep(it)
-
-            if (currentQuery == null) {
-                adapterRec.scheduleDep = null
-            } else {
-                CoroutineScope(Main).launch {
-                    val result = getScheduleDep(currentQuery)
-                    adapterRec.scheduleDep = result
-                    adapterRec.notifyDataSetChanged()
-                    val text: String =
-                        resources.getString(R.string.ResultShowDep) +
-                                " ${dec.format(result.totalPercentAfterTaxing)}"
-                    tvResultDepShow.text = text
-                }
-                if (layoutDepOptionalInput.visibility != View.GONE) {
-                    btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.ic_expand_more_black_24dp,
-                        0
-                    )
-                    btnExpandDep.setText(R.string.AdvancedCalculation)
-                    toggle(true, layoutDepOptionalInput, layDepInput)
-                }
-                layoutDepResult.visibility = View.VISIBLE
-            }
+            calculate(it)
         }
 
         btnMonthly.setOnClickListener {
             imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
-            period = PaymentInterval.MONTHLY
+            period = RepayFrequency.MONTHLY
         }
+
         btnQuarterly.setOnClickListener {
             imitateRadioGroup(btnQuarterly, btnMonthly, btnEndOfPeriod)
-            period = PaymentInterval.QUARTERLY
+            period = RepayFrequency.QUARTERLY
         }
+
         btnEndOfPeriod.setOnClickListener {
             imitateRadioGroup(btnEndOfPeriod, btnQuarterly, btnMonthly)
-            period = PaymentInterval.END_OF_THE_CONTRACT
+            period = RepayFrequency.AT_THE_END
         }
 
-
         btnExpandDep.setOnClickListener {
-            if (layoutDepOptionalInput.visibility == View.GONE) {
-                //  ivLoanImage.visibility = View.GONE
-                btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.ic_expand_less_black_24dp,
-                    0
-                )
-                btnExpandDep.setText(R.string.SimpleCalculation)
-                toggle(false, layoutDepOptionalInput, layDepInput)
-                layoutDepResult.visibility = View.GONE
-            } else {
-                //   ivLoanImage.visibility = View.VISIBLE
+            expand()
+        }
+    }
+
+    private fun clear() {
+        etSumDep.text.clear()
+        etRateDep.text.clear()
+        etTermDep.text.clear()
+        layoutDepResult.visibility = View.GONE
+    }
+
+    private fun calculate(view: View) {
+        hideKeyboard(this)
+        val dep: Deposit? = getDep(view)
+
+        if (dep == null) {
+            adapterRec.scheduleDep = null
+        } else {
+            CoroutineScope(Main).launch {
+                val scheduleDep =
+                    TableDep(dep)
+                adapterRec.scheduleDep = scheduleDep
+                adapterRec.notifyDataSetChanged()
+                val text: String = resources.getString(R.string.ResultShowDep) +
+                        " ${dec.format(scheduleDep.totalPerAfterTax)}"
+                tvResultDepShow.text = text
+            }
+            if (layoutDepOptionalInput.visibility != View.GONE) {
                 btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
                     0,
                     0,
@@ -131,8 +104,33 @@ class DepositActivity : AppCompatActivity() {
                 btnExpandDep.setText(R.string.AdvancedCalculation)
                 toggle(true, layoutDepOptionalInput, layDepInput)
             }
+            layoutDepResult.visibility = View.VISIBLE
         }
+    }
 
+    private fun expand() {
+        if (layoutDepOptionalInput.visibility == View.GONE) {
+            //  ivLoanImage.visibility = View.GONE
+            btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_expand_less_black_24dp,
+                0
+            )
+            btnExpandDep.setText(R.string.SimpleCalculation)
+            toggle(false, layoutDepOptionalInput, layDepInput)
+            layoutDepResult.visibility = View.GONE
+        } else {
+            //   ivLoanImage.visibility = View.VISIBLE
+            btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                0,
+                R.drawable.ic_expand_more_black_24dp,
+                0
+            )
+            btnExpandDep.setText(R.string.AdvancedCalculation)
+            toggle(true, layoutDepOptionalInput, layDepInput)
+        }
     }
 
     private fun imitateRadioGroup(btnClicked: Button, btn2: Button, btn3: Button) {
@@ -148,46 +146,7 @@ class DepositActivity : AppCompatActivity() {
         btn3.isClickable = true
     }
 
-
-    private fun getPixelFromDp(context: Context, dp: Float): Float {
-        return dp * context.resources.displayMetrics.density
-    }
-
-
-/*
-    private fun animateInputLayout(closed: Boolean, context: Context) {
-
-        val pixelToTranslate = getPixelFromDp(context, 300f)
-        if (closed) {
-            btnExpand.setText(R.string.SimpleCalculation)
-
-            val animMandExpand = layoutLoanMandatoryInput.animate()
-            animMandExpand.duration = 1000
-            animMandExpand.interpolator = AccelerateDecelerateInterpolator()
-            animMandExpand.translationY(0f).start()
-
-
-            val animOptionalAppears = layoutLoanInputOptional.animate()
-            animOptionalAppears.duration = 1000
-            animOptionalAppears.interpolator = AccelerateDecelerateInterpolator()
-            animOptionalAppears.translationY(0f).alpha(1f).start()
-        } else {
-            btnExpand.setText(R.string.AdvancedCalculation)
-            val animMandDownAndScaling = layoutLoanMandatoryInput.animate()
-            animMandDownAndScaling.duration = 1000
-            animMandDownAndScaling.interpolator = AccelerateDecelerateInterpolator()
-            animMandDownAndScaling.translationY(pixelToTranslate).start()
-
-
-            val animOptionalHides = layoutLoanInputOptional.animate()
-            animOptionalHides.duration = 1000
-            animOptionalHides.interpolator = AccelerateDecelerateInterpolator()
-            animOptionalHides.translationY(pixelToTranslate).alpha(0f).start()
-        }
-    }
-*/
-
-    private fun getQueryDep(view: View): QueryDep? {
+    private fun getDep(view: View): Deposit? {
 
         val amount =
             if (etSumDep.text.toString() == "") 0
@@ -203,7 +162,7 @@ class DepositActivity : AppCompatActivity() {
             if (etTaxDep.text.toString() == "") 10F
             else etTaxDep.text.toString().toFloat()
 
-        val check = if (period == PaymentInterval.QUARTERLY) 3 else 1
+        val check = if (period == RepayFrequency.QUARTERLY) 3 else 1
 
         return when {
             amount == 0L || term == 0 || rate == 0.0F -> {
@@ -231,19 +190,22 @@ class DepositActivity : AppCompatActivity() {
                 null
             }
             else -> {
-                QueryDep(amount, term, rate, period, capitalized, taxRate)
+                Deposit(
+                    amount = amount, months = term, rate = rate, capitalize = capitalized,
+                    taxRate = taxRate, frequency = period
+                )
             }
         }
     }
 
-    private fun initSpinner(){
+    private fun initSpinner() {
         adapterSpin = AdapterSpinnerRates(
             this, R.layout.layoutspinner,
-            currencyCodeList, currencyFlagList,true
+            currencyCodeList, currencyFlagList, true
         )
         adapterSpin.setDropDownViewResource(R.layout.layoutspinner)
         spinnerDep.adapter = adapterSpin
-        spinnerDep.setSelection(adapterSpin.count-4)
+        spinnerDep.setSelection(adapterSpin.count - 4)
     }
 
     override fun onBackPressed() {

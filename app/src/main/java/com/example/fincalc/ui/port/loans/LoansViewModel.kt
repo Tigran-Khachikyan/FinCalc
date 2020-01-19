@@ -2,7 +2,7 @@ package com.example.fincalc.ui.port.loans
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.fincalc.data.db.Loan
+import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.data.repository.Repository
 import com.example.fincalc.ui.port.NavViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +15,6 @@ class LoansViewModel(application: Application) : AndroidViewModel(application) {
 
     private val selLoanLiveData = NavViewModel.Container.navSelLoanIdLD
     private val loanListLiveData = repo?.getLoans()
-
 
     fun getLoanList(): LiveData<List<Loan>>? {
         viewModelScope.launch {

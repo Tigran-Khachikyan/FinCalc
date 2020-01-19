@@ -1,4 +1,4 @@
-package com.example.fincalc.data.db
+package com.example.fincalc.data.db.loan
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -14,12 +14,6 @@ interface LoanDao {
 
     @Query("DELETE FROM loans")
     suspend fun deleteAll()
-
-    @Query("SELECT * FROM loans WHERE _id = :id")
-    fun getLoanById(id: Int): LiveData<Loan>
-
-    @Query("SELECT * FROM loans WHERE type = :type")
-    fun getLoansByType(type: LoanType): LiveData<List<Loan>>
 
     @Query("SELECT * FROM loans")
     fun getLoans(): LiveData<List<Loan>>

@@ -1,4 +1,4 @@
-package com.example.fincalc.data.db
+package com.example.fincalc.models.credit
 
 import com.example.fincalc.R
 
@@ -12,5 +12,5 @@ enum class LoanType(val id: Int) {
     CAR_LOAN(R.string.CAR_LOAN),
     CONSUMER_LOAN(R.string.CONSUMER_LOAN),
     STUDENT_LOAN(R.string.STUDENT_LOAN),
-    NONE(R.string.NONE)
+    OTHER(R.string.OTHER)
 }

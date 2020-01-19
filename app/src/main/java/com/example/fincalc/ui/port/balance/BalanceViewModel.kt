@@ -2,23 +2,21 @@ package com.example.fincalc.ui.port.balance
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.fincalc.data.db.Loan
-import com.example.fincalc.data.db.LoanType
+import com.example.fincalc.data.db.loan.Loan
+import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.data.repository.Repository
+import com.example.fincalc.models.Banking
 import kotlinx.coroutines.*
 
-class BalanceViewModel(application: Application) : AndroidViewModel(application) {
+class BalanceViewModel(application: Application) : AndroidViewModel(application)
+     {
 
     private val repository = Repository.getInstance(application)
     private val _loanList = repository?.getLoans()
     private val _filTypeList = RepoLoansFilter._typeList
     private val _filCurrency = RepoLoansFilter._cur
     private val _sortedAcc = RepoLoansFilter._sortByRate
-    fun getLoans() = repository?.getLoans()
 
-    fun getLoansByType(type: LoanType) = repository?.getLoansByType(type)
-
-    fun getLoanById(id: Int) = repository?.getLoanById(id)
 
     fun addLoan(loan: Loan) = viewModelScope.launch {
         repository?.insertLoan(loan)
@@ -32,11 +30,11 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         repository?.deleteAllLoans()
     }
 
-    fun setLTypeSelec(selList: List<LoanType>?) {
+    fun setLTypeSel(selList: List<LoanType>?) {
         RepoLoansFilter._typeList.value = selList
     }
 
-    fun setCurrencySelec(curs: List<String>?) {
+    fun setCurrencySel(curs: List<String>?) {
         RepoLoansFilter._cur.value = curs
     }
 
@@ -111,46 +109,106 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         else null
     }
 
-    private fun filterByCur(loans: ArrayList<Loan>?, cur: List<String>?): List<Loan>? {
+     /*private fun filterByCur(loans: ArrayList<Loan>?, cur: List<String>?): List<Loan>? {
 
-        return if (loans != null) {
-            return if (cur == null) loans else {
-                val inner = arrayListOf<Loan>()
-                for (lo in loans)
-                    if (lo.currency == cur[0])
-                        inner.add(lo)
+         return if (loans != null) {
+             return if (cur == null) loans else {
+                 val inner = arrayListOf<Loan>()
+                 for (lo in loans)
+                     if (lo.currency == cur[0])
+                         inner.add(lo)
+                 inner
+             }
+         } else null
+     }
+
+     private fun sortCur(loans: ArrayList<Loan>?, curs: List<String>?): List<String>? {
+
+         return if (loans != null) {
+             if (curs != null) {
+                 val newCurList = arrayListOf<String>()
+                 newCurList.add(curs[0])
+                 for (lo in loans)
+                     if (lo.currency != curs[0])
+                         newCurList.add(lo.currency)
+                 newCurList.distinct()
+             } else {
+                 val newCurList = arrayListOf<String>()
+                 for (lo in loans)
+                     newCurList.add(lo.currency)
+                 newCurList.distinct()
+             }
+         } else null
+     }
+
+     private fun sortByRate(loans: ArrayList<Loan>?, acc: Boolean?): List<Loan>? {
+         return if (loans != null)
+             return when (acc) {
+                 null -> loans
+                 true -> loans.sortedBy { l -> l.queryLoan.rate }
+                 else -> loans.sortedByDescending { l -> l.queryLoan.rate }
+             }
+         else null
+     }
+*/
+
+         private fun filterByCur(loans: ArrayList<Loan>?, cur: List<String>?): List<Loan>? {
+
+             return if (loans != null) {
+                 return if (cur == null) loans else {
+                     val inner = arrayListOf<Loan>()
+                     for (lo in loans)
+                         if (lo.currency == cur[0])
+                             inner.add(lo)
+                     inner
+                 }
+             } else null
+         }
+
+         private fun sortCur(loans: ArrayList<Loan>?, curs: List<String>?): List<String>? {
+
+             return if (loans != null) {
+                 if (curs != null) {
+                     val newCurList = arrayListOf<String>()
+                     newCurList.add(curs[0])
+                     for (lo in loans)
+                         if (lo.currency != curs[0])
+                             newCurList.add(lo.currency)
+                     newCurList.distinct()
+                 } else {
+                     val newCurList = arrayListOf<String>()
+                     for (lo in loans)
+                         newCurList.add(lo.currency)
+                     newCurList.distinct()
+                 }
+             } else null
+         }
+
+         private fun sortByRate(loans: ArrayList<Loan>?, acc: Boolean?): List<Loan>? {
+             return if (loans != null)
+                 return when (acc) {
+                     null -> loans
+                     true -> loans.sortedBy { l -> l.rate }
+                     else -> loans.sortedByDescending { l -> l.rate }
+                 }
+             else null
+         }
+
+
+         private fun filterByCur(
+        products: ArrayList<out Banking>?,
+        cur: List<String>?
+    ): ArrayList<out Banking>? {
+
+        return if (products != null) {
+            return if (cur == null) products else {
+                val inner = ArrayList<Banking>()
+                for (pr in products)
+                    if (pr.currency == cur[0])
+                        inner.add(pr)
                 inner
             }
         } else null
-    }
-
-    private fun sortCur(loans: ArrayList<Loan>?, curs: List<String>?): List<String>? {
-
-        return if (loans != null) {
-            if (curs != null) {
-                val newCurList = arrayListOf<String>()
-                newCurList.add(curs[0])
-                for (lo in loans)
-                    if (lo.currency != curs[0])
-                        newCurList.add(lo.currency)
-                newCurList.distinct()
-            } else {
-                val newCurList = arrayListOf<String>()
-                for (lo in loans)
-                    newCurList.add(lo.currency)
-                newCurList.distinct()
-            }
-        } else null
-    }
-
-    private fun sortByRate(loans: ArrayList<Loan>?, acc: Boolean?): List<Loan>? {
-        return if (loans != null)
-            return when (acc) {
-                null -> loans
-                true -> loans.sortedBy { l -> l.queryLoan.rate }
-                else -> loans.sortedByDescending { l -> l.queryLoan.rate }
-            }
-        else null
     }
 
 
@@ -160,7 +218,6 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         medLiveData.removeSource(_filTypeList)
         medLiveData.removeSource(_sortedAcc)
     }
-
 }
 
 

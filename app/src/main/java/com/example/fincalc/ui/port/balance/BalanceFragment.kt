@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
-import com.example.fincalc.data.db.LoanType
-import com.example.fincalc.models.loan.getEnumFromSelection
+import com.example.fincalc.models.credit.LoanType
+import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.ui.initialize
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.NavSwitcher
@@ -100,12 +100,12 @@ class BalanceFragment : Fragment() {
 
                 tvFilterType.setOnClickListener {
                     tvFilterType.visibility = View.GONE
-                    balanceViewModel.setLTypeSelec(null)
+                    balanceViewModel.setLTypeSel(null)
                 }
 
                 tvFilterCur.setOnClickListener {
                     tvFilterCur.visibility = View.GONE
-                    balanceViewModel.setCurrencySelec(null)
+                    balanceViewModel.setCurrencySel(null)
                 }
 
                 tvFilterSort.setOnClickListener {
@@ -155,7 +155,11 @@ class BalanceFragment : Fragment() {
                 btn.background = context.getDrawable(R.drawable.btncalculate)
                 btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bag, 0, 0, 0)
                 btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
-                val curEnum = getEnumFromSelection(btn.text.toString(), context)
+                val curEnum =
+                    getEnumFromSelection(
+                        btn.text.toString(),
+                        context
+                    )
                 checkedTypes.add(curEnum)
             }
 
@@ -163,7 +167,11 @@ class BalanceFragment : Fragment() {
                 btn.background = context.getDrawable(R.drawable.btnexpand)
                 btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                 btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
-                val curEnum = getEnumFromSelection(btn.text.toString(), context)
+                val curEnum =
+                    getEnumFromSelection(
+                        btn.text.toString(),
+                        context
+                    )
                 if (checkedTypes.contains(curEnum))
                     checkedTypes.remove(curEnum)
 
@@ -287,7 +295,7 @@ class BalanceFragment : Fragment() {
                 else
                     tvFilterType.visibility = View.GONE
 
-                balanceViewModel.setLTypeSelec(checkedTypes)
+                balanceViewModel.setLTypeSel(checkedTypes)
             }
 
             //click CANCEL
@@ -321,7 +329,7 @@ class BalanceFragment : Fragment() {
                 val selection = spinner.selectedItem.toString()
                 val list = arrayListOf<String>()
                 list.add(selection)
-                balanceViewModel.setCurrencySelec(list)
+                balanceViewModel.setCurrencySel(list)
                 tvFilterCur.visibility = View.VISIBLE
             }
 

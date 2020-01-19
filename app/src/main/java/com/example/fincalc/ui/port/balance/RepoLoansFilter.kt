@@ -1,7 +1,7 @@
 package com.example.fincalc.ui.port.balance
 
 import androidx.lifecycle.MutableLiveData
-import com.example.fincalc.data.db.LoanType
+import com.example.fincalc.models.credit.LoanType
 
 object RepoLoansFilter {
      val _typeList = MutableLiveData<List<LoanType>?>()

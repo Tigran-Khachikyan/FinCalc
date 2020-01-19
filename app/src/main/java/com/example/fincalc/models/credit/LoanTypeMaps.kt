@@ -1,8 +1,7 @@
-package com.example.fincalc.models.loan
+package com.example.fincalc.models.credit
 
 import android.content.Context
 import com.example.fincalc.R
-import com.example.fincalc.data.db.LoanType
 
 fun getLoanTypeListName(context: Context): ArrayList<String> {
     val arrayList = ArrayList<String>()
@@ -16,7 +15,7 @@ fun getLoanTypeListName(context: Context): ArrayList<String> {
 
 fun getEnumFromSelection(string: String, context: Context?): LoanType {
 
-    var type = LoanType.NONE
+    var type = LoanType.OTHER
 
     for (id in loanTypeMap.keys) {
         if (string == context?.resources?.getString(id)) {
@@ -26,7 +25,6 @@ fun getEnumFromSelection(string: String, context: Context?): LoanType {
     }
     return type
 }
-
 
 val loanTypeMap = hashMapOf(
     R.string.GOLD_PLEDGE_SECURED to LoanType.GOLD_PLEDGE_SECURED,

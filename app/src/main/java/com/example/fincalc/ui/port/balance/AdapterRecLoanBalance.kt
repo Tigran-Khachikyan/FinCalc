@@ -7,8 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.db.Loan
-import com.example.fincalc.data.db.LoanType
+import com.example.fincalc.data.db.loan.Loan
+import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -55,8 +55,8 @@ class AdapterRecLoanBalance(
 
         holder.tv1.text = loanList[position].bank
         holder.tv2.text = loanList[position].type.name
-        holder.tv3.text = loanList[position].queryLoan.sum.toString()
-        holder.tv4.text = loanList[position].queryLoan.rate.toString()
+        holder.tv3.text = loanList[position].amount.toString()
+        holder.tv4.text = loanList[position].rate.toString()
 
         holder.fab.setOnClickListener {
             balanceViewModel.deleteLoan(loanList[position])
@@ -73,7 +73,7 @@ class AdapterRecLoanBalance(
                 LoanType.STUDENT_LOAN -> R.mipmap.mortgage
                 LoanType.UNSECURED -> R.mipmap.mortgage
                 LoanType.CREDIT_LINES -> R.mipmap.mortgage
-                LoanType.NONE -> R.mipmap.mortgage
+                LoanType.OTHER -> R.mipmap.mortgage
             }
         )
     }

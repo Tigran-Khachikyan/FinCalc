@@ -23,7 +23,7 @@ class DepsFragment : Fragment() {
             ViewModelProviders.of(this).get(DepsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_deps, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(this, Observer {
+        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

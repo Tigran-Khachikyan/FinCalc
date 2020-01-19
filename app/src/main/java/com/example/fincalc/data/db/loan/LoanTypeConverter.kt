@@ -1,6 +1,7 @@
-package com.example.fincalc.data.db
+package com.example.fincalc.data.db.loan
 
 import androidx.room.TypeConverter
+import com.example.fincalc.models.credit.LoanType
 
 class LoanTypeConverter {
     @TypeConverter
@@ -14,6 +15,6 @@ class LoanTypeConverter {
         for (type in LoanType.values())
             if (string == type.name)
                 return type
-        return LoanType.NONE
+        return LoanType.OTHER
     }
 }

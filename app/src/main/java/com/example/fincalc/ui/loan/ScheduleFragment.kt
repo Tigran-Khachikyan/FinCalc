@@ -17,10 +17,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.db.Loan
+import com.example.fincalc.data.db.loan.Loan
+import com.example.fincalc.models.credit.Formula
+import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.models.cur_met.currencyCodeList
 import com.example.fincalc.models.cur_met.currencyFlagList
-import com.example.fincalc.models.loan.*
+import com.example.fincalc.models.credit.getEnumFromSelection
+import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.ui.AdapterSpinnerRates
 import com.example.fincalc.ui.port.balance.BalanceViewModel
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -28,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 /**
  * A simple [Fragment] subclass.
  */
-class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
+class ScheduleFragment(private val formula: Formula) : Fragment() {
 
     private lateinit var recyclerViewModel: ScheduleViewModel
     private lateinit var balanceViewModel: BalanceViewModel
@@ -55,8 +58,8 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
         recycler.adapter = adapterRecSchedule
 
 
-        if (formula != FormulaLoan.ANNUITY) {
-            if (formula == FormulaLoan.DIFFERENTIAL) recyclerViewModel.getDiff().observe(
+        if (formula != Formula.ANNUITY) {
+            if (formula == Formula.DIFFERENTIAL) recyclerViewModel.getScheduleDifferential().observe(
                 viewLifecycleOwner,
                 Observer {
 
@@ -65,12 +68,12 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
                         refreshSchedule(schedule)
                         fab_Loan.setOnClickListener {
                             this.context?.let {
-                                getDialog(this.context, schedule.queryLoan, formula)
+                                getDialog(this.context, schedule.loan, formula)
                             }
                         }
                     }
                 })
-            else if (formula == FormulaLoan.OVERDRAFT) recyclerViewModel.getOver().observe(
+            else if (formula == Formula.OVERDRAFT) recyclerViewModel.getScheduleOverdraft().observe(
                 viewLifecycleOwner,
                 Observer {
 
@@ -79,23 +82,23 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
                         refreshSchedule(schedule)
                         fab_Loan.setOnClickListener {
                             this.context?.let {
-                                getDialog(this.context, schedule.queryLoan, formula)
+                                getDialog(this.context, schedule.loan, formula)
                             }
                         }
                     }
                 })
         } else
-            recyclerViewModel.getAnnuity().observe(
+            recyclerViewModel.getScheduleAnnuity().observe(
                 viewLifecycleOwner,
                 Observer {
 
                     it?.let {
-                        Log.d("sww","set  _mLDAnnuity.value: ${it}")
+                        Log.d("sww", "set  _mLDAnnuity.value: ${it}")
                         val schedule = it
                         refreshSchedule(schedule)
                         fab_Loan.setOnClickListener {
                             this.context?.let {
-                                getDialog(this.context, schedule.queryLoan, formula)
+                                getDialog(this.context, schedule.loan, formula)
                             }
                         }
                     }
@@ -103,7 +106,7 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
     }
 
 
-    private fun refreshSchedule(sch: ScheduleLoan?) {
+    private fun refreshSchedule(sch: TableLoan?) {
         if (sch != null) {
             constraintLayoutFragment.visibility = View.VISIBLE
             /*   adapterSchedule.items = sch.rowList
@@ -116,7 +119,7 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
     }
 
     @SuppressLint("InflateParams")
-    private fun getDialog(context: Context?, queryLoan: QueryLoan, formula: FormulaLoan) {
+    private fun getDialog(context: Context?, loan: Loan, formula: Formula) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
@@ -144,7 +147,7 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
                     getLoanTypeListName(context)
                 )
             spinnerType.adapter = adapterSpinType
-            spinnerType.setSelection(adapterSpinType.count-1)
+            spinnerType.setSelection(adapterSpinType.count - 1)
 
 
             //click SAVE
@@ -155,15 +158,17 @@ class ScheduleFragment(private val formula: FormulaLoan) : Fragment() {
                 val bank = etBank.text.toString()
                 val cur = spinnerCur.selectedItem.toString()
                 val typeString = spinnerType.selectedItem.toString()
-                val typeEnum = getEnumFromSelection(typeString,this.context)
+                val typeEnum =
+                    getEnumFromSelection(
+                        typeString,
+                        this.context
+                    )
+                loan.bank = bank
+                loan.currency = cur
+                loan.type = typeEnum
+                loan.formula = formula
 
-                val newLoan = Loan(bank,typeEnum,formula,cur,queryLoan)
-
-                Log.d("jjj","bank: $bank, cur: $cur, type: $typeString, \n " +
-                        "newLoan.formula: ${newLoan.repayment_program} , " +
-                        "newLoan.query.Amount: ${newLoan.queryLoan.sum}")
-
-                balanceViewModel.addLoan(newLoan)
+                balanceViewModel.addLoan(loan)
 
             }
 

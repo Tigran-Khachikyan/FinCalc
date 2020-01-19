@@ -189,7 +189,7 @@
 
                 <EditText
                     android:id="@+id/etSumDep"
-                    style="@style/editText"
+                    style="@style/editTextMainInput"
                     android:layout_width="250dp"
                     android:hint="@string/HintAmount"
                     android:inputType="number"
@@ -234,7 +234,7 @@
 
                 <EditText
                     android:id="@+id/etRateDep"
-                    style="@style/editText"
+                    style="@style/editTextMainInput"
                     android:layout_width="100dp"
                     android:hint="@string/HintRate"
                     android:inputType="numberDecimal"
@@ -277,7 +277,7 @@
 
                 <EditText
                     android:id="@+id/etTermDep"
-                    style="@style/editText"
+                    style="@style/editTextMainInput"
                     android:layout_width="100dp"
                     android:hint="@string/HintTerm"
                     android:inputType="number"
@@ -511,7 +511,7 @@
 
                 <EditText
                     android:id="@+id/etTaxDep"
-                    style="@style/editText"
+                    style="@style/editTextMainInput"
                     android:layout_width="100dp"
                     android:layout_marginBottom="8dp"
                     android:inputType="numberDecimal"

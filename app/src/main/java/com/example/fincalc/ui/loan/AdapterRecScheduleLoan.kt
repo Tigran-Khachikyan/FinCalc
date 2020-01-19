@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.models.loan.ScheduleLoan
+import com.example.fincalc.models.credit.TableLoan
 import java.text.DecimalFormat
 
 
 
-class AdapterRecScheduleLoan(var item: ScheduleLoan?) : RecyclerView.Adapter<AdapterRecScheduleLoan.GenericViewHolder>() {
+class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<AdapterRecScheduleLoan.GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         when (viewType) {
@@ -43,7 +43,7 @@ class AdapterRecScheduleLoan(var item: ScheduleLoan?) : RecyclerView.Adapter<Ada
 
     override fun getItemCount() =
         if (item != null)
-            (item as ScheduleLoan).rowCount + 2 else 0
+            (item as TableLoan).rowCount + 2 else 0
 
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
@@ -73,14 +73,14 @@ class AdapterRecScheduleLoan(var item: ScheduleLoan?) : RecyclerView.Adapter<Ada
 
         override fun setDataOnView(position: Int) {
 
-            val items = item?.rowList?.get(position-1)
+            val items = item?.rows?.get(position-1)
 
-            tvNumber.text = items?.currentRowNumber.toString()
-            tvLoanSumRemain.text = dec.format(items?.sumRemain)
-            tvLoanSumMonthly.text = dec.format(items?.monthlyLoan)
-            tvPercentMonthly.text = dec.format(items?.monthlyPercent)
-            tvCommissionMonthly.text = dec.format(items?.monthlyCommission)
-            tvTotalPaymentMonthly.text = dec.format(items?.totalMonthlyPayment)
+            tvNumber.text = items?.curRowN.toString()
+            tvLoanSumRemain.text = dec.format(items?.balance)
+            tvLoanSumMonthly.text = dec.format(items?.monthLoan)
+            tvPercentMonthly.text = dec.format(items?.percent)
+            tvCommissionMonthly.text = dec.format(items?.monthCom)
+            tvTotalPaymentMonthly.text = dec.format(items?.payment)
         }
     }
 
@@ -95,12 +95,8 @@ class AdapterRecScheduleLoan(var item: ScheduleLoan?) : RecyclerView.Adapter<Ada
         override fun setDataOnView(position: Int) {
 
             tvTotalSum.text = dec.format(item?.sumBasic)
-            tvTotalPercent.text = dec.format(item?.totalPercentSum)
-            val totalCommission: Double? =
-                if (item != null) (item as ScheduleLoan).totalMonthlyCommissionPayment
-                else null
-            tvTotalCommission.text =
-                dec.format(totalCommission)
+            tvTotalPercent.text = dec.format(item?.totalPercent)
+            tvTotalCommission.text = dec.format(item?.totalComDuring)
             tvTotalPayment.text = dec.format(item?.totalPayment)
         }
     }

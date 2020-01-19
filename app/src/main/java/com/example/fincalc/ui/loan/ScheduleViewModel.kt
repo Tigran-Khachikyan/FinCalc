@@ -1,29 +1,38 @@
 package com.example.fincalc.ui.loan
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fincalc.models.loan.FormulaLoan
-import com.example.fincalc.models.loan.ScheduleLoan
+import com.example.fincalc.models.credit.TableLoan
 
 class ScheduleViewModel : ViewModel() {
 
-    object RepoSchedule {
-        val _mLDAnnuity: MutableLiveData<ScheduleLoan?> = MutableLiveData()
-        val _mLDDiff: MutableLiveData<ScheduleLoan?> = MutableLiveData()
-        val _mLDOver: MutableLiveData<ScheduleLoan?> = MutableLiveData()
 
-        fun setScheduleMap(map: Map<FormulaLoan, ScheduleLoan?>?) {
-            map?.let {
-                _mLDAnnuity.value = map[FormulaLoan.ANNUITY]
-                _mLDDiff.value = map[FormulaLoan.DIFFERENTIAL]
-                _mLDOver.value = map[FormulaLoan.OVERDRAFT]
-                Log.d("sww", "set  _mLDAnnuity.value: ${_mLDAnnuity.value}")
-            }
+    object RepoSchedule {
+        val scheduleAnnLiveData: MutableLiveData<TableLoan> = MutableLiveData()
+        val scheduleDiffLiveData: MutableLiveData<TableLoan> = MutableLiveData()
+        val scheduleOverLiveData: MutableLiveData<TableLoan> = MutableLiveData()
+
+        fun setScheduleAnn(schedule: TableLoan) {
+            scheduleAnnLiveData.value = schedule
+        }
+
+        fun setScheduleDiff(schedule: TableLoan) {
+            scheduleDiffLiveData.value = schedule
+        }
+
+        fun setScheduleOver(schedule: TableLoan) {
+            scheduleOverLiveData.value = schedule
+        }
+
+        fun clear(){
+            scheduleAnnLiveData.value = null
+            scheduleDiffLiveData.value = null
+            scheduleOverLiveData.value = null
         }
     }
-    fun getAnnuity() = RepoSchedule._mLDAnnuity
-    fun getDiff() = RepoSchedule._mLDDiff
-    fun getOver() = RepoSchedule._mLDOver
 
+    fun getScheduleAnnuity(): LiveData<TableLoan> = RepoSchedule.scheduleAnnLiveData
+    fun getScheduleDifferential(): LiveData<TableLoan> = RepoSchedule.scheduleDiffLiveData
+    fun getScheduleOverdraft(): LiveData<TableLoan> = RepoSchedule.scheduleOverLiveData
 }

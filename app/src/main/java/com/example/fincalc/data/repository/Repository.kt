@@ -5,12 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fincalc.data.db.Database
-import com.example.fincalc.data.db.Loan
-import com.example.fincalc.data.db.LoanDao
-import com.example.fincalc.data.db.LoanType
+import com.example.fincalc.data.db.dep.Deposit
+import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.data.network.api_metals.ApiMetal
 import com.example.fincalc.data.network.api_metals.ResponseMetalApi
-import com.example.fincalc.data.network.api_rates.ApiCurrency
 import com.example.fincalc.data.network.api_rates.ApiCurrency.Companion.invoke
 import com.example.fincalc.data.network.api_rates.ResponseCurApi
 import retrofit2.Call
@@ -160,12 +158,6 @@ class Repository private constructor(
     fun getLoans(): LiveData<List<Loan>> =
         Database(context).getLoanDao().getLoans()
 
-    fun getLoansByType(type: LoanType): LiveData<List<Loan>> =
-        Database(context).getLoanDao().getLoansByType(type)
-
-    fun getLoanById(id: Int): LiveData<Loan> =
-        Database(context).getLoanDao().getLoanById(id)
-
     suspend fun insertLoan(loan: Loan) =
         Database(context).getLoanDao().insert(loan)
 
@@ -174,5 +166,19 @@ class Repository private constructor(
 
     suspend fun deleteAllLoans() =
         Database(context).getLoanDao().deleteAll()
+
+
+    //Deposit
+    fun getDep(): LiveData<List<Deposit>> =
+        Database(context).getDepDao().getDeposits()
+
+    suspend fun insertDep(dep: Deposit) =
+        Database(context).getDepDao().insert(dep)
+
+    suspend fun deleteDep(dep: Deposit) =
+        Database(context).getDepDao().delete(dep)
+
+    suspend fun deleteAllDeps() =
+        Database(context).getDepDao().deleteAll()
 
 }

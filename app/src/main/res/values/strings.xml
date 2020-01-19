@@ -105,7 +105,7 @@
     <string name="CAR_LOAN">CAR LOAN</string>
     <string name="CONSUMER_LOAN">CONSUMER LOAN</string>
     <string name="STUDENT_LOAN">STUDENT LOAN</string>
-    <string name="NONE">NONE</string>
+    <string name="OTHER">OTHER</string>
     <string name="SELECT_ALL">SELECT ALL</string>
 
     <!-- TODO: Remove or change this placeholder text -->

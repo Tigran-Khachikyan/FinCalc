@@ -65,7 +65,7 @@
 
                         <EditText
                             android:id="@+id/etSum"
-                            style="@style/editText"
+                            style="@style/editTextMainInput"
                             android:layout_width="250dp"
                             android:hint="@string/HintAmount"
                             android:inputType="number"
@@ -110,7 +110,7 @@
 
                         <EditText
                             android:id="@+id/etRate"
-                            style="@style/editText"
+                            style="@style/editTextMainInput"
                             android:layout_width="100dp"
                             android:hint="@string/HintRate"
                             android:inputType="numberDecimal"
@@ -154,7 +154,7 @@
 
                         <EditText
                             android:id="@+id/etTerm"
-                            style="@style/editText"
+                            style="@style/editTextMainInput"
                             android:layout_width="100dp"
                             android:hint="@string/HintTerm"
                             android:inputType="number"
@@ -291,7 +291,7 @@
                             android:id="@+id/etOneTimeCommSum"
                             style="@style/editTextOptional"
                             android:layout_marginBottom="8dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="8"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_weight="2"
@@ -369,7 +369,7 @@
                             android:id="@+id/etMonthlyCommSum"
                             style="@style/editTextOptional"
                             android:layout_marginBottom="8dp"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="8"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_weight="2"
@@ -447,7 +447,7 @@
                             android:id="@+id/etAnnualCommSum"
                             style="@style/editTextOptional"
                             android:layout_width="match_parent"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="8"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -487,11 +487,11 @@
 
                         <EditText
                             android:id="@+id/etOtherCosts"
-                            style="@style/editText"
+                            style="@style/editTextMainInput"
                             android:layout_width="match_parent"
                             android:drawableEnd="@mipmap/money"
                             android:hint="@string/HintOtherCosts"
-                            android:inputType="numberDecimal"
+                            android:inputType="number"
                             android:maxLength="7"
                             android:textSize="22sp"
                             app:layout_constraintBottom_toBottomOf="parent" />

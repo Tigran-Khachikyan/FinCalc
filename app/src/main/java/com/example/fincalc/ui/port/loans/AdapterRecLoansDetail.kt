@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.db.Loan
-import com.example.fincalc.data.db.LoanType
-import com.example.fincalc.models.loan.CalculatorLoan.getSchedule
+import com.example.fincalc.data.db.loan.Loan
+import com.example.fincalc.models.credit.LoanType
+import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
 
 class AdapterRecLoansDetail(
@@ -51,20 +51,20 @@ class AdapterRecLoansDetail(
             val bank = res.getString(R.string.bank) + ": ${curLoan.bank}"
             holder.tvBank.text = bank
 
-            val sum = res.getString(R.string.Amount) + ": ${curLoan.queryLoan.sum}"
+            val sum = res.getString(R.string.Amount) + ": ${curLoan.amount}"
             holder.tvAmount.text = sum
 
-            if (curLoan.type == LoanType.NONE)
+            if (curLoan.type == LoanType.OTHER)
                 holder.tvType.visibility = View.GONE
             else {
                 val type = res.getString(R.string.LoanType) + ": ${curLoan.type}"
                 holder.tvType.text = type
             }
 
-            val term = res.getString(R.string.Term_months) + ": ${curLoan.queryLoan.months}"
+            val term = res.getString(R.string.Term_months) + ": ${curLoan.months}"
             holder.tvTerm.text = term
 
-            val rate = res.getString(R.string.Interest_rate) + ": ${curLoan.queryLoan.rate}"
+            val rate = res.getString(R.string.Interest_rate) + ": ${curLoan.rate}"
             holder.tvRate.text = rate
 
             val cur = res.getString(R.string.Currency) + ": ${curLoan.currency}"
@@ -72,22 +72,22 @@ class AdapterRecLoansDetail(
 
             //OneTimeCom
 
-            val oneTcomRes = getComResult(
-                curLoan.queryLoan.oneTimeCommissionSum, curLoan.queryLoan.oneTimeCommissionRate,
-                curLoan.queryLoan.minOneTimeCommissionSumOrRate, true
+            val oneTimeComRes = getComResult(
+                curLoan.oneTimeComSum, curLoan.oneTimeComRate,
+                curLoan.minOneTimeComSumOrRate, true
             )
 
-            if (oneTcomRes == "")
+            if (oneTimeComRes == "")
                 holder.tvOneTimeCom.visibility = View.GONE
             else {
-                val oneTCom = res.getString(R.string.One_Time_Commission) + ": $oneTcomRes"
+                val oneTCom = res.getString(R.string.One_Time_Commission) + ": $oneTimeComRes"
                 holder.tvOneTimeCom.text = oneTCom
             }
 
             //MonthlyTimeCom
             val monthlyComRes: String = getComResult(
-                curLoan.queryLoan.monthlyCommissionSum, curLoan.queryLoan.monthlyCommissionRate,
-                curLoan.queryLoan.minMonthlyCommissionSumOrRate, false
+                curLoan.monthComSum, curLoan.monthComRate,
+                curLoan.minMonthComSumOrRate, false
             )
             if (monthlyComRes == "")
                 holder.tvMonthlyCom.visibility = View.GONE
@@ -98,9 +98,10 @@ class AdapterRecLoansDetail(
 
             //AnnualCom
             val annualComRes = getComResult(
-                curLoan.queryLoan.annualCommissionSum, curLoan.queryLoan.annualCommissionRate,
-                curLoan.queryLoan.minAnnualCommissionSumOrRate, false
+                curLoan.annComSum, curLoan.annComRate,
+                curLoan.minAnnComSumOrRate, false
             )
+
             if (annualComRes == "")
                 holder.tvAnnualCom.visibility = View.GONE
             else {
@@ -108,18 +109,18 @@ class AdapterRecLoansDetail(
                 holder.tvAnnualCom.text = annualCom
             }
 
-            if (curLoan.queryLoan.oneTimeOtherCosts == 0.0)
+            if (curLoan.otherCosts == 0)
                 holder.tvCosts.visibility = View.GONE
             else {
                 val cost = res.getString(R.string.Other_One_Time_Costs) +
-                        ": ${curLoan.queryLoan.oneTimeOtherCosts}"
+                        ": ${curLoan.otherCosts}"
                 holder.tvCosts.text = cost
             }
 
             //Recycler
 
-            val schedule = getSchedule(curLoan.queryLoan, curLoan.repayment_program)
-            val adapter = AdapterRecScheduleLoan(item = schedule)
+            val loanTable = TableLoan(curLoan)
+            val adapter = AdapterRecScheduleLoan(item = loanTable)
             holder.recSchedule.setHasFixedSize(true)
             holder.recSchedule.layoutManager =
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -127,7 +128,7 @@ class AdapterRecLoansDetail(
         }
     }
 
-    private fun getComResult(sum: Double, rate: Float, check: Boolean, oneTCom: Boolean): String {
+    private fun getComResult(sum: Int, rate: Float, check: Boolean, oneTCom: Boolean): String {
 
         context?.let {
             val butMin = context.getString(R.string.But_Min)
@@ -136,10 +137,10 @@ class AdapterRecLoansDetail(
                 else context.getString(R.string.ofTheBalance)
 
             return when {
-                check && sum != 0.0 && rate != 0F -> "$rate % $ofTheSum, $butMin $sum"
-                !check && sum != 0.0 && rate != 0F -> "$rate % $ofTheSum, $sum"
-                sum != 0.0 && rate == 0F -> "$$sum"
-                sum == 0.0 && rate != 0F -> "$$rate $ofTheSum"
+                check && sum != 0 && rate != 0F -> "$rate % $ofTheSum, $butMin $sum"
+                !check && sum != 0 && rate != 0F -> "$rate % $ofTheSum, $sum"
+                sum != 0 && rate == 0F -> "$$sum"
+                sum == 0 && rate != 0F -> "$$rate $ofTheSum"
                 else -> ""
             }
         }
