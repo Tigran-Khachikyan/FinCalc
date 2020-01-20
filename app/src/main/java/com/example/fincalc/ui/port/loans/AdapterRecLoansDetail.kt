@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,11 +13,14 @@ import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
+import java.text.DecimalFormat
 
 class AdapterRecLoansDetail(
-    var loanList: List<Loan>, val context: Context?
+    var loanList: List<Loan>, private val context: Context?
 ) :
     RecyclerView.Adapter<AdapterRecLoansDetail.Holder>() {
+
+    private val dec = DecimalFormat("#,###.#")
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -31,6 +35,9 @@ class AdapterRecLoansDetail(
         val tvAnnualCom: TextView = itemView.findViewById(R.id.tvAnnualComLoanFr)
         val tvCosts: TextView = itemView.findViewById(R.id.tvCostsLoanFr)
         val recSchedule: RecyclerView = itemView.findViewById(R.id.recScheduleLoanFr)
+        val tvTotalPayment: TextView = itemView.findViewById(R.id.tvLoanFrTotalPayment)
+        val tvLoanFrRealRate: TextView = itemView.findViewById(R.id.tvLoanFrRealRate)
+        val ivLoansFr: ImageView = itemView.findViewById(R.id.ivLoansFr)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -48,8 +55,13 @@ class AdapterRecLoansDetail(
             val curLoan = loanList[position]
             val res = context.resources
 
-            val bank = res.getString(R.string.bank) + ": ${curLoan.bank}"
-            holder.tvBank.text = bank
+            if (curLoan.bank != "") {
+                val bank = res.getString(R.string.bank) + ": ${curLoan.bank}"
+                holder.tvBank.text = bank
+                holder.tvBank.visibility = View.VISIBLE
+            } else {
+                holder.tvBank.visibility = View.GONE
+            }
 
             val sum = res.getString(R.string.Amount) + ": ${curLoan.amount}"
             holder.tvAmount.text = sum
@@ -57,14 +69,16 @@ class AdapterRecLoansDetail(
             if (curLoan.type == LoanType.OTHER)
                 holder.tvType.visibility = View.GONE
             else {
-                val type = res.getString(R.string.LoanType) + ": ${curLoan.type}"
-                holder.tvType.text = type
+                val text = context.getString(curLoan.type.id)
+                val typeText = res.getString(R.string.LoanType) + ": $text"
+                holder.tvType.text = typeText
+                holder.tvType.visibility = View.VISIBLE
             }
 
             val term = res.getString(R.string.Term_months) + ": ${curLoan.months}"
             holder.tvTerm.text = term
 
-            val rate = res.getString(R.string.Interest_rate) + ": ${curLoan.rate}"
+            val rate = res.getString(R.string.Interest_rate) + ": ${curLoan.rate}%"
             holder.tvRate.text = rate
 
             val cur = res.getString(R.string.Currency) + ": ${curLoan.currency}"
@@ -82,6 +96,7 @@ class AdapterRecLoansDetail(
             else {
                 val oneTCom = res.getString(R.string.One_Time_Commission) + ": $oneTimeComRes"
                 holder.tvOneTimeCom.text = oneTCom
+                holder.tvOneTimeCom.visibility = View.VISIBLE
             }
 
             //MonthlyTimeCom
@@ -94,6 +109,7 @@ class AdapterRecLoansDetail(
             else {
                 val monthlyCom = res.getString(R.string.Monthly_Commission) + ": $monthlyComRes"
                 holder.tvMonthlyCom.text = monthlyCom
+                holder.tvMonthlyCom.visibility = View.VISIBLE
             }
 
             //AnnualCom
@@ -107,6 +123,7 @@ class AdapterRecLoansDetail(
             else {
                 val annualCom = res.getString(R.string.Annual_Commission) + ": $annualComRes"
                 holder.tvAnnualCom.text = annualCom
+                holder.tvAnnualCom.visibility = View.VISIBLE
             }
 
             if (curLoan.otherCosts == 0)
@@ -115,11 +132,35 @@ class AdapterRecLoansDetail(
                 val cost = res.getString(R.string.Other_One_Time_Costs) +
                         ": ${curLoan.otherCosts}"
                 holder.tvCosts.text = cost
+                holder.tvCosts.visibility = View.VISIBLE
             }
 
             //Recycler
 
+            holder.ivLoansFr.setImageResource(
+                when (curLoan.type) {
+                    LoanType.MORTGAGE -> R.mipmap.type_mortgage
+                    LoanType.BUSINESS -> R.mipmap.type_business
+                    LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.loan_logo
+                    LoanType.CAR_LOAN -> R.mipmap.type_at_the_end
+                    LoanType.DEPOSIT_SECURED -> R.mipmap.loan_logo
+                    LoanType.CONSUMER_LOAN -> R.mipmap.loan_logo
+                    LoanType.STUDENT_LOAN -> R.mipmap.type_monthly
+                    LoanType.UNSECURED -> R.mipmap.loan_logo
+                    LoanType.CREDIT_LINES -> R.mipmap.type_quarterly
+                    LoanType.OTHER -> R.mipmap.loan_logo
+                }
+            )
+
             val loanTable = TableLoan(curLoan)
+            val totalRes = loanTable.totalPayment + loanTable.oneTimeComAndCosts
+            val total = context.getString(R.string.TOTAL_PAYMENT) + ": " +
+                    dec.format(totalRes).toString() + " " + curLoan.currency
+            holder.tvTotalPayment.text = total
+            val realRate =
+                context.getString(R.string.RealRate) + ": " + dec.format(loanTable.realRate).toString() + "%"
+            holder.tvLoanFrRealRate.text = realRate
+
             val adapter = AdapterRecScheduleLoan(item = loanTable)
             holder.recSchedule.setHasFixedSize(true)
             holder.recSchedule.layoutManager =
@@ -137,15 +178,13 @@ class AdapterRecLoansDetail(
                 else context.getString(R.string.ofTheBalance)
 
             return when {
-                check && sum != 0 && rate != 0F -> "$rate % $ofTheSum, $butMin $sum"
-                !check && sum != 0 && rate != 0F -> "$rate % $ofTheSum, $sum"
-                sum != 0 && rate == 0F -> "$$sum"
-                sum == 0 && rate != 0F -> "$$rate $ofTheSum"
+                check && sum != 0 && rate != 0F -> "$rate% $ofTheSum, $butMin $sum"
+                !check && sum != 0 && rate != 0F -> "$rate% $ofTheSum, $sum"
+                sum != 0 && rate == 0F -> "$sum"
+                sum == 0 && rate != 0F -> "$rate% $ofTheSum"
                 else -> ""
             }
         }
         return ""
     }
-
-
 }

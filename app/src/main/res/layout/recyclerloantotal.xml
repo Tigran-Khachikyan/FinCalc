@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/LoansPrimaryDark"
         android:textStyle="bold"
         app:layout_constraintRight_toLeftOf="@id/tvTotalSum">
     </TextView>
@@ -29,7 +29,7 @@
         app:layout_constraintLeft_toRightOf="@id/tvTotalIntro"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/LoansPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/tvTotalPercent">
     </TextView>
 
@@ -42,7 +42,7 @@
         app:layout_constraintLeft_toRightOf="@id/tvTotalSum"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/LoansPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/tvTotalCommission">
     </TextView>
     <TextView
@@ -54,7 +54,7 @@
         app:layout_constraintLeft_toRightOf="@id/tvTotalPercent"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/LoansPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/tvTotalPayment">
     </TextView>
 
@@ -65,8 +65,8 @@
         android:textStyle="bold"
         android:layout_height="34dp"
         app:layout_constraintHorizontal_weight="80"
-        android:background="@android:color/black"
         android:textColor="@android:color/white"
+        android:background="@color/LoansPrimaryDark"
         app:layout_constraintLeft_toRightOf="@id/tvTotalCommission"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent">

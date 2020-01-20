@@ -60,7 +60,7 @@
         android:drawableEnd="@drawable/ic_expand_more_black_24dp" />
 
     <Button
-        android:id="@+id/btnDialLoanTypeSelectAll"
+        android:id="@+id/btnDialSelectOrClear"
         style="@style/dialCheck"
         android:text="@string/SELECT_ALL"
         android:drawableEnd="@drawable/ic_expand_more_black_24dp" />

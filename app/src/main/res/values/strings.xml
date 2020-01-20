@@ -50,6 +50,7 @@
     <string name="Percent">Percent</string>
     <string name="Commission">Commission</string>
     <string name="TOTAL">TOTAL</string>
+    <string name="TOTAL_PAYMENT">Total payment</string>
     <string name="InvalidInput">"Invalid input! \"Amount\" , \"Term\" and \"Interest rate\" fields are mandatory!"</string>
     --
 
@@ -63,14 +64,14 @@
 
     --Activity Deposit--
     <string name="DepositAmount">Deposit Amount</string>
-    <string name="DepPeriod">Period</string>
+    <string name="Frequency">Repayment frequency</string>
     <string name="MonthlyPaymentDep">Monthly \npayment</string>
     <string name="QuarterlyPaymentDep">Quarterly \npayment</string>
     <string name="AtTheEndPayment">At the end of \nthe Contract</string>
-    <string name="replenishment">Right of replenishment</string>
     <string name="taxRegulation">State tax Regulation</string>
     <string name="Tax">Tax rate (%)</string>
     <string name="Capitalization">Capitalization</string>
+    <string name="withCapitalizing">Accrued interest capitalization</string>
     <string name="BalanceDep">Amount</string>
     <string name="PercentDep">Percent</string>
     <string name="PercentAfterTaxDep">Percent \nafter tax</string>
@@ -86,7 +87,8 @@
     <string name="balance">Balance</string>
     <string name="loan">Loan</string>
     <string name="deposits">Deposits</string>
-    <string name="bank">BANK</string>
+    <string name="deposit">deposit</string>
+    <string name="bank">Bank</string>
     <string name="LoanType">Type</string>
     <string name="RepaymentProgram">Repayment program</string>
     <string name="LoanDirectory">Loan Directory</string>
@@ -124,5 +126,12 @@
     <string name="ascending">ascending</string>
     <string name="descending">descending</string>
     <string name="noLoanFound">No loan found</string>
+    <string name="noDepositFound">No deposit found</string>
+    <string name="Report">Report</string>
+    <string name="Terms">Terms</string>
+    <string name="RealRate">Real interest rate</string>
+    <string name="EffectiveRate">Effective Rate</string>
+    <string name="Income">Income</string>
+    <string name="dialogTitle">Saving options</string>
 
 </resources>

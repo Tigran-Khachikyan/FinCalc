@@ -14,7 +14,5 @@ data class TableLoan(
     var sumBasic: Long = loan.amount
     val oneTimeComAndCosts = Calculator.getOneTimeComAndCost(loan)
     var totalPayment: Double = sumBasic + totalComDuring + totalPercent
-    var realRate: Float = if (sumBasic != 0L) {
-        ((totalPayment - sumBasic) * 24 / (sumBasic * (rowCount + 1))).toFloat()
-    } else 0F
+    val realRate: Float = Calculator.getRealRate(this)
 }

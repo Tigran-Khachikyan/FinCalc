@@ -1,12 +1,15 @@
 package com.example.fincalc.ui.loan
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.fincalc.data.Repository
+import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.TableLoan
+import kotlinx.coroutines.launch
 
-class ScheduleViewModel : ViewModel() {
+class ScheduleViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val repository = Repository.getInstance(application)
 
     object RepoSchedule {
         val scheduleAnnLiveData: MutableLiveData<TableLoan> = MutableLiveData()
@@ -25,11 +28,15 @@ class ScheduleViewModel : ViewModel() {
             scheduleOverLiveData.value = schedule
         }
 
-        fun clear(){
+        fun clear() {
             scheduleAnnLiveData.value = null
             scheduleDiffLiveData.value = null
             scheduleOverLiveData.value = null
         }
+    }
+
+    fun addLoan(loan: Loan) = viewModelScope.launch {
+        repository?.insertLoan(loan)
     }
 
     fun getScheduleAnnuity(): LiveData<TableLoan> = RepoSchedule.scheduleAnnLiveData

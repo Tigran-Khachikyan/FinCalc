@@ -10,11 +10,18 @@ class NavViewModel : ViewModel() {
     object Container {
         val navContLiveData = MutableLiveData<NavSwitcher?>()
         val navSelLoanIdLD = MutableLiveData<Int?>()
+        val navSelDepIdLD = MutableLiveData<Int?>()
 
         fun setNav(navSwitcher: NavSwitcher?, selLoanId: Int?) {
+
+            if (navSwitcher == NavSwitcher.LOANS)
+                navSelLoanIdLD.value = selLoanId
+            else
+                navSelDepIdLD.value = selLoanId
+
             navContLiveData.value = navSwitcher
-            navSelLoanIdLD.value = selLoanId
         }
     }
+
     fun isSelectedLoan() = navContLiveData
 }

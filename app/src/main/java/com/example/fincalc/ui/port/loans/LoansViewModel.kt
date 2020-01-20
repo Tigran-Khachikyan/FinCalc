@@ -3,7 +3,7 @@ package com.example.fincalc.ui.port.loans
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.fincalc.data.db.loan.Loan
-import com.example.fincalc.data.repository.Repository
+import com.example.fincalc.data.Repository
 import com.example.fincalc.ui.port.NavViewModel
 import kotlinx.coroutines.launch
 

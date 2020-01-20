@@ -11,4 +11,5 @@ class TableDep(val deposit: Deposit) {
     var totalPercent: Double = Calculator.getTotalPerDep(rows)
     var totalPerAfterTax: Double = totalPercent * (100 - deposit.taxRate) / 100
     var totalPayment: Double = sumBasic + totalPerAfterTax
+    val effectiveRate: Float = Calculator.getEffectiveRate(deposit)
 }

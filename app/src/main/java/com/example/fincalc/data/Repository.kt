@@ -1,4 +1,4 @@
-package com.example.fincalc.data.repository
+package com.example.fincalc.data
 
 import android.content.Context
 import android.util.Log
@@ -24,7 +24,8 @@ class Repository private constructor(
 
         fun getInstance(context: Context): Repository? {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: Repository(context)
+                INSTANCE
+                    ?: Repository(context)
             }
         }
     }

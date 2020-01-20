@@ -12,7 +12,6 @@ import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.data.db.loan.LoanDao
 import com.example.fincalc.data.db.loan.LoanTypeConverter
 
-
 @androidx.room.Database(entities = [Loan::class, Deposit::class], version = 1, exportSchema = false)
 @TypeConverters(
     FormulaLoanConverter::class,

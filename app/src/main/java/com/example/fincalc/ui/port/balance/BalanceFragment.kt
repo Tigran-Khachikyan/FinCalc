@@ -16,8 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
+import com.example.fincalc.data.db.dep.Deposit
+import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.getEnumFromSelection
+import com.example.fincalc.models.deposit.Frequency
+import com.example.fincalc.models.deposit.getFreqFromSelec
 import com.example.fincalc.ui.initialize
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.NavSwitcher
@@ -25,18 +29,18 @@ import com.example.fincalc.ui.port.NavViewModel
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
+import kotlinx.android.synthetic.main.dialog_filter_type.*
 import kotlinx.android.synthetic.main.fragment_balance.*
 
 private const val BUTTON_DIALOG_SIZE_PRESSED = 20F
 private const val BUTTON_DIALOG_SIZE_UNPRESSED = 18F
 
+@Suppress("UNCHECKED_CAST")
 class BalanceFragment : Fragment() {
 
     private lateinit var balanceViewModel: BalanceViewModel
-    private lateinit var adapterRecLoan: AdapterRecLoanBalance
-    private lateinit var tvFilterType: TextView
-    private lateinit var tvFilterCur: TextView
-    private lateinit var tvFilterSort: TextView
+    private lateinit var adapterRecLoan: AdapterRecBalance
+    private lateinit var adapterRecDep: AdapterRecBalance
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,10 +56,6 @@ class BalanceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvFilterType = view.findViewById(R.id.tvLoanTypeFilterBalFr)
-        tvFilterCur = view.findViewById(R.id.tvLoanCurFilterBalFr)
-        tvFilterSort = view.findViewById(R.id.tvLoanSortFilterBalFr)
-
         fabRecBalanceAddLoan.setOnClickListener {
             val intent = Intent(context, LoanActivity::class.java)
             startActivity(intent)
@@ -63,14 +63,10 @@ class BalanceFragment : Fragment() {
         }
 
         bmbLoansMenuBalFr.initialize()
+        bmbDepMenuBalFr.initialize()
 
-//holder click
-        val onViewHolderClick = object : OnViewHolderClick {
-            override fun openLoan(position: Int) {
-            }
-        }
 
-        adapterRecLoan = AdapterRecLoanBalance(arrayListOf(), balanceViewModel, onViewHolderClick)
+        adapterRecLoan = AdapterRecBalance(arrayListOf(), balanceViewModel, null)
         recyclerLoanBalanceFr.setHasFixedSize(true)
         recyclerLoanBalanceFr.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
@@ -79,12 +75,12 @@ class BalanceFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        //Loans
         balanceViewModel.getLoanList().observe(viewLifecycleOwner, Observer { loansFil ->
 
-            val loans = loansFil.loanList
-            val types = loansFil.filtTypeList
-            val cur = loansFil.filtCur
-
+            val loans = loansFil.prodList as List<Loan>?
+            val types = loansFil.filTypeList
+            val cur = loansFil.curList
             val isAcc = loansFil.sortByAcc
 
             val textLoanHeader = when {
@@ -98,26 +94,26 @@ class BalanceFragment : Fragment() {
 
             loans?.let {
 
-                tvFilterType.setOnClickListener {
-                    tvFilterType.visibility = View.GONE
-                    balanceViewModel.setLTypeSel(null)
+                tvLoanTypeFilterBalFr.setOnClickListener {
+                    tvLoanTypeFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSelLoanTypeList(null)
                 }
 
-                tvFilterCur.setOnClickListener {
-                    tvFilterCur.visibility = View.GONE
-                    balanceViewModel.setCurrencySel(null)
+                tvLoanCurFilterBalFr.setOnClickListener {
+                    tvLoanCurFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSelLoanCurList(null)
                 }
 
-                tvFilterSort.setOnClickListener {
-                    tvFilterSort.visibility = View.GONE
-                    balanceViewModel.setSortedByRateAcc(null)
+                tvLoanSortFilterBalFr.setOnClickListener {
+                    tvLoanSortFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSortByLoanRate(null)
                 }
 
-                adapterRecLoan.loanList = it
+                adapterRecLoan.list = it
                 adapterRecLoan.notifyDataSetChanged()
 
                 adapterRecLoan.onViewHolderClick = object : OnViewHolderClick {
-                    override fun openLoan(position: Int) {
+                    override fun openBankProdById(position: Int) {
 
                         NavViewModel.Container.setNav(NavSwitcher.LOANS, position)
                     }
@@ -127,25 +123,84 @@ class BalanceFragment : Fragment() {
                     override fun onClicked(index: Int, boomButton: BoomButton) {
                         super.onClicked(index, boomButton)
                         when (index) {
-                            0 -> getDialFilterByType(context, types)
+                            0 -> getDialFilByLoanType(context, types)
                             1 -> cur?.let {
-                                getDialFilterByCur(context, cur)
+                                getDialFilByLoanCur(context, cur)
                             }
-                            2 -> setSortByAcc(isAcc)
+                            2 -> setSortByAcc(isAcc, true)
                             3 -> balanceViewModel.deleteAllLoans()
                         }
                     }
                 }
             }
         })
+
+
+        /*//Deposits
+        balanceViewModel.getDepList().observe(viewLifecycleOwner, Observer { depFil ->
+
+            val deps = depFil.prodList as List<Deposit>?
+            val freq = depFil.freqList
+            val cur = depFil.curList
+            val isAcc = depFil.sortByAcc
+
+            val textDepHeader = when {
+                deps == null || deps.isEmpty() -> "${context?.getString(R.string.noDepositFound)}"
+                deps.size == 1 -> "1 ${context?.getString(R.string.deposit)}"
+                else -> deps.size.toString() + " ${context?.getString(R.string.deposits)}"
+            }
+
+            layDepMenuBalFr.text = textDepHeader
+            deps?.let {
+
+                tvDepTypeFilterBalFr.setOnClickListener {
+                    tvDepTypeFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSelDepFreqList(null)
+                }
+
+                tvDepCurFilterBalFr.setOnClickListener {
+                    tvDepCurFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSelDepCurList(null)
+                }
+
+                tvDepSortFilterBalFr.setOnClickListener {
+                    tvDepSortFilterBalFr.visibility = View.GONE
+                    balanceViewModel.setSortByDepRate(null)
+                }
+
+                adapterRecDep.list = it
+                adapterRecDep.notifyDataSetChanged()
+
+                adapterRecDep.onViewHolderClick = object : OnViewHolderClick {
+                    override fun openBankProdById(position: Int) {
+
+                        NavViewModel.Container.setNav(NavSwitcher.DEPOSITS, position)
+                    }
+                }
+
+                bmbDepMenuBalFr.onBoomListener = object : OnBoomListenerAdapter() {
+                    override fun onClicked(index: Int, boomButton: BoomButton) {
+                        super.onClicked(index, boomButton)
+                        when (index) {
+                            0 -> getDialFilByLoanType(context, types)
+                            1 -> cur?.let {
+                                getDialFilByLoanCur(context, cur)
+                            }
+                            2 -> setSortByAcc(isAcc, false)
+                            3 -> balanceViewModel.deleteAllLoans()
+                        }
+                    }
+                }
+            }
+        })*/
     }
 
     @SuppressLint("InflateParams")
-    private fun getDialFilterByType(context: Context?, types: List<LoanType>?) {
+    private fun getDialFilByLoanType(context: Context?, types: List<LoanType>?) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_loan_filter_type, null)
+            val dialogView = inflater.inflate(R.layout.dialog_filter_type, null)
             dialogBuilder.setView(dialogView)
 
             //Buttons
@@ -189,62 +244,43 @@ class BalanceFragment : Fragment() {
                     btnCheck(curBut)
             }
 
-            val btnMort: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
-            btnMort.setOnClickListener(btnDialClickList)
-
-            val btnCar: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
-            btnCar.setOnClickListener(btnDialClickList)
-
-            val btnBus: Button = dialogView.findViewById(R.id.btnDialLoanTypeBus)
-            btnBus.setOnClickListener(btnDialClickList)
-
-            val btnCons: Button = dialogView.findViewById(R.id.btnDialLoanTypeCons)
-            btnCons.setOnClickListener(btnDialClickList)
-
-            val btnCrLines: Button = dialogView.findViewById(R.id.btnDialLoanTypeCrLines)
-            btnCrLines.setOnClickListener(btnDialClickList)
-
-            val btnDepSec: Button = dialogView.findViewById(R.id.btnDialLoanTypeDepSec)
-            btnDepSec.setOnClickListener(btnDialClickList)
-
-            val btnGold: Button = dialogView.findViewById(R.id.btnDialLoanTypeGold)
-            btnGold.setOnClickListener(btnDialClickList)
-
-            val btnStud: Button = dialogView.findViewById(R.id.btnDialLoanTypeStud)
-            btnStud.setOnClickListener(btnDialClickList)
-
-            val btnUnsec: Button = dialogView.findViewById(R.id.btnDialLoanTypeUnsecured)
-            btnUnsec.setOnClickListener(btnDialClickList)
-
-            val btnSelectOrClear: Button = dialogView.findViewById(R.id.btnDialLoanTypeSelectAll)
+            btnDialLoanTypeMort.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeCar.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeBus.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeCons.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeCrLines.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeDepSec.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeGold.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeStud.setOnClickListener(btnDialClickList)
+            btnDialLoanTypeUnsecured.setOnClickListener(btnDialClickList)
 
             fun selectAll() {
-                btnCheck(btnMort)
-                btnCheck(btnCons)
-                btnCheck(btnCar)
-                btnCheck(btnStud)
-                btnCheck(btnCrLines)
-                btnCheck(btnUnsec)
-                btnCheck(btnDepSec)
-                btnCheck(btnGold)
-                btnCheck(btnBus)
-                btnCheck(btnSelectOrClear)
+                btnCheck(btnDialLoanTypeMort)
+                btnCheck(btnDialLoanTypeCons)
+                btnCheck(btnDialLoanTypeCar)
+                btnCheck(btnDialLoanTypeStud)
+                btnCheck(btnDialLoanTypeCrLines)
+                btnCheck(btnDialLoanTypeUnsecured)
+                btnCheck(btnDialLoanTypeDepSec)
+                btnCheck(btnDialLoanTypeGold)
+                btnCheck(btnDialLoanTypeBus)
+                btnCheck(btnDialSelectOrClear)
             }
 
             fun clear() {
-                btnUncheck(btnMort)
-                btnUncheck(btnCons)
-                btnUncheck(btnCar)
-                btnUncheck(btnStud)
-                btnUncheck(btnCrLines)
-                btnUncheck(btnUnsec)
-                btnUncheck(btnDepSec)
-                btnUncheck(btnGold)
-                btnUncheck(btnBus)
-                btnUncheck(btnSelectOrClear)
+                btnUncheck(btnDialLoanTypeMort)
+                btnUncheck(btnDialLoanTypeCons)
+                btnUncheck(btnDialLoanTypeCar)
+                btnUncheck(btnDialLoanTypeStud)
+                btnUncheck(btnDialLoanTypeCrLines)
+                btnUncheck(btnDialLoanTypeUnsecured)
+                btnUncheck(btnDialLoanTypeDepSec)
+                btnUncheck(btnDialLoanTypeGold)
+                btnUncheck(btnDialLoanTypeBus)
+                btnUncheck(btnDialSelectOrClear)
             }
 
-            btnSelectOrClear.setOnClickListener {
+            btnDialSelectOrClear.setOnClickListener {
                 val curButton = it as Button
                 if (!isBtnChecked(curButton)) {
                     selectAll()
@@ -259,29 +295,29 @@ class BalanceFragment : Fragment() {
 
             //initialize
             when {
-                types == null -> btnSelectOrClear.performClick()
+                types == null -> btnDialSelectOrClear.performClick()
                 types.isEmpty() -> clear()
                 else -> {
-                    if (types.contains(LoanType.MORTGAGE)) btnCheck(btnMort)
-                    else btnUncheck(btnMort)
-                    if (types.contains(LoanType.CONSUMER_LOAN)) btnCheck(btnCons)
-                    else btnUncheck(btnCons)
-                    if (types.contains(LoanType.CAR_LOAN)) btnCheck(btnCar)
-                    else btnUncheck(btnCar)
-                    if (types.contains(LoanType.STUDENT_LOAN)) btnCheck(btnStud)
-                    else btnUncheck(btnStud)
-                    if (types.contains(LoanType.CREDIT_LINES)) btnCheck(btnCrLines)
-                    else btnUncheck(btnCrLines)
-                    if (types.contains(LoanType.UNSECURED)) btnCheck(btnUnsec)
-                    else btnUncheck(btnUnsec)
-                    if (types.contains(LoanType.DEPOSIT_SECURED)) btnCheck(btnDepSec)
-                    else btnUncheck(btnDepSec)
-                    if (types.contains(LoanType.GOLD_PLEDGE_SECURED)) btnCheck(btnGold)
-                    else btnUncheck(btnGold)
-                    if (types.contains(LoanType.BUSINESS)) btnCheck(btnBus)
-                    else btnUncheck(btnBus)
-                    if (types.size < 9) btnUncheck(btnSelectOrClear)
-                    else btnCheck(btnSelectOrClear)
+                    if (types.contains(LoanType.MORTGAGE)) btnCheck(btnDialLoanTypeMort)
+                    else btnUncheck(btnDialLoanTypeMort)
+                    if (types.contains(LoanType.CONSUMER_LOAN)) btnCheck(btnDialLoanTypeCons)
+                    else btnUncheck(btnDialLoanTypeCons)
+                    if (types.contains(LoanType.CAR_LOAN)) btnCheck(btnDialLoanTypeCar)
+                    else btnUncheck(btnDialLoanTypeCar)
+                    if (types.contains(LoanType.STUDENT_LOAN)) btnCheck(btnDialLoanTypeStud)
+                    else btnUncheck(btnDialLoanTypeStud)
+                    if (types.contains(LoanType.CREDIT_LINES)) btnCheck(btnDialLoanTypeCrLines)
+                    else btnUncheck(btnDialLoanTypeCrLines)
+                    if (types.contains(LoanType.UNSECURED)) btnCheck(btnDialLoanTypeUnsecured)
+                    else btnUncheck(btnDialLoanTypeUnsecured)
+                    if (types.contains(LoanType.DEPOSIT_SECURED)) btnCheck(btnDialLoanTypeDepSec)
+                    else btnUncheck(btnDialLoanTypeDepSec)
+                    if (types.contains(LoanType.GOLD_PLEDGE_SECURED)) btnCheck(btnDialLoanTypeGold)
+                    else btnUncheck(btnDialLoanTypeGold)
+                    if (types.contains(LoanType.BUSINESS)) btnCheck(btnDialLoanTypeBus)
+                    else btnUncheck(btnDialLoanTypeBus)
+                    if (types.size < 9) btnUncheck(btnDialSelectOrClear)
+                    else btnCheck(btnDialSelectOrClear)
                 }
             }
 
@@ -291,13 +327,12 @@ class BalanceFragment : Fragment() {
             ) { _, _ ->
 
                 if (checkedTypes.size < 9)
-                    tvFilterType.visibility = View.VISIBLE
+                    tvLoanTypeFilterBalFr.visibility = View.VISIBLE
                 else
-                    tvFilterType.visibility = View.GONE
+                    tvLoanTypeFilterBalFr.visibility = View.GONE
 
-                balanceViewModel.setLTypeSel(checkedTypes)
+                balanceViewModel.setSelLoanTypeList(checkedTypes)
             }
-
             //click CANCEL
             dialogBuilder.setNegativeButton(
                 getString(R.string.cancel)
@@ -309,7 +344,7 @@ class BalanceFragment : Fragment() {
     }
 
     @SuppressLint("InflateParams")
-    private fun getDialFilterByCur(context: Context?, curs: List<String>) {
+    private fun getDialFilByLoanCur(context: Context?, curs: List<String>) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
@@ -329,8 +364,8 @@ class BalanceFragment : Fragment() {
                 val selection = spinner.selectedItem.toString()
                 val list = arrayListOf<String>()
                 list.add(selection)
-                balanceViewModel.setCurrencySel(list)
-                tvFilterCur.visibility = View.VISIBLE
+                balanceViewModel.setSelLoanCurList(list)
+                tvLoanCurFilterBalFr.visibility = View.VISIBLE
             }
 
             //click CANCEL
@@ -343,19 +378,25 @@ class BalanceFragment : Fragment() {
         }
     }
 
-    fun setSortByAcc(acc: Boolean?) {
+    fun setSortByAcc(acc: Boolean?, loan: Boolean) {
 
-        if (acc == null || acc == false)
-            balanceViewModel.setSortedByRateAcc(true)
-        else
-            balanceViewModel.setSortedByRateAcc(false)
-        tvFilterSort.visibility = View.VISIBLE
-
+        if (loan) {
+            when (acc) {
+                null -> tvLoanSortFilterBalFr.visibility = View.GONE
+                true, false -> tvLoanSortFilterBalFr.visibility = View.VISIBLE
+            }
+            balanceViewModel.setSortByLoanRate(acc)
+        } else {
+            when (acc) {
+                null -> tvDepSortFilterBalFr.visibility = View.GONE
+                true, false -> tvDepSortFilterBalFr.visibility = View.VISIBLE
+            }
+            balanceViewModel.setSortByDepRate(acc)
+        }
     }
 
     override fun onPause() {
         super.onPause()
         balanceViewModel.removeSources()
     }
-
 }

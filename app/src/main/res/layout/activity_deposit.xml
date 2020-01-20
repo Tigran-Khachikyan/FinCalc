@@ -53,111 +53,144 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutDepResult"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="300dp"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvResultDepIntro"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_marginStart="16dp"
-                android:gravity="start"
-                android:text="@string/Result"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/layoutDepResultIntro" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layoutDepResultIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvResultDepIntro">
+                android:id="@+id/layoutDepResultShow"
+                android:layout_height="280dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent">
 
                 <TextView
-                    android:id="@+id/tvNumberDepIntro"
-                    style="@style/textView"
-                    android:layout_height="34dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="N"
+                    android:id="@+id/tvResultDepIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="16dp"
+                    android:gravity="start"
+                    android:text="@string/Result"
                     android:textColor="@android:color/white"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepBalanceIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDepBalanceIntro"
-                    style="@style/textView"
-                    android:layout_height="34dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="@string/BalanceDep"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintHorizontal_weight="9"
-                    app:layout_constraintLeft_toRightOf="@id/tvNumberDepIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepPercentIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDepPercentIntro"
-                    style="@style/textView"
-                    android:layout_height="34dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="@string/PercentDep"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintHorizontal_weight="7"
-                    app:layout_constraintLeft_toRightOf="@id/tvDepBalanceIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvPercentAfterTaxIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvPercentAfterTaxIntro"
-                    style="@style/textView"
-                    android:layout_height="34dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="@string/PercentAfterTaxDep"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintHorizontal_weight="7"
-                    app:layout_constraintLeft_toRightOf="@id/tvDepPercentIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepPaymentIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDepPaymentIntro"
-                    style="@style/textView"
-                    android:layout_height="34dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:text="@string/Payment"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
-                    app:layout_constraintHorizontal_weight="10"
-                    app:layout_constraintLeft_toRightOf="@id/tvPercentAfterTaxIntro"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@id/layoutDepResultIntro" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutDepResultIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tvResultDepIntro">
+
+                    <TextView
+                        android:id="@+id/tvNumberDepIntro"
+                        style="@style/textView"
+                        android:layout_height="34dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="N"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintHorizontal_weight="3"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/tvDepBalanceIntro"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDepBalanceIntro"
+                        style="@style/textView"
+                        android:layout_height="34dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="@string/BalanceDep"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintHorizontal_weight="9"
+                        app:layout_constraintLeft_toRightOf="@id/tvNumberDepIntro"
+                        app:layout_constraintRight_toLeftOf="@id/tvDepPercentIntro"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDepPercentIntro"
+                        style="@style/textView"
+                        android:layout_height="34dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="@string/PercentDep"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintHorizontal_weight="7"
+                        app:layout_constraintLeft_toRightOf="@id/tvDepBalanceIntro"
+                        app:layout_constraintRight_toLeftOf="@id/tvPercentAfterTaxIntro"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvPercentAfterTaxIntro"
+                        style="@style/textView"
+                        android:layout_height="34dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="@string/PercentAfterTaxDep"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintHorizontal_weight="7"
+                        app:layout_constraintLeft_toRightOf="@id/tvDepPercentIntro"
+                        app:layout_constraintRight_toLeftOf="@id/tvDepPaymentIntro"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDepPaymentIntro"
+                        style="@style/textView"
+                        android:layout_height="34dp"
+                        android:background="@color/colorPrimaryDark"
+                        android:text="@string/Payment"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintHorizontal_weight="10"
+                        app:layout_constraintLeft_toRightOf="@id/tvPercentAfterTaxIntro"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerDep"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:layout_constraintTop_toBottomOf="@id/layoutDepResultIntro" />
+
+                <TextView
+                    android:id="@+id/tvResultDepShow"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="20dp"
+                    android:gravity="start"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerDep" />
+
+                <TextView
+                    android:id="@+id/tvEffectRateDepShow"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="20dp"
+                    android:gravity="start"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvResultDepShow" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerDep"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDepResultIntro" />
-
-            <TextView
-                android:id="@+id/tvResultDepShow"
-                android:layout_width="match_parent"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_AddDep"
+                style="@style/Widget.Design.FloatingActionButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:gravity="start"
-                android:textColor="@android:color/black"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/recyclerDep" />
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/ic_add_black_24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -305,7 +338,7 @@
             android:id="@+id/layoutDepOptionalInput"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/layEmptyContainer">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -341,14 +374,14 @@
                     android:id="@+id/spinnerDep"
                     style="@style/currencyViewsSmall"
                     android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.6"
-                    app:layout_constraintWidth_percent="0.9"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.77"
+                    app:layout_constraintHeight_percent="0.6"
+                    app:layout_constraintHorizontal_bias="0.8"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintHorizontal_bias="0.8"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.77"
+                    app:layout_constraintWidth_percent="0.9" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -356,11 +389,11 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepPeriod"
                 android:layout_width="0dp"
-                android:background="@drawable/cardviewshapedep"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
+                android:background="@drawable/cardviewshapedep"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/cardDepCurrency"
                 app:layout_constraintRight_toRightOf="parent">
@@ -369,7 +402,7 @@
                 <TextView
                     android:id="@+id/tvPeriodDepIntro"
                     style="@style/textViewIntroInput"
-                    android:text="@string/DepPeriod"
+                    android:text="@string/Frequency"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -438,8 +471,8 @@
                 android:id="@+id/cardDepCapitalization"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/cardviewshapedep"
                 android:layout_margin="10dp"
+                android:background="@drawable/cardviewshapedep"
                 app:layout_constraintBottom_toTopOf="@id/cardDepTax"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -478,7 +511,7 @@
                     android:id="@+id/tvDepRepl"
                     style="@style/textViewIntroInput"
                     android:labelFor="@id/checkBoxCapitalized"
-                    android:text="@string/replenishment"
+                    android:text="@string/withCapitalizing"
                     android:textColor="@android:color/black"
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -493,8 +526,8 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/cardviewshapedep"
                 android:layout_marginBottom="10dp"
+                android:background="@drawable/cardviewshapedep"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"

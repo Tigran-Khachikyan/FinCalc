@@ -26,7 +26,8 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
         }
     }
 
-    override fun getItemCount(): Int = if (scheduleDep != null) (scheduleDep as TableDep).rows.size + 1 else 0
+    override fun getItemCount(): Int =
+        if (scheduleDep != null) (scheduleDep as TableDep).rows.size + 1 else 0
 
     override fun onBindViewHolder(holder: GenericViewHolderDep, position: Int) {
         holder.setDataOnView(position)
@@ -38,6 +39,7 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
             else -> 0
         }
     }
+
     val dec = DecimalFormat("#,###.#")
 
     inner class RowViewHolder(itemView: View) : GenericViewHolderDep(itemView) {
@@ -59,7 +61,8 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
 
     inner class TotalViewHolder(itemView: View) : GenericViewHolderDep(itemView) {
         private val tvTotalPercentDep: TextView = itemView.findViewById(R.id.tvTotalPercentDep)
-        private val tvTotalPercentAfterTax: TextView = itemView.findViewById(R.id.tvTotalPerAfterTax)
+        private val tvTotalPercentAfterTax: TextView =
+            itemView.findViewById(R.id.tvTotalPerAfterTax)
         private val tvTotalPayment: TextView = itemView.findViewById(R.id.tvTotalPaymentDep)
 
         override fun setDataOnView(position: Int) {

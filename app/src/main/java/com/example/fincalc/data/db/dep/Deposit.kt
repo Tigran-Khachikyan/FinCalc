@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.fincalc.models.Banking
-import com.example.fincalc.models.deposit.RepayFrequency
+import com.example.fincalc.models.deposit.Frequency
 
 @Entity(tableName = "deposits")
 data class Deposit(
@@ -14,7 +14,7 @@ data class Deposit(
     override val rate: Float,
     val capitalize: Boolean,
     val taxRate: Float,
-    val frequency: RepayFrequency
+    val frequency: Frequency
 ) : Banking {
 
     override var bank: String = ""
@@ -22,5 +22,5 @@ data class Deposit(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Int = 0
+    override var id: Int = 0
 }

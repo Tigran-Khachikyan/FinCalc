@@ -4,10 +4,10 @@ import com.example.fincalc.models.Banking
 
 interface Filtering {
 
-    fun filterByCur(products: ArrayList<in Banking>?, cur: List<String>?): ArrayList<in Banking>?
+    fun filterByCur(products: List<Banking>?, cur: List<String>?): List<Banking>?
 
-    fun sortCur(products: ArrayList<in Banking>?, curs: List<String>?): ArrayList<String>?
+    fun sortCur(products: List<Banking>?, curs: List<String>?): List<String>?
 
-    fun sortByRate(product: ArrayList<in Banking>?, acc: Boolean?): ArrayList<in Banking>?
+    fun sortByRate(product: List<Banking>?, acc: Boolean?): List<Banking>?
 
 }

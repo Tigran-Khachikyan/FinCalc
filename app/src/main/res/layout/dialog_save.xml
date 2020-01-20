@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/customPrimaryLoan"
@@ -8,31 +9,37 @@
 
 
     <TextView
-        android:id="@+id/tvDialLoanBank"
-        app:layout_constraintTop_toTopOf="@id/etDialLoanBank"
-        app:layout_constraintBottom_toBottomOf="@id/etDialLoanBank"
+        android:id="@+id/tvDialBank"
+        app:layout_constraintTop_toTopOf="@id/etDialBank"
+        app:layout_constraintBottom_toBottomOf="@id/etDialBank"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/etDialLoanBank"
+        app:layout_constraintRight_toLeftOf="@id/etDialBank"
         android:layout_width="0dp"
         android:gravity="center"
-        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintHorizontal_weight="5.5"
         android:layout_height="wrap_content"
         android:text="@string/bank"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:textColor="@android:color/black" />
 
     <EditText
-        android:id="@+id/etDialLoanBank"
+        android:id="@+id/etDialBank"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        app:layout_constraintLeft_toRightOf="@id/tvDialBank"
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="6"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:gravity="center"
+        android:inputType="textCapSentences"
         android:hint="@string/bank"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="10dp"/>
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        tools:ignore="Autofill" />
 
     <TextView
         android:id="@+id/tvDialLoanType"
@@ -42,7 +49,8 @@
         app:layout_constraintRight_toLeftOf="@id/spinnerDialLoanType"
         android:layout_width="0dp"
         android:gravity="center"
-        app:layout_constraintHorizontal_weight="4"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:text="@string/LoanType"
         android:textColor="@android:color/black" />
@@ -51,44 +59,44 @@
         android:id="@+id/spinnerDialLoanType"
         style="@style/currencyViewsSmall"
 
-        app:layout_constraintTop_toBottomOf="@id/etDialLoanBank"
+        app:layout_constraintTop_toBottomOf="@id/etDialBank"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        app:layout_constraintLeft_toRightOf="@id/tvDialBank"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="6"
         android:layout_height="40dp"
         android:text="@string/bank"
         android:layout_marginEnd="10dp"
         android:textColor="@android:color/black"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/tvDialLoanCurrency"
-        app:layout_constraintTop_toTopOf="@id/spinnerDialLoanCurrency"
-        app:layout_constraintBottom_toBottomOf="@id/spinnerDialLoanCurrency"
+        android:id="@+id/tvDialCurrency"
+        app:layout_constraintTop_toTopOf="@id/spinDialCurrency"
+        app:layout_constraintBottom_toBottomOf="@id/spinDialCurrency"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/spinnerDialLoanCurrency"
+        app:layout_constraintRight_toLeftOf="@id/spinDialCurrency"
         android:layout_width="0dp"
         android:gravity="center"
-        app:layout_constraintHorizontal_weight="4"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
-        android:text="@string/LoanType"
+        android:text="@string/Currency"
         android:textColor="@android:color/black" />
 
     <Spinner
-        android:id="@+id/spinnerDialLoanCurrency"
+        android:id="@+id/spinDialCurrency"
         style="@style/currencyViewsSmall"
 
         app:layout_constraintTop_toBottomOf="@id/spinnerDialLoanType"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/tvDialLoanBank"
+        app:layout_constraintLeft_toRightOf="@id/tvDialBank"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="6"
         android:layout_height="40dp"
         android:text="@string/Currency"
         android:textColor="@android:color/black"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

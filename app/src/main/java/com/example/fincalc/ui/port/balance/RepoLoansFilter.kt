@@ -7,5 +7,4 @@ object RepoLoansFilter {
      val _typeList = MutableLiveData<List<LoanType>?>()
      val _cur = MutableLiveData<List<String>>()
      val _sortByRate = MutableLiveData<Boolean?>()
-
 }

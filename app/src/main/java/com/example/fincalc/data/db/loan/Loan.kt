@@ -31,5 +31,5 @@ class Loan(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
-    var id: Int = 0
+    override var id: Int = 0
 }

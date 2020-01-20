@@ -5,7 +5,8 @@ import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.models.credit.RowLoan
-import com.example.fincalc.models.deposit.RepayFrequency
+import com.example.fincalc.models.credit.TableLoan
+import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.RowDep
 import kotlin.math.pow
 
@@ -168,11 +169,11 @@ object Calculator {
     //Deposit
     fun getRowsDep(dep: Deposit): ArrayList<RowDep> = when (dep.frequency) {
 
-        RepayFrequency.MONTHLY, RepayFrequency.QUARTERLY -> getRowsByPeriodDep(
+        Frequency.MONTHLY, Frequency.QUARTERLY -> getRowsByPeriodDep(
             dep
         )
 
-        RepayFrequency.AT_THE_END -> {
+        Frequency.AT_THE_END -> {
             val result = ArrayList<RowDep>()
             val newRow = RowDep()
             newRow.curRowN = 1
@@ -195,11 +196,11 @@ object Calculator {
         val rowCount: Int
 
         when (dep.frequency) {
-            RepayFrequency.MONTHLY -> {
+            Frequency.MONTHLY -> {
                 factor = 1
                 rowCount = dep.months
             }
-            RepayFrequency.QUARTERLY -> {
+            Frequency.QUARTERLY -> {
                 rowCount = dep.months / 3
                 factor = 3
             }
@@ -263,6 +264,30 @@ object Calculator {
             result += r.percent
 
         return result
+    }
+
+    fun getEffectiveRate(dep: Deposit): Float {
+        val rate = dep.rate / 100
+        val months = dep.months
+        val perCoef: Float = when (dep.frequency) {
+            Frequency.MONTHLY -> 12F
+            Frequency.QUARTERLY -> 4F
+            Frequency.AT_THE_END, Frequency.OTHER -> (12 / months.toFloat())
+        }
+        return ((1 + rate / perCoef).pow(perCoef) - 1)*100
+    }
+
+    fun getRealRate(table: TableLoan): Float {
+        val t = table.rowCount
+        val s = table.sumBasic
+        val add = table.totalPercent + table.totalComDuring + table.oneTimeComAndCosts
+        var tt = 0
+        var i = 1
+        while (i <= t) {
+            tt += i
+            i++
+        }
+        return (add * t * 1200 / (s * tt)).toFloat()
     }
 }
 

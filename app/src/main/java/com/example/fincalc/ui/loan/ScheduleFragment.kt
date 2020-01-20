@@ -25,7 +25,6 @@ import com.example.fincalc.models.cur_met.currencyFlagList
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.ui.AdapterSpinnerRates
-import com.example.fincalc.ui.port.balance.BalanceViewModel
 import kotlinx.android.synthetic.main.fragment_schedule.*
 
 /**
@@ -33,8 +32,7 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
  */
 class ScheduleFragment(private val formula: Formula) : Fragment() {
 
-    private lateinit var recyclerViewModel: ScheduleViewModel
-    private lateinit var balanceViewModel: BalanceViewModel
+    private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
 
     override fun onCreateView(
@@ -42,8 +40,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        recyclerViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
-        balanceViewModel = ViewModelProvider(this).get(BalanceViewModel::class.java)
+        scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
@@ -59,7 +56,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
 
         if (formula != Formula.ANNUITY) {
-            if (formula == Formula.DIFFERENTIAL) recyclerViewModel.getScheduleDifferential().observe(
+            if (formula == Formula.DIFFERENTIAL) scheduleViewModel.getScheduleDifferential().observe(
                 viewLifecycleOwner,
                 Observer {
 
@@ -73,7 +70,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                         }
                     }
                 })
-            else if (formula == Formula.OVERDRAFT) recyclerViewModel.getScheduleOverdraft().observe(
+            else if (formula == Formula.OVERDRAFT) scheduleViewModel.getScheduleOverdraft().observe(
                 viewLifecycleOwner,
                 Observer {
 
@@ -88,7 +85,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                     }
                 })
         } else
-            recyclerViewModel.getScheduleAnnuity().observe(
+            scheduleViewModel.getScheduleAnnuity().observe(
                 viewLifecycleOwner,
                 Observer {
 
@@ -123,13 +120,13 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_loan, null)
+            val dialogView = inflater.inflate(R.layout.dialog_save, null)
             dialogBuilder.setView(dialogView)
 
-            val etBank = dialogView.findViewById<EditText>(R.id.etDialLoanBank)
+            val etBank = dialogView.findViewById<EditText>(R.id.etDialBank)
 
             //spinner Currency
-            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinnerDialLoanCurrency)
+            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
                 currencyCodeList, currencyFlagList, true
@@ -149,6 +146,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             spinnerType.adapter = adapterSpinType
             spinnerType.setSelection(adapterSpinType.count - 1)
 
+            dialogBuilder.setTitle(R.string.dialogTitle)
 
             //click SAVE
             dialogBuilder.setPositiveButton(
@@ -168,7 +166,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 loan.type = typeEnum
                 loan.formula = formula
 
-                balanceViewModel.addLoan(loan)
+                scheduleViewModel.addLoan(loan)
 
             }
 
@@ -178,6 +176,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             ) { _, _ -> }
 
             val alertDialog = dialogBuilder.create()
+
             alertDialog.show()
         }
     }

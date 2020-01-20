@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_deps"
-        android:name="com.example.fincalc.ui.port.deps.DepsFragment"
+        android:name="com.example.fincalc.ui.port.deps.DepositFragment"
         android:label="@string/deposits"
         tools:layout="@layout/fragment_deps" />
 </navigation>

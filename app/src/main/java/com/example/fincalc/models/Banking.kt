@@ -6,4 +6,5 @@ interface Banking {
     val rate: Float
     val bank: String
     val currency: String
+    val id: Int
 }

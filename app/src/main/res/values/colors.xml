@@ -20,4 +20,16 @@
     <color name="customPrimaryCurrency">#00407a</color>
     <color name="customLightCurrency">#94456AAA</color>
     <color name="customDarkCurrency">#001b4d</color>
+
+
+    //Final
+    //Loans
+    <color name="LoansPrimary">#b0bec5</color>
+    <color name="LoansPrimaryLight">#e2f1f8</color>
+    <color name="LoansPrimaryDark">#808e95</color>
+
+    //Deposit
+    <color name="DepPrimary">#a7ffeb</color>
+    <color name="DepPrimaryLight">#dbffff</color>
+    <color name="DepPrimaryDark">#75ccb9</color>
 </resources>

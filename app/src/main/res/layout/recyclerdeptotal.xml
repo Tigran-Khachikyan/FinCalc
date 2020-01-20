@@ -3,19 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvTotalIntroDep"
-        style="@style/textView"
+        style="@style/texViewDep"
         android:text="@string/TOTAL"
         android:textSize="13sp"
         app:layout_constraintHorizontal_weight="12"
         android:layout_height="34dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@android:color/black"
+        android:background="@color/DepPrimaryDark"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintRight_toLeftOf="@id/tvTotalPercentDep">
@@ -23,38 +22,38 @@
 
     <TextView
         android:id="@+id/tvTotalPercentDep"
-        style="@style/textView"
+        style="@style/texViewDep"
         android:layout_height="34dp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_weight="7"
         app:layout_constraintLeft_toRightOf="@id/tvTotalIntroDep"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/DepPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/tvTotalPerAfterTax">
     </TextView>
     <TextView
         android:id="@+id/tvTotalPerAfterTax"
-        style="@style/textView"
+        style="@style/texViewDep"
         android:textStyle="bold"
         android:layout_height="34dp"
         app:layout_constraintHorizontal_weight="7"
         app:layout_constraintLeft_toRightOf="@id/tvTotalPercentDep"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/DepPrimaryDark"
         app:layout_constraintRight_toLeftOf="@id/tvTotalPaymentDep">
     </TextView>
 
     <TextView
         android:id="@+id/tvTotalPaymentDep"
-        style="@style/textView"
+        style="@style/texViewDep"
         android:textSize="14sp"
         android:textStyle="bold"
         android:layout_height="34dp"
         app:layout_constraintHorizontal_weight="10"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"
+        android:background="@color/DepPrimaryDark"
         app:layout_constraintLeft_toRightOf="@id/tvTotalPerAfterTax"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent">

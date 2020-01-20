@@ -4,19 +4,22 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
-import com.example.fincalc.data.repository.Repository
+import com.example.fincalc.data.Repository
+import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.models.Banking
+import com.example.fincalc.models.deposit.Frequency
 import kotlinx.coroutines.*
 
-class BalanceViewModel(application: Application) : AndroidViewModel(application)
-     {
+@Suppress("UNCHECKED_CAST")
+class BalanceViewModel(application: Application) : AndroidViewModel(application), Filtering {
 
     private val repository = Repository.getInstance(application)
-    private val _loanList = repository?.getLoans()
-    private val _filTypeList = RepoLoansFilter._typeList
-    private val _filCurrency = RepoLoansFilter._cur
-    private val _sortedAcc = RepoLoansFilter._sortByRate
 
+    //Loans
+    private val _loanList = repository?.getLoans()
+    private val _typeListLoan = RepoLoansFilter._typeList
+    private val _curListLoan = RepoLoansFilter._cur
+    private val _sortAccLoan = RepoLoansFilter._sortByRate
 
     fun addLoan(loan: Loan) = viewModelScope.launch {
         repository?.insertLoan(loan)
@@ -30,65 +33,67 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         repository?.deleteAllLoans()
     }
 
-    fun setLTypeSel(selList: List<LoanType>?) {
+    fun setSelLoanTypeList(selList: List<LoanType>?) {
         RepoLoansFilter._typeList.value = selList
     }
 
-    fun setCurrencySel(curs: List<String>?) {
+    fun setSelLoanCurList(curs: List<String>?) {
         RepoLoansFilter._cur.value = curs
     }
 
-    fun setSortedByRateAcc(acc: Boolean?) {
+    fun setSortByLoanRate(acc: Boolean?) {
         RepoLoansFilter._sortByRate.value = acc
     }
 
-
-    private val medLiveData = MediatorLiveData<LoanFilter>()
+    private val mediatorLoan = MediatorLiveData<LoanFilter>()
 
     fun getLoanList(): LiveData<LoanFilter> {
         viewModelScope.launch {
-            medLiveData.addSource(_loanList!!) {
-                medLiveData.value =
-                    combFiltersLoan(_loanList, _filTypeList, _filCurrency, _sortedAcc)
+            mediatorLoan.addSource(_loanList!!) {
+                mediatorLoan.value =
+                    combFiltersLoan(_loanList, _typeListLoan, _curListLoan, _sortAccLoan)
             }
-            medLiveData.addSource(_filTypeList) {
-                medLiveData.value =
-                    combFiltersLoan(_loanList, _filTypeList, _filCurrency, _sortedAcc)
+            mediatorLoan.addSource(_typeListLoan) {
+                mediatorLoan.value =
+                    combFiltersLoan(_loanList, _typeListLoan, _curListLoan, _sortAccLoan)
             }
-            medLiveData.addSource(_filCurrency) {
-                medLiveData.value =
-                    combFiltersLoan(_loanList, _filTypeList, _filCurrency, _sortedAcc)
+            mediatorLoan.addSource(_curListLoan) {
+                mediatorLoan.value =
+                    combFiltersLoan(_loanList, _typeListLoan, _curListLoan, _sortAccLoan)
             }
-            medLiveData.addSource(_sortedAcc) {
-                medLiveData.value =
-                    combFiltersLoan(_loanList, _filTypeList, _filCurrency, _sortedAcc)
+            mediatorLoan.addSource(_sortAccLoan) {
+                mediatorLoan.value =
+                    combFiltersLoan(_loanList, _typeListLoan, _curListLoan, _sortAccLoan)
             }
         }
-        return medLiveData
+        return mediatorLoan
     }
 
     private fun combFiltersLoan(
-        loanList: LiveData<List<Loan>>?, filtType: LiveData<List<LoanType>?>,
+        loanList: LiveData<List<Loan>>?, filType: LiveData<List<LoanType>?>,
         filCur: LiveData<List<String>>, sortAcc: LiveData<Boolean?>
     ): LoanFilter {
 
-        val loans = loanList?.value as ArrayList<Loan>?
-        val types = filtType.value as ArrayList<LoanType>?
+        val loans = loanList?.value
+        val types = filType.value
         val cur = filCur.value
         val isAcc = sortAcc.value
         val totalCurs = sortCur(loans, cur)
 
-
-        val defLoan = filterByTypes(loans, types) as ArrayList?
-        val defLoan2 = filterByCur(defLoan, cur) as ArrayList?
+        val defLoan = filterByTypes(loans, types)
+        val defLoan2 = filterByCur(defLoan, cur)
         val res = sortByRate(defLoan2, isAcc)
 
-        return LoanFilter(res, types, totalCurs, isAcc)
+        return LoanFilter(
+            filTypeList = types,
+            prodList = res,
+            sortByAcc = isAcc,
+            curList = totalCurs
+        )
     }
 
-
     private fun filterByTypes(
-        loans: ArrayList<Loan>?, types: ArrayList<LoanType>?
+        loans: List<Loan>?, types: List<LoanType>?
     ): List<Loan>? {
 
         return if (loans != null)
@@ -109,114 +114,147 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         else null
     }
 
-     /*private fun filterByCur(loans: ArrayList<Loan>?, cur: List<String>?): List<Loan>? {
-
-         return if (loans != null) {
-             return if (cur == null) loans else {
-                 val inner = arrayListOf<Loan>()
-                 for (lo in loans)
-                     if (lo.currency == cur[0])
-                         inner.add(lo)
-                 inner
-             }
-         } else null
-     }
-
-     private fun sortCur(loans: ArrayList<Loan>?, curs: List<String>?): List<String>? {
-
-         return if (loans != null) {
-             if (curs != null) {
-                 val newCurList = arrayListOf<String>()
-                 newCurList.add(curs[0])
-                 for (lo in loans)
-                     if (lo.currency != curs[0])
-                         newCurList.add(lo.currency)
-                 newCurList.distinct()
-             } else {
-                 val newCurList = arrayListOf<String>()
-                 for (lo in loans)
-                     newCurList.add(lo.currency)
-                 newCurList.distinct()
-             }
-         } else null
-     }
-
-     private fun sortByRate(loans: ArrayList<Loan>?, acc: Boolean?): List<Loan>? {
-         return if (loans != null)
-             return when (acc) {
-                 null -> loans
-                 true -> loans.sortedBy { l -> l.queryLoan.rate }
-                 else -> loans.sortedByDescending { l -> l.queryLoan.rate }
-             }
-         else null
-     }
-*/
-
-         private fun filterByCur(loans: ArrayList<Loan>?, cur: List<String>?): List<Loan>? {
-
-             return if (loans != null) {
-                 return if (cur == null) loans else {
-                     val inner = arrayListOf<Loan>()
-                     for (lo in loans)
-                         if (lo.currency == cur[0])
-                             inner.add(lo)
-                     inner
-                 }
-             } else null
-         }
-
-         private fun sortCur(loans: ArrayList<Loan>?, curs: List<String>?): List<String>? {
-
-             return if (loans != null) {
-                 if (curs != null) {
-                     val newCurList = arrayListOf<String>()
-                     newCurList.add(curs[0])
-                     for (lo in loans)
-                         if (lo.currency != curs[0])
-                             newCurList.add(lo.currency)
-                     newCurList.distinct()
-                 } else {
-                     val newCurList = arrayListOf<String>()
-                     for (lo in loans)
-                         newCurList.add(lo.currency)
-                     newCurList.distinct()
-                 }
-             } else null
-         }
-
-         private fun sortByRate(loans: ArrayList<Loan>?, acc: Boolean?): List<Loan>? {
-             return if (loans != null)
-                 return when (acc) {
-                     null -> loans
-                     true -> loans.sortedBy { l -> l.rate }
-                     else -> loans.sortedByDescending { l -> l.rate }
-                 }
-             else null
-         }
 
 
-         private fun filterByCur(
-        products: ArrayList<out Banking>?,
-        cur: List<String>?
-    ): ArrayList<out Banking>? {
 
+    //Deposits
+    private val _depList = repository?.getDep()
+    private val _depFreqList = RepoDepFilter._frequencies
+    private val _curListDep = RepoDepFilter._cur
+    private val _sortAccDep = RepoDepFilter._sortByRate
+
+    fun addDep(dep: Deposit) = viewModelScope.launch {
+        repository?.insertDep(dep)
+    }
+
+    fun deleteDep(dep: Deposit) = viewModelScope.launch {
+        repository?.deleteDep(dep)
+    }
+
+    fun deleteAllDep() = viewModelScope.launch {
+        repository?.deleteAllDeps()
+    }
+
+    fun setSelDepFreqList(selList: List<Frequency>?) {
+        RepoDepFilter._frequencies.value = selList
+    }
+
+    fun setSelDepCurList(curs: List<String>?) {
+        RepoLoansFilter._cur.value = curs
+    }
+
+    fun setSortByDepRate(acc: Boolean?) {
+        RepoLoansFilter._sortByRate.value = acc
+    }
+
+    private val mediatorDep = MediatorLiveData<DepFilter>()
+
+    fun getDepList(): LiveData<DepFilter> {
+        viewModelScope.launch {
+            mediatorDep.addSource(_depList!!) {
+                mediatorDep.value =
+                    combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
+            }
+            mediatorLoan.addSource(_depFreqList) {
+                mediatorDep.value =
+                    combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
+            }
+            mediatorLoan.addSource(_curListDep) {
+                mediatorDep.value =
+                    combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
+            }
+            mediatorLoan.addSource(_sortAccDep) {
+                mediatorDep.value =
+                    combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
+            }
+        }
+        return mediatorDep
+    }
+
+    private fun combFiltersDep(
+        depList: LiveData<List<Deposit>>?, freq: LiveData<List<Frequency>?>,
+        curs: LiveData<List<String>>, sortAcc: LiveData<Boolean?>
+    ): DepFilter {
+
+        val dep = depList?.value
+        val freqList = freq.value
+        val cur = curs.value
+        val isAcc = sortAcc.value
+        val totalCurs = sortCur(dep, cur)
+        val def = filterByFreq(dep, freqList)
+        val defLoan2 = filterByCur(def, cur)
+        val res = sortByRate(defLoan2, isAcc)
+
+        return DepFilter(freqList, prodList = res, curList = totalCurs, sortByAcc = isAcc)
+    }
+
+    private fun filterByFreq(
+        depList: List<Deposit>?, freq: List<Frequency>?
+    ): List<Deposit>? {
+
+        return if (depList != null)
+            return when {
+                freq == null -> depList
+                freq.isEmpty() -> arrayListOf()
+                else -> {
+                    val inner = arrayListOf<Deposit>()
+                    for (dep in depList)
+                        for (fr in freq)
+                            if (dep.frequency == fr) {
+                                inner.add(dep)
+                                break
+                            }
+                    inner
+                }
+            }
+        else null
+    }
+
+    override fun filterByCur(products: List<Banking>?, cur: List<String>?): List<Banking>? {
         return if (products != null) {
             return if (cur == null) products else {
-                val inner = ArrayList<Banking>()
-                for (pr in products)
-                    if (pr.currency == cur[0])
-                        inner.add(pr)
+                val inner = arrayListOf<Banking>()
+                for (lo in products)
+                    if (lo.currency == cur[0])
+                        inner.add(lo)
                 inner
             }
         } else null
     }
 
+    override fun sortCur(products: List<Banking>?, curs: List<String>?): List<String>? {
+        return if (products != null) {
+            if (curs != null) {
+                val newCurList = ArrayList<String>()
+                newCurList.add(curs[0])
+                for (pr in products)
+                    if (pr.currency != curs[0])
+                        newCurList.add(pr.currency)
+                newCurList.distinct()
+            } else {
+                val newCurList = arrayListOf<String>()
+                for (pr in products)
+                    newCurList.add(pr.currency)
+                newCurList.distinct()
+            }
+        } else null
+    }
+
+    override fun sortByRate(product: List<Banking>?, acc: Boolean?): List<Banking>? {
+        return if (product != null)
+            return when (acc) {
+                null -> product
+                true -> product.sortedBy { l -> l.rate }
+                else -> product.sortedByDescending { l -> l.rate }
+            }
+        else null
+    }
 
     fun removeSources() {
-        medLiveData.removeSource(_loanList!!)
-        medLiveData.removeSource(_filCurrency)
-        medLiveData.removeSource(_filTypeList)
-        medLiveData.removeSource(_sortedAcc)
+        mediatorLoan.removeSource(_loanList!!)
+        mediatorLoan.removeSource(_curListLoan)
+        mediatorLoan.removeSource(_typeListLoan)
+        mediatorLoan.removeSource(_sortAccLoan)
     }
 }
 
