@@ -16,12 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
-import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.getEnumFromSelection
-import com.example.fincalc.models.deposit.Frequency
-import com.example.fincalc.models.deposit.getFreqFromSelec
 import com.example.fincalc.ui.initialize
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.NavSwitcher
@@ -29,7 +26,6 @@ import com.example.fincalc.ui.port.NavViewModel
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
-import kotlinx.android.synthetic.main.dialog_filter_type.*
 import kotlinx.android.synthetic.main.fragment_balance.*
 
 private const val BUTTON_DIALOG_SIZE_PRESSED = 20F
@@ -127,7 +123,7 @@ class BalanceFragment : Fragment() {
                             1 -> cur?.let {
                                 getDialFilByLoanCur(context, cur)
                             }
-                            2 -> setSortByAcc(isAcc, true)
+                            2 -> setSortLoanByAcc(isAcc)
                             3 -> balanceViewModel.deleteAllLoans()
                         }
                     }
@@ -244,43 +240,55 @@ class BalanceFragment : Fragment() {
                     btnCheck(curBut)
             }
 
-            btnDialLoanTypeMort.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeCar.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeBus.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeCons.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeCrLines.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeDepSec.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeGold.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeStud.setOnClickListener(btnDialClickList)
-            btnDialLoanTypeUnsecured.setOnClickListener(btnDialClickList)
+
+            val btnMort: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
+            val btnCar: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
+            val btnBus: Button = dialogView.findViewById(R.id.btnDialLoanTypeBus)
+            val btnCons: Button = dialogView.findViewById(R.id.btnDialLoanTypeCons)
+            val btnCrLines: Button = dialogView.findViewById(R.id.btnDialLoanTypeCrLines)
+            val btnDepSec: Button = dialogView.findViewById(R.id.btnDialLoanTypeDepSec)
+            val btnGoldSec: Button = dialogView.findViewById(R.id.btnDialLoanTypeGold)
+            val btnStud: Button = dialogView.findViewById(R.id.btnDialLoanTypeStud)
+            val btnUnsec: Button = dialogView.findViewById(R.id.btnDialLoanTypeUnsecured)
+            val btnSelAllOrClear: Button = dialogView.findViewById(R.id.btnDialSelectOrClear)
+
+            btnMort.setOnClickListener(btnDialClickList)
+            btnCar.setOnClickListener(btnDialClickList)
+            btnBus.setOnClickListener(btnDialClickList)
+            btnCons.setOnClickListener(btnDialClickList)
+            btnCrLines.setOnClickListener(btnDialClickList)
+            btnDepSec.setOnClickListener(btnDialClickList)
+            btnGoldSec.setOnClickListener(btnDialClickList)
+            btnStud.setOnClickListener(btnDialClickList)
+            btnUnsec.setOnClickListener(btnDialClickList)
 
             fun selectAll() {
-                btnCheck(btnDialLoanTypeMort)
-                btnCheck(btnDialLoanTypeCons)
-                btnCheck(btnDialLoanTypeCar)
-                btnCheck(btnDialLoanTypeStud)
-                btnCheck(btnDialLoanTypeCrLines)
-                btnCheck(btnDialLoanTypeUnsecured)
-                btnCheck(btnDialLoanTypeDepSec)
-                btnCheck(btnDialLoanTypeGold)
-                btnCheck(btnDialLoanTypeBus)
-                btnCheck(btnDialSelectOrClear)
+                btnCheck(btnMort)
+                btnCheck(btnCons)
+                btnCheck(btnCar)
+                btnCheck(btnStud)
+                btnCheck(btnCrLines)
+                btnCheck(btnUnsec)
+                btnCheck(btnDepSec)
+                btnCheck(btnGoldSec)
+                btnCheck(btnBus)
+                btnCheck(btnSelAllOrClear)
             }
 
             fun clear() {
-                btnUncheck(btnDialLoanTypeMort)
-                btnUncheck(btnDialLoanTypeCons)
-                btnUncheck(btnDialLoanTypeCar)
-                btnUncheck(btnDialLoanTypeStud)
-                btnUncheck(btnDialLoanTypeCrLines)
-                btnUncheck(btnDialLoanTypeUnsecured)
-                btnUncheck(btnDialLoanTypeDepSec)
-                btnUncheck(btnDialLoanTypeGold)
-                btnUncheck(btnDialLoanTypeBus)
-                btnUncheck(btnDialSelectOrClear)
+                btnUncheck(btnMort)
+                btnUncheck(btnCons)
+                btnUncheck(btnCar)
+                btnUncheck(btnStud)
+                btnUncheck(btnCrLines)
+                btnUncheck(btnUnsec)
+                btnUncheck(btnDepSec)
+                btnUncheck(btnGoldSec)
+                btnUncheck(btnBus)
+                btnUncheck(btnSelAllOrClear)
             }
 
-            btnDialSelectOrClear.setOnClickListener {
+            btnSelAllOrClear.setOnClickListener {
                 val curButton = it as Button
                 if (!isBtnChecked(curButton)) {
                     selectAll()
@@ -295,29 +303,29 @@ class BalanceFragment : Fragment() {
 
             //initialize
             when {
-                types == null -> btnDialSelectOrClear.performClick()
+                types == null -> btnSelAllOrClear.performClick()
                 types.isEmpty() -> clear()
                 else -> {
-                    if (types.contains(LoanType.MORTGAGE)) btnCheck(btnDialLoanTypeMort)
-                    else btnUncheck(btnDialLoanTypeMort)
-                    if (types.contains(LoanType.CONSUMER_LOAN)) btnCheck(btnDialLoanTypeCons)
-                    else btnUncheck(btnDialLoanTypeCons)
-                    if (types.contains(LoanType.CAR_LOAN)) btnCheck(btnDialLoanTypeCar)
-                    else btnUncheck(btnDialLoanTypeCar)
-                    if (types.contains(LoanType.STUDENT_LOAN)) btnCheck(btnDialLoanTypeStud)
-                    else btnUncheck(btnDialLoanTypeStud)
-                    if (types.contains(LoanType.CREDIT_LINES)) btnCheck(btnDialLoanTypeCrLines)
-                    else btnUncheck(btnDialLoanTypeCrLines)
-                    if (types.contains(LoanType.UNSECURED)) btnCheck(btnDialLoanTypeUnsecured)
-                    else btnUncheck(btnDialLoanTypeUnsecured)
-                    if (types.contains(LoanType.DEPOSIT_SECURED)) btnCheck(btnDialLoanTypeDepSec)
-                    else btnUncheck(btnDialLoanTypeDepSec)
-                    if (types.contains(LoanType.GOLD_PLEDGE_SECURED)) btnCheck(btnDialLoanTypeGold)
-                    else btnUncheck(btnDialLoanTypeGold)
-                    if (types.contains(LoanType.BUSINESS)) btnCheck(btnDialLoanTypeBus)
-                    else btnUncheck(btnDialLoanTypeBus)
-                    if (types.size < 9) btnUncheck(btnDialSelectOrClear)
-                    else btnCheck(btnDialSelectOrClear)
+                    if (types.contains(LoanType.MORTGAGE)) btnCheck(btnMort)
+                    else btnUncheck(btnMort)
+                    if (types.contains(LoanType.CONSUMER_LOAN)) btnCheck(btnCons)
+                    else btnUncheck(btnCons)
+                    if (types.contains(LoanType.CAR_LOAN)) btnCheck(btnCar)
+                    else btnUncheck(btnCar)
+                    if (types.contains(LoanType.STUDENT_LOAN)) btnCheck(btnStud)
+                    else btnUncheck(btnStud)
+                    if (types.contains(LoanType.CREDIT_LINES)) btnCheck(btnCrLines)
+                    else btnUncheck(btnCrLines)
+                    if (types.contains(LoanType.UNSECURED)) btnCheck(btnUnsec)
+                    else btnUncheck(btnUnsec)
+                    if (types.contains(LoanType.DEPOSIT_SECURED)) btnCheck(btnDepSec)
+                    else btnUncheck(btnDepSec)
+                    if (types.contains(LoanType.GOLD_PLEDGE_SECURED)) btnCheck(btnGoldSec)
+                    else btnUncheck(btnGoldSec)
+                    if (types.contains(LoanType.BUSINESS)) btnCheck(btnBus)
+                    else btnUncheck(btnBus)
+                    if (types.size < 9) btnUncheck(btnSelAllOrClear)
+                    else btnCheck(btnSelAllOrClear)
                 }
             }
 
@@ -378,21 +386,20 @@ class BalanceFragment : Fragment() {
         }
     }
 
-    fun setSortByAcc(acc: Boolean?, loan: Boolean) {
-
-        if (loan) {
-            when (acc) {
-                null -> tvLoanSortFilterBalFr.visibility = View.GONE
-                true, false -> tvLoanSortFilterBalFr.visibility = View.VISIBLE
-            }
-            balanceViewModel.setSortByLoanRate(acc)
-        } else {
-            when (acc) {
-                null -> tvDepSortFilterBalFr.visibility = View.GONE
-                true, false -> tvDepSortFilterBalFr.visibility = View.VISIBLE
-            }
-            balanceViewModel.setSortByDepRate(acc)
+    fun setSortLoanByAcc(acc: Boolean?) {
+        when (acc) {
+            null, false -> balanceViewModel.setSortByLoanRate(true)
+            true -> balanceViewModel.setSortByLoanRate(false)
         }
+        tvLoanSortFilterBalFr.visibility = View.VISIBLE
+    }
+
+    fun setSortDepByAcc(acc: Boolean?) {
+        when (acc) {
+            null, false -> balanceViewModel.setSortByDepRate(true)
+            true -> balanceViewModel.setSortByDepRate(false)
+        }
+        tvDepSortFilterBalFr.visibility = View.GONE
     }
 
     override fun onPause() {

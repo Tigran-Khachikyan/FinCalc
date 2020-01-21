@@ -87,7 +87,7 @@
     </style>
 
     <style name="texViewDep" parent="textView">
-        <item name="android:background">@color/DepPrimary</item>
+        <item name="android:background">@color/DepPrimaryLight</item>
     </style>
 
     <style name="textViewBigMain">

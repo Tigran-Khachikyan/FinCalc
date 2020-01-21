@@ -1,6 +1,7 @@
 package com.example.fincalc.ui.port.balance
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
@@ -113,8 +114,6 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
             }
         else null
     }
-
-
 
 
     //Deposits
