@@ -71,7 +71,7 @@
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:paddingBottom">6dp</item>
-        <item name="android:background">@drawable/cardviewoptionshape</item>
+        <item name="android:background">@drawable/final_input_frame</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
     </style>
@@ -81,7 +81,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_margin">1dp</item>
-        <item name="android:layout_height">26dp</item>
+        <item name="android:layout_height">24dp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_width">0dp</item>
     </style>
@@ -119,12 +119,15 @@
     </style>
 
     <style name="editTextMainInput">
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:layout_marginEnd">2dp</item>
+        <item name="android:layout_marginStart">16dp</item>
     </style>
 
     <style name="editTextOptional">
@@ -143,7 +146,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/LoansPrimaryDark</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="button">

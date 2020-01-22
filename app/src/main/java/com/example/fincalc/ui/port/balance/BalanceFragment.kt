@@ -289,11 +289,11 @@ class BalanceFragment : Fragment() {
                 if (!isBtnChecked(curButton)) {
                     selectAll()
                     curButton.text = context.getString(R.string.CLEAR)
-                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                    curButton.background = context.getDrawable(R.drawable.final_btnclear)
                 } else {
                     clear()
                     curButton.text = context.getString(R.string.SELECT_ALL)
-                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                    curButton.background = context.getDrawable(R.drawable.final_btnclear)
                 }
             }
 
@@ -431,11 +431,11 @@ class BalanceFragment : Fragment() {
                 if (!isBtnChecked(curButton)) {
                     selectAll()
                     curButton.text = context.getString(R.string.CLEAR)
-                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                    curButton.background = context.getDrawable(R.drawable.final_btnclear)
                 } else {
                     clear()
                     curButton.text = context.getString(R.string.SELECT_ALL)
-                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                    curButton.background = context.getDrawable(R.drawable.final_btnclear)
                 }
             }
 
@@ -531,13 +531,13 @@ class BalanceFragment : Fragment() {
     }
 
     private fun showSelected(btn: Button, context: Context?) {
-        btn.background = context?.getDrawable(R.drawable.btncalculate)
+        btn.background = context?.getDrawable(R.drawable.final_btncalculate)
         btn.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.mipmap.checked,0)
         btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
     }
 
     private fun showUnSelected(btn: Button, context: Context?) {
-        btn.background = context?.getDrawable(R.drawable.btnexpand)
+        btn.background = context?.getDrawable(R.drawable.final_btnexpand)
         btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
     }

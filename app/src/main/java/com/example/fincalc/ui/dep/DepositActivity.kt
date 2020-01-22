@@ -22,7 +22,6 @@ import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
-import kotlinx.android.synthetic.main.dialog_save.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -44,8 +43,6 @@ class DepositActivity : AppCompatActivity() {
 
         depViewModel = ViewModelProvider(this).get(DepositViewModel::class.java)
         imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
-
-        initSpinner()
 
         recyclerDep.setHasFixedSize(true)
         recyclerDep.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
@@ -102,11 +99,10 @@ class DepositActivity : AppCompatActivity() {
                 val scheduleDep = TableDep(dep as Deposit)
                 adapterRec.scheduleDep = scheduleDep
                 adapterRec.notifyDataSetChanged()
-                val text: String = resources.getString(R.string.ResultShowDep) +
-                        " ${dec.format(scheduleDep.totalPerAfterTax)}"
+                /*   val text: String = resources.getString(R.string.ResultShowDep) +
+                           " ${dec.format(scheduleDep.totalPerAfterTax)}"*/
                 val effRate: String = resources.getString(R.string.EffectiveRate) + ": " +
                         dec.format(scheduleDep.effectiveRate).toString() + "%"
-                tvResultDepShow.text = text
                 tvEffectRateDepShow.text = effRate
             }
             if (layoutDepOptionalInput.visibility != View.GONE) {
@@ -125,7 +121,7 @@ class DepositActivity : AppCompatActivity() {
 
     private fun expand() {
         if (layoutDepOptionalInput.visibility == View.GONE) {
-            //  ivLoanImage.visibility = View.GONE
+            ivDepImage.visibility = View.GONE
             btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -136,7 +132,7 @@ class DepositActivity : AppCompatActivity() {
             toggle(false, layoutDepOptionalInput, layDepInput)
             layoutDepResult.visibility = View.GONE
         } else {
-            //   ivLoanImage.visibility = View.VISIBLE
+            ivDepImage.visibility = View.VISIBLE
             btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
                 0,
                 0,
@@ -150,9 +146,9 @@ class DepositActivity : AppCompatActivity() {
 
     private fun imitateRadioGroup(btnClicked: Button, btn2: Button, btn3: Button) {
 
-        btn2.setBackgroundResource(R.drawable.btnperiodsunselected)
-        btn3.setBackgroundResource(R.drawable.btnperiodsunselected)
-        btnClicked.setBackgroundResource(R.drawable.btnperiodsselected)
+        btn2.setBackgroundResource(R.drawable.final_btnexpand)
+        btn3.setBackgroundResource(R.drawable.final_btnexpand)
+        btnClicked.setBackgroundResource(R.drawable.final_btn_period_select)
         btnClicked.setTextColor(resources.getColor(android.R.color.white))
         btn2.setTextColor(resources.getColor(android.R.color.black))
         btn3.setTextColor(resources.getColor(android.R.color.black))
@@ -189,19 +185,19 @@ class DepositActivity : AppCompatActivity() {
                     iconTrigger(ivLogoDepRate)
 
                 val invalidInput = resources.getString(R.string.InvalidInput)
-                showSnackbar(invalidInput, view,false)
+                showSnackbar(invalidInput, view, false)
                 null
             }
             term % check != 0 -> {
                 iconTrigger(ivLogoDepTerm)
                 val invalidInputMis = resources.getString(R.string.InvalidInputPeriod)
-                showSnackbar(invalidInputMis, view,false)
+                showSnackbar(invalidInputMis, view, false)
                 null
             }
             taxRate >= 100F -> {
                 iconTrigger(ivLogoDepTax)
                 val invalidInput = resources.getString(R.string.InvalidInputTax)
-                showSnackbar(invalidInput, view,false)
+                showSnackbar(invalidInput, view, false)
                 null
             }
             else -> {
@@ -211,16 +207,6 @@ class DepositActivity : AppCompatActivity() {
                 )
             }
         }
-    }
-
-    private fun initSpinner() {
-        adapterSpin = AdapterSpinnerRates(
-            this, R.layout.layoutspinner,
-            currencyCodeList, currencyFlagList, true
-        )
-        adapterSpin.setDropDownViewResource(R.layout.layoutspinner)
-        spinnerDep.adapter = adapterSpin
-        spinnerDep.setSelection(adapterSpin.count - 4)
     }
 
     override fun onBackPressed() {

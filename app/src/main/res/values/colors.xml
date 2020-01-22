@@ -30,7 +30,7 @@
     <color name="LoansPrimaryDark">#002623</color>
 
     //Deposit
-    <color name="DepPrimary">#a7ffeb</color>
-    <color name="DepPrimaryLight">#dbffff</color>
-    <color name="DepPrimaryDark">#75ccb9</color>
+    <color name="DepPrimary">#c77eda</color>
+    <color name="DepPrimaryLight">#fbafff</color>
+    <color name="DepPrimaryDark">#431055</color>
 </resources>

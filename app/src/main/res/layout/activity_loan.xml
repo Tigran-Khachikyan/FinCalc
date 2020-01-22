@@ -34,9 +34,28 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ivLoanImage"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:background="@mipmap/image_loan_main"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent" >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layInsideImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:background="@mipmap/image_loan_main"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/layInsideImage"
+                        android:text="@string/WeMakeItEasy"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@android:color/white" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--Mandatory Input-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +70,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_margin="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanTerm"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toRightOf="@id/tvLoanInputSumIntro"
@@ -105,7 +124,7 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanRate"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -120,7 +139,7 @@
                             android:layout_height="match_parent"
                             android:hint="@string/HintTerm"
                             android:inputType="number"
-                            android:maxLength="4"
+                            android:maxLength="3"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/ivLogoLoanTerm" />
 
@@ -156,7 +175,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_margin="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
@@ -221,7 +240,7 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanMonthlyTimeCom"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -302,7 +321,7 @@
                         android:layout_height="0dp"
                         android:layout_margin="6dp"
                         android:layout_marginStart="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanAnnualTimeCom"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toRightOf="@id/tvMonthlyComIntro"
@@ -382,7 +401,7 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanOtherCosts"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -462,7 +481,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_margin="6dp"
-                        android:background="@drawable/cardviewshapeloan"
+                        android:background="@drawable/final_input_frame"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="8"
                         app:layout_constraintLeft_toRightOf="@id/tvOtherCostsIntro"
@@ -513,7 +532,7 @@
                         style="@style/button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/btnexpand"
+                        android:background="@drawable/final_btnexpand"
                         android:drawableEnd="@drawable/ic_expand_more_black_24dp"
                         android:text="@string/AdvancedCalculation"
                         android:textColor="@android:color/black"
@@ -529,7 +548,7 @@
                         style="@style/button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/btnclear"
+                        android:background="@drawable/final_btnclear"
                         android:text="@string/Clear"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="2"
@@ -543,7 +562,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:background="@drawable/btncalculate"
+                        android:background="@drawable/final_btncalculate"
                         android:text="@string/Calculate"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="3"
@@ -559,9 +578,7 @@
                 android:id="@+id/toolbarLoan"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/LoansPrimaryDark"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:titleTextColor="@android:color/white">
+                android:background="@color/LoansPrimaryDark">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -579,7 +596,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/ivLogoLoanAc"
                         android:src="@mipmap/consultants"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
