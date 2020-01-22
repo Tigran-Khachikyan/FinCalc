@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
+import com.example.fincalc.models.cur_met.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.dep.AdapterRecViewDep
@@ -37,6 +38,7 @@ class AdapterRecDepDetail(
         val tvIncome: TextView = itemView.findViewById(R.id.tvDepFrTotalPayment)
         val tvEffectRate: TextView = itemView.findViewById(R.id.tvDepFrEffRate)
         val ivDepFr: ImageView = itemView.findViewById(R.id.ivDepFr)
+        val ivCurrency: ImageView = itemView.findViewById(R.id.ivCurrencyDepFr)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -76,6 +78,10 @@ class AdapterRecDepDetail(
 
             val cur = res.getString(R.string.Currency) + ": ${curDep.currency}"
             holder.tvCur.text = cur
+            val flag = currencyMapFlags[curDep.currency]
+            flag?.let {
+                holder.ivCurrency.setImageResource(flag)
+            }
 
             val capitalize = curDep.capitalize
 
@@ -95,8 +101,8 @@ class AdapterRecDepDetail(
 
             holder.ivDepFr.setImageResource(
                 when (curDep.frequency) {
-                    Frequency.MONTHLY -> R.mipmap.type_car_loan
-                    Frequency.QUARTERLY -> R.mipmap.type_quarterly
+                    Frequency.MONTHLY -> R.mipmap.type_monthly
+                    Frequency.QUARTERLY -> R.mipmap.type_quarter
                     Frequency.AT_THE_END -> R.mipmap.type_at_the_end
                     Frequency.OTHER -> R.mipmap.deposit_logo
                 }

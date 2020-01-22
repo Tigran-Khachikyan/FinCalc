@@ -65,9 +65,9 @@
     --Activity Deposit--
     <string name="DepositAmount">Deposit Amount</string>
     <string name="Frequency">Repayment frequency</string>
-    <string name="MonthlyPaymentDep">Monthly \npayment</string>
-    <string name="QuarterlyPaymentDep">Quarterly \npayment</string>
-    <string name="AtTheEndPayment">At the end of \nthe Contract</string>
+    <string name="MonthlyPaymentDep">Monthly payment</string>
+    <string name="QuarterlyPaymentDep">Quarterly payment</string>
+    <string name="AtTheEndPayment">At the end of the Contract</string>
     <string name="taxRegulation">State tax Regulation</string>
     <string name="Tax">Tax rate (%)</string>
     <string name="Capitalization">Capitalization</string>
@@ -79,8 +79,8 @@
     <string name="Currency">Currency</string>
     <string name="Result">Result</string>
     <string name="ResultShowDep">Total income: </string>
-    <string name="InvalidInputPeriod">Mismatch between months \nand payment frequency|</string>
-    <string name="InvalidInputTax">Invalid Tax rate. \nShould be less than 100%|</string>
+    <string name="InvalidInputPeriod">Mismatch between months \nand payment frequency!</string>
+    <string name="InvalidInputTax">Invalid Tax rate. \nShould be less than 100%!</string>
     <string name="WeMakeItEasy">Make your analysis precise and quick.</string>
 
     --Activity Portfolio--
@@ -90,6 +90,7 @@
     <string name="deposits">Deposits</string>
     <string name="deposit">deposit</string>
     <string name="bank">Bank</string>
+    <string name="nameOrId">Name, contract</string>
     <string name="LoanType">Type</string>
     <string name="RepaymentProgram">Repayment program</string>
     <string name="LoanDirectory">Loan Directory</string>
@@ -117,14 +118,18 @@
     --dialogs--
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="savingOptions">Saving options</string>
     <string name="CLEAR">CLEAR ALL</string>
-    <string name="CurSpinnerText">Please select the currencies You want to filter with.</string>
+    <string name="Filtering">Filtering</string>
+    <string name="CurSpinnerText">Select the currency you want to filter with.</string>
+    <string name="selectTheCriteria">Select the criteria you want to filter with.</string>
 
     --BalanceFragment-
-    <string name="selectedCurrency">Selected Currency</string>
-    <string name="selectedType">Selected Loan Type</string>
+    <string name="selectedCurrency">Filtered by currency</string>
+    <string name="selectedType">Filtered by Loan Type</string>
+    <string name="selectedFreq">Filtered by repayment frequency</string>
     <string name="oneTimeComeAndCost">One Time Commission and costs -></string>
-    <string name="sortedByInterestRate">Sorted by interest rate</string>
+    <string name="sortedByInterestRate">Sorted by rate: </string>
     <string name="ascending">ascending</string>
     <string name="descending">descending</string>
     <string name="noLoanFound">No loan found</string>
@@ -136,5 +141,9 @@
     <string name="Income">Income</string>
     <string name="dialogTitle">Saving options</string>
     <string name="successSaved">Successfully saved in Portfolio</string>
+    <string name="warning">Warning</string>
+    <string name="AreYouSureRemove">Do you really want to remove?</string>
+    <string name="OK">OK</string>
+    <string name="SuccessfullyRemoved">Successfully removed from Portfolio</string>
 
 </resources>

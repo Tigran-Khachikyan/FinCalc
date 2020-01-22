@@ -13,9 +13,9 @@ fun getFreqListName(context: Context): ArrayList<String> {
     return arrayList
 }
 
-fun getFreqFromSelec(string: String, context: Context?): Frequency {
+fun getFreqFromSelec(string: String, context: Context?): Frequency? {
 
-    var freq = Frequency.OTHER
+    var freq: Frequency? = null
 
     for (id in frequencyMap.keys) {
         if (string == context?.resources?.getString(id)) {
@@ -29,6 +29,7 @@ fun getFreqFromSelec(string: String, context: Context?): Frequency {
 val frequencyMap = hashMapOf(
     R.string.MonthlyPaymentDep to Frequency.MONTHLY,
     R.string.QuarterlyPaymentDep to Frequency.QUARTERLY,
-    R.string.AtTheEndPayment to Frequency.AT_THE_END
+    R.string.AtTheEndPayment to Frequency.AT_THE_END,
+    R.string.OTHER to Frequency.OTHER
 )
 

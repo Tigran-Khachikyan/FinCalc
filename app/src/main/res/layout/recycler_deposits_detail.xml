@@ -96,10 +96,22 @@
                     <TextView
                         android:id="@+id/tvCurrencyDepFr"
                         style="@style/textViewDetailRes"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:text="@string/Currency"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/tvCapitalizedDepFr"
                         app:layout_constraintTop_toBottomOf="@id/tvRateDepFr" />
+
+                    <ImageView
+                        android:id="@+id/ivCurrencyDepFr"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:text="@string/Currency"
+                        android:layout_marginStart="10dp"
+                        app:layout_constraintLeft_toRightOf="@id/tvCurrencyDepFr"
+                        app:layout_constraintBottom_toBottomOf="@id/tvCurrencyDepFr"
+                        app:layout_constraintTop_toTopOf="@id/tvCurrencyDepFr"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:id="@+id/tvCapitalizedDepFr"
@@ -110,7 +122,8 @@
                         android:paddingEnd="20dp"
                         android:drawableEnd="@mipmap/checked"
                         app:layout_constraintBottom_toTopOf="@id/tvTaxDepFr"
-                        app:layout_constraintTop_toBottomOf="@id/tvCurrencyDepFr" />
+                        app:layout_constraintTop_toBottomOf="@id/tvCurrencyDepFr"
+                        tools:ignore="RtlSymmetry" />
 
                     <TextView
                         android:id="@+id/tvTaxDepFr"

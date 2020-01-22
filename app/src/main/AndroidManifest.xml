@@ -24,11 +24,9 @@
         <activity android:name=".ui.loan.LoanActivity" />
         <activity android:name=".ui.dep.DepositActivity" />
         <activity
-            android:name=".ui.port.PortfolioActivity"
-            android:theme="@style/AppThemeCustomLoan">
-        </activity>
-        <activity android:name=".ui.MainActivity"
-            android:theme="@style/AppThemeMain">
+            android:name=".ui.port.PortfolioActivity"/>
+
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

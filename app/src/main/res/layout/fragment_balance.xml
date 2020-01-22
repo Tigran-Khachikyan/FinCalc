@@ -24,10 +24,33 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <LinearLayout
+            <!--imageView-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivDepImage"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@mipmap/portfolio_logo" />
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layInsideImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:background="@mipmap/image_portfolio_main"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:text="@string/WeMakeItEasy"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -51,7 +74,10 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutLoansBalFr"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_width="match_parent"
+                android:background="@color/PortPrimaryLight"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -93,6 +119,8 @@
                         android:id="@+id/layoutFilter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
                         app:layout_constraintTop_toBottomOf="@id/layLoansMenuBalFr">
 
                         <TextView
@@ -149,18 +177,21 @@
                 android:id="@+id/layLineDist"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="20dp"
                 android:background="@android:color/black"
-                app:layout_constraintTop_toBottomOf="@id/layoutLoansBalFr" />
+                app:layout_constraintTop_toBottomOf="@id/layoutLoansBalFr" >
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <!--dep-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/PortPrimaryLight"
                 android:id="@+id/layoutDepBalFr"
                 android:layout_width="match_parent"
+                android:paddingTop="10dp"
+                android:paddingBottom="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="200dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layLineDist">
@@ -204,12 +235,14 @@
                         android:id="@+id/layoutFilterDep"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
                         app:layout_constraintTop_toBottomOf="@id/layDepMenuBalFr">
 
                         <TextView
                             android:id="@+id/tvDepTypeFilterBalFr"
                             style="@style/tvFilter"
-                            android:text="@string/selectedType"
+                            android:text="@string/selectedFreq"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/tvDepCurFilterBalFr"
                             app:layout_constraintTop_toTopOf="parent" />

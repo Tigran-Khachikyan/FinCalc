@@ -11,7 +11,7 @@
         android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/customDarkMain"
+        android:background="@color/PortPrimaryDark"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

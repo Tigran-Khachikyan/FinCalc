@@ -31,7 +31,6 @@ import java.text.DecimalFormat
 class DepositActivity : AppCompatActivity() {
     private var dep: Deposit? = null
     private lateinit var adapterRec: AdapterRecViewDep
-    private lateinit var adapterSpin: AdapterSpinnerRates
     private lateinit var depViewModel: DepositViewModel
     private var period: Frequency = Frequency.MONTHLY
     val dec = DecimalFormat("#,###.##")
@@ -222,6 +221,7 @@ class DepositActivity : AppCompatActivity() {
             val dialogView = inflater.inflate(R.layout.dialog_save, null)
             dialogBuilder.setView(dialogView)
 
+            dialogBuilder.setTitle(R.string.savingOptions)
             val etBank: EditText = dialogView.findViewById(R.id.etDialBank)
 
             //spinner Currency
@@ -262,6 +262,8 @@ class DepositActivity : AppCompatActivity() {
 
             val alertDialog = dialogBuilder.create()
             alertDialog.show()
+            customizeAlertDialog(alertDialog, true)
+            alertDialog.window?.setBackgroundDrawableResource(R.color.DepPrimary)
         }
     }
 

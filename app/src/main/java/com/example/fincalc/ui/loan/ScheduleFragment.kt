@@ -3,7 +3,6 @@ package com.example.fincalc.ui.loan
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +24,7 @@ import com.example.fincalc.models.cur_met.currencyFlagList
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.ui.AdapterSpinnerRates
+import com.example.fincalc.ui.customizeAlertDialog
 import com.example.fincalc.ui.showSnackbar
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
@@ -43,8 +42,6 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
-    private lateinit var tvRealRate: TextView
-    private lateinit var tvTotalPayment: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +109,6 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 })
     }
 
-
     private fun refreshSchedule(sch: TableLoan?) {
         if (sch != null) {
             constraintLayoutFragment.visibility = View.VISIBLE
@@ -179,17 +175,17 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                     )
                 loan.bank = bank
                 loan.currency = cur
-                loan.type = typeEnum
+                typeEnum?.let {
+                    loan.type = typeEnum
+                }
                 loan.formula = formula
 
                 scheduleViewModel.addLoan(loan)
 
                 val success = context.getString(R.string.successSaved)
                 showSnackbar(success, fab_Loan, true)
-
             }
 
-            //click CANCEL
             dialogBuilder.setNegativeButton(
                 getString(R.string.cancel)
             ) { _, _ -> }
@@ -197,6 +193,8 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val alertDialog = dialogBuilder.create()
 
             alertDialog.show()
+            customizeAlertDialog(alertDialog, true)
+            alertDialog.window?.setBackgroundDrawableResource(R.color.LoansPrimary)
         }
     }
 }

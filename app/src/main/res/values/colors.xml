@@ -14,9 +14,9 @@
     <color name="customLightLoan">#9d46ff</color>
     <color name="customDarkLoan">#0a00b6</color>
 
-    <color name="customPrimaryMain">#00407a</color>
-    <color name="customLightMain">#456aaa</color>
-    <color name="customDarkMain">#001b4d</color>
+    <color name="PortPrimary">#5d9ab5</color>
+    <color name="PortPrimaryLight">#b1ffff</color>
+    <color name="PortPrimaryDark">#103544</color>
 
     <color name="customPrimaryCurrency">#00407a</color>
     <color name="customLightCurrency">#94456AAA</color>

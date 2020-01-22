@@ -3,6 +3,7 @@
 package com.example.fincalc.ui
 
 import android.app.Activity
+import android.graphics.Color
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import com.example.fincalc.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -48,4 +50,20 @@ fun hideKeyboard(activity: Activity) {
         view = View(activity)
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun customizeAlertDialog(alertDialog: AlertDialog, positiv: Boolean) {
+    alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
+    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).gravity = Gravity.END
+    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).gravity = Gravity.START
+    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).textSize = 18F
+    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).textSize = 18F
+    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+
+    if (positiv)
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN)
+    else
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+
+
 }

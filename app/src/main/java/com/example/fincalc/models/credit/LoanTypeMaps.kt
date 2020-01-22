@@ -13,9 +13,9 @@ fun getLoanTypeListName(context: Context): ArrayList<String> {
     return arrayList
 }
 
-fun getEnumFromSelection(string: String, context: Context?): LoanType {
+fun getEnumFromSelection(string: String, context: Context?): LoanType? {
 
-    var type = LoanType.OTHER
+    var type: LoanType? = null
 
     for (id in loanTypeMap.keys) {
         if (string == context?.resources?.getString(id)) {
@@ -35,6 +35,7 @@ val loanTypeMap = hashMapOf(
     R.string.UNSECURED to LoanType.UNSECURED,
     R.string.CREDIT_LINES to LoanType.CREDIT_LINES,
     R.string.DEPOSIT_SECURED to LoanType.DEPOSIT_SECURED,
-    R.string.BUSINESS to LoanType.BUSINESS
+    R.string.BUSINESS to LoanType.BUSINESS,
+    R.string.OTHER to LoanType.OTHER
 )
 
