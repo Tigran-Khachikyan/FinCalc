@@ -189,19 +189,19 @@ class DepositActivity : AppCompatActivity() {
                     iconTrigger(ivLogoDepRate)
 
                 val invalidInput = resources.getString(R.string.InvalidInput)
-                showSnackbar(invalidInput, view)
+                showSnackbar(invalidInput, view,false)
                 null
             }
             term % check != 0 -> {
                 iconTrigger(ivLogoDepTerm)
                 val invalidInputMis = resources.getString(R.string.InvalidInputPeriod)
-                showSnackbar(invalidInputMis, view)
+                showSnackbar(invalidInputMis, view,false)
                 null
             }
             taxRate >= 100F -> {
                 iconTrigger(ivLogoDepTax)
                 val invalidInput = resources.getString(R.string.InvalidInputTax)
-                showSnackbar(invalidInput, view)
+                showSnackbar(invalidInput, view,false)
                 null
             }
             else -> {

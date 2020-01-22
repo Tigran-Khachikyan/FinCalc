@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,15 +26,25 @@ import com.example.fincalc.models.cur_met.currencyFlagList
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.ui.AdapterSpinnerRates
+import com.example.fincalc.ui.showSnackbar
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 /**
  * A simple [Fragment] subclass.
  */
 class ScheduleFragment(private val formula: Formula) : Fragment() {
 
+    private val dec = DecimalFormat("#,###.#")
+
+
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
+    private lateinit var tvRealRate: TextView
+    private lateinit var tvTotalPayment: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,12 +71,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 viewLifecycleOwner,
                 Observer {
 
+                    refreshSchedule(it)
                     it?.let {
-                        val schedule = it
-                        refreshSchedule(schedule)
+                        val table = it
                         fab_Loan.setOnClickListener {
                             this.context?.let {
-                                getDialog(this.context, schedule.loan, formula)
+                                getDialog(this.context, table.loan, formula)
                             }
                         }
                     }
@@ -74,12 +85,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 viewLifecycleOwner,
                 Observer {
 
+                    refreshSchedule(it)
                     it?.let {
                         val schedule = it
-                        refreshSchedule(schedule)
                         fab_Loan.setOnClickListener {
-                            this.context?.let {
-                                getDialog(this.context, schedule.loan, formula)
+                            CoroutineScope(Main).launch {
+                                getDialog(context, schedule.loan, formula)
                             }
                         }
                     }
@@ -89,13 +100,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 viewLifecycleOwner,
                 Observer {
 
+                    refreshSchedule(it)
                     it?.let {
-                        Log.d("sww", "set  _mLDAnnuity.value: ${it}")
                         val schedule = it
-                        refreshSchedule(schedule)
                         fab_Loan.setOnClickListener {
-                            this.context?.let {
-                                getDialog(this.context, schedule.loan, formula)
+                            CoroutineScope(Main).launch {
+                                getDialog(context, schedule.loan, formula)
                             }
                         }
                     }
@@ -110,6 +120,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                adapterSchedule.notifyDataSetChanged()*/
             adapterRecSchedule.item = sch
             adapterRecSchedule.notifyDataSetChanged()
+            val realRate = context?.getString(R.string.RealRate) + ": " +
+                    dec.format(sch.realRate).toString() + "%"
+            tvRealRateLoanAc.text = realRate
+            val total = context?.getString(R.string.TOTAL_PAYMENT) + ": " +
+                    dec.format((sch.totalPayment + sch.oneTimeComAndCosts)).toString()
+            tvTotalPayLoanAc.text = total
         } else {
             constraintLayoutFragment.visibility = View.GONE
         }
@@ -167,6 +183,9 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 loan.formula = formula
 
                 scheduleViewModel.addLoan(loan)
+
+                val success = context.getString(R.string.successSaved)
+                showSnackbar(success, fab_Loan, true)
 
             }
 

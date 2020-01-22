@@ -177,6 +177,7 @@
                         android:layout_height="?attr/actionBarSize"
                         android:gravity="center"
                         android:text="@string/Deposits"
+                        android:textColor="@android:color/black"
                         android:textSize="28sp"
                         app:layout_constraintTop_toTopOf="parent">
 

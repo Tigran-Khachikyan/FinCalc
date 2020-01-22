@@ -1,6 +1,7 @@
 package com.example.fincalc.ui.port.deps
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.ui.port.NavViewModel
 import kotlinx.android.synthetic.main.fragment_deps.*
 
 class DepositFragment : Fragment() {
@@ -45,5 +47,10 @@ class DepositFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        NavViewModel.Container.setNav(null,null)
     }
 }

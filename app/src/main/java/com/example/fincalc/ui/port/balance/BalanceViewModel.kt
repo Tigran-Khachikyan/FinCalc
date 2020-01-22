@@ -22,10 +22,6 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
     private val _curListLoan = RepoLoansFilter._cur
     private val _sortAccLoan = RepoLoansFilter._sortByRate
 
-    fun addLoan(loan: Loan) = viewModelScope.launch {
-        repository?.insertLoan(loan)
-    }
-
     fun deleteLoan(loan: Loan) = viewModelScope.launch {
         repository?.deleteLoan(loan)
     }
@@ -122,10 +118,6 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
     private val _curListDep = RepoDepFilter._cur
     private val _sortAccDep = RepoDepFilter._sortByRate
 
-    fun addDep(dep: Deposit) = viewModelScope.launch {
-        repository?.insertDep(dep)
-    }
-
     fun deleteDep(dep: Deposit) = viewModelScope.launch {
         repository?.deleteDep(dep)
     }
@@ -139,11 +131,11 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setSelDepCurList(curs: List<String>?) {
-        RepoLoansFilter._cur.value = curs
+        RepoDepFilter._cur.value = curs
     }
 
     fun setSortByDepRate(acc: Boolean?) {
-        RepoLoansFilter._sortByRate.value = acc
+        RepoDepFilter._sortByRate.value = acc
     }
 
     private val mediatorDep = MediatorLiveData<DepFilter>()
@@ -154,15 +146,15 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
                 mediatorDep.value =
                     combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
             }
-            mediatorLoan.addSource(_depFreqList) {
+            mediatorDep.addSource(_depFreqList) {
                 mediatorDep.value =
                     combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
             }
-            mediatorLoan.addSource(_curListDep) {
+            mediatorDep.addSource(_curListDep) {
                 mediatorDep.value =
                     combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
             }
-            mediatorLoan.addSource(_sortAccDep) {
+            mediatorDep.addSource(_sortAccDep) {
                 mediatorDep.value =
                     combFiltersDep(_depList, _depFreqList, _curListDep, _sortAccDep)
             }
@@ -254,6 +246,11 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         mediatorLoan.removeSource(_curListLoan)
         mediatorLoan.removeSource(_typeListLoan)
         mediatorLoan.removeSource(_sortAccLoan)
+
+        mediatorDep.removeSource(_depList!!)
+        mediatorDep.removeSource(_depFreqList)
+        mediatorDep.removeSource(_curListDep)
+        mediatorDep.removeSource(_sortAccDep)
     }
 }
 

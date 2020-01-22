@@ -31,8 +31,6 @@ class LoanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan)
 
-        initSpinner()
-
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
@@ -164,11 +162,11 @@ class LoanActivity : AppCompatActivity() {
                     iconTrigger(ivLogoLoanSum)
                 if (months == 0)
                     iconTrigger(ivLogoLoanTerm)
-                if (rate == 0.0F)
+                if (rate == -1.0F)
                     iconTrigger(ivLogoLoanRate)
 
                 val invalidInput = resources.getString(R.string.InvalidInput)
-                showSnackbar(invalidInput, view)
+                showSnackbar(invalidInput, view, true)
                 null
             }
             else -> {
@@ -208,16 +206,6 @@ class LoanActivity : AppCompatActivity() {
         }
     }
 
-    private fun initSpinner() {
-        adapterSpin = AdapterSpinnerRates(
-            this, R.layout.layoutspinner,
-            currencyCodeList, currencyFlagList, true
-        )
-        adapterSpin.setDropDownViewResource(R.layout.layoutspinner)
-        spinnerLoan.adapter = adapterSpin
-        spinnerLoan.setSelection(adapterSpin.count - 4)
-    }
-
     private fun getSchedule(formula: Formula, loan: Loan): TableLoan {
         loan.formula = formula
         return TableLoan(loan)
@@ -226,5 +214,10 @@ class LoanActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         Animatoo.animateSwipeLeft(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        clear()
     }
 }

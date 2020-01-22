@@ -54,7 +54,7 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
             tvNumber.text = dec.format(rowList?.get(position)?.curRowN)
             tvBalance.text = dec.format(rowList?.get(position)?.balance)
             tvPercent.text = dec.format(rowList?.get(position)?.percent)
-            tvPerAfterTax.text = dec.format(rowList?.get(position)?.percAfterTax)
+            tvPerAfterTax.text = dec.format(rowList?.get(position)?.perAfterTax)
             tvPayment.text = dec.format(rowList?.get(position)?.payment)
         }
     }

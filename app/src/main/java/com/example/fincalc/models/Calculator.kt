@@ -179,8 +179,8 @@ object Calculator {
             newRow.curRowN = 1
             newRow.balance = dep.amount.toDouble()
             newRow.percent = dep.months * newRow.balance * dep.rate / 1200
-            newRow.percAfterTax = newRow.percent * (1 - dep.taxRate / 100)
-            newRow.payment = newRow.balance + newRow.percAfterTax
+            newRow.perAfterTax = newRow.percent * (1 - dep.taxRate / 100)
+            newRow.payment = newRow.balance + newRow.perAfterTax
             result.add(newRow)
             result
         }
@@ -214,9 +214,9 @@ object Calculator {
                 newRow.curRowN = i + 1
                 newRow.balance =
                     if (i == 0) dep.amount.toDouble()
-                    else result[i - 1].balance + result[i - 1].percAfterTax
+                    else result[i - 1].balance + result[i - 1].perAfterTax
                 newRow.percent = factor * newRow.balance * dep.rate / 1200
-                newRow.percAfterTax = newRow.percent * (1 - dep.taxRate / 100)
+                newRow.perAfterTax = newRow.percent * (1 - dep.taxRate / 100)
                 newRow.payment = 0.0
                 result.add(newRow)
             }
@@ -226,10 +226,10 @@ object Calculator {
             if (rowCount != 0) {
                 lastRow.balance =
                     if (rowCount == 1) dep.amount.toDouble()
-                    else result[rowCount - 2].balance + result[rowCount - 2].percAfterTax
+                    else result[rowCount - 2].balance + result[rowCount - 2].perAfterTax
                 lastRow.percent = lastRow.balance * dep.rate / 1200
-                lastRow.percAfterTax = lastRow.percent * (1 - dep.taxRate / 100)
-                lastRow.payment = lastRow.percAfterTax + lastRow.balance
+                lastRow.perAfterTax = lastRow.percent * (1 - dep.taxRate / 100)
+                lastRow.payment = lastRow.perAfterTax + lastRow.balance
                 result.add(lastRow)
             }
 
@@ -240,8 +240,8 @@ object Calculator {
                 newRow.curRowN = i + 1
                 newRow.balance = dep.amount.toDouble()
                 newRow.percent = newRow.balance * dep.rate / 1200
-                newRow.percAfterTax = newRow.percent * (1 - dep.taxRate / 100)
-                newRow.payment = newRow.percAfterTax
+                newRow.perAfterTax = newRow.percent * (1 - dep.taxRate / 100)
+                newRow.payment = newRow.perAfterTax
                 result.add(newRow)
             }
 
@@ -249,8 +249,8 @@ object Calculator {
             lastRow.curRowN = rowCount
             lastRow.balance = dep.amount.toDouble()
             lastRow.percent = lastRow.balance * dep.rate / 1200
-            lastRow.percAfterTax = lastRow.percent * (1 - dep.taxRate / 100)
-            lastRow.payment = lastRow.percAfterTax + lastRow.balance
+            lastRow.perAfterTax = lastRow.percent * (1 - dep.taxRate / 100)
+            lastRow.payment = lastRow.perAfterTax + lastRow.balance
             result.add(lastRow)
         }
         return result

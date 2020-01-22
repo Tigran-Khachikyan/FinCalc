@@ -141,14 +141,14 @@ class AdapterRecLoansDetail(
                 when (curLoan.type) {
                     LoanType.MORTGAGE -> R.mipmap.type_mortgage
                     LoanType.BUSINESS -> R.mipmap.type_business
-                    LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.loan_logo
-                    LoanType.CAR_LOAN -> R.mipmap.type_at_the_end
-                    LoanType.DEPOSIT_SECURED -> R.mipmap.loan_logo
-                    LoanType.CONSUMER_LOAN -> R.mipmap.loan_logo
-                    LoanType.STUDENT_LOAN -> R.mipmap.type_monthly
-                    LoanType.UNSECURED -> R.mipmap.loan_logo
-                    LoanType.CREDIT_LINES -> R.mipmap.type_quarterly
-                    LoanType.OTHER -> R.mipmap.loan_logo
+                    LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.type_gold_secured
+                    LoanType.CAR_LOAN -> R.mipmap.type_car_loan
+                    LoanType.DEPOSIT_SECURED -> R.mipmap.type_other_loan
+                    LoanType.CONSUMER_LOAN -> R.mipmap.type_consumer
+                    LoanType.STUDENT_LOAN -> R.mipmap.type_student
+                    LoanType.UNSECURED -> R.mipmap.type_other_loan
+                    LoanType.CREDIT_LINES -> R.mipmap.type_card_loans
+                    LoanType.OTHER -> R.mipmap.type_other_loan
                 }
             )
 

@@ -16,9 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
+import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.getEnumFromSelection
+import com.example.fincalc.models.deposit.Frequency
+import com.example.fincalc.models.deposit.getFreqFromSelec
+import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.initialize
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.NavSwitcher
@@ -58,19 +62,34 @@ class BalanceFragment : Fragment() {
             Animatoo.animateSpin(context)
         }
 
+        fabRecBalanceAddDep.setOnClickListener {
+            val intent = Intent(context, DepositActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateInAndOut(context)
+        }
+
         bmbLoansMenuBalFr.initialize()
         bmbDepMenuBalFr.initialize()
 
 
+        //Loan adapter init
         adapterRecLoan = AdapterRecBalance(arrayListOf(), balanceViewModel, null)
         recyclerLoanBalanceFr.setHasFixedSize(true)
         recyclerLoanBalanceFr.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
         recyclerLoanBalanceFr.adapter = adapterRecLoan
+
+        //Deposit adapter init
+        adapterRecDep = AdapterRecBalance(arrayListOf(), balanceViewModel, null)
+        recyclerDepBalanceFr.setHasFixedSize(true)
+        recyclerDepBalanceFr.layoutManager =
+            LinearLayoutManager(this.context, RecyclerView.HORIZONTAL, false)
+        recyclerDepBalanceFr.adapter = adapterRecDep
     }
 
     override fun onResume() {
         super.onResume()
+
         //Loans
         balanceViewModel.getLoanList().observe(viewLifecycleOwner, Observer { loansFil ->
 
@@ -120,9 +139,7 @@ class BalanceFragment : Fragment() {
                         super.onClicked(index, boomButton)
                         when (index) {
                             0 -> getDialFilByLoanType(context, types)
-                            1 -> cur?.let {
-                                getDialFilByLoanCur(context, cur)
-                            }
+                            1 -> cur?.let { getDialFilterByCur(context, cur, true) }
                             2 -> setSortLoanByAcc(isAcc)
                             3 -> balanceViewModel.deleteAllLoans()
                         }
@@ -131,23 +148,22 @@ class BalanceFragment : Fragment() {
             }
         })
 
-
-        /*//Deposits
+        //Deposits
         balanceViewModel.getDepList().observe(viewLifecycleOwner, Observer { depFil ->
 
-            val deps = depFil.prodList as List<Deposit>?
+            val depList = depFil.prodList as List<Deposit>?
             val freq = depFil.freqList
             val cur = depFil.curList
             val isAcc = depFil.sortByAcc
 
             val textDepHeader = when {
-                deps == null || deps.isEmpty() -> "${context?.getString(R.string.noDepositFound)}"
-                deps.size == 1 -> "1 ${context?.getString(R.string.deposit)}"
-                else -> deps.size.toString() + " ${context?.getString(R.string.deposits)}"
+                depList == null || depList.isEmpty() -> "${context?.getString(R.string.noDepositFound)}"
+                depList.size == 1 -> "1 ${context?.getString(R.string.deposit)}"
+                else -> depList.size.toString() + " ${context?.getString(R.string.deposits)}"
             }
 
             layDepMenuBalFr.text = textDepHeader
-            deps?.let {
+            depList?.let {
 
                 tvDepTypeFilterBalFr.setOnClickListener {
                     tvDepTypeFilterBalFr.visibility = View.GONE
@@ -178,19 +194,18 @@ class BalanceFragment : Fragment() {
                     override fun onClicked(index: Int, boomButton: BoomButton) {
                         super.onClicked(index, boomButton)
                         when (index) {
-                            0 -> getDialFilByLoanType(context, types)
-                            1 -> cur?.let {
-                                getDialFilByLoanCur(context, cur)
-                            }
-                            2 -> setSortByAcc(isAcc, false)
-                            3 -> balanceViewModel.deleteAllLoans()
+                            0 -> getDialFilByDepFreq(context, freq)
+                            1 -> cur?.let { getDialFilterByCur(context, cur, false) }
+                            2 -> setSortDepByAcc(isAcc)
+                            3 -> balanceViewModel.deleteAllDep()
                         }
                     }
                 }
             }
-        })*/
+        })
     }
 
+    //Loans
     @SuppressLint("InflateParams")
     private fun getDialFilByLoanType(context: Context?, types: List<LoanType>?) {
         if (context != null) {
@@ -203,43 +218,24 @@ class BalanceFragment : Fragment() {
             val checkedTypes = arrayListOf<LoanType>()
 
             fun btnCheck(btn: Button) {
-                btn.background = context.getDrawable(R.drawable.btncalculate)
-                btn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bag, 0, 0, 0)
-                btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
-                val curEnum =
-                    getEnumFromSelection(
-                        btn.text.toString(),
-                        context
-                    )
+                showSelected(btn, context)
+                val curEnum = getEnumFromSelection(btn.text.toString(), context)
                 checkedTypes.add(curEnum)
             }
 
             fun btnUncheck(btn: Button) {
-                btn.background = context.getDrawable(R.drawable.btnexpand)
-                btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
-                val curEnum =
-                    getEnumFromSelection(
-                        btn.text.toString(),
-                        context
-                    )
+                showUnSelected(btn, context)
+                val curEnum = getEnumFromSelection(btn.text.toString(), context)
                 if (checkedTypes.contains(curEnum))
                     checkedTypes.remove(curEnum)
-
             }
-
-            fun isBtnChecked(btn: Button): Boolean = btn.textSize == BUTTON_DIALOG_SIZE_PRESSED * 2
-
 
             val btnDialClickList = View.OnClickListener {
+
                 val curBut = it as Button
-
-                if (isBtnChecked(curBut))
-                    btnUncheck(curBut)
-                else
-                    btnCheck(curBut)
+                if (isBtnChecked(curBut)) btnUncheck(curBut)
+                else btnCheck(curBut)
             }
-
 
             val btnMort: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
             val btnCar: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
@@ -351,8 +347,150 @@ class BalanceFragment : Fragment() {
         }
     }
 
+    fun setSortLoanByAcc(acc: Boolean?) {
+        when (acc) {
+            null, false -> balanceViewModel.setSortByLoanRate(true)
+            true -> balanceViewModel.setSortByLoanRate(false)
+        }
+        tvLoanSortFilterBalFr.visibility = View.VISIBLE
+    }
+
+
+    //Deposit
     @SuppressLint("InflateParams")
-    private fun getDialFilByLoanCur(context: Context?, curs: List<String>) {
+    private fun getDialFilByDepFreq(context: Context?, freq: List<Frequency>?) {
+        if (context != null) {
+            val dialogBuilder = AlertDialog.Builder(context)
+            val inflater = this.layoutInflater
+            val dialogView = inflater.inflate(R.layout.dialog_filter_type, null)
+            dialogBuilder.setView(dialogView)
+
+            //Buttons
+            val checkedFreq = arrayListOf<Frequency>()
+
+            fun btnCheck(btn: Button) {
+                showSelected(btn, context)
+                val curFreq = getFreqFromSelec(btn.text.toString(), context)
+                checkedFreq.add(curFreq)
+            }
+
+            fun btnUncheck(btn: Button) {
+                showUnSelected(btn, context)
+                val curFreq =
+                    getFreqFromSelec(btn.text.toString(), context)
+                if (checkedFreq.contains(curFreq))
+                    checkedFreq.remove(curFreq)
+            }
+
+            val btnDialClickList = View.OnClickListener {
+                val curBut = it as Button
+                if (isBtnChecked(curBut)) btnUncheck(curBut)
+                else btnCheck(curBut)
+            }
+
+            dialogView.findViewById<Button>(R.id.btnDialLoanTypeCrLines).visibility = View.GONE
+            dialogView.findViewById<Button>(R.id.btnDialLoanTypeDepSec).visibility = View.GONE
+            dialogView.findViewById<Button>(R.id.btnDialLoanTypeGold).visibility = View.GONE
+            dialogView.findViewById<Button>(R.id.btnDialLoanTypeStud).visibility = View.GONE
+            dialogView.findViewById<Button>(R.id.btnDialLoanTypeUnsecured).visibility = View.GONE
+
+            val btnMonthly: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
+            val btnQuart: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
+            val btnAtTheEnd: Button = dialogView.findViewById(R.id.btnDialLoanTypeBus)
+            val btnOther: Button = dialogView.findViewById(R.id.btnDialLoanTypeCons)
+            val btnSelAllOrClear: Button = dialogView.findViewById(R.id.btnDialSelectOrClear)
+
+            btnMonthly.text = context.getString(R.string.MonthlyPaymentDep)
+            btnQuart.text = context.getString(R.string.QuarterlyPaymentDep)
+            btnAtTheEnd.text = context.getString(R.string.AtTheEndPayment)
+            btnOther.text = context.getString(R.string.OTHER)
+
+            btnMonthly.setOnClickListener(btnDialClickList)
+            btnQuart.setOnClickListener(btnDialClickList)
+            btnAtTheEnd.setOnClickListener(btnDialClickList)
+            btnOther.setOnClickListener(btnDialClickList)
+
+            fun selectAll() {
+                btnCheck(btnMonthly)
+                btnCheck(btnOther)
+                btnCheck(btnQuart)
+                btnCheck(btnAtTheEnd)
+                btnCheck(btnSelAllOrClear)
+            }
+
+            fun clear() {
+                btnUncheck(btnMonthly)
+                btnUncheck(btnOther)
+                btnUncheck(btnQuart)
+                btnUncheck(btnAtTheEnd)
+                btnUncheck(btnSelAllOrClear)
+            }
+
+            btnSelAllOrClear.setOnClickListener {
+                val curButton = it as Button
+                if (!isBtnChecked(curButton)) {
+                    selectAll()
+                    curButton.text = context.getString(R.string.CLEAR)
+                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                } else {
+                    clear()
+                    curButton.text = context.getString(R.string.SELECT_ALL)
+                    curButton.background = context.getDrawable(R.drawable.btnclear)
+                }
+            }
+
+            //initialize
+            when {
+                freq == null -> btnSelAllOrClear.performClick()
+                freq.isEmpty() -> clear()
+                else -> {
+                    if (freq.contains(Frequency.MONTHLY)) btnCheck(btnMonthly)
+                    else btnUncheck(btnMonthly)
+                    if (freq.contains(Frequency.QUARTERLY)) btnCheck(btnQuart)
+                    else btnUncheck(btnQuart)
+                    if (freq.contains(Frequency.AT_THE_END)) btnCheck(btnAtTheEnd)
+                    else btnUncheck(btnAtTheEnd)
+                    if (freq.contains(Frequency.OTHER)) btnCheck(btnOther)
+                    else btnUncheck(btnOther)
+                    if (freq.size < 4) btnUncheck(btnSelAllOrClear)
+                    else btnCheck(btnSelAllOrClear)
+                }
+            }
+
+            //click SAVE
+            dialogBuilder.setPositiveButton(
+                getString(R.string.save)
+            ) { _, _ ->
+
+                if (checkedFreq.size < 4)
+                    tvDepTypeFilterBalFr.visibility = View.VISIBLE
+                else
+                    tvDepTypeFilterBalFr.visibility = View.GONE
+
+                balanceViewModel.setSelDepFreqList(checkedFreq)
+            }
+            //click CANCEL
+            dialogBuilder.setNegativeButton(
+                getString(R.string.cancel)
+            ) { _, _ -> }
+
+            val alertDialog = dialogBuilder.create()
+            alertDialog.show()
+        }
+    }
+
+    fun setSortDepByAcc(acc: Boolean?) {
+        when (acc) {
+            null, false -> balanceViewModel.setSortByDepRate(true)
+            true -> balanceViewModel.setSortByDepRate(false)
+        }
+        tvDepSortFilterBalFr.visibility = View.VISIBLE
+    }
+
+
+    //Common
+    @SuppressLint("InflateParams")
+    private fun getDialFilterByCur(context: Context?, curs: List<String>, loan: Boolean) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
@@ -372,8 +510,14 @@ class BalanceFragment : Fragment() {
                 val selection = spinner.selectedItem.toString()
                 val list = arrayListOf<String>()
                 list.add(selection)
-                balanceViewModel.setSelLoanCurList(list)
-                tvLoanCurFilterBalFr.visibility = View.VISIBLE
+
+                if (loan) {
+                    balanceViewModel.setSelLoanCurList(list)
+                    tvLoanCurFilterBalFr.visibility = View.VISIBLE
+                } else {
+                    balanceViewModel.setSelDepCurList(list)
+                    tvDepCurFilterBalFr.visibility = View.VISIBLE
+                }
             }
 
             //click CANCEL
@@ -386,24 +530,23 @@ class BalanceFragment : Fragment() {
         }
     }
 
-    fun setSortLoanByAcc(acc: Boolean?) {
-        when (acc) {
-            null, false -> balanceViewModel.setSortByLoanRate(true)
-            true -> balanceViewModel.setSortByLoanRate(false)
-        }
-        tvLoanSortFilterBalFr.visibility = View.VISIBLE
+    private fun showSelected(btn: Button, context: Context?) {
+        btn.background = context?.getDrawable(R.drawable.btncalculate)
+        btn.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.mipmap.checked,0)
+        btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
     }
 
-    fun setSortDepByAcc(acc: Boolean?) {
-        when (acc) {
-            null, false -> balanceViewModel.setSortByDepRate(true)
-            true -> balanceViewModel.setSortByDepRate(false)
-        }
-        tvDepSortFilterBalFr.visibility = View.GONE
+    private fun showUnSelected(btn: Button, context: Context?) {
+        btn.background = context?.getDrawable(R.drawable.btnexpand)
+        btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+        btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
     }
+
+    private fun isBtnChecked(btn: Button): Boolean = btn.textSize == BUTTON_DIALOG_SIZE_PRESSED * 2
 
     override fun onPause() {
         super.onPause()
         balanceViewModel.removeSources()
     }
+
 }

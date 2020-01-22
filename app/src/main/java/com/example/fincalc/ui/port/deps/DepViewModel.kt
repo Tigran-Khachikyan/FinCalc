@@ -13,7 +13,7 @@ class DepViewModel(application: Application) : AndroidViewModel(application) {
     private val medLiveData = MediatorLiveData<List<Deposit>>()
     //  fun getLoanList() = repo?.getLoans()
 
-    private val selDepLiveData = NavViewModel.Container.navSelLoanIdLD
+    private val selDepLiveData = NavViewModel.Container.navSelDepIdLD
     private val depListLiveData = repo?.getDep()
 
     fun getDepList(): LiveData<List<Deposit>>? {

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.fincalc.ui
 
 import android.app.Activity
@@ -18,11 +20,13 @@ fun iconTrigger(view: View) {
     view.startAnimation(anim1)
 }
 
-fun showSnackbar(text:String, view: View) {
-    val snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG
+fun showSnackbar(text: String, view: View, loan: Boolean) {
+    val snackbar = Snackbar.make(
+        view, text, Snackbar.LENGTH_LONG
     ).setAction("Action", null)
     val sbView: View = snackbar.view
-    sbView.setBackgroundColor(view.context.resources.getColor(R.color.colorAccent))
+    val color: Int = if (loan) R.color.LoansPrimaryDark else R.color.DepPrimaryDark
+    sbView.setBackgroundColor(view.context.resources.getColor(color))
     snackbar.show()
 }
 

@@ -12,7 +12,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/customPrimaryLoan"
+        android:background="@color/LoansPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/LoansPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
@@ -35,6 +35,7 @@
                     android:id="@+id/ivLoanImage"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
+                    android:background="@mipmap/image_loan_main"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <!--Mandatory Input-->
@@ -42,35 +43,32 @@
                     android:id="@+id/layoutLoanMandatoryInput"
                     android:layout_width="match_parent"
                     android:layout_height="210dp"
-                    app:layout_constraintTop_toBottomOf="@id/ivLoanImage"
-                    app:layout_constraintBottom_toTopOf="@id/layoutLoanInputOptional">
+                    app:layout_constraintBottom_toTopOf="@id/layoutLoanInputOptional"
+                    app:layout_constraintTop_toBottomOf="@id/ivLoanImage">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
                         android:id="@+id/cardLoanAmount"
-                        app:layout_constraintBottom_toTopOf="@id/cardLoanTerm"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_margin="10dp"
-                        app:layout_constraintVertical_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:background="@drawable/cardviewshapeloan">
+                        android:layout_margin="6dp"
+                        android:background="@drawable/cardviewshapeloan"
+                        app:layout_constraintBottom_toTopOf="@id/cardLoanTerm"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toRightOf="@id/tvLoanInputSumIntro"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_weight="1">
 
-                        <TextView
-                            android:id="@+id/tvLoanInputSumIntro"
-                            style="@style/textViewIntroInput"
-                            android:drawableEnd="@drawable/ic_star_black_24dp"
-                            android:text="@string/Amount"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
                             android:id="@+id/etSum"
                             style="@style/editTextMainInput"
-                            android:layout_width="250dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:hint="@string/HintAmount"
                             android:inputType="number"
                             android:maxLength="9"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/ivLogoLoanSum" />
 
                         <ImageView
@@ -81,41 +79,100 @@
                             android:src="@mipmap/money"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.75" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvLoanInputSumIntro"
+                        style="@style/textViewIntroInput"
+                        android:layout_width="0dp"
+                        android:drawableEnd="@drawable/ic_star_black_24dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:textSize="16sp"
+                        android:text="@string/Amount"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanAmount"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/cardLoanAmount"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanAmount"
+                        tools:ignore="RtlSymmetry" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardLoanTerm"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
                         android:background="@drawable/cardviewshapeloan"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toRightOf="@id/cardLoanRate"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/cardLoanRate"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/tvTermIntro"
                         app:layout_constraintTop_toBottomOf="@id/cardLoanAmount"
                         app:layout_constraintVertical_weight="1">
 
-                        <TextView
-                            android:id="@+id/tvRateIntro"
-                            style="@style/textViewIntroInput"
-                            android:drawableEnd="@drawable/ic_star_black_24dp"
-                            android:text="@string/Interest_rate"
+                        <EditText
+                            android:id="@+id/etTerm"
+                            style="@style/editTextMainInput"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:hint="@string/HintTerm"
+                            android:inputType="number"
+                            android:maxLength="4"
                             app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/ivLogoLoanTerm" />
+
+                        <ImageView
+                            android:id="@+id/ivLogoLoanTerm"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginEnd="6dp"
+                            android:src="@mipmap/hourglass"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvTermIntro"
+                        style="@style/textViewIntroInput"
+                        android:drawableStart="@drawable/ic_star_black_24dp"
+                        android:paddingEnd="10dp"
+                        android:textSize="16sp"
+                        android:gravity="start"
+                        android:text="@string/Term_months"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanTerm"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toRightOf="@id/cardLoanTerm"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanTerm"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardLoanRate"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_margin="6dp"
+                        android:background="@drawable/cardviewshapeloan"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardLoanTerm"
+                        app:layout_constraintVertical_weight="1">
 
                         <EditText
                             android:id="@+id/etRate"
                             style="@style/editTextMainInput"
-                            android:layout_width="100dp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:hint="@string/HintRate"
                             android:inputType="numberDecimal"
                             android:maxLength="5"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/ivLogoLoanRate" />
 
                         <ImageView
@@ -131,49 +188,21 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardLoanRate"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cardviewshapeloan"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_weight="1"
+                    <TextView
+                        android:id="@+id/tvRateIntro"
+                        style="@style/textViewIntroInput"
+                        android:drawableEnd="@drawable/ic_star_black_24dp"
+                        android:paddingStart="10dp"
+                        android:textSize="16sp"
+                        android:gravity="end"
+                        android:text="@string/Interest_rate"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanRate"
+                        app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/cardLoanTerm"
-                        app:layout_constraintTop_toBottomOf="@id/cardLoanAmount"
-                        app:layout_constraintVertical_weight="1">
+                        app:layout_constraintRight_toLeftOf="@id/cardLoanRate"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanRate"
+                        tools:ignore="RtlSymmetry" />
 
-                        <TextView
-                            android:id="@+id/tvTermIntro"
-                            style="@style/textViewIntroInput"
-                            android:drawableEnd="@drawable/ic_star_black_24dp"
-                            android:text="@string/Term_months"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/etTerm"
-                            style="@style/editTextMainInput"
-                            android:layout_width="100dp"
-                            android:hint="@string/HintTerm"
-                            android:inputType="number"
-                            android:maxLength="4"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/ivLogoLoanTerm" />
-
-                        <ImageView
-                            android:id="@+id/ivLogoLoanTerm"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginEnd="6dp"
-                            android:src="@mipmap/hourglass"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.75" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,87 +211,33 @@
                     android:id="@+id/layoutLoanInputOptional"
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/layoutLoanButtons">
 
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardLoanCurrency"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:background="@drawable/cardviewshapeloan"
-                        android:layout_marginStart="10dp"
-                        app:layout_constraintBottom_toTopOf="@id/cardLoanMonthlyTimeCom"
-                        app:layout_constraintHorizontal_weight="0.618"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/cardLoanOneTimeCom"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_weight="1">
-
-                        <TextView
-                            android:id="@+id/tvCurrencyLoanIntro"
-                            style="@style/textViewIntroInput"
-                            android:text="@string/Currency"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/ivLogoLoanCurrency"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginEnd="6dp"
-                            android:src="@mipmap/currencyicon"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Spinner
-                            android:id="@+id/spinnerLoan"
-                            style="@style/currencyViewsSmall"
-                            android:layout_height="0dp"
-                            app:layout_constraintHeight_percent="0.6"
-                            app:layout_constraintWidth_percent="0.9"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.77"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintHorizontal_bias="0.8"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardLoanOneTimeCom"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
                         android:background="@drawable/cardviewshapeloan"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
                         app:layout_constraintBottom_toTopOf="@id/cardLoanMonthlyTimeCom"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toRightOf="@id/cardLoanCurrency"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/tvComIntro"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_weight="0.33">
-
-                        <TextView
-                            android:id="@+id/tvComIntro"
-                            style="@style/textViewIntroInput"
-                            android:text="@string/One_Time_Commission"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                        app:layout_constraintVertical_weight="1">
 
                         <EditText
                             android:id="@+id/etOneTimeCommRate"
                             style="@style/editTextOptional"
-                            android:layout_marginBottom="8dp"
                             android:inputType="numberDecimal"
                             android:maxLength="4"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="1.7"
+                            app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/checkboxOneTime" />
+                            app:layout_constraintRight_toLeftOf="@id/checkboxOneTime"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvOneTimeComeRate"
@@ -271,18 +246,18 @@
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent" />
+                            app:layout_constraintLeft_toLeftOf="@id/etOneTimeCommRate"
+                            app:layout_constraintRight_toRightOf="@id/etOneTimeCommRate" />
 
                         <CheckBox
                             android:id="@+id/checkboxOneTime"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:text="@string/But_Min"
                             android:textAlignment="center"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="1.5"
+                            app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintLeft_toRightOf="@id/etOneTimeCommRate"
                             app:layout_constraintRight_toLeftOf="@id/etOneTimeCommSum"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -290,77 +265,79 @@
                         <EditText
                             android:id="@+id/etOneTimeCommSum"
                             style="@style/editTextOptional"
-                            android:layout_marginBottom="8dp"
                             android:inputType="number"
                             android:maxLength="8"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="2"
+                            app:layout_constraintHorizontal_weight="1.3"
                             app:layout_constraintLeft_toRightOf="@id/checkboxOneTime"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvOneTimeComeFixed"
                             style="@style/textViewIntroInput"
-                            android:layout_marginTop="0dp"
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintLeft_toLeftOf="@id/etOneTimeCommSum"
+                            app:layout_constraintRight_toRightOf="@id/etOneTimeCommSum" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvComIntro"
+                        style="@style/textViewIntroInput"
+                        android:paddingEnd="10dp"
+                        android:text="@string/One_Time_Commission"
+                        android:gravity="start"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanOneTimeCom"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toRightOf="@id/cardLoanOneTimeCom"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanOneTimeCom"
+                        tools:ignore="RtlSymmetry" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardLoanMonthlyTimeCom"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_margin="6dp"
+                        android:layout_marginStart="6dp"
                         android:background="@drawable/cardviewshapeloan"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintBottom_toTopOf="@id/cardLoanOtherCosts"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/cardLoanAnnualTimeCom"
-                        app:layout_constraintTop_toBottomOf="@id/cardLoanCurrency"
+                        app:layout_constraintBottom_toTopOf="@id/cardLoanAnnualTimeCom"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toRightOf="@id/tvMonthlyComIntro"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardLoanOneTimeCom"
                         app:layout_constraintVertical_weight="1">
-
-                        <TextView
-                            android:id="@+id/tvMonthlyComIntro"
-                            style="@style/textViewIntroInput"
-                            android:text="@string/Monthly_Commission"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
 
                         <EditText
                             android:id="@+id/etMonthlyCommRate"
                             style="@style/editTextOptional"
-                            android:layout_marginBottom="8dp"
                             android:inputType="numberDecimal"
                             android:maxLength="4"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="1.7"
+                            app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/checkboxMonthly" />
+                            app:layout_constraintRight_toLeftOf="@id/checkboxMonthly"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvMonthlyComeRate"
                             style="@style/textViewIntroInput"
-                            android:layout_marginTop="0dp"
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent" />
+                            app:layout_constraintLeft_toLeftOf="@id/etMonthlyCommRate"
+                            app:layout_constraintRight_toRightOf="@id/etMonthlyCommRate" />
 
                         <CheckBox
                             android:id="@+id/checkboxMonthly"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:text="@string/But_Min"
                             android:textAlignment="center"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="1.5"
+                            app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintLeft_toRightOf="@id/etMonthlyCommRate"
                             app:layout_constraintRight_toLeftOf="@id/etMonthlyCommSum"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -368,90 +345,93 @@
                         <EditText
                             android:id="@+id/etMonthlyCommSum"
                             style="@style/editTextOptional"
-                            android:layout_marginBottom="8dp"
                             android:inputType="number"
                             android:maxLength="8"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="2"
+                            app:layout_constraintHorizontal_weight="1.3"
                             app:layout_constraintLeft_toRightOf="@id/checkboxMonthly"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvMonthlyCommFixed"
                             style="@style/textViewIntroInput"
-                            android:layout_marginTop="0dp"
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintLeft_toLeftOf="@id/etMonthlyCommSum"
+                            app:layout_constraintRight_toRightOf="@id/etMonthlyCommSum" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvMonthlyComIntro"
+                        style="@style/textViewIntroInput"
+                        android:paddingStart="10dp"
+                        android:text="@string/Monthly_Commission"
+                        android:gravity="end"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanMonthlyTimeCom"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/cardLoanMonthlyTimeCom"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanMonthlyTimeCom"
+                        tools:ignore="RtlSymmetry" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardLoanAnnualTimeCom"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_margin="10dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
                         android:background="@drawable/cardviewshapeloan"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_weight="0.618"
-                        app:layout_constraintLeft_toRightOf="@id/cardLoanMonthlyTimeCom"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cardLoanOneTimeCom"
-                        app:layout_constraintVertical_weight="0.618">
-
-                        <TextView
-                            android:id="@+id/tvAnnualComIntro"
-                            style="@style/textViewIntroInput"
-                            android:layout_marginStart="10dp"
-                            android:gravity="start"
-                            android:text="@string/Annual_Commission"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                        app:layout_constraintBottom_toTopOf="@id/cardLoanOtherCosts"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/tvAnnualComIntro"
+                        app:layout_constraintTop_toBottomOf="@id/cardLoanMonthlyTimeCom"
+                        app:layout_constraintVertical_weight="1">
 
                         <EditText
                             android:id="@+id/etAnnualCommRate"
                             style="@style/editTextOptional"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:inputType="numberDecimal"
                             android:maxLength="4"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.26" />
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/checkboxAnnual"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvAnnualComeRate"
                             style="@style/textViewIntroInput"
-                            android:layout_width="match_parent"
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.46" />
+                            app:layout_constraintLeft_toLeftOf="@id/etAnnualCommRate"
+                            app:layout_constraintRight_toRightOf="@id/etAnnualCommRate"/>
 
                         <CheckBox
                             android:id="@+id/checkboxAnnual"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/But_Min"
-                            android:textAlignment="center"
                             android:textSize="12sp"
+                            android:text="@string/But_Min"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.63" />
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintLeft_toRightOf="@id/etAnnualCommRate"
+                            app:layout_constraintRight_toLeftOf="@id/etAnnualCommSum"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
                             android:id="@+id/etAnnualCommSum"
                             style="@style/editTextOptional"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:inputType="number"
                             android:maxLength="8"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.86" />
+                            app:layout_constraintHorizontal_weight="1.3"
+                            app:layout_constraintLeft_toRightOf="@id/checkboxAnnual"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tvAnnualCommFixed"
@@ -459,44 +439,62 @@
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.97" />
+                            app:layout_constraintLeft_toLeftOf="@id/etAnnualCommSum"
+                            app:layout_constraintRight_toRightOf="@id/etAnnualCommSum" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tvAnnualComIntro"
+                        style="@style/textViewIntroInput"
+                        android:gravity="start"
+                        android:paddingEnd="10dp"
+                        android:text="@string/Annual_Commission"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanAnnualTimeCom"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toRightOf="@id/cardLoanAnnualTimeCom"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanAnnualTimeCom"
+                        tools:ignore="RtlSymmetry" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cardLoanOtherCosts"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_margin="10dp"
+                        android:layout_margin="6dp"
                         android:background="@drawable/cardviewshapeloan"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/cardLoanAnnualTimeCom"
-                        app:layout_constraintTop_toBottomOf="@id/cardLoanMonthlyTimeCom"
+                        app:layout_constraintHorizontal_weight="8"
+                        app:layout_constraintLeft_toRightOf="@id/tvOtherCostsIntro"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cardLoanAnnualTimeCom"
                         app:layout_constraintVertical_weight="1">
-
-                        <TextView
-                            android:id="@+id/tvOtherCostsIntro"
-                            style="@style/textViewIntroInput"
-                            android:text="@string/Other_One_Time_Costs"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
                             android:id="@+id/etOtherCosts"
                             style="@style/editTextMainInput"
                             android:layout_width="match_parent"
-                            android:drawableEnd="@mipmap/money"
                             android:hint="@string/HintOtherCosts"
                             android:inputType="number"
                             android:maxLength="7"
-                            android:textSize="22sp"
+                            android:textSize="28sp"
+                            app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <TextView
+                        android:id="@+id/tvOtherCostsIntro"
+                        style="@style/textViewIntroInput"
+                        android:paddingStart="10dp"
+                        android:gravity="end"
+                        android:text="@string/Other_One_Time_Costs"
+                        app:layout_constraintBottom_toBottomOf="@id/cardLoanOtherCosts"
+                        app:layout_constraintHorizontal_weight="3.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/cardLoanOtherCosts"
+                        app:layout_constraintTop_toTopOf="@id/cardLoanOtherCosts"
+                        tools:ignore="RtlSymmetry" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -505,9 +503,9 @@
                     android:id="@+id/layoutLoanButtons"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <Button
@@ -521,7 +519,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHorizontal_weight="5"
+                        app:layout_constraintHorizontal_weight="4"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/btnClear"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -561,22 +559,36 @@
                 android:id="@+id/toolbarLoan"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/customDarkLoan"
+                android:background="@color/LoansPrimaryDark"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:titleTextColor="@android:color/white">
 
-                <TextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/consultants"
-                    android:gravity="center"
-                    android:paddingEnd="20dp"
-                    android:text="@string/loanCalculator"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/loanCalculator"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/ivLogoLoanAc"
+                        android:src="@mipmap/consultants"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        tools:ignore="ContentDescription" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -587,7 +599,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary" />
+            android:background="@color/LoansPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

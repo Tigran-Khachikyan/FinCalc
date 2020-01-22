@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/tvOneTimeCommissionAndCostsIntro"
         style="@style/textView"
-        android:text="One Time Commission and costs ->"
+        android:text="@string/oneTimeComeAndCost"
         app:layout_constraintHorizontal_weight="236"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textSize="13sp"
@@ -19,11 +19,9 @@
     <TextView
         android:id="@+id/tvOneTimeCommissionAndCosts"
         style="@style/textView"
-        android:text="60000"
         android:textSize="13sp"
         android:paddingStart="18dp"
         android:paddingEnd="30dp"
-        android:drawableStart="@drawable/ic_arrow_downward_black_24dp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_weight="134"
         app:layout_constraintLeft_toRightOf="@id/tvOneTimeCommissionAndCostsIntro"

@@ -12,9 +12,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val repository = Repository.getInstance(application)
 
     object RepoSchedule {
-        val scheduleAnnLiveData: MutableLiveData<TableLoan> = MutableLiveData()
-        val scheduleDiffLiveData: MutableLiveData<TableLoan> = MutableLiveData()
-        val scheduleOverLiveData: MutableLiveData<TableLoan> = MutableLiveData()
+        val scheduleAnnLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
+        val scheduleDiffLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
+        val scheduleOverLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
 
         fun setScheduleAnn(schedule: TableLoan) {
             scheduleAnnLiveData.value = schedule
@@ -39,7 +39,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         repository?.insertLoan(loan)
     }
 
-    fun getScheduleAnnuity(): LiveData<TableLoan> = RepoSchedule.scheduleAnnLiveData
-    fun getScheduleDifferential(): LiveData<TableLoan> = RepoSchedule.scheduleDiffLiveData
-    fun getScheduleOverdraft(): LiveData<TableLoan> = RepoSchedule.scheduleOverLiveData
+    fun getScheduleAnnuity(): LiveData<TableLoan?> = RepoSchedule.scheduleAnnLiveData
+    fun getScheduleDifferential(): LiveData<TableLoan?> = RepoSchedule.scheduleDiffLiveData
+    fun getScheduleOverdraft(): LiveData<TableLoan?> = RepoSchedule.scheduleOverLiveData
 }

@@ -122,6 +122,7 @@
     --BalanceFragment-
     <string name="selectedCurrency">Selected Currency</string>
     <string name="selectedType">Selected Loan Type</string>
+    <string name="oneTimeComeAndCost">One Time Commission and costs -></string>
     <string name="sortedByInterestRate">Sorted by interest rate</string>
     <string name="ascending">ascending</string>
     <string name="descending">descending</string>
@@ -133,5 +134,6 @@
     <string name="EffectiveRate">Effective Rate</string>
     <string name="Income">Income</string>
     <string name="dialogTitle">Saving options</string>
+    <string name="successSaved">Successfully saved in Portfolio</string>
 
 </resources>

@@ -8,5 +8,5 @@ class RowDep : Row {
     override var balance: Double = 0.0
     override var percent: Double = 0.0
     override var payment: Double = 0.0
-    var percAfterTax: Double = 0.0
+    var perAfterTax: Double = 0.0
 }

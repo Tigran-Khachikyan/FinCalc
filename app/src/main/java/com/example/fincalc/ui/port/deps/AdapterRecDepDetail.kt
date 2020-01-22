@@ -1,6 +1,7 @@
 package com.example.fincalc.ui.port.deps
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,7 @@ class AdapterRecDepDetail(
 
             val capitalize = curDep.capitalize
 
+            Log.d("cappp", "capital: $capitalize")
             if (!capitalize)
                 holder.tvCapital.visibility = View.GONE
             else {
@@ -93,7 +95,7 @@ class AdapterRecDepDetail(
 
             holder.ivDepFr.setImageResource(
                 when (curDep.frequency) {
-                    Frequency.MONTHLY -> R.mipmap.type_monthly
+                    Frequency.MONTHLY -> R.mipmap.type_car_loan
                     Frequency.QUARTERLY -> R.mipmap.type_quarterly
                     Frequency.AT_THE_END -> R.mipmap.type_at_the_end
                     Frequency.OTHER -> R.mipmap.deposit_logo
