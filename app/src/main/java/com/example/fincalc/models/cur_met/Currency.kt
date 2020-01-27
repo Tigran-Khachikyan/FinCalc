@@ -3,51 +3,98 @@ package com.example.fincalc.models.cur_met
 import com.example.fincalc.R
 import com.example.fincalc.data.network.api_rates.Rates
 
-fun getCurrencyMapValues(rates: Rates?): HashMap<String, Double>? =
-    if (rates != null) hashMapOf(
-        "AMD" to rates.AMD,
-        "AED" to rates.AED,
-        "ARS" to rates.ARS,
-        "AUD" to rates.AUD,
-        "BOB" to rates.BOB,
-        "BRL" to rates.BRL,
-        "BYN" to rates.BYN,
-        "CAD" to rates.CAD,
-        "CHF" to rates.CHF,
-        "CNY" to rates.CNY,
-        "CUC" to rates.CUC,
-        "CUP" to rates.CUP,
-        "EGP" to rates.EGP,
-        "EUR" to rates.EUR,
-        "GBP" to rates.GBP,
-        "GEL" to rates.GEL,
-        "ILS" to rates.ILS,
-        "INR" to rates.INR,
-        "IQD" to rates.IQD,
-        "IRR" to rates.IRR,
-        "JPY" to rates.JPY,
-        "KRW" to rates.KRW,
-        "KWD" to rates.KWD,
-        "LBP" to rates.LBP,
-        "MAD" to rates.MAD,
-        "MXN" to rates.MXN,
-        "NZD" to rates.NZD,
-        "PEN" to rates.PEN,
-        "QAR" to rates.QAR,
-        "RUB" to rates.RUB,
-        "SAR" to rates.SAR,
-        "SEK" to rates.SEK,
-        "SGD" to rates.SGD,
-        "SYP" to rates.SYP,
-        "THB" to rates.THB,
-        "TND" to rates.TND,
-        "TRY" to rates.TRY,
-        "UAH" to rates.UAH,
-        "USD" to rates.USD,
-        "UYU" to rates.UYU,
-        "VND" to rates.VND,
-        "ZAR" to rates.ZAR
-    ) else null
+fun getMapCurRates(rates: Rates): HashMap<String, Double>? = hashMapOf(
+    "AMD" to rates.AMD,
+    "AED" to rates.AED,
+    "ARS" to rates.ARS,
+    "AUD" to rates.AUD,
+    "BOB" to rates.BOB,
+    "BRL" to rates.BRL,
+    "BYN" to rates.BYN,
+    "CAD" to rates.CAD,
+    "CHF" to rates.CHF,
+    "CNY" to rates.CNY,
+    "CUC" to rates.CUC,
+    "CUP" to rates.CUP,
+    "EGP" to rates.EGP,
+    "EUR" to rates.EUR,
+    "GBP" to rates.GBP,
+    "GEL" to rates.GEL,
+    "ILS" to rates.ILS,
+    "INR" to rates.INR,
+    "IQD" to rates.IQD,
+    "IRR" to rates.IRR,
+    "JPY" to rates.JPY,
+    "KRW" to rates.KRW,
+    "KWD" to rates.KWD,
+    "LBP" to rates.LBP,
+    "MAD" to rates.MAD,
+    "MXN" to rates.MXN,
+    "NZD" to rates.NZD,
+    "PEN" to rates.PEN,
+    "QAR" to rates.QAR,
+    "RUB" to rates.RUB,
+    "SAR" to rates.SAR,
+    "SEK" to rates.SEK,
+    "SGD" to rates.SGD,
+    "SYP" to rates.SYP,
+    "THB" to rates.THB,
+    "TND" to rates.TND,
+    "TRY" to rates.TRY,
+    "UAH" to rates.UAH,
+    "USD" to rates.USD,
+    "UYU" to rates.UYU,
+    "VND" to rates.VND,
+    "ZAR" to rates.ZAR
+)
+
+fun getRatesFromMap(map: HashMap<String, Double>): Rates {
+    val rates = Rates()
+
+    rates.AMD = map["AMD"] ?: 0.0
+    rates.AED = map["AED"] ?: 0.0
+    rates.ARS = map["ARS"] ?: 0.0
+    rates.AUD = map["AUD"] ?: 0.0
+    rates.BOB = map["BOB"] ?: 0.0
+    rates.BRL = map["BRL"] ?: 0.0
+    rates.BYN = map["BYN"] ?: 0.0
+    rates.CAD = map["CAD"] ?: 0.0
+    rates.CHF = map["CHF"] ?: 0.0
+    rates.CNY = map["CNY"] ?: 0.0
+    rates.CUC = map["CUC"] ?: 0.0
+    rates.CUP = map["CUP"] ?: 0.0
+    rates.EGP = map["EGP"] ?: 0.0
+    rates.EUR = map["EUR"] ?: 0.0
+    rates.GBP = map["GBP"] ?: 0.0
+    rates.GEL = map["GEL"] ?: 0.0
+    rates.ILS = map["ILS"] ?: 0.0
+    rates.INR = map["INR"] ?: 0.0
+    rates.IQD = map["IQD"] ?: 0.0
+    rates.IRR = map["IRR"] ?: 0.0
+    rates.JPY = map["JPY"] ?: 0.0
+    rates.KRW = map["KRW"] ?: 0.0
+    rates.KWD = map["KWD"] ?: 0.0
+    rates.LBP = map["LBP"] ?: 0.0
+    rates.MAD = map["MAD"] ?: 0.0
+    rates.MXN = map["MXN"] ?: 0.0
+    rates.NZD = map["NZD"] ?: 0.0
+    rates.PEN = map["PEN"] ?: 0.0
+    rates.QAR = map["QAR"] ?: 0.0
+    rates.RUB = map["RUB"] ?: 0.0
+    rates.SAR = map["SAR"] ?: 0.0
+    rates.SEK = map["SEK"] ?: 0.0
+    rates.SGD = map["SGD"] ?: 0.0
+    rates.SYP = map["SYP"] ?: 0.0
+    rates.THB = map["THB"] ?: 0.0
+    rates.TND = map["TND"] ?: 0.0
+    rates.TRY = map["TRY"] ?: 0.0
+    rates.UAH = map["UAH"] ?: 0.0
+    rates.USD = map["USD"] ?: 0.0
+    rates.UYU = map["UYU"] ?: 0.0
+    rates.VND = map["VND"] ?: 0.0
+    rates.ZAR = map["ZAR"] ?: 0.0
+    return rates
+}
 
 val currencyCodeList = arrayOf(
     "AMD",
@@ -185,7 +232,6 @@ val currencyMapFlags = hashMapOf(
     "ZAR" to R.mipmap.south_africa
 //42 flags
 )
-
 
 
 

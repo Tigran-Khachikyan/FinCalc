@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
+import com.example.fincalc.data.network.hasNetwork
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,8 +20,8 @@ private const val BASE_URL = "http://metals-api.com/api/"
 private const val API_KEY = "70fcq5s7ms8h1ak1jlsbbn8a48bv7g2791xkbn5r8zdklhbv59qjuhgds7ck0hr8"
 //http://metals-api.com/api/2019-09-24?access_key=70fcq5s7ms8h1ak1jlsbbn8a48bv7g2791xkbn5r8zdklhbv59qjuhgds7ck0hr8
 
-const val HEADER_CACHE_CONTROL = "Cache-Control"
-const val HEADER_PRAGMA = "Pragma"
+const val HEADER_CACHE_CONTROL = "Cache-Control-Metal"
+const val HEADER_PRAGMA = "Metal"
 private const val cacheSize = 5 * 1024 * 1024.toLong()
 
 
@@ -69,7 +70,7 @@ interface ApiMetal {
                 Log.d("ggg", "offline interceptor: called.")
 
                 var request: Request = chain.request()
-                if (!hasNetwork(context)!!) {
+                if (!hasNetwork(context)) {
                     val cacheControl = CacheControl.Builder()
                         .maxStale(120, TimeUnit.SECONDS)
                         .build()
@@ -127,15 +128,6 @@ interface ApiMetal {
             return httpLoggingInterceptor
         }
 
-        private fun hasNetwork(context: Context): Boolean? {
-            var isConnected: Boolean? = false // Initial Value
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-            if (activeNetwork != null && activeNetwork.isConnected)
-                isConnected = true
-            return isConnected
-        }
     }
 }
 

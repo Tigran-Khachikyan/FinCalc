@@ -1,32 +1,31 @@
 package com.example.fincalc.data.network.api_rates
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
+import com.example.fincalc.data.network.hasNetwork
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.coroutines.Deferred
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "http://data.fixer.io/api/"
+private const val BASE_URL = "22http://data.fixer.io/api/"
 private const val API_KEY = "2a5eee9c2d53241e72d0c9c4b65d0019"
 //http://data.fixer.io/api/2020-01-12?access_key=2a5eee9c2d53241e72d0c9c4b65d0019
 
-const val HEADER_CACHE_CONTROL = "Cache-Control"
-const val HEADER_PRAGMA = "Pragma"
+const val HEADER_CACHE_CONTROL = "Cache-Control-Cur"
+const val HEADER_PRAGMA = "Cur"
 private const val cacheSize = 5 * 1024 * 1024.toLong()
 
 
 interface ApiCurrency {
 
     @GET("latest")
-    fun getLatestRates(): Call<ResponseCurApi>
+    fun getLatestRates(): Deferred<ResponseCurApi>
 
     @GET("{data}")
     fun getHistoricalRates(
@@ -34,7 +33,7 @@ interface ApiCurrency {
             value = "data",
             encoded = false
         ) data: String
-    ): Call<ResponseCurApi>
+    ): Deferred<ResponseCurApi>
 
 
     @Suppress("DEPRECATION")
@@ -68,9 +67,9 @@ interface ApiCurrency {
                 Log.d("ggg", "offline interceptor: called.")
 
                 var request: Request = chain.request()
-                if (!hasNetwork(context)!!) {
+                if (!hasNetwork(context)) {
                     val cacheControl = CacheControl.Builder()
-                        .maxStale(120, TimeUnit.SECONDS)
+                        .maxStale(60, TimeUnit.SECONDS)
                         .build()
                     request = request.newBuilder()
                         .removeHeader(HEADER_PRAGMA)
@@ -126,15 +125,7 @@ interface ApiCurrency {
             return httpLoggingInterceptor
         }
 
-        private fun hasNetwork(context: Context): Boolean? {
-            var isConnected: Boolean? = false // Initial Value
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-            if (activeNetwork != null && activeNetwork.isConnected)
-                isConnected = true
-            return isConnected
-        }
+
     }
 }
 

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
+import com.example.fincalc.ui.cur.CurrencyActivity
 import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.PortfolioActivity
@@ -45,12 +46,12 @@ class MainActivity : AppCompatActivity() {
             Animatoo.animateInAndOut(this)
         }
 
-        /*layoutCardCurButton.setOnClickListener {
+        layoutCardCurButton.setOnClickListener {
          //   setClickability(false)
             val intent = Intent(this, CurrencyActivity::class.java)
             startActivity(intent)
             Animatoo.animateSlideDown(this)
-        }*/
+        }
 
         layoutCardPortButton.setOnClickListener {
             //   setClickability(false)

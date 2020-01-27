@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "352282891770",
+    "firebase_url": "https://fincalc-4040a.firebaseio.com",
+    "project_id": "fincalc-4040a",
+    "storage_bucket": "fincalc-4040a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352282891770:android:420aef3eac6044a5e08043",
+        "android_client_info": {
+          "package_name": "com.example.fincalc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352282891770-3nbqiq1020hgbh5ude7o9n28emmcvmpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fincalc",
+            "certificate_hash": "9415df8fabbf12f9b71c291c59d34db8c45c7dfb"
+          }
+        },
+        {
+          "client_id": "352282891770-vq8n4hiq7p46o0drm1tjmlk7sh5ketof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0fPejTz_ZSFaundYVXLutIn-lGE_lQEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352282891770-vq8n4hiq7p46o0drm1tjmlk7sh5ketof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

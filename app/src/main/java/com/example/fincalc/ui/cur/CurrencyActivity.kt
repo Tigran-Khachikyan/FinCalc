@@ -24,7 +24,6 @@ class CurrencyActivity : AppCompatActivity() {
                 R.id.navigation_rates, R.id.navigation_metals
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
