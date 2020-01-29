@@ -13,7 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = "22http://data.fixer.io/api/"
+private const val BASE_URL = "http://data.fixer.io/api/"
 private const val API_KEY = "2a5eee9c2d53241e72d0c9c4b65d0019"
 //http://data.fixer.io/api/2020-01-12?access_key=2a5eee9c2d53241e72d0c9c4b65d0019
 

@@ -65,9 +65,10 @@ object FirestoreApi {
         writeToFirestor(CURRENCY_HISTORICAL, date, resultMap)
     }
 
-    fun getLatestCurRatesFire(): Deferred<QuerySnapshot> {
-        return firestoreDb.collection(CURRENCY_LATEST).orderBy(DATE_TIME, Query.Direction.ASCENDING)
-            .limitToLast(1).get().asDeferred()
+    suspend fun getLatestCurRatesFire(): QuerySnapshot? {
+        val def = firestoreDb.collection(CURRENCY_LATEST)
+            .orderBy(DATE_TIME, Query.Direction.ASCENDING).limitToLast(3).get().asDeferred()
+        return def.await()
     }
 
     suspend fun getHisCurRatesFireL(date: String): QueryDocumentSnapshot? {
@@ -76,7 +77,7 @@ object FirestoreApi {
         //from FireStore Current Collection
         val defCurCol = firestoreDb.collection(CURRENCY_LATEST).whereEqualTo(DATE, date)
             .get().asDeferred()
-        val result = defCurCol.await().firstOrNull()
+        val result = defCurCol.await().lastOrNull()
 
         return if (result == null) {
             //from FireStore Historical Collection
@@ -92,7 +93,7 @@ object FirestoreApi {
             .asDeferred()
     }
 
-    suspend fun getHisCurFromCache(date: String): DocumentSnapshot? {
+    suspend fun getHisCurFromHisCollCache(date: String): DocumentSnapshot? {
         val def = firestoreDb.collection(CURRENCY_HISTORICAL).document(date)
             .get(Source.CACHE).asDeferred()
         val fromHisCache = def.await()
@@ -101,11 +102,11 @@ object FirestoreApi {
         return fromHisCache
     }
 
-    suspend fun getHisCurFromCache2(date: String): DocumentSnapshot? {
+    suspend fun getHisCurFromLatCollCache(date: String): DocumentSnapshot? {
 
         val defCurCol = firestoreDb.collection(CURRENCY_LATEST)
             .whereEqualTo(DATE, date).get(Source.CACHE).asDeferred()
-        val fromCurCache = defCurCol.await().firstOrNull()
+        val fromCurCache = defCurCol.await().lastOrNull()
         Log.d("ksaks", "fromCurCache $fromCurCache")
 
         return fromCurCache

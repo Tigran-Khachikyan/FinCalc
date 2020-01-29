@@ -25,6 +25,7 @@ import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.ui.AdapterSpinnerRates
 import com.example.fincalc.ui.customizeAlertDialog
+import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.showSnackbar
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
@@ -36,9 +37,6 @@ import java.text.DecimalFormat
  * A simple [Fragment] subclass.
  */
 class ScheduleFragment(private val formula: Formula) : Fragment() {
-
-    private val dec = DecimalFormat("#,###.#")
-
 
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
@@ -117,10 +115,10 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             adapterRecSchedule.item = sch
             adapterRecSchedule.notifyDataSetChanged()
             val realRate = context?.getString(R.string.RealRate) + ": " +
-                    dec.format(sch.realRate).toString() + "%"
+                    decimalFormatter1p.format(sch.realRate).toString() + "%"
             tvRealRateLoanAc.text = realRate
             val total = context?.getString(R.string.TOTAL_PAYMENT) + ": " +
-                    dec.format((sch.totalPayment + sch.oneTimeComAndCosts)).toString()
+                    decimalFormatter1p.format((sch.totalPayment + sch.oneTimeComAndCosts)).toString()
             tvTotalPayLoanAc.text = total
         } else {
             constraintLayoutFragment.visibility = View.GONE
@@ -158,7 +156,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             spinnerType.adapter = adapterSpinType
             spinnerType.setSelection(adapterSpinType.count - 1)
 
-            dialogBuilder.setTitle(R.string.dialogTitle)
+            dialogBuilder.setTitle(R.string.DialogTitleSave)
 
             //click SAVE
             dialogBuilder.setPositiveButton(

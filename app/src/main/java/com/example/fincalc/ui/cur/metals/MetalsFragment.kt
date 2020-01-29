@@ -30,7 +30,6 @@ class MetalsFragment : Fragment() {
         metalViewModel.getLatestMetals().observe(viewLifecycleOwner, Observer {
 
             it?.let {
-                Log.d("ggm", " result AMD in Fragment: ${it.rates.XAU}")
             }
         })
     }

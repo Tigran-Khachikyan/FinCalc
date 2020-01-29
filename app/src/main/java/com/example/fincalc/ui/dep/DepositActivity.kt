@@ -33,7 +33,6 @@ class DepositActivity : AppCompatActivity() {
     private lateinit var adapterRec: AdapterRecViewDep
     private lateinit var depViewModel: DepositViewModel
     private var period: Frequency = Frequency.MONTHLY
-    val dec = DecimalFormat("#,###.##")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,7 +100,7 @@ class DepositActivity : AppCompatActivity() {
                 /*   val text: String = resources.getString(R.string.ResultShowDep) +
                            " ${dec.format(scheduleDep.totalPerAfterTax)}"*/
                 val effRate: String = resources.getString(R.string.EffectiveRate) + ": " +
-                        dec.format(scheduleDep.effectiveRate).toString() + "%"
+                        decimalFormatter2p.format(scheduleDep.effectiveRate).toString() + "%"
                 tvEffectRateDepShow.text = effRate
             }
             if (layoutDepOptionalInput.visibility != View.GONE) {

@@ -18,9 +18,9 @@
     <color name="PortPrimaryLight">#b1ffff</color>
     <color name="PortPrimaryDark">#103544</color>
 
-    <color name="customPrimaryCurrency">#00407a</color>
-    <color name="customLightCurrency">#94456AAA</color>
-    <color name="customDarkCurrency">#001b4d</color>
+    <color name="CurrencyPrimary">#00407a</color>
+    <color name="CurrencyPrimaryLight">#94456AAA</color>
+    <color name="CurrencyPrimaryDark">#001b4d</color>
 
 
     //Final

@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.models.credit.TableLoan
-import java.text.DecimalFormat
-
+import com.example.fincalc.ui.decimalFormatter1p
 
 
 class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<AdapterRecScheduleLoan.GenericViewHolder>() {
@@ -59,7 +58,6 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
             else -> 1
         }
     }
-    val dec = DecimalFormat("#,###.#")
 
     inner class ScheduleListHolder(itemView: View) : GenericViewHolder(itemView) {
 
@@ -76,11 +74,11 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
             val items = item?.rows?.get(position-1)
 
             tvNumber.text = items?.curRowN.toString()
-            tvLoanSumRemain.text = dec.format(items?.balance)
-            tvLoanSumMonthly.text = dec.format(items?.monthLoan)
-            tvPercentMonthly.text = dec.format(items?.percent)
-            tvCommissionMonthly.text = dec.format(items?.monthCom)
-            tvTotalPaymentMonthly.text = dec.format(items?.payment)
+            tvLoanSumRemain.text = decimalFormatter1p.format(items?.balance)
+            tvLoanSumMonthly.text = decimalFormatter1p.format(items?.monthLoan)
+            tvPercentMonthly.text = decimalFormatter1p.format(items?.percent)
+            tvCommissionMonthly.text = decimalFormatter1p.format(items?.monthCom)
+            tvTotalPaymentMonthly.text = decimalFormatter1p.format(items?.payment)
         }
     }
 
@@ -94,10 +92,10 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
 
         override fun setDataOnView(position: Int) {
 
-            tvTotalSum.text = dec.format(item?.sumBasic)
-            tvTotalPercent.text = dec.format(item?.totalPercent)
-            tvTotalCommission.text = dec.format(item?.totalComDuring)
-            tvTotalPayment.text = dec.format(item?.totalPayment)
+            tvTotalSum.text = decimalFormatter1p.format(item?.sumBasic)
+            tvTotalPercent.text = decimalFormatter1p.format(item?.totalPercent)
+            tvTotalCommission.text = decimalFormatter1p.format(item?.totalComDuring)
+            tvTotalPayment.text = decimalFormatter1p.format(item?.totalPayment)
         }
     }
 
@@ -108,7 +106,7 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
 
         override fun setDataOnView(position: Int) {
 
-            tvOneTimeCommissionAndCosts.text = dec.format(item?.oneTimeComAndCosts)
+            tvOneTimeCommissionAndCosts.text = decimalFormatter1p.format(item?.oneTimeComAndCosts)
         }
     }
     abstract class GenericViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

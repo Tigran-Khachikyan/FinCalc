@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.models.deposit.TableDep
+import com.example.fincalc.ui.decimalFormatter1p
 import java.text.DecimalFormat
 
 class AdapterRecViewDep(var scheduleDep: TableDep?) :
@@ -40,8 +41,6 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
         }
     }
 
-    val dec = DecimalFormat("#,###.#")
-
     inner class RowViewHolder(itemView: View) : GenericViewHolderDep(itemView) {
         private val tvNumber: TextView = itemView.findViewById(R.id.tvNumberDep)
         private val tvBalance: TextView = itemView.findViewById(R.id.tvDepBalance)
@@ -51,11 +50,11 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
 
         override fun setDataOnView(position: Int) {
             val rowList = scheduleDep?.rows
-            tvNumber.text = dec.format(rowList?.get(position)?.curRowN)
-            tvBalance.text = dec.format(rowList?.get(position)?.balance)
-            tvPercent.text = dec.format(rowList?.get(position)?.percent)
-            tvPerAfterTax.text = dec.format(rowList?.get(position)?.perAfterTax)
-            tvPayment.text = dec.format(rowList?.get(position)?.payment)
+            tvNumber.text = decimalFormatter1p.format(rowList?.get(position)?.curRowN)
+            tvBalance.text = decimalFormatter1p.format(rowList?.get(position)?.balance)
+            tvPercent.text = decimalFormatter1p.format(rowList?.get(position)?.percent)
+            tvPerAfterTax.text = decimalFormatter1p.format(rowList?.get(position)?.perAfterTax)
+            tvPayment.text = decimalFormatter1p.format(rowList?.get(position)?.payment)
         }
     }
 
@@ -66,9 +65,9 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
         private val tvTotalPayment: TextView = itemView.findViewById(R.id.tvTotalPaymentDep)
 
         override fun setDataOnView(position: Int) {
-            tvTotalPercentDep.text = dec.format(scheduleDep?.totalPercent)
-            tvTotalPercentAfterTax.text = dec.format(scheduleDep?.totalPerAfterTax)
-            tvTotalPayment.text = dec.format(scheduleDep?.totalPayment)
+            tvTotalPercentDep.text = decimalFormatter1p.format(scheduleDep?.totalPercent)
+            tvTotalPercentAfterTax.text = decimalFormatter1p.format(scheduleDep?.totalPerAfterTax)
+            tvTotalPayment.text = decimalFormatter1p.format(scheduleDep?.totalPayment)
         }
     }
 

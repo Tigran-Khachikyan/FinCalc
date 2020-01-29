@@ -14,6 +14,7 @@ import com.example.fincalc.data.network.api_rates.Rates
 import com.example.fincalc.data.network.firebase.*
 import com.example.fincalc.data.network.hasNetwork
 import com.example.fincalc.models.cur_met.getRatesFromMap
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import retrofit2.Call
@@ -40,7 +41,6 @@ class Repository private constructor(
     }
 
     //Currency
-
 
     //Metal
 
@@ -79,7 +79,6 @@ class Repository private constructor(
                     t: Throwable
                 ) {
                     Log.d("ggg", " result in failure: ${t.message}")
-
                 }
             })
     }
@@ -116,66 +115,75 @@ class Repository private constructor(
             //Network ok
             if (hasNetwork(context)) {
 
-                val resFromFire = FirestoreApi.getLatestCurRatesFire().await()
-                val docSnapshot = resFromFire.firstOrNull()
-                val fireDateTime = docSnapshot?.getTime()
-                Log.d("ksaks", "fireDateTime: $fireDateTime")
+                val docSnapshot = FirestoreApi.getLatestCurRatesFire()
 
                 // db is initialized
-                fireDateTime?.let {
+                if (docSnapshot != null && !docSnapshot.isEmpty) {
+                    val latestDoc = docSnapshot.last()
 
-                    val duration = duration(fireDateTime, nowDate)
+                    val elderDoc = docSnapshot.firstOrNull()
+                    val latestDateTime = latestDoc.getTime()!!
+                    Log.d("ksaks", "latestDateTime: $latestDateTime")
+                    Log.d("ksaks", "oldersDateTime: ${elderDoc?.getTime()}")
+                    Log.d("ksaks", "nowDateTime: $nowDate")
+                    val duration = duration(latestDateTime, nowDate)
 
                     //newer rates
                     if (duration < 180) {
-                        val ratesMap = docSnapshot.get(CUR_RATES) as HashMap<String, Double>
-                        val rates: Rates = getRatesFromMap(ratesMap)
-                        Log.d("ksaks", "FIRE<180: ${rates.AMD}")
-                        curRatesLiveData.value = RatesUi(fireDateTime, rates)
+                        val latRates = getRatesFromSnapshot(latestDoc)!!
+                        val elderRates = getRatesFromSnapshot(elderDoc)
+                        Log.d("ksaks", "FIRE<180 LATEST AMD: ${latRates.AMD}")
+                        Log.d("ksaks", "FIRE<180 ELDER AMD: ${elderRates?.AMD}")
+                        curRatesLiveData.value = RatesUi(latestDateTime, latRates, elderRates)
                     } else {  //catch new rates
                         try {
-                            val response = ApiCurrency(context).getLatestRates().await()
-                            val rates = response.rates
-                            Log.d("ksaks", "API >180: ${rates.AMD}")
-                            curRatesLiveData.value = RatesUi(nowDate, rates)
-                            FirestoreApi.setLatestCurRatesFire(rates)
+                            val responseApi = ApiCurrency(context).getLatestRates().await()
+                            val ratesApi = responseApi.rates
+                            val elderRates = getRatesFromSnapshot(latestDoc)
+                            curRatesLiveData.value = RatesUi(nowDate, ratesApi, elderRates)
+                            Log.d("ksaks", "API>180 LATEST AMD: ${ratesApi.AMD}")
+                            Log.d("ksaks", "FIRE>180 ELDER AMD: ${elderRates?.AMD}")
+                            FirestoreApi.setLatestCurRatesFire(ratesApi)
                         } catch (ex: Exception) {
                             //there is a problem with source, get CACHED from Firestore
                             try {
-                                val fireCache = FirestoreApi.getLatCurFromCache().await()
-                                val ratesMap = fireCache[CUR_RATES] as HashMap<String, Double>
-                                val rates: Rates = getRatesFromMap(ratesMap)
-                                Log.d("ksaks", "PROBLEM API FIRE CACHE: ${rates.AMD}")
-                                val ratesUi = RatesUi(fireCache.getTime(), rates, API_SOURCE_PROBLEM)
-                                curRatesLiveData.value = ratesUi
+                                val latRates = getRatesFromSnapshot(latestDoc)!!
+                                val elderRates = getRatesFromSnapshot(elderDoc)
+                                Log.d("ksaks", "FIRE>180 API PROBLEM LATEST AMD: ${latRates.AMD}")
+                                Log.d("ksaks", "FIRE>180 API PROBLEM ELDER AMD: ${elderRates?.AMD}")
+                                curRatesLiveData.value = RatesUi(
+                                    latestDateTime, latRates, elderRates, API_SOURCE_PROBLEM
+                                )
                             } catch (ex: Exception) {
                                 //fireStore CACHE error
-                                val ratesUi = RatesUi(null, null, API_SOURCE_PROBLEM )
+                                Log.d("ksaks", "NETWORK OK, FIRE & API PROBLEM ELDER AMD")
+                                val ratesUi = RatesUi(null, null, null, API_SOURCE_PROBLEM)
                                 curRatesLiveData.value = ratesUi
                             }
                         }
                     }
-                } ?: try { //init
-                    val response = ApiCurrency(context).getLatestRates().await()
-                    val rates = response.rates
-                    Log.d("ksaks", "INIT: ${rates.AMD}")
-                    curRatesLiveData.value = RatesUi(nowDate, rates)
-                    FirestoreApi.setLatestCurRatesFire(rates)
+                } else try { //init
+                    val responseApi = ApiCurrency(context).getLatestRates().await()
+                    val ratesApi = responseApi.rates
+                    Log.d("ksaks", "INIT: ${ratesApi.AMD}")
+                    curRatesLiveData.value = RatesUi(nowDate, ratesApi, null)
+                    FirestoreApi.setLatestCurRatesFire(ratesApi)
                 } catch (ex: Exception) {
-                    val ratesUi = RatesUi(null, null, API_SOURCE_PROBLEM )
+                    Log.d("ksaks", "INIT API PROBLEM")
+                    val ratesUi = RatesUi(null, null, null, API_SOURCE_PROBLEM)
                     curRatesLiveData.value = ratesUi
                 }
             } else {  //NO Network - Firestore Cache
                 try {
                     val fireCache = FirestoreApi.getLatCurFromCache().await()
-                    val ratesMap = fireCache[CUR_RATES] as HashMap<String, Double>
-                    val rates: Rates = getRatesFromMap(ratesMap)
-                    Log.d("ksaks", "FIRE CACHE NO NETWORK: ${rates.AMD}")
-                    val ratesUi = RatesUi(fireCache.getTime(), rates, NO_NETWORK)
+                    val ratesCached = getRatesFromSnapshot(fireCache)!!
+                    Log.d("ksaks", "FIRE CACHE NO NETWORK: ${ratesCached.AMD}")
+                    val ratesUi = RatesUi(fireCache.getTime(), ratesCached, null, NO_NETWORK)
                     curRatesLiveData.value = ratesUi
                 } catch (ex: Exception) {
                     //fireStore CACHE error
-                    val ratesUi = RatesUi(null, null, NO_NETWORK )
+                    Log.d("ksaks", "NETWORK NO, FIRE CACHE PROBLEM")
+                    val ratesUi = RatesUi(null, null, null, NO_NETWORK)
                     curRatesLiveData.value = ratesUi
                 }
             }
@@ -193,10 +201,9 @@ class Repository private constructor(
                 //1. get from firestore collections
                 val docSnapshot = FirestoreApi.getHisCurRatesFireL(date)
                 if (docSnapshot != null) {
-                    val ratesMap = docSnapshot[CUR_RATES] as HashMap<String, Double>
-                    val rates: Rates = getRatesFromMap(ratesMap)
+                    val rates = getRatesFromSnapshot(docSnapshot)!!
                     Log.d("ksaks", "FIRE RATE CUR AMD: ${rates.AMD}")
-                    val ratesUi = RatesUi(null, rates)
+                    val ratesUi = RatesUi(null, rates, null)
                     curRatesLiveData.value = ratesUi
 
                 } else {
@@ -206,40 +213,39 @@ class Repository private constructor(
                         val response = ApiCurrency(context).getHistoricalRates(date).await()
                         val rates = response.rates
                         Log.d("ksaks", "API RATE AMD: ${rates.AMD}")
-                        curRatesLiveData.value = RatesUi(null, rates)
+                        curRatesLiveData.value = RatesUi(null, rates, null)
                         FirestoreApi.setHisCurRatesFire(date, rates)
                     } catch (exc: Exception) {
                         //problem to fetch api, get another date please
                         Log.d("ksaks", "API FETCH PROBLEM")
-                        val ratesUi = RatesUi(null, null, API_SOURCE_PROBLEM )
+                        val ratesUi = RatesUi(null, null, null, API_SOURCE_PROBLEM)
                         curRatesLiveData.value = ratesUi
                     }
                 }
             } else {  //no network
                 try {
-                    val fireCache = FirestoreApi.getHisCurFromCache(date)
-                    Log.d("ksaks", "NO NETWORK fireCache: $fireCache")
+                    val fireHisCollCache = FirestoreApi.getHisCurFromHisCollCache(date)
+                    Log.d("ksaks", "NO NETWORK fireCache: $fireHisCollCache")
 
-                    val ratesMap = fireCache!![CUR_RATES] as HashMap<String, Double>
-                    val rates: Rates = getRatesFromMap(ratesMap)
+                    val rates = getRatesFromSnapshot(fireHisCollCache)!!
                     Log.d("ksaks", "NO NETWORK CACHE RATE AMD: ${rates.AMD}")
-                    val ratesUi = RatesUi(fireCache.getTime(), rates, NO_NETWORK)
+                    val ratesUi = RatesUi(null, rates, null, NO_NETWORK)
                     curRatesLiveData.value = ratesUi
                 } catch (ex: Exception) {
                     Log.d("ksaks", "NO NETWORK Outer Exception: ${ex.message}")
                     try {
-                        val fireCache2 = FirestoreApi.getHisCurFromCache2(date)
-                        Log.d("ksaks", "NO NETWORK fireCache: $fireCache2")
-                        val ratesMap = fireCache2!![CUR_RATES] as HashMap<String, Double>
-                        val rates: Rates = getRatesFromMap(ratesMap)
+                        val fireLatCollCache = FirestoreApi.getHisCurFromLatCollCache(date)
+                        Log.d("ksaks", "NO NETWORK fireCache: $fireLatCollCache")
+                        val ratesMap = fireLatCollCache!![CUR_RATES] as HashMap<String, Double>
+                        val rates = getRatesFromSnapshot(fireLatCollCache)!!
                         Log.d("ksaks", "NO NETWORK CACHE RATE AMD: ${rates.AMD}")
-                        val ratesUi = RatesUi(fireCache2.getTime(), rates, NO_NETWORK)
+                        val ratesUi = RatesUi(null, rates, null, NO_NETWORK)
                         curRatesLiveData.value = ratesUi
                     } catch (ex: Exception) {
                         //fireStore CACHE error
                         Log.d("ksaks", "FIRE CACHE PROBLEM")
                         Log.d("ksaks", "FIRE CACHE PROBLEM: ${ex.message}")
-                        val ratesUi = RatesUi(null, null, NO_NETWORK )
+                        val ratesUi = RatesUi(null, null, null, NO_NETWORK)
                         curRatesLiveData.value = ratesUi
                     }
                 }
@@ -247,6 +253,12 @@ class Repository private constructor(
             }
         }
         return curRatesLiveData
+    }
+
+    private fun getRatesFromSnapshot(snapshot: DocumentSnapshot?): Rates? {
+
+        val ratesMap = snapshot?.let { snapshot.get(CUR_RATES) as HashMap<String, Double> }
+        return ratesMap?.let { getRatesFromMap(ratesMap) }
     }
 
 

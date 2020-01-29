@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import com.example.fincalc.R
 import com.google.android.material.snackbar.Snackbar
+import java.text.DecimalFormat
 
 fun iconTrigger(view: View) {
 
@@ -65,5 +66,8 @@ fun customizeAlertDialog(alertDialog: AlertDialog, positiv: Boolean) {
     else
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
 
-
 }
+
+val decimalFormatter1p = DecimalFormat("#,###.#")
+val decimalFormatter2p = DecimalFormat("#,###.##")
+val decimalFormatter3p = DecimalFormat("#,###.###")

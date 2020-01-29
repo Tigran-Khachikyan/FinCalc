@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:startColor="@android:color/black"
-        android:centerColor="@color/customDarkCurrency"
-        android:endColor="@color/customPrimaryCurrency"
+        android:centerColor="@color/CurrencyPrimaryDark"
+        android:endColor="@color/CurrencyPrimary"
         android:angle="-90"/>
 </shape>

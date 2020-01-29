@@ -57,6 +57,7 @@
     --Activity Currency
     <string name="title_activity_currency">CurrencyActivity</string>
     <string name="rates">Currencies</string>
+    <string name="rate">Rate</string>
     <string name="precious_metals">Precious metals</string>
     <string name="Current_Rate">Latest</string>
     <string name="Currency_Live">Live converter</string>
@@ -139,11 +140,15 @@
     <string name="RealRate">Real interest rate</string>
     <string name="EffectiveRate">Effective Rate</string>
     <string name="Income">Income</string>
-    <string name="dialogTitle">Saving options</string>
+    <string name="DialogTitleSave">Saving options</string>
+    <string name="DialogTitleCur">Select Currency</string>
     <string name="successSaved">Successfully saved in Portfolio</string>
     <string name="warning">Warning</string>
     <string name="AreYouSureRemove">Do you really want to remove?</string>
     <string name="OK">OK</string>
     <string name="SuccessfullyRemoved">Successfully removed from Portfolio</string>
+
+    --Currency--
+    <string name="resetBaseCurrency">reset base currency</string>
 
 </resources>
