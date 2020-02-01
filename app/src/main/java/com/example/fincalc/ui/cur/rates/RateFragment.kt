@@ -1,6 +1,8 @@
 package com.example.fincalc.ui.cur.rates
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -16,25 +17,29 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.Rates
-import com.example.fincalc.data.network.firebase.RatesUi
-import com.example.fincalc.models.cur_met.currencyCodeList
-import com.example.fincalc.models.cur_met.currencyFlagList
-import com.example.fincalc.models.cur_met.getMapCurRates
-import com.example.fincalc.ui.AdapterSpinnerRates
-import com.example.fincalc.ui.customizeAlertDialog
-import com.example.fincalc.ui.decimalFormatter2p
-import com.example.fincalc.ui.decimalFormatter3p
-import kotlinx.android.synthetic.main.activity_loan.*
+import com.example.fincalc.data.network.api_rates.RatesCurrency
+import com.example.fincalc.data.network.firebase.RatesFull
+import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
+import com.example.fincalc.models.cur_met_crypto.getMapFromCurRates
+import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_rate.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.absoluteValue
 
 
 private const val PRIVATE_MODE = 0
 private const val PREF_NAME = "Currency_Pref"
 private const val CURRENCY_PREF = "Selected-currency"
+private const val FORMAT = "dd MMM yyyy HH:mm:ss"
+private const val CURRENCY_FROM = "Currency from"
+private const val CURRENCY_TO = "Currency To"
+private const val CURRENCY_TABLE = "Currency Table"
 
+
+@Suppress("DEPRECATION")
 class RateFragment : Fragment() {
-
 
     private lateinit var ratesViewModel: RatesViewModel
     private lateinit var sharedPref: SharedPreferences
@@ -51,49 +56,100 @@ class RateFragment : Fragment() {
 
         sharedPref = context!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
 
+        //initializing Table part (Calendar)
         val selectedCur = sharedPref.getString(CURRENCY_PREF, "USD")
-        selectedCur?.let {
-            ratesViewModel.setLatTableCur(selectedCur)
-        }
+        selectedCur?.let { ratesViewModel.setLatTableCur(selectedCur) }
+
+        //initializing convert part (Calendar)
+        ivTransferCur.setSvgColor(context!!, R.color.CurrencyPrimaryLight)
+        selectBtnSpinner("EUR", CURRENCY_FROM)
+        selectBtnSpinner("USD", CURRENCY_TO)
+        ratesViewModel.setCurrencies("EUR", "USD")
+        etAmountInput.setText("1.0")
+        ratesViewModel.setDate(null)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         ratesViewModel.getLatTableRates().observe(viewLifecycleOwner, Observer {
 
             btnResetBaseCurrency.setOnClickListener {
-                getDialog(context)
+                getDialog(context, CURRENCY_TABLE)
             }
             it?.let {
-                setTableCurrencies(it.base)
-                tvTableDateTime.text = it.ratesUi.dateTime?.toString()
-                setTableRates(it.base, it.ratesUi.latRates)
-                setTableGrowth(it.base, it.ratesUi)
+                setTableCurrencies(it.baseCurrency)
+                tvTableDateTime.text = getDate(it.rates.dateTime)
+                setTableRates(it.baseCurrency, it.rates.latRates)
+                setTableGrowth(it.baseCurrency, it.rates)
+            }
+        })
+
+        ratesViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
+
+            btnCalendarDate.setOnClickListener {
+                openCalendar(context)
             }
 
+            btnCalendarNow.setOnClickListener {
+                clickLatest()
+            }
+
+            btnSpinner1.setOnClickListener {
+                getDialog(context, CURRENCY_FROM)
+            }
+
+            btnSpinner2.setOnClickListener {
+                getDialog(context, CURRENCY_TO)
+            }
+
+            btnConvertCur.setOnClickListener {
+
+                hideKeyboard(this.activity!!)
+                val amount: Double? = if (etAmountInput.text.toString() == "") null else
+                    etAmountInput.text.toString().toDouble()
+                ratesViewModel.setAmount(amount)
+            }
+
+            ivTransferCur.setOnClickListener {
+                val spin1Text = btnSpinner1.text.toString()
+                val spin2Text = btnSpinner2.text.toString()
+                selectBtnSpinner(spin1Text, CURRENCY_TO)
+                selectBtnSpinner(spin2Text, CURRENCY_FROM)
+                ratesViewModel.setCurrencies(spin2Text, spin1Text)
+            }
+
+            val result = it?.let {
+                " = ${decimalFormatter2p.format(it.resultAmount)} ${btnSpinner2.text}"
+            } ?: ""
+            tvCurResult.text = result
+
         })
+
     }
 
 
     @SuppressLint("InflateParams")
-    private fun getDialog(context: Context?) {
+    private fun getDialog(context: Context?, cur: String) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
             val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_save, null)
+            val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
             dialogBuilder.setView(dialogView)
 
-            dialogView.findViewById<EditText>(R.id.etDialBank).visibility = View.GONE
-            dialogView.findViewById<Spinner>(R.id.spinnerDialLoanType).visibility = View.GONE
-            dialogView.findViewById<TextView>(R.id.tvDialLoanType).visibility = View.GONE
-            dialogView.findViewById<TextView>(R.id.tvDialBank).visibility = View.GONE
+            val curList = currencyMapFlags.keys.toTypedArray()
+            val flagList = currencyMapFlags.values.toTypedArray()
 
             //spinner Currency
-            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
+            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                currencyCodeList, currencyFlagList, true
+                curList, flagList, true
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur
-            spinnerCur.setSelection(adapterSpinCur.count - 4)
+            spinnerCur.setHasTransientState(true)
 
             dialogBuilder.setTitle(R.string.DialogTitleCur)
             dialogBuilder.setIcon(R.mipmap.currencyicon)
@@ -103,10 +159,25 @@ class RateFragment : Fragment() {
                 getString(R.string.OK)
             ) { _, _ ->
                 val selectedCur = spinnerCur.selectedItem.toString()
-                val editor = sharedPref.edit()
-                editor.putString(CURRENCY_PREF, selectedCur)
-                editor.apply()
-                ratesViewModel.setLatTableCur(selectedCur)
+                when (cur) {
+                    CURRENCY_TABLE -> {
+                        val editor = sharedPref.edit()
+                        editor.putString(CURRENCY_PREF, selectedCur)
+                        editor.apply()
+                        ratesViewModel.setLatTableCur(selectedCur)
+                    }
+                    CURRENCY_FROM -> {
+                        val curTo = btnSpinner2.text.toString()
+                        selectBtnSpinner(selectedCur, CURRENCY_FROM)
+                        ratesViewModel.setCurrencies(selectedCur, curTo)
+                    }
+                    CURRENCY_TO -> {
+                        val curFrom = btnSpinner1.text.toString()
+                        btnSpinner2.text = selectedCur
+                        selectBtnSpinner(selectedCur, CURRENCY_TO)
+                        ratesViewModel.setCurrencies(curFrom, selectedCur)
+                    }
+                }
             }
 
             dialogBuilder.setNegativeButton(
@@ -116,42 +187,42 @@ class RateFragment : Fragment() {
             val alertDialog = dialogBuilder.create()
             alertDialog.show()
             customizeAlertDialog(alertDialog, true)
-            alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimary)
+            alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimaryLight)
         }
     }
 
     private fun setTableCurrencies(cur: String) {
         val textUSD = "USD / $cur"
-        tvCurUSD.text = textUSD
+        tvGold.text = textUSD
         val textEUR = "EUR / $cur"
-        tvCurEUR.text = textEUR
+        tvSilver.text = textEUR
         val textGBP = "GBP / $cur"
-        tvCurGBP.text = textGBP
+        tvPlatinum.text = textGBP
         val textCNY = "CNY / $cur"
-        tvCurCNY.text = textCNY
+        tvPalladium.text = textCNY
         val textRUR = "RUR / $cur"
         tvCurRUB.text = textRUR
     }
 
-    private fun setTableRates(cur: String, rates: Rates?) {
+    private fun setTableRates(cur: String, rates: RatesCurrency?) {
         rates?.let {
-            val map = getMapCurRates(rates)
+            val map = getMapFromCurRates(rates)
             val selCurValue = map?.get(cur)
             selCurValue?.let {
-                tvRateUSD.text = getRateValuesString("USD", selCurValue, map)
-                tvRateEUR.text = getRateValuesString("EUR", selCurValue, map)
-                tvRateGBP.text = getRateValuesString("GBP", selCurValue, map)
-                tvRateCNY.text = getRateValuesString("CNY", selCurValue, map)
+                tvGoldRate.text = getRateValuesString("USD", selCurValue, map)
+                tvSilverRate.text = getRateValuesString("EUR", selCurValue, map)
+                tvPlatRate.text = getRateValuesString("GBP", selCurValue, map)
+                tvPalladRate.text = getRateValuesString("CNY", selCurValue, map)
                 tvRateRUB.text = getRateValuesString("RUB", selCurValue, map)
             }
         }
     }
 
-    private fun setTableGrowth(cur: String, ratesUi: RatesUi) {
+    private fun setTableGrowth(cur: String, ratesUi: RatesFull) {
         val latestRates = ratesUi.latRates
         val elderRates = ratesUi.elderRates
         latestRates?.let {
-            val mapLatest = getMapCurRates(latestRates)
+            val mapLatest = getMapFromCurRates(latestRates)
             val selCurValue1 = mapLatest?.get(cur)
             selCurValue1?.let {
 
@@ -162,7 +233,7 @@ class RateFragment : Fragment() {
                 val latRateRUB = getRateValuesDouble("RUB", selCurValue1, mapLatest)
 
                 if (elderRates != null) {
-                    val mapElder = getMapCurRates(elderRates)
+                    val mapElder = getMapFromCurRates(elderRates)
                     val selCurValue2 = mapElder?.get(cur)
                     selCurValue2?.let {
 
@@ -172,23 +243,22 @@ class RateFragment : Fragment() {
                         val oldRateCNY = getRateValuesDouble("CNY", selCurValue2, mapElder)
                         val oldRateRUB = getRateValuesDouble("RUB", selCurValue2, mapElder)
 
-                        getGrowthView(tvGrowthUSD, getGrowthCoef(latRateUSD, oldRateUSD))
-                        getGrowthView(tvGrowthEUR, getGrowthCoef(latRateEUR, oldRateEUR))
-                        getGrowthView(tvGrowthGBP, getGrowthCoef(latRateGBP, oldRateGBP))
-                        getGrowthView(tvGrowthCNY, getGrowthCoef(latRateCNY, oldRateCNY))
+                        getGrowthView(tvGoldGrowth, getGrowthCoef(latRateUSD, oldRateUSD))
+                        getGrowthView(tvSilverGrowth, getGrowthCoef(latRateEUR, oldRateEUR))
+                        getGrowthView(tvPlatGrowth, getGrowthCoef(latRateGBP, oldRateGBP))
+                        getGrowthView(tvPalladGrowth, getGrowthCoef(latRateCNY, oldRateCNY))
                         getGrowthView(tvGrowthRUB, getGrowthCoef(latRateRUB, oldRateRUB))
                     }
                 } else {
-                    getGrowthView(tvGrowthUSD, null)
-                    getGrowthView(tvGrowthEUR, null)
-                    getGrowthView(tvGrowthGBP, null)
-                    getGrowthView(tvGrowthCNY, null)
+                    getGrowthView(tvGoldGrowth, null)
+                    getGrowthView(tvSilverGrowth, null)
+                    getGrowthView(tvPlatGrowth, null)
+                    getGrowthView(tvPalladGrowth, null)
                     getGrowthView(tvGrowthRUB, null)
                 }
             }
         }
     }
-
 
     private fun getRateValuesString(
         mainCur: String, selCurVal: Double, map: HashMap<String, Double>
@@ -211,15 +281,21 @@ class RateFragment : Fragment() {
     private fun getGrowthCoef(latValue: Double?, oldValue: Double?): Double? {
         return if (latValue != null && oldValue != null) {
             val dif = latValue - oldValue
-            100 * dif / oldValue
+            val res = 100 * dif / oldValue
+            when {
+                res == 0.0 || res.absoluteValue < 0.0001 -> 0.0
+                res.absoluteValue > 0.0001 && res.absoluteValue < 0.001 -> if (res > 0.0) 0.001 else -0.001
+                else -> res
+            }
         } else null
     }
 
     private fun getGrowthView(tv: TextView, coef: Double?) {
         coef?.let {
 
-            val text = decimalFormatter3p.format(coef).replace(',', '.') + "%"
-
+            var text: String = decimalFormatter3p.format(coef).replace(',', '.') + "%"
+            if (text[0] == '-')
+                text = text.subSequence(1, text.length).toString()
             Log.d("hhhu", "text: $text")
             if (coef == 0.0) tv.visibility = View.INVISIBLE
             else {
@@ -237,4 +313,98 @@ class RateFragment : Fragment() {
         )
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private fun getDate(longDate: Date?): String? {
+        return longDate?.let {
+            val formatter = SimpleDateFormat(FORMAT)
+            val dateString = formatter.format(longDate)
+            context?.getString(R.string.updated) + " " + dateString
+        }
+    }
+
+    private fun openCalendar(context: Context?) {
+        context?.let {
+            val calendar = Calendar.getInstance()
+            val year = calendar[Calendar.YEAR]
+            val month = calendar[Calendar.MONTH]
+            val day = calendar[Calendar.DAY_OF_MONTH]
+            val dialog: Dialog =
+                DatePickerDialog(
+                    context,
+                    DatePickerDialog.OnDateSetListener { _, y, m, d ->
+                        // val date = d.toString() + "/" + (m + 1) + "/" + y
+                        val year: String = y.toString()
+                        val month = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
+                        val day = if (d < 10) "0$d" else d.toString()
+                        val dateForDatabase = "$year-$month-$day"
+                        val dateForIntro = "$day/$month/$year"
+                        val now = calendar.time
+                        Log.d("nbnb", "calendarValid: ${calendarValid(dateForIntro)}")
+                        Log.d("nbnb", "now: $now")
+                        Log.d("nbnb", "selDate: $dateForIntro")
+
+                        if (calendarValid(dateForIntro)) {
+                        }
+
+                        btnCalendarDate.text = dateForIntro
+                        ratesViewModel.setDate(dateForDatabase)
+
+                        btnCalendarDate.background =
+                            resources.getDrawable(R.drawable.final_btnreset_currency)
+                        btnCalendarNow.background =
+                            resources.getDrawable(R.drawable.final_cur_latest_unselected)
+                        btnCalendarDate.text = dateForIntro
+                        btnCalendarNow.text = ""
+
+                    }, year, month, day
+                )
+            dialog.setCancelable(true)
+            dialog.setOnCancelListener {
+            }
+            dialog.show()
+        }
+    }
+
+    private fun clickLatest() {
+        ratesViewModel.setDate(null)
+        btnCalendarDate.background = resources.getDrawable(R.drawable.final_cur_latest_unselected)
+        btnCalendarNow.background = resources.getDrawable(R.drawable.final_btnreset_currency)
+        btnCalendarDate.text = ""
+        btnCalendarNow.text = resources.getString(R.string.latest)
+    }
+
+    private fun selectBtnSpinner(cur: String, btnSpinner: String) {
+        val flag = currencyMapFlags[cur]
+
+        if (btnSpinner == CURRENCY_FROM) {
+            btnSpinner1.text = cur
+            flag?.let {
+                btnSpinner1.setCompoundDrawablesWithIntrinsicBounds(flag, 0, 0, 0)
+                etAmountInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, flag, 0)
+            }
+        } else if (btnSpinner == CURRENCY_TO) {
+            btnSpinner2.text = cur
+            flag?.let {
+                btnSpinner2.setCompoundDrawablesWithIntrinsicBounds(flag, 0, 0, 0)
+            }
+        }
+    }
+
+    private fun calendarValid(date: String): Boolean {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val selectedDate = try {
+            dateFormat.parse(date)
+        } catch (e: ParseException) {
+            null
+        }
+        Log.d("nbnb", "selectedDate: $selectedDate")
+
+        return  Date().after(selectedDate)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        ratesViewModel.removeSources()
+    }
 }
+

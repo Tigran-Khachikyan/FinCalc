@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.cur_met.currencyMapFlags
+import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.dep.AdapterRecViewDep

@@ -1,8 +1,8 @@
 package com.example.fincalc.data.network.firebase
 
 import android.util.Log
-import com.example.fincalc.data.network.api_rates.Rates
-import com.example.fincalc.models.cur_met.getMapCurRates
+import com.example.fincalc.data.network.api_rates.RatesCurrency
+import com.example.fincalc.models.cur_met_crypto.getMapFromCurRates
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.tasks.asDeferred
@@ -24,24 +24,19 @@ const val OK = 777
 
 object FirestoreApi {
 
-    val settings by lazy {
-        FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()
-    }
-
     val firestoreDb by lazy {
         FirebaseFirestore.getInstance()
-
     }
 
 
-    fun setLatestCurRatesFire(rates: Rates?) {
+    fun setLatestCurRatesFire(rates: RatesCurrency?) {
 
         val nowDate = Calendar.getInstance().time
         val nowString = nowDate.getStringTimeStampWithDate()
         val nowShortDate = nowString.split(' ')[0]
         Log.d("ksaks", "nowShortDate: $nowShortDate")
 
-        val ratesMap = rates?.let { getMapCurRates(rates) }
+        val ratesMap = rates?.let { getMapFromCurRates(rates) }
         val resultMap = ratesMap?.let {
             hashMapOf(
                 DATE to nowShortDate,
@@ -53,9 +48,9 @@ object FirestoreApi {
         writeToFirestor(CURRENCY_LATEST, CACHE, resultMap)
     }
 
-    fun setHisCurRatesFire(date: String, rates: Rates?) {
+    fun setHisCurRatesFire(date: String, rates: RatesCurrency?) {
 
-        val ratesMap = rates?.let { getMapCurRates(rates) }
+        val ratesMap = rates?.let { getMapFromCurRates(rates) }
         val resultMap = ratesMap?.let {
             hashMapOf(
                 DATE to date,

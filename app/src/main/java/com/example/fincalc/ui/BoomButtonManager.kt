@@ -6,39 +6,54 @@ import com.nightonke.boommenu.BoomButtons.*
 import com.nightonke.boommenu.BoomMenuButton
 
 
-fun BoomMenuButton.initialize() {
-    for (i in 0 until this.buttonPlaceEnum.buttonNumber()) this.addBuilder(hamButtonBuilder)
-    val w05 = this.hamWidth / 2
-    val h05 = this.hamHeight / 2
-    val hm05 = this.pieceHorizontalMargin / 2
-    val vm05 = this.pieceVerticalMargin / 2
-    this.customPiecePlacePositions.add(PointF(-w05 - hm05, -h05 - vm05))
-    this.customPiecePlacePositions.add(PointF(+w05 + hm05, -h05 - vm05))
-    this.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
-    this.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
+enum class BMBTypes {
+    LOAN, DEPOSIT, METALS
 }
 
-private val imageResources: IntArray = intArrayOf(
-    R.drawable.ic_accounting,
-    R.drawable.ic_accounting,
-    R.drawable.ic_expand_less_black_24dp,
-    R.drawable.ic_expand_less_black_24dp
-)
+fun BoomMenuButton.initialize(type: BMBTypes) {
+    createPositions(this)
 
-private var imageResourceIndex: Int = 0
-
-private val imageResource: Int
-    get() {
-        if (imageResourceIndex >= imageResources.size)
-            imageResourceIndex = 0
-        return imageResources[imageResourceIndex++]
+    when (type) {
+        BMBTypes.LOAN -> {
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
+        }
+        BMBTypes.DEPOSIT -> {
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
+        }
+        BMBTypes.METALS -> {
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
+        }
     }
 
-val hamButtonBuilder: HamButton.Builder
-    get() {
-        return HamButton.Builder()
-            .normalImageRes(imageResource)
-            .normalTextRes(R.string.app_name)
-            .subNormalTextRes(R.string.app_name)
-            .normalColor(R.color.colorAccent)
-    }
+}
+
+private fun createHamButtonBuilder(
+    imageSource: Int, textRes: Int, subText: Int, color: Int
+): HamButton.Builder {
+    return HamButton.Builder()
+        .normalImageRes(imageSource)
+        .normalTextRes(textRes)
+        .subNormalTextRes(subText)
+        .normalColor(color)
+}
+
+private fun createPositions(bmb: BoomMenuButton) {
+    val w05 = bmb.hamWidth / 2
+    val h05 = bmb.hamHeight / 2
+    val hm05 = bmb.pieceHorizontalMargin / 2
+    val vm05 = bmb.pieceVerticalMargin / 2
+
+    bmb.customPiecePlacePositions.add(PointF(-w05 - hm05, -h05 - vm05))
+    bmb.customPiecePlacePositions.add(PointF(+w05 + hm05, -h05 - vm05))
+    bmb.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
+    bmb.customPiecePlacePositions.add(PointF(-w05 - hm05, +h05 + vm05))
+}
+

@@ -1,12 +1,12 @@
 package com.example.fincalc.data.network.firebase
 
-import com.example.fincalc.data.network.api_rates.Rates
+import com.example.fincalc.data.network.api_rates.RatesCurrency
 import java.util.*
 
-data class RatesUi(
+data class RatesFull(
     val dateTime: Date?,
-    val latRates: Rates?,
-    val elderRates: Rates?,
+    val latRates: RatesCurrency?,
+    val elderRates: RatesCurrency?,
     var status: Int = OK
 ) {
     override fun toString(): String {

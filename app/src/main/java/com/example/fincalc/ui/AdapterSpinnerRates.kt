@@ -16,7 +16,7 @@ class AdapterSpinnerRates(
     resource: Int,
     listCodes: Array<String>,
     listImages: Array<Int>,
-    small:Boolean
+    small: Boolean
 ) :
     ArrayAdapter<String>(context, resource, listCodes) {
 
@@ -39,17 +39,10 @@ class AdapterSpinnerRates(
         val view = LayoutInflater.from(mContext).inflate(mResource, parent, false)
 
         val textView = view.findViewById<TextView>(R.id.tvSpinnerCode)
-        val imageView = view.findViewById<ImageView>(R.id.ivFlag)
-        val curCode = mCurrencyCodes[position]
+        val curCode =" "+ mCurrencyCodes[position]
         val curFlag = mCurrencyFlags[position]
         textView.text = curCode
-        imageView.setImageResource(curFlag)
-        if(mSmall){
-            textView.textSize = 20.0F
-            textView.setTypeface(Typeface.DEFAULT);
-            imageView.layoutParams.height = 50
-            imageView.layoutParams.width = 50
-        }
+        textView.setCompoundDrawablesWithIntrinsicBounds(curFlag, 0, 0, 0)
 
         return view
     }

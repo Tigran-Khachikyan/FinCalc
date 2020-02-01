@@ -1,9 +1,9 @@
-package com.example.fincalc.models.cur_met
+package com.example.fincalc.models.cur_met_crypto
 
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.Rates
+import com.example.fincalc.data.network.api_rates.RatesCurrency
 
-fun getMapCurRates(rates: Rates): HashMap<String, Double>? = hashMapOf(
+fun getMapFromCurRates(rates: RatesCurrency): HashMap<String, Double>? = hashMapOf(
     "AMD" to rates.AMD,
     "AED" to rates.AED,
     "ARS" to rates.ARS,
@@ -48,8 +48,8 @@ fun getMapCurRates(rates: Rates): HashMap<String, Double>? = hashMapOf(
     "ZAR" to rates.ZAR
 )
 
-fun getRatesFromMap(map: HashMap<String, Double>): Rates {
-    val rates = Rates()
+fun getRatesFromMap(map: HashMap<String, Double>): RatesCurrency {
+    val rates = RatesCurrency()
 
     rates.AMD = map["AMD"] ?: 0.0
     rates.AED = map["AED"] ?: 0.0
@@ -95,97 +95,6 @@ fun getRatesFromMap(map: HashMap<String, Double>): Rates {
     rates.ZAR = map["ZAR"] ?: 0.0
     return rates
 }
-
-val currencyCodeList = arrayOf(
-    "AMD",
-    "AED",
-    "ARS",
-    "AUD",
-    "BOB",
-    "BRL",
-    "BYN",
-    "CAD",
-    "CHF",
-    "CNY",
-    "CUC",
-    "CUP",
-    "EGP",
-    "EUR",
-    "GBP",
-    "GEL",
-    "ILS",
-    "INR",
-    "IQD",
-    "IRR",
-    "JPY",
-    "KRW",
-    "KWD",
-    "LBP",
-    "MAD",
-    "MXN",
-    "NZD",
-    "PEN",
-    "QAR",
-    "RUB",
-    "SAR",
-    "SEK",
-    "SGD",
-    "SYP",
-    "THB",
-    "TND",
-    "TRY",
-    "UAH",
-    "USD",
-    "UYU",
-    "VND",
-    "ZAR"
-)
-
-val currencyFlagList = arrayOf(
-    R.mipmap.armenia,
-    R.mipmap.united_arab_emirates,
-    R.mipmap.argentina,
-    R.mipmap.australia,
-    R.mipmap.bolivia,
-    R.mipmap.brazil,
-    R.mipmap.belarus,
-    R.mipmap.canada,
-    R.mipmap.switzerland,
-    R.mipmap.china,
-    R.mipmap.cuba,
-    R.mipmap.cuba,
-    R.mipmap.egypt,
-    R.mipmap.european_union,
-    R.mipmap.united_kingdom,
-    R.mipmap.vrastan,
-    R.mipmap.israel,
-    R.mipmap.india,
-    R.mipmap.iraq,
-    R.mipmap.iran,
-    R.mipmap.japan,
-    R.mipmap.south_korea,
-    R.mipmap.kuwait,
-    R.mipmap.lebanon,
-    R.mipmap.morocco,
-    R.mipmap.mexico,
-    R.mipmap.new_zealand,
-    R.mipmap.peru,
-    R.mipmap.qatar,
-    R.mipmap.russia,
-    R.mipmap.saudi_arabia,
-    R.mipmap.sweden,
-    R.mipmap.singapore,
-    R.mipmap.syria,
-    R.mipmap.thailand,
-    R.mipmap.tunisia,
-    R.mipmap.turkey,
-    R.mipmap.ukraine,
-    R.mipmap.united_states,
-    R.mipmap.uruguay,
-    R.mipmap.vietnam,
-    R.mipmap.south_africa
-)
-
 
 val currencyMapFlags = hashMapOf(
     "AMD" to R.mipmap.armenia,

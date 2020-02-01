@@ -12,8 +12,6 @@ import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.TableLoan
-import com.example.fincalc.models.cur_met.currencyCodeList
-import com.example.fincalc.models.cur_met.currencyFlagList
 import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.ui.*
 import com.google.android.material.appbar.AppBarLayout
@@ -24,8 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoanActivity : AppCompatActivity() {
-
-    private lateinit var adapterSpin: AdapterSpinnerRates
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

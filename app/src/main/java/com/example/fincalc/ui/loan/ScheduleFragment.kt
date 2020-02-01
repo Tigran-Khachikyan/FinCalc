@@ -19,10 +19,9 @@ import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.models.credit.TableLoan
-import com.example.fincalc.models.cur_met.currencyCodeList
-import com.example.fincalc.models.cur_met.currencyFlagList
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
+import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
 import com.example.fincalc.ui.AdapterSpinnerRates
 import com.example.fincalc.ui.customizeAlertDialog
 import com.example.fincalc.ui.decimalFormatter1p
@@ -31,7 +30,6 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -136,10 +134,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val etBank = dialogView.findViewById<EditText>(R.id.etDialBank)
 
             //spinner Currency
+            val curList = currencyMapFlags.keys.toTypedArray()
+            val flagList = currencyMapFlags.values.toTypedArray()
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                currencyCodeList, currencyFlagList, true
+                curList, flagList, true
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur

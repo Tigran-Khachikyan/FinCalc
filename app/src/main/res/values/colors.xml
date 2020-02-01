@@ -33,4 +33,10 @@
     <color name="DepPrimary">#c77eda</color>
     <color name="DepPrimaryLight">#fbafff</color>
     <color name="DepPrimaryDark">#431055</color>
+
+    //Metals
+    <color name="MetalsPrimary">#8d8d8d</color>
+    <color name="MetalsPrimaryTrans">#808C8C8C</color>
+    <color name="MetalsPrimaryDark">#2d2d2d</color>
+    <color name="MetalsPrimaryLight">#bdbdbd</color>
 </resources>

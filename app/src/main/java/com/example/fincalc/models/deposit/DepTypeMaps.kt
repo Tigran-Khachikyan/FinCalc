@@ -3,16 +3,6 @@ package com.example.fincalc.models.deposit
 import android.content.Context
 import com.example.fincalc.R
 
-fun getFreqListName(context: Context): ArrayList<String> {
-    val arrayList = ArrayList<String>()
-
-    for (int in Frequency.values()) {
-        val name = context.resources.getString(int.id)
-        arrayList.add(name)
-    }
-    return arrayList
-}
-
 fun getFreqFromSelec(string: String, context: Context?): Frequency? {
 
     var freq: Frequency? = null

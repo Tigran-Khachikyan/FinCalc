@@ -3,7 +3,9 @@
 package com.example.fincalc.ui
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.Gravity
@@ -11,7 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.example.fincalc.R
 import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
@@ -71,3 +75,6 @@ fun customizeAlertDialog(alertDialog: AlertDialog, positiv: Boolean) {
 val decimalFormatter1p = DecimalFormat("#,###.#")
 val decimalFormatter2p = DecimalFormat("#,###.##")
 val decimalFormatter3p = DecimalFormat("#,###.###")
+
+fun ImageView.setSvgColor(context: Context, color: Int) =
+    this.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)

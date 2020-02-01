@@ -1,6 +1,6 @@
 package com.example.fincalc.data.network.api_metals
 
-data class ResponseMetalApi(
+data class ResponseMetals(
     val base: String,
     val date: String,
     val rates: RatesMetal,

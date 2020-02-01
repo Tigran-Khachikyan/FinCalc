@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.fincalc.R
+import com.example.fincalc.ui.BMBTypes
+import com.example.fincalc.ui.initialize
+import kotlinx.android.synthetic.main.fragment_metals.*
 
 class MetalsFragment : Fragment() {
 
@@ -27,6 +30,8 @@ class MetalsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bmbMetalsMenu.initialize(BMBTypes.METALS)
         metalViewModel.getLatestMetals().observe(viewLifecycleOwner, Observer {
 
             it?.let {

@@ -14,6 +14,7 @@
 -->
     <string name="loanCalculator">LOAN CALCULATOR</string>
     <string name="currencyConverter">CURRENCY CONVERTER</string>
+    <string name="convert">CONVERT</string>
     <string name="portfolio">PORTFOLIO</string>
 
     <string name="depositCalculatorInfo">DEPOSIT CALCULATOR \nasasasas</string>
@@ -59,9 +60,10 @@
     <string name="rates">Currencies</string>
     <string name="rate">Rate</string>
     <string name="precious_metals">Precious metals</string>
-    <string name="Current_Rate">Latest</string>
-    <string name="Currency_Live">Live converter</string>
-    <string name="ChooseDate">Choose Date</string>
+    <string name="metals">Metals</string>
+    <string name="latest">Latest</string>
+    <string name="Live_converter">Live converter</string>
+    <string name="archive">Archive</string>
 
     --Activity Deposit--
     <string name="DepositAmount">Deposit Amount</string>
@@ -150,5 +152,13 @@
 
     --Currency--
     <string name="resetBaseCurrency">reset base currency</string>
+    <string name="updated">Updated</string>
+
+    --Metals--
+    <string name="Gold">Gold</string>
+    <string name="Silver">Silver</string>
+    <string name="Platinum">Platinum</string>
+    <string name="Palladium">Palladium</string>
+    <string name="Unit">Unit</string>
 
 </resources>

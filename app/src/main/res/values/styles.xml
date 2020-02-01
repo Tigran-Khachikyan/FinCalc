@@ -56,8 +56,13 @@
     </style>
 
     <style name="CurText" parent="textViewBigMain">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MetalText" parent="CurText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 
@@ -119,6 +124,11 @@
         <item name="android:paddingStart">6dp</item>
         <item name="android:layout_margin">2dp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="buttonCur" parent="button">
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="currencyViews" parent="currencyViewsSmall">

@@ -16,8 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.cur_met.currencyCodeList
-import com.example.fincalc.models.cur_met.currencyFlagList
+import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.*
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 
 @Suppress("DEPRECATION")
 class DepositActivity : AppCompatActivity() {
@@ -52,6 +50,7 @@ class DepositActivity : AppCompatActivity() {
         }
 
         btnCalculateDep.setOnClickListener {
+            hideKeyboard(this)
             calculate(it)
         }
 
@@ -224,10 +223,12 @@ class DepositActivity : AppCompatActivity() {
             val etBank: EditText = dialogView.findViewById(R.id.etDialBank)
 
             //spinner Currency
+            val curList = currencyMapFlags.keys.toTypedArray()
+            val flagList = currencyMapFlags.values.toTypedArray()
             val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                currencyCodeList, currencyFlagList, true
+                curList, flagList, true
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur
@@ -251,6 +252,8 @@ class DepositActivity : AppCompatActivity() {
                 dep?.currency = cur
                 dep?.let {
                     depViewModel.addDep(dep)
+                    val success = context.getString(R.string.successSaved)
+                    showSnackbar(success, fab_AddDep, false)
                 }
             }
 
