@@ -1,39 +1,38 @@
-package com.example.fincalc.ui.cur.rates
+package com.example.fincalc.ui.rates.currency
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
+import com.example.fincalc.data.network.api_rates.CurRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.cur_met_crypto.ConvertRates
-import com.example.fincalc.models.cur_met_crypto.TableRates
-import com.example.fincalc.models.cur_met_crypto.getMapFromCurRates
+import com.example.fincalc.data.network.firebase.RatesType.*
+import com.example.fincalc.models.rates.CurrencyConverter
+import com.example.fincalc.models.rates.TableRates
+import com.example.fincalc.models.rates.getMapFromCurRates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class RatesViewModel(application: Application) : AndroidViewModel(application) {
+class CurrencyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = Repository.getInstance(application)
-    private val latCurRates = repository?.getLatestCurRates()
-
-    private fun getLatCurRates(): LiveData<RatesFull>? = latCurRates
-
+    private val latCurRates = repository?.getLatestRates(CURRENCY)
 
     //Converter
-    private val _convertRates = MediatorLiveData<ConvertRates?>()
+    private val _convertRates = MediatorLiveData<CurrencyConverter?>()
     private val _curSpin1 = MutableLiveData<String?>()
     private val _curSpin2 = MutableLiveData<String?>()
     private val _data = MutableLiveData<String?>()
     private val _amount = MutableLiveData<Double?>()
     private val _rates: LiveData<RatesFull?> = Transformations.switchMap(_data) {
         if (it == null)
-            repository?.getLatestCurRates()
+            repository?.getLatestRates(CURRENCY)
         else
-            repository?.getHisCurRates(it)
+            repository?.getHistoricRates(it, CURRENCY)
     }
 
-    fun getConvertRates(): LiveData<ConvertRates?> {
+    fun getConvertRates(): LiveData<CurrencyConverter?> {
         CoroutineScope(Dispatchers.Default).launch {
             _convertRates.addSource(_curSpin1) {
                 _convertRates.value = combineConvert(_curSpin1, _curSpin2, _amount, _rates)
@@ -70,7 +69,7 @@ class RatesViewModel(application: Application) : AndroidViewModel(application) {
         _curSpin2: LiveData<String?>,
         _amount: LiveData<Double?>,
         _rates: LiveData<RatesFull?>
-    ): ConvertRates? {
+    ): CurrencyConverter? {
 
         val curSpin1 = _curSpin1.value
         val curSpin2 = _curSpin2.value
@@ -78,14 +77,14 @@ class RatesViewModel(application: Application) : AndroidViewModel(application) {
         val rates = _rates.value?.latRates
 
         return if (curSpin1 != null && curSpin2 != null && amount != null && rates != null) {
-            val map = getMapFromCurRates(rates)
+            val map = getMapFromCurRates(rates as CurRates)
             val curValue1 = map?.getValue(curSpin1)
             val curValue2 = map?.getValue(curSpin2)
             val resultAmount =
                 if (curValue1 != null && curValue2 != null && curValue2 != 0.0)
                     amount * curValue2 / curValue1
                 else null
-            ConvertRates(resultAmount, rates)
+            CurrencyConverter(resultAmount, rates)
         } else null
     }
 

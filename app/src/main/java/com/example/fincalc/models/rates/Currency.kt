@@ -1,9 +1,9 @@
-package com.example.fincalc.models.cur_met_crypto
+package com.example.fincalc.models.rates
 
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.RatesCurrency
+import com.example.fincalc.data.network.api_rates.CurRates
 
-fun getMapFromCurRates(rates: RatesCurrency): HashMap<String, Double>? = hashMapOf(
+fun getMapFromCurRates(rates: CurRates): HashMap<String, Double>? = hashMapOf(
     "AMD" to rates.AMD,
     "AED" to rates.AED,
     "ARS" to rates.ARS,
@@ -48,8 +48,8 @@ fun getMapFromCurRates(rates: RatesCurrency): HashMap<String, Double>? = hashMap
     "ZAR" to rates.ZAR
 )
 
-fun getRatesFromMap(map: HashMap<String, Double>): RatesCurrency {
-    val rates = RatesCurrency()
+fun getCurRatesFromMap(map: HashMap<String, Double>): CurRates {
+    val rates = CurRates()
 
     rates.AMD = map["AMD"] ?: 0.0
     rates.AED = map["AED"] ?: 0.0

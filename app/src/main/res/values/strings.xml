@@ -53,6 +53,7 @@
     <string name="TOTAL">TOTAL</string>
     <string name="TOTAL_PAYMENT">Total payment</string>
     <string name="InvalidInput">"Invalid input! \"Amount\" , \"Term\" and \"Interest rate\" fields are mandatory!"</string>
+    <string name="InvalidInputCalendar">"Invalid date is selected!"</string>
     --
 
     --Activity Currency

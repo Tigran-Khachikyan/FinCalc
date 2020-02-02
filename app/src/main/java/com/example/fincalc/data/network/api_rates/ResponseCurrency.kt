@@ -21,7 +21,7 @@ class ResponseCurrency : Response {
      }*/
 
     override var date: String = ""
-    override lateinit var rates: RatesCurrency
+    override lateinit var rates: CurRates
     override var success: Boolean = false
     override var timestamp: Int = 0
     override var historical: Boolean = false

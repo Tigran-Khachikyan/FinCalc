@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_rates"
-        android:name="com.example.fincalc.ui.cur.rates.RateFragment"
+        android:name="com.example.fincalc.ui.rates.currency.RateFragment"
         android:label="@string/rates"
         tools:layout="@layout/fragment_loans" />
 
     <fragment
         android:id="@+id/navigation_metals"
-        android:name="com.example.fincalc.ui.cur.metals.MetalsFragment"
+        android:name="com.example.fincalc.ui.rates.metals.MetalsFragment"
         android:label="@string/precious_metals"
         tools:layout="@layout/fragment_balance" />
 

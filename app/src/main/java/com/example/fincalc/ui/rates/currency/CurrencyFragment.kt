@@ -1,4 +1,4 @@
-package com.example.fincalc.ui.cur.rates
+package com.example.fincalc.ui.rates.currency
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -17,10 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.RatesCurrency
+import com.example.fincalc.data.network.api_rates.CurRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
-import com.example.fincalc.models.cur_met_crypto.getMapFromCurRates
+import com.example.fincalc.models.rates.currencyMapFlags
+import com.example.fincalc.models.rates.getMapFromCurRates
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_rate.*
 import java.text.ParseException
@@ -41,13 +41,13 @@ private const val CURRENCY_TABLE = "Currency Table"
 @Suppress("DEPRECATION")
 class RateFragment : Fragment() {
 
-    private lateinit var ratesViewModel: RatesViewModel
+    private lateinit var ratesViewModel: CurrencyViewModel
     private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        ratesViewModel = ViewModelProvider(this).get(RatesViewModel::class.java)
+        ratesViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         return inflater.inflate(R.layout.fragment_rate, container, false)
     }
 
@@ -81,7 +81,7 @@ class RateFragment : Fragment() {
             it?.let {
                 setTableCurrencies(it.baseCurrency)
                 tvTableDateTime.text = getDate(it.rates.dateTime)
-                setTableRates(it.baseCurrency, it.rates.latRates)
+                setTableRates(it.baseCurrency, it.rates.latRates as CurRates?)
                 setTableGrowth(it.baseCurrency, it.rates)
             }
         })
@@ -145,7 +145,7 @@ class RateFragment : Fragment() {
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                curList, flagList, true
+                curList, flagList
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur
@@ -204,7 +204,7 @@ class RateFragment : Fragment() {
         tvCurRUB.text = textRUR
     }
 
-    private fun setTableRates(cur: String, rates: RatesCurrency?) {
+    private fun setTableRates(cur: String, rates: CurRates?) {
         rates?.let {
             val map = getMapFromCurRates(rates)
             val selCurValue = map?.get(cur)
@@ -222,7 +222,7 @@ class RateFragment : Fragment() {
         val latestRates = ratesUi.latRates
         val elderRates = ratesUi.elderRates
         latestRates?.let {
-            val mapLatest = getMapFromCurRates(latestRates)
+            val mapLatest = getMapFromCurRates(latestRates as CurRates)
             val selCurValue1 = mapLatest?.get(cur)
             selCurValue1?.let {
 
@@ -233,7 +233,7 @@ class RateFragment : Fragment() {
                 val latRateRUB = getRateValuesDouble("RUB", selCurValue1, mapLatest)
 
                 if (elderRates != null) {
-                    val mapElder = getMapFromCurRates(elderRates)
+                    val mapElder = getMapFromCurRates(elderRates as CurRates)
                     val selCurValue2 = mapElder?.get(cur)
                     selCurValue2?.let {
 
@@ -322,6 +322,7 @@ class RateFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun openCalendar(context: Context?) {
         context?.let {
             val calendar = Calendar.getInstance()
@@ -332,29 +333,39 @@ class RateFragment : Fragment() {
                 DatePickerDialog(
                     context,
                     DatePickerDialog.OnDateSetListener { _, y, m, d ->
-                        // val date = d.toString() + "/" + (m + 1) + "/" + y
-                        val year: String = y.toString()
-                        val month = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
-                        val day = if (d < 10) "0$d" else d.toString()
-                        val dateForDatabase = "$year-$month-$day"
-                        val dateForIntro = "$day/$month/$year"
-                        val now = calendar.time
-                        Log.d("nbnb", "calendarValid: ${calendarValid(dateForIntro)}")
-                        Log.d("nbnb", "now: $now")
-                        Log.d("nbnb", "selDate: $dateForIntro")
+                        val yr: String = y.toString()
+                        val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
+                        val dy = if (d < 10) "0$d" else d.toString()
+                        val dateForApiRequest = "$yr-$mnt-$dy"
 
-                        if (calendarValid(dateForIntro)) {
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+                        val selectedDate = try {
+                            dateFormat.parse(dateForApiRequest)
+                        } catch (e: ParseException) {
+                            null
                         }
+                        selectedDate?.let {
+                            val isValidDate = Date().after(selectedDate)
 
-                        btnCalendarDate.text = dateForIntro
-                        ratesViewModel.setDate(dateForDatabase)
+                            if (!isValidDate) {
+                                showSnackbar(
+                                    context.getString(R.string.InvalidInputCalendar),
+                                    btnCalendarDate,
+                                    false
+                                )
+                                return@OnDateSetListener
+                            }
 
-                        btnCalendarDate.background =
-                            resources.getDrawable(R.drawable.final_btnreset_currency)
-                        btnCalendarNow.background =
-                            resources.getDrawable(R.drawable.final_cur_latest_unselected)
-                        btnCalendarDate.text = dateForIntro
-                        btnCalendarNow.text = ""
+                            btnCalendarDate.text = selectedDate.toString()
+                            ratesViewModel.setDate(dateForApiRequest)
+
+                            btnCalendarDate.background =
+                                resources.getDrawable(R.drawable.final_btnreset_currency)
+                            btnCalendarNow.background =
+                                resources.getDrawable(R.drawable.final_cur_latest_unselected)
+                            btnCalendarDate.text = selectedDate.toString()
+                            btnCalendarNow.text = ""
+                        }
 
                     }, year, month, day
                 )
@@ -388,18 +399,6 @@ class RateFragment : Fragment() {
                 btnSpinner2.setCompoundDrawablesWithIntrinsicBounds(flag, 0, 0, 0)
             }
         }
-    }
-
-    private fun calendarValid(date: String): Boolean {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
-        val selectedDate = try {
-            dateFormat.parse(date)
-        } catch (e: ParseException) {
-            null
-        }
-        Log.d("nbnb", "selectedDate: $selectedDate")
-
-        return  Date().after(selectedDate)
     }
 
     override fun onStop() {

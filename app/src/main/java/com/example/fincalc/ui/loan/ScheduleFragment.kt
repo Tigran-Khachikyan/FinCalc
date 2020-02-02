@@ -21,7 +21,7 @@ import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
-import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
+import com.example.fincalc.models.rates.currencyMapFlags
 import com.example.fincalc.ui.AdapterSpinnerRates
 import com.example.fincalc.ui.customizeAlertDialog
 import com.example.fincalc.ui.decimalFormatter1p
@@ -139,7 +139,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                curList, flagList, true
+                curList, flagList
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur

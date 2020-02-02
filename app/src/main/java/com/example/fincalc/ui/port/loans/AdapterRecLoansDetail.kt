@@ -12,7 +12,7 @@ import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.TableLoan
-import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
+import com.example.fincalc.models.rates.currencyMapFlags
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
 import java.text.DecimalFormat
 

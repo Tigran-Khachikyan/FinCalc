@@ -2,7 +2,7 @@ package com.example.fincalc.data.network.api_rates
 
 import com.example.fincalc.data.network.Rates
 
- class RatesCurrency : Rates {
+ class CurRates : Rates {
     var AMD: Double = 0.0
     var AED: Double = 0.0
     var ARS: Double = 0.0

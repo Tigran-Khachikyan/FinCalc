@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.cur_met_crypto.currencyMapFlags
+import com.example.fincalc.models.rates.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.*
@@ -228,7 +228,7 @@ class DepositActivity : AppCompatActivity() {
             val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.layoutspinner,
-                curList, flagList, true
+                curList, flagList
             )
             adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
             spinnerCur.adapter = adapterSpinCur

@@ -1,7 +1,6 @@
-package com.example.fincalc.ui.cur.metals
+package com.example.fincalc.ui.rates.metals
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +31,6 @@ class MetalsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bmbMetalsMenu.initialize(BMBTypes.METALS)
-        metalViewModel.getLatestMetals().observe(viewLifecycleOwner, Observer {
-
-            it?.let {
-            }
-        })
     }
 
 }

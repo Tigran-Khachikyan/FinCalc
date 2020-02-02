@@ -17,7 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
         <activity
-            android:name=".ui.cur.CurrencyActivity"
+            android:name=".ui.rates.RatesActivity"
             android:label="@string/title_activity_currency">
 
         </activity>
