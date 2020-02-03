@@ -23,7 +23,7 @@
 
             <!--imageView-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ivMetalsMain"
+                android:id="@+id/ivCurrencyMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/black"
@@ -33,7 +33,7 @@
                     android:id="@+id/layInsideImage"
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    android:background="@mipmap/currencyimagemain"
+                    android:background="@mipmap/image_currency"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -67,7 +67,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/final_cur_background">
+            android:background="@drawable/final_rates_background">
 
 
             <!--Tablo-->
@@ -99,7 +99,7 @@
                     android:padding="2dp">
 
                     <TextView
-                        android:id="@+id/tvMetalsIntro"
+                        android:id="@+id/tvCurrencyIntro"
                         style="@style/textViewBigMain"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -117,7 +117,7 @@
                         android:text="@string/rate"
                         android:textColor="@color/CurrencyPrimaryLight"
                         app:layout_constraintHorizontal_weight="1.1"
-                        app:layout_constraintLeft_toRightOf="@id/tvMetalsIntro"
+                        app:layout_constraintLeft_toRightOf="@id/tvCurrencyIntro"
                         app:layout_constraintRight_toLeftOf="@id/tvGrowthIntro" />
 
                     <TextView
@@ -138,30 +138,29 @@
                     android:padding="2dp">
 
                     <TextView
-                        android:id="@+id/tvGold"
+                        android:id="@+id/tvRateName"
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvGoldRate"
+                        app:layout_constraintRight_toLeftOf="@id/tvPrice"
                         app:layout_constraintWidth_percent="0.36" />
 
                     <TextView
-                        android:id="@+id/tvGoldRate"
+                        android:id="@+id/tvPrice"
                         style="@style/textViewBigMain"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvGold"
-                        app:layout_constraintRight_toLeftOf="@id/tvGoldGrowth"
+                        app:layout_constraintLeft_toRightOf="@id/tvRateName"
+                        app:layout_constraintRight_toLeftOf="@id/tvGrowth"
                         app:layout_constraintWidth_percent="0.36" />
 
                     <TextView
-                        android:id="@+id/tvGoldGrowth"
+                        android:id="@+id/tvGrowth"
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_arrow_drop_down_black_24dp"
-                        app:layout_constraintLeft_toRightOf="@id/tvGoldRate"
+                        app:layout_constraintLeft_toRightOf="@id/tvPrice"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintWidth_percent="0.28" />
 
@@ -195,7 +194,6 @@
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_arrow_drop_up_black_24dp"
                         app:layout_constraintLeft_toRightOf="@id/tvSilverRate"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintWidth_percent="0.28" />
@@ -230,7 +228,6 @@
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_arrow_drop_up_black_24dp"
                         app:layout_constraintLeft_toRightOf="@id/tvPlatRate"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintWidth_percent="0.28" />
@@ -265,7 +262,6 @@
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_arrow_drop_down_black_24dp"
                         app:layout_constraintLeft_toRightOf="@id/tvPalladRate"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintWidth_percent="0.28" />
@@ -300,7 +296,6 @@
                         style="@style/CurText"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:drawableStart="@drawable/ic_arrow_drop_down_black_24dp"
                         app:layout_constraintLeft_toRightOf="@id/tvRateRUB"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintWidth_percent="0.28" />
@@ -320,7 +315,6 @@
                     android:padding="2dp"
                     android:text="@string/resetBaseCurrency"
                     android:textColor="@color/CurrencyPrimaryLight" />
-
 
             </LinearLayout>
 

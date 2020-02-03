@@ -1,7 +1,7 @@
 package com.example.fincalc.models.rates
 
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.CurRates
+import com.example.fincalc.data.network.api_currency.CurRates
 
 fun getMapFromCurRates(rates: CurRates): HashMap<String, Double>? = hashMapOf(
     "AMD" to rates.AMD,

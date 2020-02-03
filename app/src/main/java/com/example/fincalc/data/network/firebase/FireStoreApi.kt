@@ -2,7 +2,7 @@ package com.example.fincalc.data.network.firebase
 
 import com.example.fincalc.data.network.Rates
 import com.example.fincalc.data.network.api_crypto.CryptoRates
-import com.example.fincalc.data.network.api_rates.CurRates
+import com.example.fincalc.data.network.api_currency.CurRates
 import com.example.fincalc.data.network.firebase.FBCollection.*
 import com.example.fincalc.data.network.firebase.RatesType.CRYPTO
 import com.example.fincalc.data.network.firebase.RatesType.CURRENCY
@@ -16,6 +16,7 @@ import java.util.*
 
 private const val CACHE = "Cached Rates"
 const val DATE = "Short Date"
+const val BASE = "Base"
 const val DATE_TIME = "Long Date"
 const val RATES = "Rates"
 const val NO_NETWORK = 123
@@ -27,7 +28,7 @@ object FireStoreApi {
     private val fireStoreDb by lazy { FirebaseFirestore.getInstance() }
 
 
-    fun setLatestRatesFire(rates: Rates?) {
+    fun setLatestRatesFire(rates: Rates?, base: String) {
 
         rates?.let {
             val nowDate = Calendar.getInstance().time
@@ -37,11 +38,11 @@ object FireStoreApi {
             when (rates) {
                 is CurRates -> {
                     val ratesMap = getMapFromCurRates(rates)
-                    setToFBLatestColl(ratesMap, CURRENCY_LATEST, nowShort, now)
+                    setToFBLatestColl(ratesMap, CURRENCY_LATEST, nowShort, now, base)
                 }
                 is CryptoRates -> {
                     val ratesMap = getMapFromCryptoRates(rates)
-                    setToFBLatestColl(ratesMap, CRYPTO_LATEST, nowShort, now)
+                    setToFBLatestColl(ratesMap, CRYPTO_LATEST, nowShort, now, base)
                 }
                 else -> TODO()
             }
@@ -49,12 +50,17 @@ object FireStoreApi {
     }
 
     private fun setToFBLatestColl(
-        map: HashMap<String, Double>?, coll: FBCollection, nowShort: String, now: String
+        map: HashMap<String, Double>?,
+        coll: FBCollection,
+        nowShort: String,
+        now: String,
+        base: String
     ) {
         map?.let {
             val resultMap = hashMapOf(
                 DATE to nowShort,
                 DATE_TIME to now,
+                BASE to base,
                 RATES to map
             )
             writeToFireStore(coll, now, resultMap)
@@ -62,26 +68,30 @@ object FireStoreApi {
         }
     }
 
-    fun setHisRatesFire(date: String, rates: Rates?) {
+    fun setHisRatesFire(date: String, rates: Rates?, base: String) {
 
         rates?.let {
             when (rates) {
                 is CurRates -> setToFBHistoricColl(
-                    getMapFromCurRates(rates), CURRENCY_HISTORICAL, date
+                    getMapFromCurRates(rates), CURRENCY_HISTORICAL, date, base
                 )
                 is CryptoRates -> setToFBHistoricColl(
-                    getMapFromCryptoRates(rates), CRYPTO_HISTORICAL, date
+                    getMapFromCryptoRates(rates), CRYPTO_HISTORICAL, date, base
                 )
             }
         }
     }
 
     private fun setToFBHistoricColl(
-        map: HashMap<String, Double>?, coll: FBCollection, date: String
+        map: HashMap<String, Double>?, coll: FBCollection, date: String, base: String
     ) {
 
         val resultMap = map?.let {
-            hashMapOf(DATE to date, RATES to map)
+            hashMapOf(
+                DATE to date,
+                RATES to map,
+                BASE to base
+            )
         }
         writeToFireStore(coll, date, resultMap)
     }

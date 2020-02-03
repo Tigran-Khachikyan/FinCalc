@@ -1,4 +1,4 @@
-package com.example.fincalc.data.network.api_rates
+package com.example.fincalc.data.network.api_currency
 
 import com.example.fincalc.data.network.Rates
 

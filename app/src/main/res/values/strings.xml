@@ -61,6 +61,7 @@
     <string name="rates">Currencies</string>
     <string name="rate">Rate</string>
     <string name="precious_metals">Precious metals</string>
+    <string name="crypto">CryptoCurrency</string>
     <string name="metals">Metals</string>
     <string name="latest">Latest</string>
     <string name="Live_converter">Live converter</string>
@@ -151,11 +152,11 @@
     <string name="OK">OK</string>
     <string name="SuccessfullyRemoved">Successfully removed from Portfolio</string>
 
-    --Currency--
+    --Rates--
     <string name="resetBaseCurrency">reset base currency</string>
     <string name="updated">Updated</string>
-
-    --Metals--
+    <string name="change">Change</string>
+    <string name="price">Price</string>
     <string name="Gold">Gold</string>
     <string name="Silver">Silver</string>
     <string name="Platinum">Platinum</string>

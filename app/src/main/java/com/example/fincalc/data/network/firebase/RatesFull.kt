@@ -7,10 +7,6 @@ data class RatesFull(
     val dateTime: Date?,
     val latRates: Rates?,
     val elderRates: Rates?,
+    val base: String?,
     var status: Int = OK
-) {
-    override fun toString(): String {
-        return "dateTime: $dateTime, LATEST-AMD: ${latRates}," +
-                " ELDER-AMD: ${elderRates}, STATUS: $status"
-    }
-}
+)

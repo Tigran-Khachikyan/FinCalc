@@ -3,9 +3,8 @@ package com.example.fincalc.ui.rates.currency
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
-import com.example.fincalc.data.network.api_rates.CurRates
+import com.example.fincalc.data.network.api_currency.CurRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.data.network.firebase.RatesType.*
 import com.example.fincalc.models.rates.CurrencyConverter
 import com.example.fincalc.models.rates.TableRates
 import com.example.fincalc.models.rates.getMapFromCurRates
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 class CurrencyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = Repository.getInstance(application)
-    private val latCurRates = repository?.getLatestRates(CURRENCY)
+    private val _latestCurRates = repository?.getLatestCur()
 
     //Converter
     private val _convertRates = MediatorLiveData<CurrencyConverter?>()
@@ -27,9 +26,9 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
     private val _amount = MutableLiveData<Double?>()
     private val _rates: LiveData<RatesFull?> = Transformations.switchMap(_data) {
         if (it == null)
-            repository?.getLatestRates(CURRENCY)
+            _latestCurRates
         else
-            repository?.getHistoricRates(it, CURRENCY)
+            repository?.getHistoricCur(it)
     }
 
     fun getConvertRates(): LiveData<CurrencyConverter?> {
@@ -98,12 +97,12 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
 
     fun getLatTableRates(): LiveData<TableRates?> {
         viewModelScope.launch {
-            latCurRates?.let {
-                latTableRates.addSource(latCurRates) {
-                    latTableRates.value = combineLiveData(latCurRates, _latTableCur)
+            _latestCurRates?.let {
+                latTableRates.addSource(_latestCurRates) {
+                    latTableRates.value = combineLiveData(_latestCurRates, _latTableCur)
                 }
                 latTableRates.addSource(_latTableCur) {
-                    latTableRates.value = combineLiveData(latCurRates, _latTableCur)
+                    latTableRates.value = combineLiveData(_latestCurRates, _latTableCur)
                 }
             }
         }
@@ -122,9 +121,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         _convertRates.removeSource(_amount)
         _convertRates.removeSource(_rates)
 
-        latTableRates.removeSource(latCurRates!!)
+        latTableRates.removeSource(_latestCurRates!!)
         latTableRates.removeSource(_latTableCur)
     }
-
-
 }

@@ -138,10 +138,10 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val flagList = currencyMapFlags.values.toTypedArray()
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.layoutspinner,
+                context, R.layout.spinner_currencies,
                 curList, flagList
             )
-            adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
+            adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
             spinnerCur.adapter = adapterSpinCur
             spinnerCur.setSelection(adapterSpinCur.count - 4)
 

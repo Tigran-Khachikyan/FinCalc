@@ -17,7 +17,7 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
             1 ->
                 ScheduleListHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.recyclerloan,
+                        R.layout.recycler_loan,
                         parent,
                         false
                     )
@@ -25,14 +25,14 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
             0 ->
                 ScheduleTotalHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.recyclerloantotal,
+                        R.layout.recycler_loan_total,
                         parent,
                         false
                     )
                 )
             else -> CommissionAndCostHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.recyclercommissionandcosts,
+                    R.layout.recycler_com_and_costs,
                     parent,
                     false
                 )

@@ -56,8 +56,9 @@
     </style>
 
     <style name="CurText" parent="textViewBigMain">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
     </style>
 
     <style name="MetalText" parent="CurText">
@@ -132,7 +133,7 @@
     </style>
 
     <style name="currencyViews" parent="currencyViewsSmall">
-        <item name="android:background">@drawable/currencyedittext</item>
+        <item name="android:background">@drawable/final_input_frame</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:layout_marginStart">4dp</item>
     </style>

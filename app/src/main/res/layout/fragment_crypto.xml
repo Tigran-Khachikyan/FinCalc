@@ -1,14 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.rates.crypto.CryptoFragment">
+    tools:ignore="Autofill">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <!--imageView-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivCryptoMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layInsideImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:background="@mipmap/image_crypto"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:text="@string/WeMakeItEasy"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--main-->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@drawable/final_rates_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</FrameLayout>
+        <!--options-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layCryptoOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvCryptoDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="03/02/2020 ....."
+                android:textColor="@color/CurrencyPrimaryLight"
+                android:textStyle="bold|italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCryptoBaseCur"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginStart="10dp"
+                android:text="Base currency  USD"
+                android:textColor="@color/CurrencyPrimaryLight"
+                android:textStyle="bold|italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCryptoDateTime" />
+
+            <TextView
+                android:id="@+id/tvCryptoSortedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginStart="10dp"
+                android:text="Sorted by price"
+                android:textColor="@color/CurrencyPrimaryLight"
+                android:textStyle="bold|italic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCryptoBaseCur" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Intro-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layCryptoIntro"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_constraintTop_toBottomOf="@id/layCryptoOptions">
+
+            <TextView
+                android:id="@+id/tvMetalsIntro"
+                style="@style/textViewInfo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/Currency"
+                android:textColor="@color/CurrencyPrimaryLight"
+                app:layout_constraintHorizontal_weight="0.35"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tvRateIntro" />
+
+            <TextView
+                android:id="@+id/tvRateIntro"
+                style="@style/textViewInfo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/price"
+                android:textColor="@color/CurrencyPrimaryLight"
+                app:layout_constraintHorizontal_weight="0.4"
+                app:layout_constraintLeft_toRightOf="@id/tvMetalsIntro"
+                app:layout_constraintRight_toLeftOf="@id/tvGrowthIntro" />
+
+            <TextView
+                android:id="@+id/tvGrowthIntro"
+                style="@style/textViewInfo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:text="@string/change"
+                android:textColor="@color/CurrencyPrimaryLight"
+                app:layout_constraintHorizontal_weight="0.25"
+                app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCrypto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="90dp"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layCryptoIntro" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

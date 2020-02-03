@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator"
-    android:background="@color/MetalsPrimary"
+    android:background="@drawable/final_rates_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="Autofill">
@@ -13,7 +13,7 @@
         android:id="@+id/ivMetalsMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/final_metals_background"
+        android:background="@drawable/final_rates_background"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,6 +39,7 @@
     <!--main-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/final_rates_background"
         android:layout_height="0dp"
         android:layout_marginBottom="?attr/actionBarSize"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +47,7 @@
 
         <!--Tablo-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cardViewLiveCurrency"
+            android:id="@+id/cardViewLiveMetals"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -125,31 +126,31 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/tvGold"
+                            android:id="@+id/tvRateName"
                             style="@style/MetalText"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:text="@string/Gold"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/tvGoldRate"
+                            app:layout_constraintRight_toLeftOf="@id/tvPrice"
                             app:layout_constraintWidth_percent="0.36" />
 
                         <TextView
-                            android:id="@+id/tvGoldRate"
+                            android:id="@+id/tvPrice"
                             style="@style/textViewBigMain"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            app:layout_constraintLeft_toRightOf="@id/tvGold"
-                            app:layout_constraintRight_toLeftOf="@id/tvGoldGrowth"
+                            app:layout_constraintLeft_toRightOf="@id/tvRateName"
+                            app:layout_constraintRight_toLeftOf="@id/tvGrowth"
                             app:layout_constraintWidth_percent="0.36" />
 
                         <TextView
-                            android:id="@+id/tvGoldGrowth"
+                            android:id="@+id/tvGrowth"
                             style="@style/CurText"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:drawableStart="@drawable/ic_arrow_drop_down_black_24dp"
-                            app:layout_constraintLeft_toRightOf="@id/tvGoldRate"
+                            app:layout_constraintLeft_toRightOf="@id/tvPrice"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintWidth_percent="0.28" />
 

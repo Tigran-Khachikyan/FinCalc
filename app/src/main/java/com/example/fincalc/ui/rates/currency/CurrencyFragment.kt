@@ -6,27 +6,23 @@ import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_rates.CurRates
+import com.example.fincalc.data.network.api_currency.CurRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.rates.currencyMapFlags
-import com.example.fincalc.models.rates.getMapFromCurRates
+import com.example.fincalc.models.rates.*
 import com.example.fincalc.ui.*
-import kotlinx.android.synthetic.main.fragment_rate.*
+import kotlinx.android.synthetic.main.fragment_currency.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.absoluteValue
 
 
 private const val PRIVATE_MODE = 0
@@ -48,7 +44,7 @@ class RateFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         ratesViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_rate, container, false)
+        return inflater.inflate(R.layout.fragment_currency, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -144,10 +140,10 @@ class RateFragment : Fragment() {
             //spinner Currency
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
             val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.layoutspinner,
+                context, R.layout.spinner_currencies,
                 curList, flagList
             )
-            adapterSpinCur.setDropDownViewResource(R.layout.layoutspinner)
+            adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
             spinnerCur.adapter = adapterSpinCur
             spinnerCur.setHasTransientState(true)
 
@@ -193,7 +189,7 @@ class RateFragment : Fragment() {
 
     private fun setTableCurrencies(cur: String) {
         val textUSD = "USD / $cur"
-        tvGold.text = textUSD
+        tvRateName.text = textUSD
         val textEUR = "EUR / $cur"
         tvSilver.text = textEUR
         val textGBP = "GBP / $cur"
@@ -209,7 +205,7 @@ class RateFragment : Fragment() {
             val map = getMapFromCurRates(rates)
             val selCurValue = map?.get(cur)
             selCurValue?.let {
-                tvGoldRate.text = getRateValuesString("USD", selCurValue, map)
+                tvPrice.text = getRateValuesString("USD", selCurValue, map)
                 tvSilverRate.text = getRateValuesString("EUR", selCurValue, map)
                 tvPlatRate.text = getRateValuesString("GBP", selCurValue, map)
                 tvPalladRate.text = getRateValuesString("CNY", selCurValue, map)
@@ -243,14 +239,14 @@ class RateFragment : Fragment() {
                         val oldRateCNY = getRateValuesDouble("CNY", selCurValue2, mapElder)
                         val oldRateRUB = getRateValuesDouble("RUB", selCurValue2, mapElder)
 
-                        getGrowthView(tvGoldGrowth, getGrowthCoef(latRateUSD, oldRateUSD))
-                        getGrowthView(tvSilverGrowth, getGrowthCoef(latRateEUR, oldRateEUR))
-                        getGrowthView(tvPlatGrowth, getGrowthCoef(latRateGBP, oldRateGBP))
-                        getGrowthView(tvPalladGrowth, getGrowthCoef(latRateCNY, oldRateCNY))
-                        getGrowthView(tvGrowthRUB, getGrowthCoef(latRateRUB, oldRateRUB))
+                        getGrowthView(tvGrowth, getGrowthRate(latRateUSD, oldRateUSD))
+                        getGrowthView(tvSilverGrowth, getGrowthRate(latRateEUR, oldRateEUR))
+                        getGrowthView(tvPlatGrowth, getGrowthRate(latRateGBP, oldRateGBP))
+                        getGrowthView(tvPalladGrowth, getGrowthRate(latRateCNY, oldRateCNY))
+                        getGrowthView(tvGrowthRUB, getGrowthRate(latRateRUB, oldRateRUB))
                     }
                 } else {
-                    getGrowthView(tvGoldGrowth, null)
+                    getGrowthView(tvGrowth, null)
                     getGrowthView(tvSilverGrowth, null)
                     getGrowthView(tvPlatGrowth, null)
                     getGrowthView(tvPalladGrowth, null)
@@ -260,58 +256,6 @@ class RateFragment : Fragment() {
         }
     }
 
-    private fun getRateValuesString(
-        mainCur: String, selCurVal: Double, map: HashMap<String, Double>
-    ): String? {
-
-        val value = getRateValuesDouble(mainCur, selCurVal, map)
-        return if (value != null)
-            decimalFormatter3p.format(value).replace(',', '.')
-        else null
-    }
-
-    private fun getRateValuesDouble(
-        mainCur: String, selCurVal: Double, map: HashMap<String, Double>
-    ): Double? {
-
-        val value = map[mainCur]
-        return if (value != null && value != 0.0) selCurVal / value else null
-    }
-
-    private fun getGrowthCoef(latValue: Double?, oldValue: Double?): Double? {
-        return if (latValue != null && oldValue != null) {
-            val dif = latValue - oldValue
-            val res = 100 * dif / oldValue
-            when {
-                res == 0.0 || res.absoluteValue < 0.0001 -> 0.0
-                res.absoluteValue > 0.0001 && res.absoluteValue < 0.001 -> if (res > 0.0) 0.001 else -0.001
-                else -> res
-            }
-        } else null
-    }
-
-    private fun getGrowthView(tv: TextView, coef: Double?) {
-        coef?.let {
-
-            var text: String = decimalFormatter3p.format(coef).replace(',', '.') + "%"
-            if (text[0] == '-')
-                text = text.subSequence(1, text.length).toString()
-            Log.d("hhhu", "text: $text")
-            if (coef == 0.0) tv.visibility = View.INVISIBLE
-            else {
-                tv.visibility = View.VISIBLE
-                tv.text = text
-                if (coef > 0.0) tv.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_arrow_drop_up_black_24dp, 0, 0, 0
-                )
-                else tv.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_arrow_drop_down_black_24dp, 0, 0, 0
-                )
-            }
-        } ?: tv.setCompoundDrawablesWithIntrinsicBounds(
-            R.drawable.ic_question, 0, 0, 0
-        )
-    }
 
     @SuppressLint("SimpleDateFormat")
     private fun getDate(longDate: Date?): String? {

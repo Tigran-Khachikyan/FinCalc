@@ -6,4 +6,5 @@ interface Response {
     val timestamp: Int
     val historical: Boolean
     val date: String
+    val base: String
 }

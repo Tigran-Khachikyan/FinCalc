@@ -52,7 +52,7 @@ class AdapterRecBalance(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recyclerbalance, parent, false)
+            .inflate(R.layout.recycler_balance, parent, false)
         return Holder(view, onViewHolderClick)
     }
 

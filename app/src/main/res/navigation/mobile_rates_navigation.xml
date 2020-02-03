@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation_cur"
     app:startDestination="@+id/navigation_rates">
 
     <fragment
         android:id="@+id/navigation_rates"
         android:name="com.example.fincalc.ui.rates.currency.RateFragment"
-        android:label="@string/rates"
-        tools:layout="@layout/fragment_loans" />
+        android:label="@string/rates" />
+
+    <fragment
+        android:id="@+id/navigation_crypto"
+        android:name="com.example.fincalc.ui.rates.crypto.CryptoFragment"
+        android:label="@string/crypto" />
 
     <fragment
         android:id="@+id/navigation_metals"
         android:name="com.example.fincalc.ui.rates.metals.MetalsFragment"
-        android:label="@string/precious_metals"
-        tools:layout="@layout/fragment_balance" />
+        android:label="@string/precious_metals" />
 
 </navigation>

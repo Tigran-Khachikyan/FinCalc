@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.ui.decimalFormatter1p
-import java.text.DecimalFormat
 
 class AdapterRecViewDep(var scheduleDep: TableDep?) :
     RecyclerView.Adapter<AdapterRecViewDep.GenericViewHolderDep>() {
@@ -18,11 +17,11 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
         return when (viewType) {
             0 -> RowViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.recyclerdep, parent, false)
+                    .inflate(R.layout.recycler_dep, parent, false)
             )
             else -> TotalViewHolder(
                 LayoutInflater.from(parent.context)
-                    .inflate(R.layout.recyclerdeptotal, parent, false)
+                    .inflate(R.layout.recycler_dep_total, parent, false)
             )
         }
     }
