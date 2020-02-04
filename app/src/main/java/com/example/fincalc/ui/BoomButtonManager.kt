@@ -7,7 +7,7 @@ import com.nightonke.boommenu.BoomMenuButton
 
 
 enum class BMBTypes {
-    LOAN, DEPOSIT, METALS
+    LOAN, DEPOSIT, METALS, CRYPTO
 }
 
 fun BoomMenuButton.initialize(type: BMBTypes) {
@@ -30,6 +30,11 @@ fun BoomMenuButton.initialize(type: BMBTypes) {
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
+        }
+        BMBTypes.CRYPTO -> {
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.MetalsPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.MetalsPrimaryLight))
         }
     }
 

@@ -88,7 +88,7 @@
         app:layout_constraintLeft_toRightOf="@id/tvDialBank"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:text="@string/Currency"
         android:textColor="@android:color/black"
         android:layout_marginTop="12dp"

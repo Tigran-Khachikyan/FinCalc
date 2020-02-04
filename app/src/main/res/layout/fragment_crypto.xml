@@ -68,6 +68,23 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
+
+            <com.nightonke.boommenu.BoomMenuButton
+                android:id="@+id/bmbCryptoMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                app:bmb_buttonEnum="ham"
+                app:bmb_buttonPlaceEnum="buttonPlace_ham_3"
+                app:bmb_highlightedColor="@android:color/holo_red_dark"
+                app:bmb_normalColor="@color/CurrencyPrimaryLight"
+                app:bmb_piecePlaceEnum="piecePlace_dot_3_1"
+                app:bmb_shadowRadius="0dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tvCryptoDateTime"
                 android:layout_width="wrap_content"

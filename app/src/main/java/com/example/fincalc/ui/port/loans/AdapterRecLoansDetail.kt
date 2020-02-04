@@ -12,7 +12,7 @@ import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.TableLoan
-import com.example.fincalc.models.rates.currencyMapFlags
+import com.example.fincalc.models.rates.mapCurNameFlag
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
 import java.text.DecimalFormat
 
@@ -85,7 +85,7 @@ class AdapterRecLoansDetail(
 
             val cur = res.getString(R.string.Currency) + ": ${curLoan.currency}"
             holder.tvCur.text = cur
-            val flag = currencyMapFlags[curLoan.currency]
+            val flag = mapCurNameFlag[curLoan.currency]?.second
             flag?.let {
                 holder.ivCurrency.setImageResource(flag)
             }

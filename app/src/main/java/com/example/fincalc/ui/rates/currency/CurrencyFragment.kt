@@ -1,16 +1,11 @@
 package com.example.fincalc.ui.rates.currency
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,18 +15,17 @@ import com.example.fincalc.data.network.firebase.RatesFull
 import com.example.fincalc.models.rates.*
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_currency.*
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 private const val PRIVATE_MODE = 0
+const val LATEST = "Latest"
 private const val PREF_NAME = "Currency_Pref"
 private const val CURRENCY_PREF = "Selected-currency"
 private const val FORMAT = "dd MMM yyyy HH:mm:ss"
 private const val CURRENCY_FROM = "Currency from"
 private const val CURRENCY_TO = "Currency To"
-private const val CURRENCY_TABLE = "Currency Table"
 
 
 @Suppress("DEPRECATION")
@@ -62,7 +56,7 @@ class RateFragment : Fragment() {
         selectBtnSpinner("USD", CURRENCY_TO)
         ratesViewModel.setCurrencies("EUR", "USD")
         etAmountInput.setText("1.0")
-        ratesViewModel.setDate(null)
+        ratesViewModel.setDate(LATEST)
 
     }
 
@@ -72,7 +66,12 @@ class RateFragment : Fragment() {
         ratesViewModel.getLatTableRates().observe(viewLifecycleOwner, Observer {
 
             btnResetBaseCurrency.setOnClickListener {
-                getDialog(context, CURRENCY_TABLE)
+                getDialogCurHighOrderFunc(context) { selectedCur ->
+                    val editor = sharedPref.edit()
+                    editor.putString(CURRENCY_PREF, selectedCur)
+                    editor.apply()
+                    ratesViewModel.setLatTableCur(selectedCur)
+                }
             }
             it?.let {
                 setTableCurrencies(it.baseCurrency)
@@ -85,7 +84,7 @@ class RateFragment : Fragment() {
         ratesViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             btnCalendarDate.setOnClickListener {
-                openCalendar(context)
+                openCalendarHighOrderFunc(context, btnCalendarDate, ::calendarInvokeFunc)
             }
 
             btnCalendarNow.setOnClickListener {
@@ -93,11 +92,20 @@ class RateFragment : Fragment() {
             }
 
             btnSpinner1.setOnClickListener {
-                getDialog(context, CURRENCY_FROM)
+                getDialogCurHighOrderFunc(context) { selectedCur ->
+                    val curTo = btnSpinner2.text.toString()
+                    selectBtnSpinner(selectedCur, CURRENCY_FROM)
+                    ratesViewModel.setCurrencies(selectedCur, curTo)
+                }
             }
 
             btnSpinner2.setOnClickListener {
-                getDialog(context, CURRENCY_TO)
+                getDialogCurHighOrderFunc(context) { selectedCur ->
+                    val curFrom = btnSpinner1.text.toString()
+                    btnSpinner2.text = selectedCur
+                    selectBtnSpinner(selectedCur, CURRENCY_TO)
+                    ratesViewModel.setCurrencies(curFrom, selectedCur)
+                }
             }
 
             btnConvertCur.setOnClickListener {
@@ -126,7 +134,7 @@ class RateFragment : Fragment() {
     }
 
 
-    @SuppressLint("InflateParams")
+    /*@SuppressLint("InflateParams")
     private fun getDialog(context: Context?, cur: String) {
         if (context != null) {
             val dialogBuilder = AlertDialog.Builder(context)
@@ -185,7 +193,7 @@ class RateFragment : Fragment() {
             customizeAlertDialog(alertDialog, true)
             alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimaryLight)
         }
-    }
+    }*/
 
     private fun setTableCurrencies(cur: String) {
         val textUSD = "USD / $cur"
@@ -266,62 +274,20 @@ class RateFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun openCalendar(context: Context?) {
-        context?.let {
-            val calendar = Calendar.getInstance()
-            val year = calendar[Calendar.YEAR]
-            val month = calendar[Calendar.MONTH]
-            val day = calendar[Calendar.DAY_OF_MONTH]
-            val dialog: Dialog =
-                DatePickerDialog(
-                    context,
-                    DatePickerDialog.OnDateSetListener { _, y, m, d ->
-                        val yr: String = y.toString()
-                        val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
-                        val dy = if (d < 10) "0$d" else d.toString()
-                        val dateForApiRequest = "$yr-$mnt-$dy"
+    private fun calendarInvokeFunc(dateForApiRequest: String, selectedDate: Date) {
+        btnCalendarDate.text = selectedDate.toString()
+        ratesViewModel.setDate(dateForApiRequest)
 
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                        val selectedDate = try {
-                            dateFormat.parse(dateForApiRequest)
-                        } catch (e: ParseException) {
-                            null
-                        }
-                        selectedDate?.let {
-                            val isValidDate = Date().after(selectedDate)
-
-                            if (!isValidDate) {
-                                showSnackbar(
-                                    context.getString(R.string.InvalidInputCalendar),
-                                    btnCalendarDate,
-                                    false
-                                )
-                                return@OnDateSetListener
-                            }
-
-                            btnCalendarDate.text = selectedDate.toString()
-                            ratesViewModel.setDate(dateForApiRequest)
-
-                            btnCalendarDate.background =
-                                resources.getDrawable(R.drawable.final_btnreset_currency)
-                            btnCalendarNow.background =
-                                resources.getDrawable(R.drawable.final_cur_latest_unselected)
-                            btnCalendarDate.text = selectedDate.toString()
-                            btnCalendarNow.text = ""
-                        }
-
-                    }, year, month, day
-                )
-            dialog.setCancelable(true)
-            dialog.setOnCancelListener {
-            }
-            dialog.show()
-        }
+        btnCalendarDate.background =
+            resources.getDrawable(R.drawable.final_btnreset_currency)
+        btnCalendarNow.background =
+            resources.getDrawable(R.drawable.final_cur_latest_unselected)
+        btnCalendarDate.text = selectedDate.toString()
+        btnCalendarNow.text = ""
     }
 
     private fun clickLatest() {
-        ratesViewModel.setDate(null)
+        ratesViewModel.setDate(LATEST)
         btnCalendarDate.background = resources.getDrawable(R.drawable.final_cur_latest_unselected)
         btnCalendarNow.background = resources.getDrawable(R.drawable.final_btnreset_currency)
         btnCalendarDate.text = ""
@@ -329,7 +295,7 @@ class RateFragment : Fragment() {
     }
 
     private fun selectBtnSpinner(cur: String, btnSpinner: String) {
-        val flag = currencyMapFlags[cur]
+        val flag = mapCurNameFlag[cur]?.second
 
         if (btnSpinner == CURRENCY_FROM) {
             btnSpinner1.text = cur

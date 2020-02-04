@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.rates.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
+import com.example.fincalc.models.rates.arrayCurCode
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
@@ -223,16 +223,13 @@ class DepositActivity : AppCompatActivity() {
             val etBank: EditText = dialogView.findViewById(R.id.etDialBank)
 
             //spinner Currency
-            val curList = currencyMapFlags.keys.toTypedArray()
-            val flagList = currencyMapFlags.values.toTypedArray()
+
             val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.spinner_currencies,
-                curList, flagList
+                context, R.layout.spinner_currencies, arrayCurCode
             )
             adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
             spinnerCur.adapter = adapterSpinCur
-            spinnerCur.setSelection(adapterSpinCur.count - 4)
 
             //spinner LoanType
             val spinnerType = dialogView.findViewById<Spinner>(R.id.spinnerDialLoanType)

@@ -25,10 +25,11 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
     private val _data = MutableLiveData<String?>()
     private val _amount = MutableLiveData<Double?>()
     private val _rates: LiveData<RatesFull?> = Transformations.switchMap(_data) {
-        if (it == null)
-            _latestCurRates
-        else
-            repository?.getHistoricCur(it)
+        when {
+            it == LATEST -> _latestCurRates
+            it != null -> repository?.getHistoricCur(it)
+            else -> null
+        }
     }
 
     fun getConvertRates(): LiveData<CurrencyConverter?> {
@@ -59,7 +60,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         _amount.value = amount
     }
 
-    fun setDate(date: String?) {
+    fun setDate(date: String) {
         _data.value = date
     }
 

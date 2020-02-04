@@ -96,6 +96,7 @@ fun getCurRatesFromMap(map: HashMap<String, Double>): CurRates {
     return rates
 }
 
+/*
 val currencyMapFlags = hashMapOf(
     "AMD" to R.mipmap.armenia,
     "AED" to R.mipmap.united_arab_emirates,
@@ -141,6 +142,98 @@ val currencyMapFlags = hashMapOf(
     "ZAR" to R.mipmap.south_africa
 //42 flags
 )
+*/
+
+val mapCurNameFlag = hashMapOf(
+    "AMD" to (R.string.warning to R.mipmap.armenia),
+    "AED" to (R.string.warning to R.mipmap.united_arab_emirates),
+    "ARS" to (R.string.warning to R.mipmap.argentina),
+    "AUD" to (R.string.warning to R.mipmap.australia),
+    "BOB" to (R.string.warning to R.mipmap.bolivia),
+    "BRL" to (R.string.warning to R.mipmap.brazil),
+    "BYN" to (R.string.warning to R.mipmap.belarus),
+    "CAD" to (R.string.warning to R.mipmap.canada),
+    "CHF" to (R.string.warning to R.mipmap.switzerland),
+    "CNY" to (R.string.warning to R.mipmap.china),
+    "CUC" to (R.string.warning to R.mipmap.cuba),
+    "CUP" to (R.string.warning to R.mipmap.cuba),
+    "EGP" to (R.string.warning to R.mipmap.egypt),
+    "EUR" to (R.string.warning to R.mipmap.european_union),
+    "GBP" to (R.string.warning to R.mipmap.united_kingdom),
+    "GEL" to (R.string.warning to R.mipmap.vrastan),
+    "ILS" to (R.string.warning to R.mipmap.israel),
+    "INR" to (R.string.warning to R.mipmap.india),
+    "IQD" to (R.string.warning to R.mipmap.iraq),
+    "IRR" to (R.string.warning to R.mipmap.iran),
+    "JPY" to (R.string.warning to R.mipmap.japan),
+    "KRW" to (R.string.warning to R.mipmap.south_korea),
+    "KWD" to (R.string.warning to R.mipmap.kuwait),
+    "LBP" to (R.string.warning to R.mipmap.lebanon),
+    "MAD" to (R.string.warning to R.mipmap.morocco),
+    "MXN" to (R.string.warning to R.mipmap.mexico),
+    "NZD" to (R.string.warning to R.mipmap.new_zealand),
+    "PEN" to (R.string.warning to R.mipmap.peru),
+    "QAR" to (R.string.warning to R.mipmap.qatar),
+    "RUB" to (R.string.warning to R.mipmap.russia),
+    "SAR" to (R.string.warning to R.mipmap.saudi_arabia),
+    "SEK" to (R.string.warning to R.mipmap.sweden),
+    "SGD" to (R.string.warning to R.mipmap.singapore),
+    "SYP" to (R.string.warning to R.mipmap.syria),
+    "THB" to (R.string.warning to R.mipmap.thailand),
+    "TND" to (R.string.warning to R.mipmap.tunisia),
+    "TRY" to (R.string.warning to R.mipmap.turkey),
+    "UAH" to (R.string.warning to R.mipmap.ukraine),
+    "USD" to (R.string.warning to R.mipmap.united_states),
+    "UYU" to (R.string.warning to R.mipmap.uruguay),
+    "VND" to (R.string.warning to R.mipmap.vietnam),
+    "ZAR" to (R.string.warning to R.mipmap.south_africa)
+)
+
+val arrayCurCode = arrayOf(
+    "USD",
+    "EUR",
+    "GBP",
+    "CNY",
+    "RUB",
+    "AMD",
+    "AED",
+    "ARS",
+    "AUD",
+    "BOB",
+    "BRL",
+    "BYN",
+    "CAD",
+    "CHF",
+    "CUC",
+    "CUP",
+    "EGP",
+    "GEL",
+    "ILS",
+    "INR",
+    "IQD",
+    "IRR",
+    "JPY",
+    "KRW",
+    "KWD",
+    "LBP",
+    "MAD",
+    "MXN",
+    "NZD",
+    "PEN",
+    "QAR",
+    "SAR",
+    "SEK",
+    "SGD",
+    "SYP",
+    "THB",
+    "TND",
+    "TRY",
+    "UAH",
+    "UYU",
+    "VND",
+    "ZAR"
+)
+
 
 
 

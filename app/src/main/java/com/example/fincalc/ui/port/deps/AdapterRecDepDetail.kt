@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.rates.currencyMapFlags
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
+import com.example.fincalc.models.rates.mapCurNameFlag
 import com.example.fincalc.ui.dep.AdapterRecViewDep
 import java.text.DecimalFormat
 
@@ -78,7 +78,7 @@ class AdapterRecDepDetail(
 
             val cur = res.getString(R.string.Currency) + ": ${curDep.currency}"
             holder.tvCur.text = cur
-            val flag = currencyMapFlags[curDep.currency]
+            val flag = mapCurNameFlag[curDep.currency]?.second
             flag?.let {
                 holder.ivCurrency.setImageResource(flag)
             }
