@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.data.network.firebase.RatesType
 import com.example.fincalc.ui.decimalFormatter3p
 import kotlin.math.absoluteValue
 
@@ -17,10 +18,8 @@ class AdapterRecRates(
 ) :
     RecyclerView.Adapter<AdapterRecRates.Holder>() {
 
-
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvRateName)
-        val tvNumber: TextView = itemView.findViewById(R.id.tvNumberRate)
         val tvCode: TextView = itemView.findViewById(R.id.tvRateCode)
         val ivIcon: ImageView = itemView.findViewById(R.id.ivRateIcon)
         val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
@@ -38,8 +37,6 @@ class AdapterRecRates(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         ratesRows?.let {
             val curRatesRow = (ratesRows as List<RatesBar>)[position]
-            val number = (position + 1).toString()
-            holder.tvNumber.text = number
             holder.tvPrice.text = decimalFormatter3p.format(curRatesRow.price).replace(',', '.')
             holder.tvName.text = curRatesRow.name
             holder.tvCode.text = curRatesRow.code

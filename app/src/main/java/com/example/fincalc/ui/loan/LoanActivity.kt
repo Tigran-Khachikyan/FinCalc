@@ -161,8 +161,7 @@ class LoanActivity : AppCompatActivity() {
                 if (rate == -1.0F)
                     iconTrigger(ivLogoLoanRate)
 
-                val invalidInput = resources.getString(R.string.InvalidInput)
-                showSnackbar(invalidInput, view, true)
+                showSnackBar(R.string.InvalidInput, view, Options.LOAN)
                 null
             }
             else -> {

@@ -18,8 +18,9 @@ import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
-import com.example.fincalc.models.rates.arrayCurCode
+import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
+import com.example.fincalc.ui.Options.*
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -181,20 +182,17 @@ class DepositActivity : AppCompatActivity() {
                 if (rate == 0.0F)
                     iconTrigger(ivLogoDepRate)
 
-                val invalidInput = resources.getString(R.string.InvalidInput)
-                showSnackbar(invalidInput, view, false)
+                showSnackBar(R.string.InvalidInput, view, DEPOSIT)
                 null
             }
             term % check != 0 -> {
                 iconTrigger(ivLogoDepTerm)
-                val invalidInputMis = resources.getString(R.string.InvalidInputPeriod)
-                showSnackbar(invalidInputMis, view, false)
+                showSnackBar(R.string.InvalidInputPeriod, view, DEPOSIT)
                 null
             }
             taxRate >= 100F -> {
                 iconTrigger(ivLogoDepTax)
-                val invalidInput = resources.getString(R.string.InvalidInputTax)
-                showSnackbar(invalidInput, view, false)
+                showSnackBar(R.string.InvalidInputTax, view, DEPOSIT)
                 null
             }
             else -> {
@@ -223,10 +221,9 @@ class DepositActivity : AppCompatActivity() {
             val etBank: EditText = dialogView.findViewById(R.id.etDialBank)
 
             //spinner Currency
-
             val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.spinner_currencies, arrayCurCode
+                context, R.layout.spinner_currencies, arrayCurCodes
             )
             adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
             spinnerCur.adapter = adapterSpinCur
@@ -249,8 +246,7 @@ class DepositActivity : AppCompatActivity() {
                 dep?.currency = cur
                 dep?.let {
                     depViewModel.addDep(dep)
-                    val success = context.getString(R.string.successSaved)
-                    showSnackbar(success, fab_AddDep, false)
+                    showSnackBar(R.string.successSaved, fab_AddDep, DEPOSIT)
                 }
             }
 

@@ -39,4 +39,7 @@
     <color name="MetalsPrimaryTrans">#808C8C8C</color>
     <color name="MetalsPrimaryDark">#2d2d2d</color>
     <color name="MetalsPrimaryLight">#bdbdbd</color>
+
+
+    <color name="BMBdimColor">#B0021627</color>
 </resources>

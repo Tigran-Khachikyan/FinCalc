@@ -2,35 +2,6 @@ package com.example.fincalc.models.rates
 
 import com.example.fincalc.R
 import com.example.fincalc.data.network.api_crypto.CryptoRates
-import kotlinx.android.synthetic.main.recycler_rates.view.*
-
-val cryptoNameMap = hashMapOf(
-    "BTC" to "Bitcoin",
-    "ETH" to "Ethereum",
-    "XRP" to "XRP",
-    "BCH" to "Bitcoin Cash",
-    "USDT" to "Tether",
-    "LTC" to "Litecoin",
-    "EOS" to "EOS",
-    "BNB" to "Binance Coin",
-    "ADA" to "Cardano",
-    "ETC" to "Ethereum \nClassic",
-    "XMR" to "Monero",
-    "TRX" to "TRON",
-    "XLM" to "Stellar",
-    "XTZ" to "Tezos",
-    "DASH" to "Dash",
-    "LINK" to "Chainlink",
-    "LEO" to "UNUS SED LEO",
-    "MIOTA" to "IOTA",
-    "NEO" to "Neo",
-    "ZEC" to "Zcash",
-    "MKR" to "Maker",
-    "XEM" to "NEM",
-    "BAT" to "Basic Attention\n Token",
-    "DOGE" to "Dogecoin",
-    "QTUM" to "Qtum"
-)
 
 val cryptoPopularMap = hashMapOf(
     "BTC" to 1,
@@ -60,32 +31,32 @@ val cryptoPopularMap = hashMapOf(
     "QTUM" to 25
 )
 
-val cryptoIconMap = hashMapOf(
-    "BTC" to R.drawable.ic_filter,
-    "ETH" to R.drawable.ic_filter,
-    "XRP" to R.drawable.ic_filter,
-    "BCH" to R.drawable.ic_filter,
-    "USDT" to R.drawable.ic_filter,
-    "LTC" to R.drawable.ic_filter,
-    "EOS" to R.drawable.ic_filter,
-    "BNB" to R.drawable.ic_filter,
-    "ADA" to R.drawable.ic_filter,
-    "ETC" to R.drawable.ic_filter,
-    "XMR" to R.drawable.ic_filter,
-    "TRX" to R.drawable.ic_filter,
-    "XLM" to R.drawable.ic_filter,
-    "XTZ" to R.drawable.ic_filter,
-    "DASH" to R.drawable.ic_filter,
-    "LINK" to R.drawable.ic_filter,
-    "LEO" to R.drawable.ic_filter,
-    "MIOTA" to R.drawable.ic_filter,
-    "NEO" to R.drawable.ic_filter,
-    "ZEC" to R.drawable.ic_filter,
-    "MKR" to R.drawable.ic_filter,
-    "XEM" to R.drawable.ic_filter,
-    "BAT" to R.drawable.ic_filter,
-    "DOGE" to R.drawable.ic_filter,
-    "QTUM" to R.drawable.ic_filter
+val mapCryptoNameIcon = hashMapOf(
+    "BTC" to ("Bitcoin" to R.drawable.ic_filter),
+    "ETH" to ("Ethereum" to R.drawable.ic_filter),
+    "XRP" to ("XRP" to R.drawable.ic_filter),
+    "BCH" to ("Bitcoin Cash" to R.drawable.ic_filter),
+    "USDT" to ("Tether" to R.drawable.ic_filter),
+    "LTC" to ("Litecoin" to R.drawable.ic_filter),
+    "EOS" to ("EOS" to R.drawable.ic_filter),
+    "BNB" to ("Binance Coin" to R.drawable.ic_filter),
+    "ADA" to ("Cardano" to R.drawable.ic_filter),
+    "ETC" to ("Ethereum \nClassic" to R.drawable.ic_filter),
+    "XMR" to ("Monero" to R.drawable.ic_filter),
+    "TRX" to ("TRON" to R.drawable.ic_filter),
+    "XLM" to ("Stellar" to R.drawable.ic_filter),
+    "XTZ" to ("Tezos" to R.drawable.ic_filter),
+    "DASH" to ("Dash" to R.drawable.ic_filter),
+    "LINK" to ("Chainlink" to R.drawable.ic_filter),
+    "LEO" to ("UNUS SED LEO" to R.drawable.ic_filter),
+    "MIOTA" to ("IOTA" to R.drawable.ic_filter),
+    "NEO" to ("Neo" to R.drawable.ic_filter),
+    "ZEC" to ("Zcash" to R.drawable.ic_filter),
+    "MKR" to ("Maker" to R.drawable.ic_filter),
+    "XEM" to ("NEM" to R.drawable.ic_filter),
+    "BAT" to ("Basic Attention\n Token" to R.drawable.ic_filter),
+    "DOGE" to ("Dogecoin" to R.drawable.ic_filter),
+    "QTUM" to ("Qtum" to R.drawable.ic_filter)
 )
 
 fun getMapFromCryptoRates(rates: CryptoRates): HashMap<String, Double>? = hashMapOf(

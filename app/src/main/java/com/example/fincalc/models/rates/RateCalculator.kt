@@ -30,6 +30,8 @@ fun getGrowthRate(latValue: Double?, oldValue: Double?): Float? {
     return if (latValue != null && oldValue != null) {
         val dif = latValue - oldValue
         val res = (100 * dif / oldValue).toFloat()
+        Log.d("yyyyyyy"," res INSIDE: $res")
+
         when {
             res == 0F || res.absoluteValue < 0.0001 -> 0F
             res.absoluteValue > 0.0001 && res.absoluteValue < 0.001 -> if (res > 0.0) 0.001F else -0.001F

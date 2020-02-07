@@ -2,12 +2,12 @@ package com.example.fincalc.data.network.firebase
 
 import com.example.fincalc.data.network.Rates
 import com.example.fincalc.data.network.api_crypto.CryptoRates
-import com.example.fincalc.data.network.api_currency.CurRates
+import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.FBCollection.*
 import com.example.fincalc.data.network.firebase.RatesType.CRYPTO
 import com.example.fincalc.data.network.firebase.RatesType.CURRENCY
 import com.example.fincalc.models.rates.getMapFromCryptoRates
-import com.example.fincalc.models.rates.getMapFromCurRates
+import com.example.fincalc.models.rates.getMapFromRates
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.tasks.asDeferred
@@ -36,8 +36,8 @@ object FireStoreApi {
             val nowShort = now.split(' ')[0]
 
             when (rates) {
-                is CurRates -> {
-                    val ratesMap = getMapFromCurRates(rates)
+                is CurMetRates -> {
+                    val ratesMap = getMapFromRates(rates)
                     setToFBLatestColl(ratesMap, CURRENCY_LATEST, nowShort, now, base)
                 }
                 is CryptoRates -> {
@@ -72,8 +72,8 @@ object FireStoreApi {
 
         rates?.let {
             when (rates) {
-                is CurRates -> setToFBHistoricColl(
-                    getMapFromCurRates(rates), CURRENCY_HISTORICAL, date, base
+                is CurMetRates -> setToFBHistoricColl(
+                    getMapFromRates(rates), CURRENCY_HISTORICAL, date, base
                 )
                 is CryptoRates -> setToFBHistoricColl(
                     getMapFromCryptoRates(rates), CRYPTO_HISTORICAL, date, base
@@ -128,7 +128,7 @@ object FireStoreApi {
         }
     }
 
-    fun getLatestRatesFromCacheAsync(type: RatesType): Deferred<DocumentSnapshot> {
+    fun getLatestRatesFromCacheAsync(type: RatesType): Deferred<DocumentSnapshot>? {
         return when (type) {
             CURRENCY -> fireStoreDb.collection(CURRENCY_LATEST.name).document(CACHE)
                 .get(Source.CACHE).asDeferred()

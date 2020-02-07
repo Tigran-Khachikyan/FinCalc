@@ -5,33 +5,29 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
 import com.example.fincalc.data.network.api_crypto.CryptoRates
-import com.example.fincalc.data.network.api_currency.CurRates
+import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.RatesFull
 import com.example.fincalc.models.rates.*
 import com.example.fincalc.ui.rates.RatesBar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CryptoViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = Repository.getInstance(application)
 
-    private val _convertRates = MediatorLiveData<List<RatesBar>?>()
-    private val _latestCurRates = repository?.getLatestCur()
-    private val _latestCryptoRates = repository?.getLatestCrypto()
+    private val _convertRates = MediatorLiveData<ResultCrypto>()
     private val _baseCurrency = MutableLiveData<String>()
     private val _orderType = MutableLiveData<Boolean>()
     private val _data = MutableLiveData<String>()
     private val _ratesCrypto: LiveData<RatesFull> = Transformations.switchMap(_data) {
         if (it == null)
-            _latestCryptoRates
+            repository?.getLatestCrypto()
         else
             repository?.getHistoricCrypto(it)
     }
     private val _ratesCur: LiveData<RatesFull> = Transformations.switchMap(_data) {
         if (it == null)
-            _latestCurRates
+            repository?.getLatestCur()
         else
             repository?.getHistoricCur(it)
     }
@@ -48,8 +44,8 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         _data.value = date
     }
 
-    fun getConvertRates(): LiveData<List<RatesBar>?> {
-        CoroutineScope(Dispatchers.Main).launch {
+    fun getConvertRates(): LiveData<ResultCrypto?> {
+        viewModelScope.launch {
             _convertRates.addSource(_baseCurrency) {
                 _convertRates.value = combine(_baseCurrency, _orderType, _ratesCrypto, _ratesCur)
             }
@@ -69,34 +65,32 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun combine(
         _selCur: LiveData<String>,
-        _orderBy: LiveData<Boolean>,
+        _orderByPrice: LiveData<Boolean>,
         _ratesCrypto: LiveData<RatesFull>,
         _ratesCur: LiveData<RatesFull>
-    ): List<RatesBar>? {
+    ): ResultCrypto? {
 
         val selCur = _selCur.value
-        val orderByPrice = _orderBy.value
+        val orderByPrice = _orderByPrice.value
 
         val cryptoRatesLatest = _ratesCrypto.value?.latRates as CryptoRates?
         val cryptoRatesElder = _ratesCrypto.value?.elderRates as CryptoRates?
-        val curRatesLatest = _ratesCur.value?.latRates as CurRates?
+        val curRatesLatest = _ratesCur.value?.latRates as CurMetRates?
         Log.d("derdd", "_ratesCur.value?.elderRates: ${_ratesCur.value?.elderRates}")
 
-        val curRatesElder = _ratesCur.value?.elderRates as CurRates?
+        val curRatesElder = _ratesCur.value?.elderRates as CurMetRates?
         val baseCurForCrypto = _ratesCrypto.value?.base ?: "USD"
+        val date = _ratesCrypto.value?.dateTime
 
-        var result: ArrayList<RatesBar>? = null
-
-        if (cryptoRatesLatest != null && curRatesLatest != null && orderByPrice != null && selCur != null) {
+        val ratesBarList: ArrayList<RatesBarCrypto>?
+        var result: ResultCrypto? = null
+        if (cryptoRatesLatest != null && curRatesLatest != null && orderByPrice != null && selCur != null && date != null) {
             val cryptoMapLatest = getMapFromCryptoRates(cryptoRatesLatest)
             val codeCryptoLatestList = cryptoMapLatest?.keys?.toList()
             val cryptoMapElder = cryptoRatesElder?.let { getMapFromCryptoRates(cryptoRatesElder) }
 
-            val curMapLatest = getMapFromCurRates(curRatesLatest)
-            Log.d("derdd", "curRatesElder: $curRatesElder")
-
-            val curMapElder = curRatesElder?.let { getMapFromCurRates(curRatesElder) }
-
+            val curMapLatest = getMapFromRates(curRatesLatest)
+            val curMapElder = curRatesElder?.let { getMapFromRates(curRatesElder) }
             val baseCurCryptoRateLatest = curMapLatest?.get(baseCurForCrypto)
             val selCurRateLatest = curMapLatest?.get(selCur)
             val factorLatestRates =
@@ -104,29 +98,20 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
                     selCurRateLatest / baseCurCryptoRateLatest
                 else null
 
-            Log.d("derdd", "curMapElder: $curMapElder")
-            Log.d(
-                "derdd",
-                "curMapElder?.get(baseCurForCrypto): ${curMapElder?.get(baseCurForCrypto)}"
-            )
-
-
             val baseCurCryptoRateElder = curMapElder?.get(baseCurForCrypto)
             val selCurRateElder = curMapElder?.get(selCur)
-            Log.d("derdd", "baseCurCryptoRateElder: $baseCurCryptoRateElder")
-            Log.d("derdd", "selCurRateElder: $selCurRateElder")
 
             val factorElderRates =
                 if (baseCurCryptoRateElder != null && selCurRateElder != null && baseCurCryptoRateElder != 0.0)
                     selCurRateElder / baseCurCryptoRateElder
                 else null
 
-            result = arrayListOf()
+            ratesBarList = arrayListOf()
             codeCryptoLatestList?.let {
                 factorLatestRates?.let {
                     for (code in codeCryptoLatestList) {
-                        val name = cryptoNameMap[code]
-                        val icon = cryptoIconMap[code]
+                        val name = mapCryptoNameIcon[code]?.first
+                        val icon = mapCryptoNameIcon[code]?.second
                         val priceLatest = cryptoMapLatest[code]?.let { it * factorLatestRates }
                         Log.d("derdd", "factorElderRates: $factorElderRates")
 
@@ -150,38 +135,31 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
                         val rateBar =
                             if (name != null && icon != null && priceLatest != null && pop != null)
-                                RatesBar(code, name, icon, priceLatest, growthRate, pop) else null
+                                RatesBarCrypto(
+                                    code, name, icon, priceLatest, growthRate, pop
+                                ) else null
 
-                        rateBar?.let { result.add(rateBar) }
+
+
+                        rateBar?.let { ratesBarList.add(rateBar) }
                     }
                 }
             }
             if (orderByPrice)
-                result.sortByDescending { r -> r.price }
+                ratesBarList.sortByDescending { r -> r.price }
             else //by popularity
-                result.sortBy { r -> r.popularity }
+                ratesBarList.sortBy { r -> r.pop }
+
+            result = ResultCrypto(ratesBarList, selCur, date, orderByPrice)
         }
         return result
     }
-    /*val mapCur = getMapFromCurRates(curRatesLatest)
-    val valueBaseApi = mapCur?.get(baseFromApi)
-    val valueSelCur = mapCur?.get(base)
-    if (valueSelCur != null && valueBaseApi != null && valueBaseApi != 0.0) {
 
-        val factor = valueSelCur / valueBaseApi //478 AMD /USD
-
-        if (codeCryptoLatestList != null) {
-
-
-            for (code in codeCryptoLatestList) {*/
-
-    /*  val name = cryptoNameMap[code]
-      val icon = cryptoIconMap[code]
-      val price = mapCrypto[co] * factor
-      val growth = 0.5F
-      if (name != null && icon != null) {
-          val ratesRow = RatesRow(RateIntro(code, name, icon), price, growth)
-          result.add(ratesRow)
-      }*/
+    fun removeSources() {
+        _convertRates.removeSource(_baseCurrency)
+        _convertRates.removeSource(_orderType)
+        _convertRates.removeSource(_ratesCrypto)
+        _convertRates.removeSource(_ratesCur)
+    }
 }
 

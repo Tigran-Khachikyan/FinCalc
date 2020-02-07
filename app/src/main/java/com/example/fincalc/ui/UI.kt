@@ -7,22 +7,26 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.example.fincalc.R
-import com.example.fincalc.models.rates.arrayCurCode
+import com.example.fincalc.models.rates.arrayCurCodes
 import com.google.android.material.snackbar.Snackbar
 import java.text.DecimalFormat
 import java.text.ParseException
@@ -36,13 +40,24 @@ fun iconTrigger(view: View) {
     view.startAnimation(anim1)
 }
 
-fun showSnackbar(text: String, view: View, loan: Boolean) {
+enum class Options {
+    LOAN, DEPOSIT, CURRENCY
+}
+
+fun showSnackBar(text: Int, view: View, option: Options) {
+    val textString = view.context.getString(text)
     val snackbar = Snackbar.make(
-        view, text, Snackbar.LENGTH_LONG
+        view, textString, Snackbar.LENGTH_LONG
     ).setAction("Action", null)
     val sbView: View = snackbar.view
-    val color: Int = if (loan) R.color.LoansPrimaryDark else R.color.DepPrimaryDark
+    val color: Int = when (option) {
+        Options.LOAN -> R.color.LoansPrimaryDark
+        Options.DEPOSIT -> R.color.DepPrimaryDark
+        Options.CURRENCY -> R.color.CurrencyPrimaryDark
+    }
     sbView.setBackgroundColor(view.context.resources.getColor(color))
+    Log.d("yyyyop", "SNACKBAR TRIGGERED")
+
     snackbar.show()
 }
 
@@ -84,12 +99,19 @@ fun customizeAlertDialog(alertDialog: AlertDialog, positiv: Boolean) {
 val decimalFormatter1p = DecimalFormat("#,###.#")
 val decimalFormatter2p = DecimalFormat("#,###.##")
 val decimalFormatter3p = DecimalFormat("#,###.###")
+@SuppressLint("SimpleDateFormat")
+val formatterCalendar = SimpleDateFormat("yyyy-MM-dd")
+@SuppressLint("SimpleDateFormat")
+val formatterLong = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
 
 fun ImageView.setSvgColor(context: Context, color: Int) =
     this.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
 
-@SuppressLint("SimpleDateFormat")
-fun openCalendarHighOrderFunc(context: Context?, view: View, func: (String, Date) -> Unit) {
+fun openCalendarHighOrderFunc(
+    context: Context?,
+    view: View,
+    func: (String?) -> Unit
+) {
     context?.let {
         val calendar = Calendar.getInstance()
         val year = calendar[Calendar.YEAR]
@@ -102,29 +124,36 @@ fun openCalendarHighOrderFunc(context: Context?, view: View, func: (String, Date
                     val yr: String = y.toString()
                     val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
                     val dy = if (d < 10) "0$d" else d.toString()
-                    val dateForApiRequest = "$yr-$mnt-$dy"
+                    var dateForApiRequest: String? = "$yr-$mnt-$dy"
 
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                    val selectedDate = try {
-                        dateFormat.parse(dateForApiRequest)
+                    var selectedDate = try {
+                        dateForApiRequest?.let { formatterCalendar.parse(dateForApiRequest!!) }
                     } catch (e: ParseException) {
+                        Log.d("qqqqqqq", "SELECTED: ${e.message}")
                         null
                     }
-                    selectedDate?.let {
-                        val isValidDate = Date().after(selectedDate)
+                    Log.d("qqqqqqq", "SELECTED: $selectedDate")
 
-                        if (!isValidDate) {
-                            showSnackbar(
-                                context.getString(R.string.InvalidInputCalendar),
+                    selectedDate?.let {
+                        if (!Date().after(selectedDate)) {
+                            Log.d("qqqqqqq", "BREAK:")
+
+                            showSnackBar(
+                                R.string.InvalidInputCalendar,
                                 view,
-                                false
+                                Options.CURRENCY
                             )
                             return@OnDateSetListener
                         }
 
-                        func(dateForApiRequest, selectedDate)// high order function
-                    }
+                        if (formatterCalendar.format(Date()) == dateForApiRequest) {
+                            dateForApiRequest = null
+                            selectedDate = null
+                        }
+                        Log.d("qqqqqqq", "In Cal: dateForApiRequest: $dateForApiRequest")
 
+                        func(dateForApiRequest)// high order function
+                    }
                 }, year, month, day
             )
         dialog.setCancelable(true)
@@ -145,7 +174,7 @@ fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
         //spinner Currency
         val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
         val adapterSpinCur = AdapterSpinnerRates(
-            context, R.layout.spinner_currencies,arrayCurCode
+            context, R.layout.spinner_currencies, arrayCurCodes
         )
         adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
         spinnerCur.adapter = adapterSpinCur
@@ -172,3 +201,20 @@ fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
         alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimaryLight)
     }
 }
+
+fun getDateString(context: Context?, longDate: Date?): String? {
+    return longDate?.let {
+        val res = formatterLong.format(longDate)
+        return context?.getString(R.string.Date) + ": " + res
+    }
+}
+
+fun setBaseCurToSharedPref(sharedPref: SharedPreferences, baseCur: String) {
+    val editor = sharedPref.edit()
+    editor.putString(CURRENCY_PREF, baseCur)
+    editor.apply()
+}
+
+const val PRIVATE_MODE = 0
+const val PREF_NAME = "Currency_Pref"
+const val CURRENCY_PREF = "Currency"

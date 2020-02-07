@@ -1,128 +1,132 @@
 package com.example.fincalc.ui.rates.currency
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
-import com.example.fincalc.data.network.api_currency.CurRates
+import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.rates.CurrencyConverter
-import com.example.fincalc.models.rates.TableRates
-import com.example.fincalc.models.rates.getMapFromCurRates
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.fincalc.models.rates.*
+import com.example.fincalc.ui.rates.RatesBar
+import com.example.fincalc.ui.rates.metals.ResultMet
 import kotlinx.coroutines.launch
 
 
 class CurrencyViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val app = application
     private val repository = Repository.getInstance(application)
-    private val _latestCurRates = repository?.getLatestCur()
 
-    //Converter
-    private val _convertRates = MediatorLiveData<CurrencyConverter?>()
-    private val _curSpin1 = MutableLiveData<String?>()
-    private val _curSpin2 = MutableLiveData<String?>()
+    private val _convertRates = MediatorLiveData<ResultCur?>()
+    private val _curBase = MutableLiveData<String>()
+    private val _curFrom = MutableLiveData<String?>()
     private val _data = MutableLiveData<String?>()
     private val _amount = MutableLiveData<Double?>()
     private val _rates: LiveData<RatesFull?> = Transformations.switchMap(_data) {
-        when {
-            it == LATEST -> _latestCurRates
-            it != null -> repository?.getHistoricCur(it)
-            else -> null
+        when (it) {
+            null -> repository?.getLatestCur()
+            else -> repository?.getHistoricCur(it)
         }
     }
 
-    fun getConvertRates(): LiveData<CurrencyConverter?> {
-        CoroutineScope(Dispatchers.Default).launch {
-            _convertRates.addSource(_curSpin1) {
-                _convertRates.value = combineConvert(_curSpin1, _curSpin2, _amount, _rates)
+    fun getConvertRates(): LiveData<ResultCur?> {
+        viewModelScope.launch {
+            _convertRates.addSource(_curBase) {
+                _convertRates.value = combineConvert(_curBase, _curFrom, _amount, _rates)
             }
-            _convertRates.addSource(_curSpin2) {
-                _convertRates.value = combineConvert(_curSpin1, _curSpin2, _amount, _rates)
+            _convertRates.addSource(_curFrom) {
+                _convertRates.value = combineConvert(_curBase, _curFrom, _amount, _rates)
             }
             _convertRates.addSource(_amount) {
-                _convertRates.value = combineConvert(_curSpin1, _curSpin2, _amount, _rates)
+                _convertRates.value = combineConvert(_curBase, _curFrom, _amount, _rates)
             }
             _convertRates.addSource(_rates) {
-                _convertRates.value = combineConvert(_curSpin1, _curSpin2, _amount, _rates)
+                _convertRates.value = combineConvert(_curBase, _curFrom, _amount, _rates)
             }
         }
         return _convertRates
     }
 
+    fun setCurFrom(curFrom: String?) {
+        _curFrom.value = curFrom
+    }
 
-    fun setCurrencies(curSpin1: String?, curSpin2: String?) {
-        _curSpin1.value = curSpin1
-        _curSpin2.value = curSpin2
+    fun setBaseCur(base: String) {
+        _curBase.value = base
     }
 
     fun setAmount(amount: Double?) {
         _amount.value = amount
     }
 
-    fun setDate(date: String) {
+    fun setDate(date: String?) {
         _data.value = date
     }
 
     private fun combineConvert(
-        _curSpin1: LiveData<String?>,
-        _curSpin2: LiveData<String?>,
-        _amount: LiveData<Double?>,
-        _rates: LiveData<RatesFull?>
-    ): CurrencyConverter? {
+        curBaseLiveData: LiveData<String>,
+        curFromLiveData: LiveData<String?>,
+        amountLiveData: LiveData<Double?>,
+        ratesLiveData: LiveData<RatesFull?>
+    ): ResultCur? {
 
-        val curSpin1 = _curSpin1.value
-        val curSpin2 = _curSpin2.value
-        val amount = _amount.value
-        val rates = _rates.value?.latRates
+        val curFrom = curFromLiveData.value
+        val curBase = curBaseLiveData.value
+        val amount = amountLiveData.value
+        val latestRates = ratesLiveData.value?.latRates as CurMetRates?
+        val elderRates = ratesLiveData.value?.elderRates as CurMetRates?
+        val date = ratesLiveData.value?.dateTime
 
-        return if (curSpin1 != null && curSpin2 != null && amount != null && rates != null) {
-            val map = getMapFromCurRates(rates as CurRates)
-            val curValue1 = map?.getValue(curSpin1)
-            val curValue2 = map?.getValue(curSpin2)
-            val resultAmount =
-                if (curValue1 != null && curValue2 != null && curValue2 != 0.0)
-                    amount * curValue2 / curValue1
-                else null
-            CurrencyConverter(resultAmount, rates)
-        } else null
-    }
+        var result: ResultCur? = null
+        if (curBase != null && latestRates != null && date != null) {
 
-    //Table
-    private val latTableRates = MediatorLiveData<TableRates>()
-    private val _latTableCur = MutableLiveData<String>()
+            val mapLatest = getMapFromRates(latestRates)
+            val mapElder = elderRates?.let { getMapFromRates(elderRates) }
 
-    fun setLatTableCur(cur: String) {
-        _latTableCur.value = cur
-    }
+            //Table--
+            val ratesBarList: ArrayList<RatesBar> = arrayListOf()
+            val arrayMainCur = arrayListOf("USD", "EUR", "GBP", "CNY", "RUB")
+            for (code in arrayMainCur) {
+                val nameInt = mapRatesNameIcon[code]?.first
+                val name = nameInt?.let { app.getString(nameInt) }
+                val icon = mapRatesNameIcon[code]?.second
 
-    fun getLatTableRates(): LiveData<TableRates?> {
-        viewModelScope.launch {
-            _latestCurRates?.let {
-                latTableRates.addSource(_latestCurRates) {
-                    latTableRates.value = combineLiveData(_latestCurRates, _latTableCur)
+                val rateLatest = mapLatest?.let {
+                    val baseRate = it[curBase]
+                    val fromRate = it[code]
+                    if (baseRate != null && fromRate != null && fromRate != 0.0)
+                        baseRate / fromRate else null
                 }
-                latTableRates.addSource(_latTableCur) {
-                    latTableRates.value = combineLiveData(_latestCurRates, _latTableCur)
+                val rateElder = mapElder?.let {
+                    val baseRate = it[curBase]
+                    val fromRate = it[code]
+                    if (baseRate != null && fromRate != null && fromRate != 0.0)
+                        baseRate / fromRate else null
                 }
-            }
+                val growthRate = getGrowthRate(rateLatest, rateElder)
+                if (name != null && icon != null && rateLatest != null) {
+                    val rateBar = RatesBar(code, name, icon, rateLatest, growthRate)
+                    ratesBarList.add(rateBar)
+                }
+            } //--Table
+
+            //resText
+            val resAmount = if (curFrom != null && amount != null) {
+                val baseRate = mapLatest?.get(curBase)
+                val fromRate = mapLatest?.get(curFrom)
+                if (baseRate != null && fromRate != null && fromRate != 0.0)
+                    amount * baseRate / fromRate else null
+            } else null
+
+            result = ResultCur(ratesBarList, curBase, date, curFrom, resAmount)
         }
-        return latTableRates
-    }
-
-    private fun combineLiveData(ratesUi: LiveData<RatesFull>, cur: LiveData<String>?): TableRates? {
-        val rates = ratesUi.value
-        val currency = cur?.value
-        return if (rates != null && currency != null) TableRates(currency, rates) else null
+        return result
     }
 
     fun removeSources() {
-        _convertRates.removeSource(_curSpin1)
-        _convertRates.removeSource(_curSpin2)
+        _convertRates.removeSource(_curBase)
+        _convertRates.removeSource(_curFrom)
         _convertRates.removeSource(_amount)
         _convertRates.removeSource(_rates)
-
-        latTableRates.removeSource(_latestCurRates!!)
-        latTableRates.removeSource(_latTableCur)
     }
 }

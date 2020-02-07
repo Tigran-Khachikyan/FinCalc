@@ -1,6 +1,5 @@
 package com.example.fincalc.data.network.firebase
 
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import java.text.ParseException

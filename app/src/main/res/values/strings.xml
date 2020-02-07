@@ -61,10 +61,10 @@
     <string name="rates">Currencies</string>
     <string name="rate">Rate</string>
     <string name="precious_metals">Precious metals</string>
-    <string name="crypto">CryptoCurrency</string>
+    <string name="crypto">Crypto</string>
     <string name="metals">Metals</string>
     <string name="latest">Latest</string>
-    <string name="Live_converter">Live converter</string>
+    <string name="CustomCur">Custom Currency Converter</string>
     <string name="archive">Archive</string>
 
     --Activity Deposit--
@@ -154,7 +154,7 @@
 
     --Rates--
     <string name="resetBaseCurrency">reset base currency</string>
-    <string name="updated">Updated</string>
+    <string name="Date">Date</string>
     <string name="change">Change</string>
     <string name="price">Price</string>
     <string name="Gold">Gold</string>
@@ -162,5 +162,78 @@
     <string name="Platinum">Platinum</string>
     <string name="Palladium">Palladium</string>
     <string name="Unit">Unit</string>
+    <string name="Base">Base</string>
+    <string name="TopCur">World Top Currencies</string>
+    <string name="invalidCurConvert">Please select the currency you want to convert from!</string>
+
+
+    --Currencies
+    <string name="USD">United States dollar</string>
+    <string name="EUR">Euro</string>
+    <string name="GBP">Pound sterling</string>
+    <string name="CNY">Renminbi (Chinese) yuan</string>
+    <string name="RUB">Russian ruble</string>
+    <string name="AMD">Armenian dram</string>
+    <string name="AED">United Arab Emirates dirham</string>
+    <string name="ARS">Argentine peso</string>
+    <string name="AUD">Australian dollar</string>
+    <string name="BOB">Boliviano</string>
+    <string name="BRL">Brazilian real</string>
+    <string name="BYN">Belarusian ruble</string>
+    <string name="CAD">Canadian dollar</string>
+    <string name="CHF">Swiss franc</string>
+    <string name="CUC">Cuban convertible peso</string>
+    <string name="DKK">Danish krone</string>       --new
+    <string name="EGP">Egyptian pound</string>
+    <string name="GEL">Georgian lari</string>
+    <string name="HKD">Hong Kong dollar</string> --new
+    <string name="IDR">Indonesian rupiah</string> --new
+    <string name="ILS">Israeli new shekel</string>
+    <string name="INR">Indian rupee</string>
+    <string name="IQD">Iraqi dinar</string>
+    <string name="IRR">Iranian rial</string>
+    <string name="JPY">Japanese yen</string>
+    <string name="KPW">North Korean won	</string>          --new
+    <string name="KRW">South Korean won</string>
+    <string name="KWD">Kuwaiti dinar</string>
+    <string name="KZT">Kazakhstani tenge</string>    --new
+    <string name="LBP">Lebanese pound</string>
+    <string name="MAD">Moroccan dirham</string>
+    <string name="MXN">Mexican peso</string>
+    <string name="MYR">Malaysian ringgit</string>        --new
+    <string name="NGN">Nigerian naira</string>        --new
+    <string name="NOK">Norwegian krone</string>        --new
+    <string name="NZD">New Zealand dollar</string>
+    <string name="OMR">Omani rial</string>                --new
+    <string name="PEN">Peruvian sol</string>
+    <string name="PHP">Philippine peso</string>              --new
+    <string name="PYG">Paraguayan guaraní</string>              --new
+    <string name="QAR">Qatari riyal</string>
+    <string name="RSD">Serbian dinar</string>          --new
+    <string name="SAR">Saudi riyal</string>
+    <string name="SEK">Swedish krona/kronor</string>
+    <string name="SGD">Singapore dollar</string>
+    <string name="SYP">Syrian pound</string>
+    <string name="THB">Thai baht</string>
+    <string name="TMT">Turkmenistan manat</string>      --new
+    <string name="TND">Tunisian dinar</string>
+    <string name="TRY">Turkish lira</string>
+    <string name="UAH">Ukrainian hryvnia</string>
+    <string name="UYU">Uruguayan peso</string>
+    <string name="UZS">Uzbekistan som</string>            --new
+    <string name="VES">Venezuelan bolívar soberano</string>            --new
+    <string name="VND">Vietnamese đồng</string>
+    <string name="ZAR">South African rand</string>
+    
+    --metals
+    <string name="XAG">Silver</string>
+    <string name="XAU">Gold</string>
+    <string name="XPD">Palladium</string>
+    <string name="XPT">Platinum</string>
+    <string name="ounce">troy ounce</string>
+    <string name="gram">gram</string>
+    <string name="orderByPrice">Order: by price</string>
+    <string name="orderByPop">Order: by popularity</string>
+
 
 </resources>

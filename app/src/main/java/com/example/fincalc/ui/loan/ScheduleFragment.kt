@@ -21,11 +21,8 @@ import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.credit.getLoanTypeListName
-import com.example.fincalc.models.rates.arrayCurCode
-import com.example.fincalc.ui.AdapterSpinnerRates
-import com.example.fincalc.ui.customizeAlertDialog
-import com.example.fincalc.ui.decimalFormatter1p
-import com.example.fincalc.ui.showSnackbar
+import com.example.fincalc.models.rates.arrayCurCodes
+import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -136,7 +133,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             //spinner Currency
             val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.spinner_currencies, arrayCurCode
+                context, R.layout.spinner_currencies, arrayCurCodes
             )
             adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
             spinnerCur.adapter = adapterSpinCur
@@ -176,8 +173,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
                 scheduleViewModel.addLoan(loan)
 
-                val success = context.getString(R.string.successSaved)
-                showSnackbar(success, fab_Loan, true)
+                showSnackBar(R.string.successSaved, fab_Loan, Options.LOAN)
             }
 
             dialogBuilder.setNegativeButton(

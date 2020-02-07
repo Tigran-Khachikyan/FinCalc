@@ -9,12 +9,13 @@ import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.data.network.Rates
 import com.example.fincalc.data.network.api_crypto.ApiCrypto
-import com.example.fincalc.data.network.api_currency.ApiCurrency
+import com.example.fincalc.data.network.api_cur_metal.ApiCurMetal
 import com.example.fincalc.data.network.firebase.*
 import com.example.fincalc.data.network.firebase.RatesType.*
 import com.example.fincalc.data.network.hasNetwork
 import com.example.fincalc.models.rates.getCryptoRatesFromMap
-import com.example.fincalc.models.rates.getCurRatesFromMap
+import com.example.fincalc.models.rates.getRatesFromMap
+import com.example.fincalc.ui.formatterCalendar
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
@@ -80,7 +81,7 @@ class Repository private constructor(
             if (docSnapshot != null && !docSnapshot.isEmpty) {
 
                 val latestDoc = docSnapshot.last()
-                val base = getBaseFromSnapshot(latestDoc)
+                val base = latestDoc.get(BASE) as String?
                 val elderDoc = docSnapshot.firstOrNull()
                 Log.d("derdd", "REPO elderDoc: $elderDoc")
                 val latestDateTime = latestDoc.getTime()!!
@@ -98,9 +99,9 @@ class Repository private constructor(
                         val baseApi: String?
                         val curRates = when (type) {
                             CURRENCY -> {
-                                val response = ApiCurrency(context).getLatestRates().await()
-                                baseApi = response.base
-                                response.rates
+                                val response = ApiCurMetal(context).getLatestRates().await()
+                                baseApi = response.response.base
+                                response.response.rates
                             }
                             CRYPTO -> {
                                 val response = ApiCrypto(context).getLatestRates().await()
@@ -135,9 +136,9 @@ class Repository private constructor(
                     val baseApi: String?
                     val curRates = when (type) {
                         CURRENCY -> {
-                            val response = ApiCurrency(context).getLatestRates().await()
-                            baseApi = response.base
-                            response.rates
+                            val response = ApiCurMetal(context).getLatestRates().await()
+                            baseApi = response.response.base
+                            response.response.rates
                         }
                         CRYPTO -> {
                             val response = ApiCrypto(context).getLatestRates().await()
@@ -153,10 +154,11 @@ class Repository private constructor(
                 }
         } else {  //NO Network - Firestore Cache
             try {
-                val fireCache = FireStoreApi.getLatestRatesFromCacheAsync(type).await()
-                val base = getBaseFromSnapshot(fireCache)
+                val fireCache = FireStoreApi.getLatestRatesFromCacheAsync(type)?.await()
+                val base = fireCache?.let { it.get(BASE) as String? }
                 val ratesCached = getRatesFromSnapshot(fireCache, type)!!
-                RatesFull(fireCache.getTime(), ratesCached, null, base, NO_NETWORK)
+                //fireCache?.getTime()?.let { formatterLong.format(fireCache.getTime()) }
+                RatesFull(fireCache?.getTime(), ratesCached, null, base, NO_NETWORK)
             } catch (ex: Exception) {
                 //fireStore CACHE error
                 RatesFull(null, null, null, null, NO_NETWORK)
@@ -173,8 +175,10 @@ class Repository private constructor(
             val docSnapshot = FireStoreApi.getHisCurRatesFireL(date, type)
             if (docSnapshot != null) {
                 val rates = getRatesFromSnapshot(docSnapshot, type)!!
-                val base = getBaseFromSnapshot(docSnapshot)
-                RatesFull(null, rates, null, base)
+                val base = docSnapshot.get(BASE) as String?
+                val hisDate = docSnapshot.get(DATE) as String?
+                val dateFrom = hisDate?.let { formatterCalendar.parse(hisDate) }
+                RatesFull(dateFrom, rates, null, base)
 
             } else {
                 //2. get from retrofit, add to firestore hist collection
@@ -182,9 +186,9 @@ class Repository private constructor(
                     val baseApi: String?
                     val hisRates = when (type) {
                         CURRENCY -> {
-                            val response = ApiCurrency(context).getHistoricalRates(date).await()
-                            baseApi = response.base
-                            response.rates
+                            val response = ApiCurMetal(context).getHistoricalRates(date).await()
+                            baseApi = response.response.base
+                            response.response.rates
                         }
                         CRYPTO -> {
                             val response = ApiCrypto(context).getHistoricalRates(date).await()
@@ -194,7 +198,8 @@ class Repository private constructor(
                         else -> TODO()
                     }
                     FireStoreApi.setHisRatesFire(date, hisRates, baseApi)
-                    RatesFull(null, hisRates, null, baseApi)
+                    val dateFrom = formatterCalendar.parse(date)
+                    RatesFull(dateFrom, hisRates, null, baseApi)
                 } catch (exc: Exception) {
                     //problem to fetch api, get another date please
                     RatesFull(null, null, null, null, API_SOURCE_PROBLEM)
@@ -203,15 +208,19 @@ class Repository private constructor(
         } else {  //no network
             try {
                 val fireHisCollCache = FireStoreApi.getHisRatesFromHisCollCache(date, type)
-                val base = getBaseFromSnapshot(fireHisCollCache)
+                val base = fireHisCollCache?.let { it.get(BASE) as String? }
+                val hisDate = fireHisCollCache?.let { it.get(DATE) as String? }
+                val dateFrom = hisDate?.let { formatterCalendar.parse(hisDate) }
                 val rates = getRatesFromSnapshot(fireHisCollCache, type)!!
-                RatesFull(null, rates, null, base, NO_NETWORK)
+                RatesFull(dateFrom, rates, null, base, NO_NETWORK)
             } catch (ex: Exception) {
                 try {
                     val fireLatCollCache = FireStoreApi.getHisRatesFromLatCollCache(date, type)
                     val rates = getRatesFromSnapshot(fireLatCollCache, type)!!
-                    val base = getBaseFromSnapshot(fireLatCollCache)
-                    RatesFull(null, rates, null, base, NO_NETWORK)
+                    val base = fireLatCollCache?.let { it.get(BASE) as String? }
+                    val hisDate = fireLatCollCache?.let { it.get(DATE) as String? }
+                    val dateFrom = hisDate?.let { formatterCalendar.parse(hisDate) }
+                    RatesFull(dateFrom, rates, null, base, NO_NETWORK)
                 } catch (ex: Exception) {
                     //fireStore CACHE error
                     RatesFull(null, null, null, null, NO_NETWORK)
@@ -224,14 +233,14 @@ class Repository private constructor(
 
         val ratesMap = snapshot?.let { snapshot.get(RATES) as HashMap<String, Double> }
         return when (type) {
-            CURRENCY -> ratesMap?.let { getCurRatesFromMap(ratesMap) }
+            CURRENCY -> ratesMap?.let { getRatesFromMap(ratesMap) }
             CRYPTO -> ratesMap?.let { getCryptoRatesFromMap(ratesMap) }
             else -> TODO()
         }
     }
 
-    private fun getBaseFromSnapshot(snapshot: DocumentSnapshot?) =
-        snapshot?.let { snapshot.get(BASE) as String? }
+    /* private fun getBaseFromSnapshot(snapshot: DocumentSnapshot?) =
+         snapshot?.let { snapshot.get(BASE) as String? }*/
 
     //Database
     //Loans

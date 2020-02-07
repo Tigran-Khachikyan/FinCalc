@@ -56,7 +56,7 @@
     </style>
 
     <style name="CurText" parent="textViewBigMain">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:layout_marginTop">0dp</item>
     </style>

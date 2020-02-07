@@ -5,16 +5,14 @@
     android:layout_width="160dp"
     android:paddingTop="6dp"
     android:paddingBottom="4dp"
-    android:layout_height="wrap_content"
-    app:layout_constraintLeft_toRightOf="@id/tvNumberRate"
-    app:layout_constraintRight_toLeftOf="@id/tvPrice">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/ivRateIcon"
         android:layout_width="38dp"
         android:layout_height="38dp"
         android:layout_marginStart="6dp"
-        android:src="@mipmap/european_union"
+        android:src="@drawable/ic_armenia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tvRateName"
@@ -29,7 +27,7 @@
         android:gravity="bottom"
         android:text="AMD"
         android:textSize="25sp"
-        android:textColor="@color/LoansPrimaryLight"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/tvRateName"
         app:layout_constraintLeft_toRightOf="@id/ivRateIcon"
         app:layout_constraintRight_toRightOf="parent"

@@ -1,319 +1,156 @@
 package com.example.fincalc.ui.rates.currency
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.network.api_currency.CurRates
-import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.rates.*
+import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
+import com.example.fincalc.ui.rates.AdapterRecRates
+import com.nightonke.boommenu.BoomButtons.BoomButton
+import com.nightonke.boommenu.OnBoomListenerAdapter
+import kotlinx.android.synthetic.main.activity_rates.*
+import kotlinx.android.synthetic.main.fragment_crypto.*
 import kotlinx.android.synthetic.main.fragment_currency.*
-import java.text.SimpleDateFormat
-import java.util.*
-
-
-private const val PRIVATE_MODE = 0
-const val LATEST = "Latest"
-private const val PREF_NAME = "Currency_Pref"
-private const val CURRENCY_PREF = "Selected-currency"
-private const val FORMAT = "dd MMM yyyy HH:mm:ss"
-private const val CURRENCY_FROM = "Currency from"
-private const val CURRENCY_TO = "Currency To"
-
 
 @Suppress("DEPRECATION")
 class RateFragment : Fragment() {
 
-    private lateinit var ratesViewModel: CurrencyViewModel
+    private lateinit var curViewModel: CurrencyViewModel
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var adapter: AdapterRecRates
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        ratesViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
+        curViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         return inflater.inflate(R.layout.fragment_currency, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPref = context!!.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+        groupCur.visibility = View.GONE
 
-        //initializing Table part (Calendar)
-        val selectedCur = sharedPref.getString(CURRENCY_PREF, "USD")
-        selectedCur?.let { ratesViewModel.setLatTableCur(selectedCur) }
+        sharedPref = view.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
+        val base = sharedPref.getString(CURRENCY_PREF, "USD")
+        curViewModel.setBaseCur(base!!)
+        curViewModel.setDate(null)
 
-        //initializing convert part (Calendar)
-        ivTransferCur.setSvgColor(context!!, R.color.CurrencyPrimaryLight)
-        selectBtnSpinner("EUR", CURRENCY_FROM)
-        selectBtnSpinner("USD", CURRENCY_TO)
-        ratesViewModel.setCurrencies("EUR", "USD")
-        etAmountInput.setText("1.0")
-        ratesViewModel.setDate(LATEST)
+        ivTransferCur.setSvgColor(context!!, R.color.LoansPrimaryLight)
+        bmbCurMenu.initialize(BMBTypes.CURRENCY)
 
+        adapter = AdapterRecRates(view.context, null)
+        recyclerCur.setHasFixedSize(true)
+        recyclerCur.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+        recyclerCur.adapter = adapter
     }
 
     override fun onStart() {
         super.onStart()
 
-        ratesViewModel.getLatTableRates().observe(viewLifecycleOwner, Observer {
+        curViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
-            btnResetBaseCurrency.setOnClickListener {
-                getDialogCurHighOrderFunc(context) { selectedCur ->
-                    val editor = sharedPref.edit()
-                    editor.putString(CURRENCY_PREF, selectedCur)
-                    editor.apply()
-                    ratesViewModel.setLatTableCur(selectedCur)
-                }
-            }
+            Log.d("tttt", "IT DATE FRAGMENT: ${it?.date}")
+
             it?.let {
-                setTableCurrencies(it.baseCurrency)
-                tvTableDateTime.text = getDate(it.rates.dateTime)
-                setTableRates(it.baseCurrency, it.rates.latRates as CurRates?)
-                setTableGrowth(it.baseCurrency, it.rates)
+
+                groupCur.visibility = View.VISIBLE
+
+                adapter.ratesRows = it.ratesBarList
+                adapter.notifyDataSetChanged()
+
+                val date = context?.getString(R.string.Date) + ": " + formatterLong.format(it.date)
+                tvCurDateTime.text = date
+
+                val textCurName = "${context?.getString(R.string.Base)}: ${it.baseCur}"
+                tvCurBaseCur.text = textCurName
+
+                val base = it.baseCur
+                val from = it.curFrom
+
+                setBaseCurToSharedPref(sharedPref, it.baseCur)
+
+                btnCurBase.text = base
+                btnCurFrom.text = from
+                tvCurResult.text = it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) }
+
+                val flagBase = mapRatesNameIcon[it.baseCur]?.second
+                flagBase?.let {
+                    ivFlagCur.setImageResource(flagBase)
+                    btnCurBase.setCompoundDrawablesWithIntrinsicBounds(flagBase, 0, 0, 0)
+                }
+
+                val flagFrom = mapRatesNameIcon[it.curFrom]?.second
+                flagFrom?.let { f ->
+                    btnCurFrom.setCompoundDrawablesWithIntrinsicBounds(f, 0, 0, 0)
+                }
+
+                bmbCurMenu.onBoomListener = object : OnBoomListenerAdapter() {
+                    override fun onClicked(index: Int, boomButton: BoomButton) {
+                        super.onClicked(index, boomButton)
+                        when (index) {
+                            0 -> {
+                                Log.d("tttt", "0 INDEX BMB")
+                                getDialogCurHighOrderFunc(context) { cur ->
+                                    curViewModel.setBaseCur(cur)
+                                }
+                            }
+                            1 -> {
+                                Log.d("tttt", "1 INDEX BMB")
+
+                                openCalendarHighOrderFunc(
+                                    context, bmbCurMenu
+                                ) { dateApi ->
+                                    curViewModel.setDate(dateApi)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                btnConvertCur.setOnClickListener {
+                    from?.let {
+                        curViewModel.setAmount(etCurAmountInput.text.toString().toDouble())
+                    } ?: showSnackBar(R.string.invalidCurConvert, btnConvertCur, Options.CURRENCY)
+                    hideKeyboard(this.requireActivity())
+                }
+
+                btnCurBase.setOnClickListener {
+                    getDialogCurHighOrderFunc(context) { selCur ->
+                        curViewModel.setBaseCur(selCur)
+                    }
+                }
+
+                btnCurFrom.setOnClickListener {
+                    getDialogCurHighOrderFunc(context) { selCur ->
+                        curViewModel.setCurFrom(selCur)
+                    }
+                    curViewModel.setAmount(1.0)
+                    etCurAmountInput.setText("1.0")
+                }
+
+                ivTransferCur.setOnClickListener {
+                    from?.let {
+                        curViewModel.setBaseCur(from)
+                        curViewModel.setCurFrom(base)
+                    }
+                }
             }
         })
-
-        ratesViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
-
-            btnCalendarDate.setOnClickListener {
-                openCalendarHighOrderFunc(context, btnCalendarDate, ::calendarInvokeFunc)
-            }
-
-            btnCalendarNow.setOnClickListener {
-                clickLatest()
-            }
-
-            btnSpinner1.setOnClickListener {
-                getDialogCurHighOrderFunc(context) { selectedCur ->
-                    val curTo = btnSpinner2.text.toString()
-                    selectBtnSpinner(selectedCur, CURRENCY_FROM)
-                    ratesViewModel.setCurrencies(selectedCur, curTo)
-                }
-            }
-
-            btnSpinner2.setOnClickListener {
-                getDialogCurHighOrderFunc(context) { selectedCur ->
-                    val curFrom = btnSpinner1.text.toString()
-                    btnSpinner2.text = selectedCur
-                    selectBtnSpinner(selectedCur, CURRENCY_TO)
-                    ratesViewModel.setCurrencies(curFrom, selectedCur)
-                }
-            }
-
-            btnConvertCur.setOnClickListener {
-
-                hideKeyboard(this.activity!!)
-                val amount: Double? = if (etAmountInput.text.toString() == "") null else
-                    etAmountInput.text.toString().toDouble()
-                ratesViewModel.setAmount(amount)
-            }
-
-            ivTransferCur.setOnClickListener {
-                val spin1Text = btnSpinner1.text.toString()
-                val spin2Text = btnSpinner2.text.toString()
-                selectBtnSpinner(spin1Text, CURRENCY_TO)
-                selectBtnSpinner(spin2Text, CURRENCY_FROM)
-                ratesViewModel.setCurrencies(spin2Text, spin1Text)
-            }
-
-            val result = it?.let {
-                " = ${decimalFormatter2p.format(it.resultAmount)} ${btnSpinner2.text}"
-            } ?: ""
-            tvCurResult.text = result
-
-        })
-
-    }
-
-
-    /*@SuppressLint("InflateParams")
-    private fun getDialog(context: Context?, cur: String) {
-        if (context != null) {
-            val dialogBuilder = AlertDialog.Builder(context)
-            val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
-            dialogBuilder.setView(dialogView)
-
-            val curList = currencyMapFlags.keys.toTypedArray()
-            val flagList = currencyMapFlags.values.toTypedArray()
-
-            //spinner Currency
-            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
-            val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.spinner_currencies,
-                curList, flagList
-            )
-            adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
-            spinnerCur.adapter = adapterSpinCur
-            spinnerCur.setHasTransientState(true)
-
-            dialogBuilder.setTitle(R.string.DialogTitleCur)
-            dialogBuilder.setIcon(R.mipmap.currencyicon)
-
-            //click SAVE
-            dialogBuilder.setPositiveButton(
-                getString(R.string.OK)
-            ) { _, _ ->
-                val selectedCur = spinnerCur.selectedItem.toString()
-                when (cur) {
-                    CURRENCY_TABLE -> {
-                        val editor = sharedPref.edit()
-                        editor.putString(CURRENCY_PREF, selectedCur)
-                        editor.apply()
-                        ratesViewModel.setLatTableCur(selectedCur)
-                    }
-                    CURRENCY_FROM -> {
-                        val curTo = btnSpinner2.text.toString()
-                        selectBtnSpinner(selectedCur, CURRENCY_FROM)
-                        ratesViewModel.setCurrencies(selectedCur, curTo)
-                    }
-                    CURRENCY_TO -> {
-                        val curFrom = btnSpinner1.text.toString()
-                        btnSpinner2.text = selectedCur
-                        selectBtnSpinner(selectedCur, CURRENCY_TO)
-                        ratesViewModel.setCurrencies(curFrom, selectedCur)
-                    }
-                }
-            }
-
-            dialogBuilder.setNegativeButton(
-                getString(R.string.cancel)
-            ) { _, _ -> }
-
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-            customizeAlertDialog(alertDialog, true)
-            alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimaryLight)
-        }
-    }*/
-
-    private fun setTableCurrencies(cur: String) {
-        val textUSD = "USD / $cur"
-        tvRateName.text = textUSD
-        val textEUR = "EUR / $cur"
-        tvSilver.text = textEUR
-        val textGBP = "GBP / $cur"
-        tvPlatinum.text = textGBP
-        val textCNY = "CNY / $cur"
-        tvPalladium.text = textCNY
-        val textRUR = "RUR / $cur"
-        tvCurRUB.text = textRUR
-    }
-
-    private fun setTableRates(cur: String, rates: CurRates?) {
-        rates?.let {
-            val map = getMapFromCurRates(rates)
-            val selCurValue = map?.get(cur)
-            selCurValue?.let {
-                tvPrice.text = getRateValuesString("USD", selCurValue, map)
-                tvSilverRate.text = getRateValuesString("EUR", selCurValue, map)
-                tvPlatRate.text = getRateValuesString("GBP", selCurValue, map)
-                tvPalladRate.text = getRateValuesString("CNY", selCurValue, map)
-                tvRateRUB.text = getRateValuesString("RUB", selCurValue, map)
-            }
-        }
-    }
-
-    private fun setTableGrowth(cur: String, ratesUi: RatesFull) {
-        val latestRates = ratesUi.latRates
-        val elderRates = ratesUi.elderRates
-        latestRates?.let {
-            val mapLatest = getMapFromCurRates(latestRates as CurRates)
-            val selCurValue1 = mapLatest?.get(cur)
-            selCurValue1?.let {
-
-                val latRateUSD = getRateValuesDouble("USD", selCurValue1, mapLatest)
-                val latRateEUR = getRateValuesDouble("EUR", selCurValue1, mapLatest)
-                val latRateGBP = getRateValuesDouble("GBP", selCurValue1, mapLatest)
-                val latRateCNY = getRateValuesDouble("CNY", selCurValue1, mapLatest)
-                val latRateRUB = getRateValuesDouble("RUB", selCurValue1, mapLatest)
-
-                if (elderRates != null) {
-                    val mapElder = getMapFromCurRates(elderRates as CurRates)
-                    val selCurValue2 = mapElder?.get(cur)
-                    selCurValue2?.let {
-
-                        val oldRateUSD = getRateValuesDouble("USD", selCurValue2, mapElder)
-                        val oldRateEUR = getRateValuesDouble("EUR", selCurValue2, mapElder)
-                        val oldRateGBP = getRateValuesDouble("GBP", selCurValue2, mapElder)
-                        val oldRateCNY = getRateValuesDouble("CNY", selCurValue2, mapElder)
-                        val oldRateRUB = getRateValuesDouble("RUB", selCurValue2, mapElder)
-
-                        getGrowthView(tvGrowth, getGrowthRate(latRateUSD, oldRateUSD))
-                        getGrowthView(tvSilverGrowth, getGrowthRate(latRateEUR, oldRateEUR))
-                        getGrowthView(tvPlatGrowth, getGrowthRate(latRateGBP, oldRateGBP))
-                        getGrowthView(tvPalladGrowth, getGrowthRate(latRateCNY, oldRateCNY))
-                        getGrowthView(tvGrowthRUB, getGrowthRate(latRateRUB, oldRateRUB))
-                    }
-                } else {
-                    getGrowthView(tvGrowth, null)
-                    getGrowthView(tvSilverGrowth, null)
-                    getGrowthView(tvPlatGrowth, null)
-                    getGrowthView(tvPalladGrowth, null)
-                    getGrowthView(tvGrowthRUB, null)
-                }
-            }
-        }
-    }
-
-
-    @SuppressLint("SimpleDateFormat")
-    private fun getDate(longDate: Date?): String? {
-        return longDate?.let {
-            val formatter = SimpleDateFormat(FORMAT)
-            val dateString = formatter.format(longDate)
-            context?.getString(R.string.updated) + " " + dateString
-        }
-    }
-
-    private fun calendarInvokeFunc(dateForApiRequest: String, selectedDate: Date) {
-        btnCalendarDate.text = selectedDate.toString()
-        ratesViewModel.setDate(dateForApiRequest)
-
-        btnCalendarDate.background =
-            resources.getDrawable(R.drawable.final_btnreset_currency)
-        btnCalendarNow.background =
-            resources.getDrawable(R.drawable.final_cur_latest_unselected)
-        btnCalendarDate.text = selectedDate.toString()
-        btnCalendarNow.text = ""
-    }
-
-    private fun clickLatest() {
-        ratesViewModel.setDate(LATEST)
-        btnCalendarDate.background = resources.getDrawable(R.drawable.final_cur_latest_unselected)
-        btnCalendarNow.background = resources.getDrawable(R.drawable.final_btnreset_currency)
-        btnCalendarDate.text = ""
-        btnCalendarNow.text = resources.getString(R.string.latest)
-    }
-
-    private fun selectBtnSpinner(cur: String, btnSpinner: String) {
-        val flag = mapCurNameFlag[cur]?.second
-
-        if (btnSpinner == CURRENCY_FROM) {
-            btnSpinner1.text = cur
-            flag?.let {
-                btnSpinner1.setCompoundDrawablesWithIntrinsicBounds(flag, 0, 0, 0)
-                etAmountInput.setCompoundDrawablesWithIntrinsicBounds(0, 0, flag, 0)
-            }
-        } else if (btnSpinner == CURRENCY_TO) {
-            btnSpinner2.text = cur
-            flag?.let {
-                btnSpinner2.setCompoundDrawablesWithIntrinsicBounds(flag, 0, 0, 0)
-            }
-        }
     }
 
     override fun onStop() {
         super.onStop()
-        ratesViewModel.removeSources()
+        curViewModel.removeSources()
     }
 }
 

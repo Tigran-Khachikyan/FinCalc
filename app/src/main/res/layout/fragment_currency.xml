@@ -2,9 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator"
+    android:id="@+id/coordinatorCur"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
     tools:ignore="Autofill">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -30,23 +31,22 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layInsideImage"
+                    android:id="@+id/layInsideImageCur"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="210dp"
                     android:background="@mipmap/image_currency"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:background="@android:color/black"
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/white"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
+                    app:layout_constraintTop_toBottomOf="@id/layInsideImageCur" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,465 +69,311 @@
             android:layout_height="wrap_content"
             android:background="@drawable/final_rates_background">
 
-
             <!--Tablo-->
-            <LinearLayout
-                android:id="@+id/cardViewLiveCurrency"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layTableCur"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/final_input_frame"
-                android:orientation="vertical"
-                android:padding="4dp"
-                android:visibility="visible"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tvTableDateTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="10dp"
-                    android:textColor="@color/CurrencyPrimaryLight"
-                    android:textStyle="bold|italic" />
-                <!--Intro-->
-
+                <!--options-->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layCurOptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:padding="2dp">
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.Group
+                        android:id="@+id/groupCur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="bmbCurMenu,tvCurDateTime,tvCurBaseCur,ivFlagCur,tvTopCurs" />
+
+
+                    <com.nightonke.boommenu.BoomMenuButton
+                        android:id="@+id/bmbCurMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="12dp"
+                        app:bmb_buttonEnum="ham"
+                        app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
+                        app:bmb_dimColor="@color/BMBdimColor"
+                        app:bmb_highlightedColor="@android:color/holo_red_dark"
+                        app:bmb_normalColor="@color/LoansPrimaryLight"
+                        app:bmb_piecePlaceEnum="piecePlace_dot_2_1"
+                        app:bmb_shadowRadius="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvCurrencyIntro"
-                        style="@style/textViewBigMain"
+                        android:id="@+id/tvCurDateTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="6dp"
+                        android:text="03/02/2020 ....."
+                        android:textColor="@color/MetalsPrimaryLight"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvCurBaseCur"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical"
+                        android:text="Base currency  USD"
+                        android:textColor="@color/MetalsPrimaryLight"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvCurDateTime" />
+
+                    <ImageView
+                        android:id="@+id/ivFlagCur"
+                        android:layout_width="34dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toTopOf="@id/tvTopCurs"
+                        app:layout_constraintLeft_toRightOf="@id/tvCurBaseCur"
+                        app:layout_constraintTop_toBottomOf="@id/tvCurDateTime" />
+
+                    <TextView
+                        android:id="@+id/tvTopCurs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/TopCur"
+                        android:textColor="@color/MetalsPrimaryLight"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvCurBaseCur" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--Intro-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layCurIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    app:layout_constraintTop_toBottomOf="@id/layCurOptions">
+
+                    <TextView
+                        android:id="@+id/tvMetalsIntro"
+                        style="@style/textViewIntroInput"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:text="@string/Currency"
+                        android:textAllCaps="true"
                         android:textColor="@color/CurrencyPrimaryLight"
-                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintHorizontal_weight="0.35"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/tvRateIntro" />
 
                     <TextView
                         android:id="@+id/tvRateIntro"
-                        style="@style/textViewBigMain"
+                        style="@style/textViewIntroInput"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="@string/rate"
+                        android:text="@string/price"
+                        android:textAllCaps="true"
                         android:textColor="@color/CurrencyPrimaryLight"
-                        app:layout_constraintHorizontal_weight="1.1"
-                        app:layout_constraintLeft_toRightOf="@id/tvCurrencyIntro"
+                        app:layout_constraintHorizontal_weight="0.4"
+                        app:layout_constraintLeft_toRightOf="@id/tvMetalsIntro"
                         app:layout_constraintRight_toLeftOf="@id/tvGrowthIntro" />
 
                     <TextView
                         android:id="@+id/tvGrowthIntro"
-                        style="@style/textViewBigMain"
+                        style="@style/textViewIntroInput"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="10dp"
-                        app:layout_constraintHorizontal_weight="0.65"
+                        android:text="@string/change"
+                        android:textAllCaps="true"
+                        android:textColor="@color/CurrencyPrimaryLight"
+                        app:layout_constraintHorizontal_weight="0.25"
                         app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
-                        app:layout_constraintRight_toRightOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--USD-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/tvRateName"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvPrice"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvPrice"
-                        style="@style/textViewBigMain"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvRateName"
-                        app:layout_constraintRight_toLeftOf="@id/tvGrowth"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvGrowth"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvPrice"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintWidth_percent="0.28" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--EUR-->
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerCur"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="2dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="?attr/actionBarSize"
+                    app:layout_constraintTop_toBottomOf="@id/layCurIntro" />
 
-                    <TextView
-                        android:id="@+id/tvSilver"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvSilverRate"
-                        app:layout_constraintWidth_percent="0.36" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/tvSilverRate"
-                        style="@style/textViewBigMain"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvSilver"
-                        app:layout_constraintRight_toLeftOf="@id/tvSilverGrowth"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvSilverGrowth"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvSilverRate"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintWidth_percent="0.28" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--GBP-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/tvPlatinum"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvPlatRate"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvPlatRate"
-                        style="@style/textViewBigMain"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvPlatinum"
-                        app:layout_constraintRight_toLeftOf="@id/tvPlatGrowth"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvPlatGrowth"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvPlatRate"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintWidth_percent="0.28" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--CNY-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/tvPalladium"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvPalladRate"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvPalladRate"
-                        style="@style/textViewBigMain"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvPalladium"
-                        app:layout_constraintRight_toLeftOf="@id/tvPalladGrowth"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvPalladGrowth"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvPalladRate"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintWidth_percent="0.28" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--RUR-->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/tvCurRUB"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/tvRateRUB"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvRateRUB"
-                        style="@style/textViewBigMain"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvCurRUB"
-                        app:layout_constraintRight_toLeftOf="@id/tvGrowthRUB"
-                        app:layout_constraintWidth_percent="0.36" />
-
-                    <TextView
-                        android:id="@+id/tvGrowthRUB"
-                        style="@style/CurText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toRightOf="@id/tvRateRUB"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintWidth_percent="0.28" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <!--choose currency-->
-                <Button
-                    android:id="@+id/btnResetBaseCurrency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="26dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="26dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/final_btnreset_currency"
-                    android:padding="2dp"
-                    android:text="@string/resetBaseCurrency"
-                    android:textColor="@color/CurrencyPrimaryLight" />
-
-            </LinearLayout>
-
+            <!--Custom Converter-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutCurrencyInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="?attr/actionBarSize"
-                android:background="@drawable/final_input_frame"
-                android:padding="4dp"
+                android:layout_marginTop="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewLiveCurrency"
-                app:layout_constraintVertical_weight="7">
+                app:layout_constraintTop_toBottomOf="@id/layTableCur">
 
                 <TextView
-                    android:id="@+id/tvCurrencyMainIntro"
+                    android:id="@+id/tvCurMainIntro"
                     style="@style/textViewBigMain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/Live_converter"
-                    android:textColor="@color/CurrencyPrimaryLight"
+                    android:text="@string/CustomCur"
+                    android:textColor="@color/LoansPrimaryLight"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conLay1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tvCurrencyMainIntro">
+                    android:padding="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvCurMainIntro">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/conLayCalendar"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:padding="10dp"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <Button
-                            android:id="@+id/btnCalendarDate"
-                            style="@style/currencyViews"
-                            android:textSize="24sp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/final_cur_latest_unselected"
-                            android:drawableEnd="@mipmap/calender"
-                            android:textColorHint="@android:color/black"
-                            android:padding="4dp"
-                            android:hint="@string/archive"
-                            app:layout_constraintHorizontal_weight="14"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/btnCalendarNow" />
-
-                        <Button
-                            android:id="@+id/btnCalendarNow"
-                            style="@style/currencyViews"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/final_btnreset_currency"
-                            android:hint="@string/latest"
-                            android:text="@string/latest"
-                            android:textSize="24sp"
-                            android:textColorHint="@android:color/black"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="10"
-                            app:layout_constraintLeft_toRightOf="@id/btnCalendarDate"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/conLay1"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvSpinner1From"
+                        style="@style/textViewInfo"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        app:layout_constraintTop_toBottomOf="@id/conLayCalendar">
+                        android:text="from"
+                        app:layout_constraintBottom_toTopOf="@id/btnCurFrom"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintLeft_toLeftOf="@id/btnCurFrom"
+                        app:layout_constraintRight_toRightOf="@id/btnCurFrom"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tvSpinner1From"
-                            style="@style/textViewInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="from"
-                            app:layout_constraintBottom_toTopOf="@id/btnSpinner1"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="@id/btnSpinner1"
-                            app:layout_constraintRight_toRightOf="@id/btnSpinner1"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Button
-                            android:id="@+id/btnSpinner1"
-                            style="@style/buttonCur"
-                            android:layout_height="70dp"
-                            android:background="@drawable/final_btnreset_currency"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="10"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/ivTransferCur"
-                            app:layout_constraintTop_toBottomOf="@id/tvSpinner1From" />
-
-
-                        <ImageView
-                            android:id="@+id/ivTransferCur"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_margin="6dp"
-                            android:background="@drawable/final_btnreset_currency"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:padding="4dp"
-                            android:src="@drawable/ic_change_arrows"
-                            app:layout_constraintBottom_toBottomOf="@id/btnSpinner1"
-                            app:layout_constraintLeft_toRightOf="@id/btnSpinner1"
-                            app:layout_constraintRight_toLeftOf="@id/btnSpinner2"
-                            app:layout_constraintTop_toTopOf="@id/btnSpinner1"
-                            tools:ignore="ContentDescription" />
-
-                        <TextView
-                            android:id="@+id/tvSpinner2To"
-                            style="@style/textViewInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="To"
-                            app:layout_constraintBottom_toTopOf="@id/btnSpinner2"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="@id/btnSpinner2"
-                            app:layout_constraintRight_toRightOf="@id/btnSpinner2"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Button
-                            android:id="@+id/btnSpinner2"
-                            style="@style/buttonCur"
-                            android:layout_height="70dp"
-                            android:background="@drawable/final_btnreset_currency"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_weight="10"
-                            app:layout_constraintLeft_toRightOf="@id/ivTransferCur"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvSpinner2To" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/conLay2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
+                    <Button
+                        android:id="@+id/btnCurFrom"
+                        style="@style/buttonCur"
+                        android:layout_height="70dp"
+                        android:background="@drawable/final_btnreset_currency"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/conLay1">
+                        app:layout_constraintHorizontal_weight="10"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/ivTransferCur"
+                        app:layout_constraintTop_toBottomOf="@id/tvSpinner1From" />
 
-                        <TextView
-                            android:id="@+id/tvSpinnerAmount"
-                            style="@style/textViewInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/Amount"
-                            app:layout_constraintBottom_toTopOf="@id/etAmountInput"
-                            app:layout_constraintHorizontal_bias="0.07"
-                            app:layout_constraintLeft_toLeftOf="@id/etAmountInput"
-                            app:layout_constraintRight_toRightOf="@id/etAmountInput"
-                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
-                            android:id="@+id/etAmountInput"
-                            style="@style/editTextMainInput"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:inputType="numberDecimal"
-                            android:textColorHint="@color/CurrencyPrimaryLight"
-                            app:layout_constraintHorizontal_weight="1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/btnConvertCur"
-                            app:layout_constraintTop_toBottomOf="@id/tvSpinnerAmount"
-                            tools:ignore="LabelFor" />
+                    <ImageView
+                        android:id="@+id/ivTransferCur"
+                        android:layout_width="?attr/actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_margin="6dp"
+                        android:background="@drawable/final_btnreset_cur_circle"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_change_arrows"
+                        app:layout_constraintBottom_toBottomOf="@id/btnCurFrom"
+                        app:layout_constraintLeft_toRightOf="@id/btnCurFrom"
+                        app:layout_constraintRight_toLeftOf="@id/btnCurBase"
+                        app:layout_constraintTop_toTopOf="@id/btnCurFrom"
+                        tools:ignore="ContentDescription" />
 
-                        <Button
-                            android:id="@+id/btnConvertCur"
-                            style="@style/currencyViews"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="4dp"
-                            android:background="@drawable/final_btnreset_currency"
-                            android:padding="2dp"
-                            android:text="@string/convert"
-                            android:textColor="@color/CurrencyPrimaryLight"
-                            app:layout_constraintBottom_toBottomOf="@id/etAmountInput"
-                            app:layout_constraintLeft_toRightOf="@id/etAmountInput"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/etAmountInput" />
+                    <TextView
+                        android:id="@+id/tvSpinner2To"
+                        style="@style/textViewInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="To"
+                        app:layout_constraintBottom_toTopOf="@id/btnCurBase"
+                        app:layout_constraintHorizontal_bias="0.1"
+                        app:layout_constraintLeft_toLeftOf="@id/btnCurBase"
+                        app:layout_constraintRight_toRightOf="@id/btnCurBase"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tvCurResult"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="50dp"
-                            android:layout_marginEnd="4dp"
-                            android:gravity="start"
-                            android:textColor="@android:color/white"
-                            android:textSize="40sp"
-                            android:textStyle="italic"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/etAmountInput" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <Button
+                        android:id="@+id/btnCurBase"
+                        style="@style/buttonCur"
+                        android:layout_height="70dp"
+                        android:background="@drawable/final_btnreset_currency"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_weight="10"
+                        app:layout_constraintLeft_toRightOf="@id/ivTransferCur"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvSpinner2To" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/conLay2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/conLay1">
+
+                    <TextView
+                        android:id="@+id/tvSpinnerAmount"
+                        style="@style/textViewInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Amount"
+                        app:layout_constraintBottom_toTopOf="@id/etCurAmountInput"
+                        app:layout_constraintHorizontal_bias="0.07"
+                        app:layout_constraintLeft_toLeftOf="@id/etCurAmountInput"
+                        app:layout_constraintRight_toRightOf="@id/etCurAmountInput"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/etCurAmountInput"
+                        style="@style/editTextMainInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="@color/CurrencyPrimaryLight"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btnConvertCur"
+                        app:layout_constraintTop_toBottomOf="@id/tvSpinnerAmount"
+                        tools:ignore="LabelFor" />
+
+                    <Button
+                        android:id="@+id/btnConvertCur"
+                        style="@style/currencyViews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/final_btnreset_currency"
+                        android:padding="2dp"
+                        android:text="@string/convert"
+                        android:textColor="@color/LoansPrimaryLight"
+                        app:layout_constraintBottom_toBottomOf="@id/etCurAmountInput"
+                        app:layout_constraintLeft_toRightOf="@id/etCurAmountInput"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/etCurAmountInput" />
+
+                    <TextView
+                        android:id="@+id/tvCurResult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="50dp"
+                        android:gravity="start"
+                        android:textColor="@android:color/white"
+                        android:textSize="40sp"
+                        android:textStyle="italic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etCurAmountInput" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

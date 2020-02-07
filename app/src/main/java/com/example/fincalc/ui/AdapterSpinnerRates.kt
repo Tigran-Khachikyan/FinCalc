@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.fincalc.R
-import com.example.fincalc.models.rates.mapCurNameFlag
+import com.example.fincalc.models.rates.mapRatesNameIcon
 
 class AdapterSpinnerRates(
     context: Context,
@@ -38,8 +38,8 @@ class AdapterSpinnerRates(
         val tvRateName: TextView = view.findViewById(R.id.tvRateName)
         val ivRateIcon: ImageView = view.findViewById(R.id.ivRateIcon)
         val curCode = mCurrencyCodes[position]
-        val curFlag = mapCurNameFlag[curCode]?.second
-        val curNameRes = mapCurNameFlag[curCode]?.first
+        val curFlag = mapRatesNameIcon[curCode]?.second
+        val curNameRes = mapRatesNameIcon[curCode]?.first
 
         tvRateCode.text = curCode
         curNameRes?.let {
