@@ -45,7 +45,7 @@ class RateFragment : Fragment() {
         curViewModel.setBaseCur(base!!)
         curViewModel.setDate(null)
 
-        ivTransferCur.setSvgColor(context!!, R.color.LoansPrimaryLight)
+        ivTransferCur.setSvgColor(context!!, R.color.PortPrimaryLight)
         bmbCurMenu.initialize(BMBTypes.CURRENCY)
 
         adapter = AdapterRecRates(view.context, null)
@@ -80,8 +80,9 @@ class RateFragment : Fragment() {
                 setBaseCurToSharedPref(sharedPref, it.baseCur)
 
                 btnCurBase.text = base
-                btnCurFrom.text = from
-                tvCurResult.text = it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) }
+                val fromText = from?:"?"
+                btnCurFrom.text = fromText
+                tvCurResult.text = it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) +" " +base }
 
                 val flagBase = mapRatesNameIcon[it.baseCur]?.second
                 flagBase?.let {
@@ -133,9 +134,9 @@ class RateFragment : Fragment() {
                 btnCurFrom.setOnClickListener {
                     getDialogCurHighOrderFunc(context) { selCur ->
                         curViewModel.setCurFrom(selCur)
+                        curViewModel.setAmount(1.0)
+                        etCurAmountInput.setText("1.0")
                     }
-                    curViewModel.setAmount(1.0)
-                    etCurAmountInput.setText("1.0")
                 }
 
                 ivTransferCur.setOnClickListener {

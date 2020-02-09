@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 
 class PortfolioActivity : AppCompatActivity() {
@@ -32,5 +33,10 @@ class PortfolioActivity : AppCompatActivity() {
                     navController.navigate(R.id.navigation_deps)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Animatoo.animateSlideUp(this)
     }
 }

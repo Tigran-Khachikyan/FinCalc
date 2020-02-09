@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_balance"
-        android:icon="@drawable/ic_bag"
+        android:icon="@drawable/ic_portfolio"
         android:title="@string/balance" />
 
     <item
         android:id="@+id/navigation_loans"
-        android:icon="@mipmap/loan_logo"
+        android:icon="@drawable/ic_loan"
         android:title="@string/Loans" />
 
     <item
         android:id="@+id/navigation_deps"
-        android:icon="@mipmap/deposit_logo"
+        android:icon="@drawable/ic_deposit"
         android:title="@string/deposits" />
 
 </menu>

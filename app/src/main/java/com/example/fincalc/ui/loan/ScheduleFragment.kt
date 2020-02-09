@@ -184,7 +184,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
             alertDialog.show()
             customizeAlertDialog(alertDialog, true)
-            alertDialog.window?.setBackgroundDrawableResource(R.color.LoansPrimary)
+            alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
         }
     }
 }

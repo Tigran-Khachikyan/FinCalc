@@ -206,7 +206,7 @@ class DepositActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        Animatoo.animateCard(this)
+        Animatoo.animateSlideRight(this)
     }
 
     @SuppressLint("InflateParams")

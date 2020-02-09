@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 
 class RatesActivity : AppCompatActivity() {
@@ -23,6 +24,6 @@ class RatesActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        this.finish()
+        Animatoo.animateWindmill(this)
     }
 }

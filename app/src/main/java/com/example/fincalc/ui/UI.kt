@@ -7,10 +7,11 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
@@ -20,7 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
@@ -28,6 +28,11 @@ import androidx.core.content.ContextCompat
 import com.example.fincalc.R
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.google.android.material.snackbar.Snackbar
+import su.levenetc.android.textsurface.TextBuilder
+import su.levenetc.android.textsurface.TextSurface
+import su.levenetc.android.textsurface.animations.*
+import su.levenetc.android.textsurface.contants.Align
+import su.levenetc.android.textsurface.contants.Side
 import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -51,7 +56,7 @@ fun showSnackBar(text: Int, view: View, option: Options) {
     ).setAction("Action", null)
     val sbView: View = snackbar.view
     val color: Int = when (option) {
-        Options.LOAN -> R.color.LoansPrimaryDark
+        Options.LOAN -> R.color.PortPrimaryDark
         Options.DEPOSIT -> R.color.DepPrimaryDark
         Options.CURRENCY -> R.color.CurrencyPrimaryDark
     }
@@ -172,13 +177,14 @@ fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
         dialogBuilder.setView(dialogView)
 
         //spinner Currency
-        val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialFilCurr)
+        val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialFilCurr)
         val adapterSpinCur = AdapterSpinnerRates(
             context, R.layout.spinner_currencies, arrayCurCodes
         )
         adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
         spinnerCur.adapter = adapterSpinCur
         spinnerCur.setHasTransientState(true)
+
 
         dialogBuilder.setTitle(R.string.DialogTitleCur)
         dialogBuilder.setIcon(R.mipmap.currencyicon)
@@ -198,14 +204,8 @@ fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
         customizeAlertDialog(alertDialog, true)
-        alertDialog.window?.setBackgroundDrawableResource(R.color.CurrencyPrimaryLight)
-    }
-}
-
-fun getDateString(context: Context?, longDate: Date?): String? {
-    return longDate?.let {
-        val res = formatterLong.format(longDate)
-        return context?.getString(R.string.Date) + ": " + res
+        alertDialog.window?.setBackgroundDrawableResource(R.color.colorSpinner)
+        spinnerCur.performClick()
     }
 }
 
@@ -218,3 +218,48 @@ fun setBaseCurToSharedPref(sharedPref: SharedPreferences, baseCur: String) {
 const val PRIVATE_MODE = 0
 const val PREF_NAME = "Currency_Pref"
 const val CURRENCY_PREF = "Currency"
+
+private const val FONT_PATH = "fonts/splash.ttf"
+fun TextSurface.playSplash(context: Context) {
+    reset()
+    val robotoBlack = Typeface.createFromAsset(context.assets, FONT_PATH)
+    val paint = Paint()
+    paint.isAntiAlias = true
+    paint.typeface = robotoBlack
+    val text = TextBuilder
+        .create(context.getString(R.string.FinCalcSplash))
+        .setPaint(paint)
+        .setSize(46f)
+        .setColor(context.resources.getColor(android.R.color.white))
+        .setPosition(Align.SURFACE_CENTER).build()
+    play(
+        Sequential(
+            ShapeReveal.create(
+                text, 3000, SideCut.show(Side.LEFT), false
+            ),
+            Parallel(
+                ShapeReveal.create(
+                    text, 1000, SideCut.hide(Side.LEFT), false
+                )
+            )
+        )
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

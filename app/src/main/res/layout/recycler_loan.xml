@@ -54,7 +54,7 @@
         style="@style/textView"
         android:textSize="13sp"
         android:textStyle="bold"
-        android:background="@color/LoansPrimary"
+        android:background="@color/PortPrimary"
         app:layout_constraintHorizontal_weight="80"
         app:layout_constraintLeft_toRightOf="@id/tvCommissionMonthly"
         app:layout_constraintTop_toTopOf="parent"

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">FinCalc</string>
+    <string name="FinCalcSplash">Financial Calculator</string>
 
     -- Activity Main
     <string name="contentDescriptionLoanLogo">Loan Logo</string>
@@ -27,7 +28,7 @@
     -- Activity Loan
     <string name="Amount">Amount</string>
     <string name="HintAmount"> ex. 780000</string>
-    <string name="Term_months">Term (months)</string>
+    <string name="Term_months">Term/months</string>
     <string name="HintTerm"> ex. 36</string>
     <string name="Interest_rate">Annual Interest rate</string>
     <string name="HintRate"> ex. 9.1</string>
@@ -169,9 +170,9 @@
 
     --Currencies
     <string name="USD">United States dollar</string>
-    <string name="EUR">Euro</string>
+    <string name="EUR">Eurozone currency</string>
     <string name="GBP">Pound sterling</string>
-    <string name="CNY">Renminbi (Chinese) yuan</string>
+    <string name="CNY">Chinese yuan</string>
     <string name="RUB">Russian ruble</string>
     <string name="AMD">Armenian dram</string>
     <string name="AED">United Arab Emirates dirham</string>
@@ -183,48 +184,63 @@
     <string name="CAD">Canadian dollar</string>
     <string name="CHF">Swiss franc</string>
     <string name="CUC">Cuban convertible peso</string>
-    <string name="DKK">Danish krone</string>       --new
+    <string name="DKK">Danish krone</string>
+    --new
     <string name="EGP">Egyptian pound</string>
     <string name="GEL">Georgian lari</string>
-    <string name="HKD">Hong Kong dollar</string> --new
-    <string name="IDR">Indonesian rupiah</string> --new
+    <string name="HKD">Hong Kong dollar</string>
+    --new
+    <string name="IDR">Indonesian rupiah</string>
+    --new
     <string name="ILS">Israeli new shekel</string>
     <string name="INR">Indian rupee</string>
     <string name="IQD">Iraqi dinar</string>
     <string name="IRR">Iranian rial</string>
     <string name="JPY">Japanese yen</string>
-    <string name="KPW">North Korean won	</string>          --new
+    <string name="KPW">North Korean won	</string>
+    --new
     <string name="KRW">South Korean won</string>
     <string name="KWD">Kuwaiti dinar</string>
-    <string name="KZT">Kazakhstani tenge</string>    --new
+    <string name="KZT">Kazakhstani tenge</string>
+    --new
     <string name="LBP">Lebanese pound</string>
     <string name="MAD">Moroccan dirham</string>
     <string name="MXN">Mexican peso</string>
-    <string name="MYR">Malaysian ringgit</string>        --new
-    <string name="NGN">Nigerian naira</string>        --new
-    <string name="NOK">Norwegian krone</string>        --new
+    <string name="MYR">Malaysian ringgit</string>
+    --new
+    <string name="NGN">Nigerian naira</string>
+    --new
+    <string name="NOK">Norwegian krone</string>
+    --new
     <string name="NZD">New Zealand dollar</string>
-    <string name="OMR">Omani rial</string>                --new
+    <string name="OMR">Omani rial</string>
+    --new
     <string name="PEN">Peruvian sol</string>
-    <string name="PHP">Philippine peso</string>              --new
-    <string name="PYG">Paraguayan guaraní</string>              --new
+    <string name="PHP">Philippine peso</string>
+    --new
+    <string name="PYG">Paraguayan guaraní</string>
+    --new
     <string name="QAR">Qatari riyal</string>
-    <string name="RSD">Serbian dinar</string>          --new
+    <string name="RSD">Serbian dinar</string>
+    --new
     <string name="SAR">Saudi riyal</string>
     <string name="SEK">Swedish krona/kronor</string>
     <string name="SGD">Singapore dollar</string>
     <string name="SYP">Syrian pound</string>
     <string name="THB">Thai baht</string>
-    <string name="TMT">Turkmenistan manat</string>      --new
+    <string name="TMT">Turkmenistan manat</string>
+    --new
     <string name="TND">Tunisian dinar</string>
     <string name="TRY">Turkish lira</string>
     <string name="UAH">Ukrainian hryvnia</string>
     <string name="UYU">Uruguayan peso</string>
-    <string name="UZS">Uzbekistan som</string>            --new
-    <string name="VES">Venezuelan bolívar soberano</string>            --new
+    <string name="UZS">Uzbekistan som</string>
+    --new
+    <string name="VES">Venezuelan bolívar soberano</string>
+    --new
     <string name="VND">Vietnamese đồng</string>
     <string name="ZAR">South African rand</string>
-    
+
     --metals
     <string name="XAG">Silver</string>
     <string name="XAU">Gold</string>

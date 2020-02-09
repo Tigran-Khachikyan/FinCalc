@@ -17,28 +17,28 @@
     <color name="PortPrimary">#5d9ab5</color>
     <color name="PortPrimaryLight">#b1ffff</color>
     <color name="PortPrimaryDark">#103544</color>
+    <color name="colorSpinner">#125068</color>
+    <color name="PortPrimaryDarkTrans">#59103544</color>
+    <color name="PortPrimaryVeryDark">#05202B</color>
 
     <color name="CurrencyPrimary">#00407a</color>
-    <color name="CurrencyPrimaryLight">#94456AAA</color>
-    <color name="CurrencyPrimaryDark">#001b4d</color>
+    <color name="CurrencyPrimaryLight">#FC2F5392</color>
+    <color name="CurrencyPrimaryDark">#02233D</color>
+    <color name="CurrencyPrimaryDarkTrans">#56001B4D</color>
+    <color name="CurrencyPrimaryVeryDark">#020F29</color>
 
 
     //Final
     //Loans
-    <color name="LoansPrimary">#3b7c76</color>
-    <color name="LoansPrimaryLight">#6baba5</color>
-    <color name="LoansPrimaryDark">#002623</color>
 
     //Deposit
     <color name="DepPrimary">#c77eda</color>
     <color name="DepPrimaryLight">#fbafff</color>
     <color name="DepPrimaryDark">#431055</color>
+    <color name="DepPrimaryDarkTrans">#41431055</color>
 
-    //Metals
-    <color name="MetalsPrimary">#8d8d8d</color>
-    <color name="MetalsPrimaryTrans">#808C8C8C</color>
-    <color name="MetalsPrimaryDark">#2d2d2d</color>
     <color name="MetalsPrimaryLight">#bdbdbd</color>
+    <color name="MetalsPrimaryLightTrans">#40BDBDBD</color>
 
 
     <color name="BMBdimColor">#B0021627</color>

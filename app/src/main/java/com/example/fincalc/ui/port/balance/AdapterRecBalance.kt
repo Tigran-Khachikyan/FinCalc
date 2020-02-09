@@ -108,7 +108,7 @@ class AdapterRecBalance(
                     Frequency.MONTHLY -> R.mipmap.type_monthly
                     Frequency.QUARTERLY -> R.mipmap.type_quarter
                     Frequency.AT_THE_END -> R.mipmap.type_at_the_end
-                    Frequency.OTHER -> R.mipmap.deposit_logo
+                    Frequency.OTHER -> R.drawable.ic_deposit
                 }
             )
         }

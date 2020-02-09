@@ -5,15 +5,16 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/final_rates_background"
     tools:ignore="Autofill">
+
+    <!--imageView-->
 
     <!--imageView-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ivMetalsMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/final_rates_background"
+        android:background="@drawable/background_rates"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +31,7 @@
             android:gravity="center"
             android:text="@string/WeMakeItEasy"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
 
@@ -41,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="?attr/actionBarSize"
-        android:background="@drawable/final_rates_background"
+        android:background="@drawable/background_rates"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivMetalsMain">
 
@@ -69,7 +70,7 @@
                 app:bmb_buttonPlaceEnum="buttonPlace_ham_3"
                 app:bmb_dimColor="@color/BMBdimColor"
                 app:bmb_highlightedColor="@android:color/holo_red_dark"
-                app:bmb_normalColor="@color/LoansPrimaryLight"
+                app:bmb_normalColor="@color/PortPrimaryLight"
                 app:bmb_piecePlaceEnum="piecePlace_dot_3_1"
                 app:bmb_shadowRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -80,11 +81,11 @@
                 android:id="@+id/tvMetalsDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:textSize="14sp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="5dp"
                 android:text="03/02/2020 ....."
                 android:textColor="@color/MetalsPrimaryLight"
+                android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -93,12 +94,12 @@
                 android:id="@+id/tvMetalsBaseCur"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:textSize="14sp"
                 android:layout_marginStart="14dp"
-                android:text="Base currency  USD"
-                android:gravity="center_vertical"
                 android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:text="Base currency  USD"
                 android:textColor="@color/MetalsPrimaryLight"
+                android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvMetalsDateTime" />
@@ -116,14 +117,14 @@
                 android:id="@+id/tvMetalsSortedBy"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:textSize="14sp"
                 android:layout_marginStart="14dp"
-                android:text="@string/Unit"
+                android:layout_marginTop="2dp"
                 android:gravity="center_vertical"
+                android:text="@string/Unit"
                 android:textColor="@color/MetalsPrimaryLight"
+                android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="2dp"
                 app:layout_constraintTop_toBottomOf="@id/tvMetalsBaseCur" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -142,7 +143,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/metals"
                 android:textAllCaps="true"
-                android:textColor="@color/CurrencyPrimaryLight"
+                android:textColor="@color/PortPrimary"
                 app:layout_constraintHorizontal_weight="0.35"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/tvRateIntro" />
@@ -154,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/price"
                 android:textAllCaps="true"
-                android:textColor="@color/CurrencyPrimaryLight"
+                android:textColor="@color/PortPrimary"
                 app:layout_constraintHorizontal_weight="0.4"
                 app:layout_constraintLeft_toRightOf="@id/tvMetalsIntro"
                 app:layout_constraintRight_toLeftOf="@id/tvGrowthIntro" />
@@ -167,7 +168,7 @@
                 android:layout_marginEnd="6dp"
                 android:text="@string/change"
                 android:textAllCaps="true"
-                android:textColor="@color/CurrencyPrimaryLight"
+                android:textColor="@color/PortPrimary"
                 app:layout_constraintHorizontal_weight="0.25"
                 app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
                 app:layout_constraintRight_toRightOf="parent" />

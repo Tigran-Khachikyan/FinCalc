@@ -44,7 +44,7 @@
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/layInsideImageCur" />
 
@@ -67,7 +67,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/final_rates_background">
+            android:background="@drawable/background_rates">
 
             <!--Tablo-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -100,7 +100,7 @@
                         app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
                         app:bmb_dimColor="@color/BMBdimColor"
                         app:bmb_highlightedColor="@android:color/holo_red_dark"
-                        app:bmb_normalColor="@color/LoansPrimaryLight"
+                        app:bmb_normalColor="@color/PortPrimaryLight"
                         app:bmb_piecePlaceEnum="piecePlace_dot_2_1"
                         app:bmb_shadowRadius="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/CustomCur"
-                    android:textColor="@color/LoansPrimaryLight"
+                    android:textColor="@android:color/white"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -256,13 +256,14 @@
                     <Button
                         android:id="@+id/btnCurFrom"
                         style="@style/buttonCur"
-                        android:layout_height="70dp"
-                        android:background="@drawable/final_btnreset_currency"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@drawable/final_btnexpand"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="10"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/ivTransferCur"
-                        app:layout_constraintTop_toBottomOf="@id/tvSpinner1From" />
+                        app:layout_constraintTop_toBottomOf="@id/tvSpinner1From"
+                        tools:ignore="HardcodedText" />
 
 
                     <ImageView
@@ -273,7 +274,7 @@
                         android:background="@drawable/final_btnreset_cur_circle"
                         android:clickable="true"
                         android:focusable="true"
-                        android:padding="6dp"
+                        android:padding="8dp"
                         android:src="@drawable/ic_change_arrows"
                         app:layout_constraintBottom_toBottomOf="@id/btnCurFrom"
                         app:layout_constraintLeft_toRightOf="@id/btnCurFrom"
@@ -296,8 +297,8 @@
                     <Button
                         android:id="@+id/btnCurBase"
                         style="@style/buttonCur"
-                        android:layout_height="70dp"
-                        android:background="@drawable/final_btnreset_currency"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@drawable/final_btnexpand"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="10"
                         app:layout_constraintLeft_toRightOf="@id/ivTransferCur"
@@ -348,9 +349,9 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
                         android:background="@drawable/final_btnreset_currency"
-                        android:padding="2dp"
+                        android:padding="8dp"
                         android:text="@string/convert"
-                        android:textColor="@color/LoansPrimaryLight"
+                        android:textColor="@color/PortPrimaryLight"
                         app:layout_constraintBottom_toBottomOf="@id/etCurAmountInput"
                         app:layout_constraintLeft_toRightOf="@id/etCurAmountInput"
                         app:layout_constraintRight_toRightOf="parent"

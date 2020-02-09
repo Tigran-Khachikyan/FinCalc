@@ -12,7 +12,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/LoansPrimary"
+        android:background="@color/PortPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/LoansPrimary"
+            app:contentScrim="@color/PortPrimaryDark"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
@@ -34,28 +34,30 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ivLoanImage"
                     android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:background="@mipmap/image_loan"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layCoverLoan"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/background_aqua"
+                    app:layout_constraintBottom_toBottomOf="@id/ivLoanImage"
+                    app:layout_constraintLeft_toLeftOf="@id/ivLoanImage"
+                    app:layout_constraintRight_toRightOf="@id/ivLoanImage"
+                    app:layout_constraintTop_toTopOf="@id/ivLoanImage" />
+
+                <TextView
+                    android:id="@+id/tvStatusLoan"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent" >
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/layInsideImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="240dp"
-                        android:background="@mipmap/image_loan_main"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/layInsideImage"
-                        android:text="@string/WeMakeItEasy"
-                        android:gravity="center"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:background="@android:color/white" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:gravity="center"
+                    android:text="@string/WeMakeItEasy"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/ivLoanImage" />
 
                 <!--Mandatory Input-->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,8 +111,8 @@
                         android:drawableEnd="@drawable/ic_star_black_24dp"
                         android:gravity="center"
                         android:paddingStart="10dp"
-                        android:textSize="16sp"
                         android:text="@string/Amount"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanAmount"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -159,10 +161,10 @@
                         android:id="@+id/tvTermIntro"
                         style="@style/textViewIntroInput"
                         android:drawableStart="@drawable/ic_star_black_24dp"
-                        android:paddingEnd="10dp"
-                        android:textSize="16sp"
                         android:gravity="start"
+                        android:paddingEnd="10dp"
                         android:text="@string/Term_months"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanTerm"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toRightOf="@id/cardLoanTerm"
@@ -211,10 +213,10 @@
                         android:id="@+id/tvRateIntro"
                         style="@style/textViewIntroInput"
                         android:drawableEnd="@drawable/ic_star_black_24dp"
-                        android:paddingStart="10dp"
-                        android:textSize="16sp"
                         android:gravity="end"
+                        android:paddingStart="10dp"
                         android:text="@string/Interest_rate"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanRate"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -305,9 +307,9 @@
                     <TextView
                         android:id="@+id/tvComIntro"
                         style="@style/textViewIntroInput"
+                        android:gravity="start"
                         android:paddingEnd="10dp"
                         android:text="@string/One_Time_Commission"
-                        android:gravity="start"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanOneTimeCom"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toRightOf="@id/cardLoanOneTimeCom"
@@ -385,9 +387,9 @@
                     <TextView
                         android:id="@+id/tvMonthlyComIntro"
                         style="@style/textViewIntroInput"
+                        android:gravity="end"
                         android:paddingStart="10dp"
                         android:text="@string/Monthly_Commission"
-                        android:gravity="end"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanMonthlyTimeCom"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -427,14 +429,14 @@
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintLeft_toLeftOf="@id/etAnnualCommRate"
-                            app:layout_constraintRight_toRightOf="@id/etAnnualCommRate"/>
+                            app:layout_constraintRight_toRightOf="@id/etAnnualCommRate" />
 
                         <CheckBox
                             android:id="@+id/checkboxAnnual"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textSize="12sp"
                             android:text="@string/But_Min"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintLeft_toRightOf="@id/etAnnualCommRate"
@@ -497,16 +499,16 @@
                             android:inputType="number"
                             android:maxLength="7"
                             android:textSize="28sp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:id="@+id/tvOtherCostsIntro"
                         style="@style/textViewIntroInput"
-                        android:paddingStart="10dp"
                         android:gravity="end"
+                        android:paddingStart="10dp"
                         android:text="@string/Other_One_Time_Costs"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanOtherCosts"
                         app:layout_constraintHorizontal_weight="3.0"
@@ -578,7 +580,7 @@
                 android:id="@+id/toolbarLoan"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/LoansPrimaryDark">
+                android:background="@color/PortPrimaryDark">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -596,12 +598,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:src="@mipmap/consultants"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
+                        android:src="@mipmap/consultants"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="ContentDescription" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -615,7 +617,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/LoansPrimary" />
+            android:background="@color/PortPrimaryDark" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

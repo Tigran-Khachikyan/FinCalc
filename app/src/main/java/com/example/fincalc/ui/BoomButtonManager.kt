@@ -15,10 +15,10 @@ fun BoomMenuButton.initialize(type: BMBTypes) {
 
     when (type) {
         BMBTypes.LOAN -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_bag, R.string.loan, R.string.LoanType, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
         }
         BMBTypes.DEPOSIT -> {
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
@@ -32,7 +32,7 @@ fun BoomMenuButton.initialize(type: BMBTypes) {
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.MetalsPrimaryLight))
         }
         BMBTypes.CRYPTO -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.LoansPrimaryLight))
+            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.DepPrimaryLight))
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.MetalsPrimaryLight))
             this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.MetalsPrimaryLight))
         }

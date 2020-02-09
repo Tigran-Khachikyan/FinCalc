@@ -10,7 +10,7 @@
         android:id="@+id/toolbarDep"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/DepPrimaryDark"
+        android:background="@color/PortPrimaryDark"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,30 +55,31 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ivDepImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="240dp"
             android:layout_marginBottom="10dp"
+            android:background="@mipmap/image_savings_main"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layInsideImage"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:background="@mipmap/image_savings_main"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layCoverDep"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_violet"
+            app:layout_constraintBottom_toBottomOf="@id/ivDepImage"
+            app:layout_constraintLeft_toLeftOf="@id/ivDepImage"
+            app:layout_constraintRight_toRightOf="@id/ivDepImage"
+            app:layout_constraintTop_toTopOf="@id/ivDepImage" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:gravity="center"
-                android:text="@string/WeMakeItEasy"
-                android:textColor="@android:color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/WeMakeItEasy"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/ivDepImage" />
 
         <!--recycler-->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,81 +107,81 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutDepResultIntro"
                 android:layout_width="match_parent"
-                android:background="@drawable/final_input_frame"
                 android:layout_height="34dp"
+                android:background="@drawable/final_input_frame"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvResultDepIntro">
 
                 <TextView
                     android:id="@+id/tvNumberDepIntro"
                     style="@style/textView"
+                    android:layout_height="wrap_content"
                     android:background="@color/DepPrimary"
                     android:text="N"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="3"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/tvDepBalanceIntro"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/tvDepBalanceIntro"
                     style="@style/textView"
+                    android:layout_height="wrap_content"
                     android:background="@color/DepPrimary"
                     android:text="@string/BalanceDep"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="9"
                     app:layout_constraintLeft_toRightOf="@id/tvNumberDepIntro"
                     app:layout_constraintRight_toLeftOf="@id/tvDepPercentIntro"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvDepPercentIntro"
                     style="@style/textView"
+                    android:layout_height="wrap_content"
                     android:background="@color/DepPrimary"
                     android:text="@string/PercentDep"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="7"
                     app:layout_constraintLeft_toRightOf="@id/tvDepBalanceIntro"
                     app:layout_constraintRight_toLeftOf="@id/tvPercentAfterTaxIntro"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvPercentAfterTaxIntro"
                     style="@style/textView"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:background="@color/DepPrimary"
                     android:text="@string/PercentAfterTaxDep"
                     android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="7"
                     app:layout_constraintLeft_toRightOf="@id/tvDepPercentIntro"
                     app:layout_constraintRight_toLeftOf="@id/tvDepPaymentIntro"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvDepPaymentIntro"
                     style="@style/textView"
+                    android:layout_height="wrap_content"
                     android:background="@color/DepPrimary"
                     android:text="@string/Payment"
-                    android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="13sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="10"
                     app:layout_constraintLeft_toRightOf="@id/tvPercentAfterTaxIntro"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,26 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.Design.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/LoansPrimary</item>
-        <item name="colorPrimaryDark">@color/LoansPrimaryDark</item>
+        <item name="colorPrimary">@color/PortPrimary</item>
+        <item name="colorPrimaryDark">@color/PortPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:spinnerStyle">@style/Widget.Spinner</item>
     </style>
+
+
+    //for Spinner
+
+    <style name="spinnerStyle" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:background">@android:color/holo_green_dark</item>
+    </style>
+
+    <style name="Widget.Spinner" parent="android:Widget">
+        <item name="android:clickable">true</item>
+    </style>
+
+    //end spinner
 
 
     <style name="cardViewOptions">
@@ -16,22 +30,21 @@
         <item name="android:shadowColor">@android:color/black</item>
     </style>
 
-    <style name="layoutCardMainButton">
-        <item name="android:layout_height">0dp</item>
-        <item name="android:paddingEnd">2dp</item>
-        <item name="android:paddingStart">2dp</item>
-        <item name="android:paddingTop">6dp</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:background">@drawable/final_input_frame</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
+
+    <style name="btnMainAc">
+        <item name="android:textColor">@color/PortPrimaryLight</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:background">@drawable/final_btn_main_option</item>
     </style>
 
     <style name="textView">
-        <item name="android:background">@color/LoansPrimaryLight</item>
+        <item name="android:background">@color/PortPrimaryLight</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_margin">1dp</item>
@@ -129,7 +142,8 @@
 
     <style name="buttonCur" parent="button">
         <item name="android:paddingStart">14dp</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/PortPrimaryLight</item>
     </style>
 
     <style name="currencyViews" parent="currencyViewsSmall">
@@ -162,7 +176,7 @@
     </style>
 
     <style name="tvDetailResLoan" parent="textViewDetailRes">
-        <item name="android:background">@color/LoansPrimary</item>
+        <item name="android:background">@color/PortPrimary</item>
     </style>
 
     <style name="tvDetailResDep" parent="textViewDetailRes">

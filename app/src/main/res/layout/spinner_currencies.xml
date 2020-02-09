@@ -2,9 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/laySpinner"
-    android:layout_width="160dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="4dp"
+    android:layout_width="match_parent"
+    android:paddingTop="7dp"
+    android:background="@color/colorSpinner"
+    android:paddingBottom="5dp"
+    android:paddingEnd="30dp"
+    android:paddingStart="30dp"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -25,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:gravity="bottom"
-        android:text="AMD"
         android:textSize="25sp"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/tvRateName"
@@ -44,7 +46,6 @@
         android:layout_margin="0dp"
         android:gravity="top|center"
         android:padding="0dp"
-        android:text="Armenian dram"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/ivRateIcon"

@@ -44,7 +44,7 @@
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
 
@@ -59,7 +59,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/final_rates_background"
+        android:background="@drawable/background_rates"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!--options-->
@@ -86,7 +86,7 @@
                 app:bmb_buttonPlaceEnum="buttonPlace_ham_3"
                 app:bmb_dimColor="@color/BMBdimColor"
                 app:bmb_highlightedColor="@android:color/holo_red_dark"
-                app:bmb_normalColor="@color/LoansPrimaryLight"
+                app:bmb_normalColor="@color/PortPrimaryLight"
                 app:bmb_piecePlaceEnum="piecePlace_dot_3_1"
                 app:bmb_shadowRadius="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"

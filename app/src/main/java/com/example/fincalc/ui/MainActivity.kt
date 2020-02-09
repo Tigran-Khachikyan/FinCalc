@@ -19,79 +19,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        animOptions(this)
 
-    }
-
-    private fun animOptions(context: Context) {
-        val fromLeftAppear = AnimationUtils.loadAnimation(context, R.anim.cardfromleftappear)
-        val fromRightAppear = AnimationUtils.loadAnimation(context, R.anim.cardfromrightappear)
-
-        layoutCardLoanButton.startAnimation(fromLeftAppear)
-        layoutCardDepButton.startAnimation(fromRightAppear)
-        layoutCardCurButton.startAnimation(fromLeftAppear)
-        layoutCardPortButton.startAnimation(fromRightAppear)
-
-        layoutCardLoanButton.setOnClickListener {
-            //  setClickability(false)
+        btnLoanMainAc.setOnClickListener {
             val intent = Intent(this, LoanActivity::class.java)
             startActivity(intent)
             Animatoo.animateSwipeRight(this)
         }
-
-        layoutCardDepButton.setOnClickListener {
-            //  setClickability(false)
+        btnDepMainAc.setOnClickListener {
             val intent = Intent(this, DepositActivity::class.java)
             startActivity(intent)
-            Animatoo.animateInAndOut(this)
+            Animatoo.animateSlideLeft(this)
         }
-
-        layoutCardCurButton.setOnClickListener {
-         //   setClickability(false)
+        btnCurMainAc.setOnClickListener {
             val intent = Intent(this, RatesActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateCard(this)
+        }
+        btnPortfolioMainAc.setOnClickListener {
+            val intent = Intent(this, PortfolioActivity::class.java)
             startActivity(intent)
             Animatoo.animateSlideDown(this)
         }
-
-        layoutCardPortButton.setOnClickListener {
-            //   setClickability(false)
-            val intent = Intent(this, PortfolioActivity::class.java)
-            startActivity(intent)
-            Animatoo.animateFade(this)
-        }
     }
-
-    override fun onResume() {
-        super.onResume()
-        //      setClickability(true)
-    }
-
-    /*private fun setClickability(param: Boolean) {
-        when (param) {
-            false -> {
-                layoutInsideCardLoan.isFocusable = false
-                layoutInsideCardDep.isFocusable = false
-                layoutInsideCardCur.isFocusable = false
-                layoutInsideCardPortf.isFocusable = false
-
-                layoutInsideCardLoan.isClickable = false
-                layoutInsideCardDep.isClickable = false
-                layoutInsideCardCur.isClickable = false
-                layoutInsideCardPortf.isClickable = false
-            }
-            true -> {
-                layoutInsideCardLoan.isFocusable = true
-                layoutInsideCardDep.isFocusable = true
-                layoutInsideCardCur.isFocusable = true
-                layoutInsideCardPortf.isFocusable = true
-
-                layoutInsideCardLoan.isClickable = true
-                layoutInsideCardDep.isClickable = true
-                layoutInsideCardCur.isClickable = true
-                layoutInsideCardPortf.isClickable = true
-            }
-        }
-    }*/
 }
 
 
