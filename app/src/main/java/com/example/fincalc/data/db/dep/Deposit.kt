@@ -15,10 +15,12 @@ data class Deposit(
     val capitalize: Boolean,
     val taxRate: Float,
     val frequency: Frequency
+
 ) : Banking {
 
     override var bank: String = ""
     override var currency: String = ""
+    override var date: String = ""
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")

@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -156,24 +157,18 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 getString(R.string.save)
             ) { _, _ ->
 
-                val bank = etBank.text.toString()
-                val cur = spinnerCur.selectedItem.toString()
-                val typeString = spinnerType.selectedItem.toString()
-                val typeEnum =
-                    getEnumFromSelection(
-                        typeString,
-                        this.context
-                    )
-                loan.bank = bank
-                loan.currency = cur
-                typeEnum?.let {
-                    loan.type = typeEnum
-                }
+                val typeEnum = getEnumFromSelection(
+                    spinnerType.selectedItem.toString(), this.context
+                )
+                loan.bank = etBank.text.toString()
+                loan.currency = spinnerCur.selectedItem.toString()
+                typeEnum?.let { loan.type = typeEnum }
                 loan.formula = formula
-
+                loan.date = formatterShort.format(Date())
                 scheduleViewModel.addLoan(loan)
 
                 showSnackBar(R.string.successSaved, fab_Loan, Options.LOAN)
+                hideKeyboard(this.requireActivity())
             }
 
             dialogBuilder.setNegativeButton(

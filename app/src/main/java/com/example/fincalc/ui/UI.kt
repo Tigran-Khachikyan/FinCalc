@@ -108,6 +108,8 @@ val decimalFormatter3p = DecimalFormat("#,###.###")
 val formatterCalendar = SimpleDateFormat("yyyy-MM-dd")
 @SuppressLint("SimpleDateFormat")
 val formatterLong = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+@SuppressLint("SimpleDateFormat")
+val formatterShort = SimpleDateFormat("dd MMM yyyy")
 
 fun ImageView.setSvgColor(context: Context, color: Int) =
     this.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)

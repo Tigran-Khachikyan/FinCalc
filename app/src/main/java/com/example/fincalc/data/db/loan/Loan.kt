@@ -26,6 +26,7 @@ class Loan(
 
     override var bank: String = ""
     override var currency: String = ""
+    override var date: String = ""
     lateinit var type: LoanType
     lateinit var formula: Formula
 

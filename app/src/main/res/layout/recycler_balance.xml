@@ -8,7 +8,7 @@
     android:layout_marginTop="10dp"
     android:layout_marginEnd="0dp"
     android:layout_marginBottom="10dp"
-    app:cardBackgroundColor="@color/PortPrimaryLight"
+    app:cardBackgroundColor="@color/PortPrimary"
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp">
 
@@ -20,6 +20,18 @@
         android:paddingTop="2dp"
         android:paddingEnd="4dp"
         android:paddingBottom="2dp">
+
+        <TextView
+            android:id="@+id/tvRecBalanceSum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="990000 AMD"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_marginTop="6dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabRecBalanceDelete"
@@ -49,7 +61,7 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <TextView
-                android:id="@+id/tvRecBalance1"
+                android:id="@+id/tvRecBalanceDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -57,11 +69,11 @@
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/tvRecBalance2"
+                app:layout_constraintBottom_toTopOf="@id/tvRecBalanceType"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvRecBalance2"
+                android:id="@+id/tvRecBalanceBank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -70,12 +82,12 @@
                 android:textColor="@android:color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tvRecBalance3"
+                app:layout_constraintBottom_toTopOf="@id/tvRecBalanceType"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintTop_toBottomOf="@id/tvRecBalance1" />
+                app:layout_constraintTop_toBottomOf="@id/tvRecBalanceDate" />
 
             <TextView
-                android:id="@+id/tvRecBalance3"
+                android:id="@+id/tvRecBalanceType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -83,11 +95,11 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tvRecBalance4"
-                app:layout_constraintTop_toBottomOf="@id/tvRecBalance2" />
+                app:layout_constraintBottom_toTopOf="@id/tvRecBalanceRate"
+                app:layout_constraintTop_toBottomOf="@id/tvRecBalanceType" />
 
             <TextView
-                android:id="@+id/tvRecBalance4"
+                android:id="@+id/tvRecBalanceRate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -96,7 +108,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvRecBalance3" />
+                app:layout_constraintTop_toBottomOf="@id/tvRecBalanceType" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

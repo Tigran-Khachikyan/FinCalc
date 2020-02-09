@@ -7,4 +7,5 @@ interface Banking {
     val bank: String
     val currency: String
     val id: Int
+    val date: String
 }

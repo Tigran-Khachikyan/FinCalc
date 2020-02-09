@@ -3,6 +3,7 @@ package com.example.fincalc.ui.dep
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import java.util.*
 
 @Suppress("DEPRECATION")
 class DepositActivity : AppCompatActivity() {
@@ -239,14 +241,14 @@ class DepositActivity : AppCompatActivity() {
                 getString(R.string.save)
             ) { _, _ ->
 
-                val bank = etBank.text.toString()
-                val cur = spinnerCur.selectedItem.toString()
-
-                dep?.bank = bank
-                dep?.currency = cur
+                dep?.bank = etBank.text.toString()
+                dep?.currency = spinnerCur.selectedItem.toString()
+                dep?.date = formatterShort.format(Date())
+                Log.d("ftftf","date Activity: ${dep?.date}")
                 dep?.let {
                     depViewModel.addDep(dep)
                     showSnackBar(R.string.successSaved, fab_AddDep, DEPOSIT)
+                    hideKeyboard(this)
                 }
             }
 

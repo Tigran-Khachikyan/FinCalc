@@ -9,7 +9,12 @@ import com.example.fincalc.data.Repository
 import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.models.Banking
 import com.example.fincalc.models.deposit.Frequency
+import com.example.fincalc.ui.formatterLong
+import com.example.fincalc.ui.formatterShort
 import kotlinx.coroutines.*
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")
 class BalanceViewModel(application: Application) : AndroidViewModel(application), Filtering {
@@ -71,7 +76,7 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         filCur: LiveData<List<String>>, sortAcc: LiveData<Boolean?>
     ): LoanFilter {
 
-        val loans = loanList?.value
+        val loans = loanList?.value?.reversed()
         val types = filType.value
         val cur = filCur.value
         val isAcc = sortAcc.value
@@ -167,7 +172,8 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         curs: LiveData<List<String>>, sortAcc: LiveData<Boolean?>
     ): DepFilter {
 
-        val dep = depList?.value
+        val dep = depList?.value?.reversed()
+
         val freqList = freq.value
         val cur = curs.value
         val isAcc = sortAcc.value
@@ -252,6 +258,7 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         mediatorDep.removeSource(_curListDep)
         mediatorDep.removeSource(_sortAccDep)
     }
+
 }
 
 

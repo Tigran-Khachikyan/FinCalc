@@ -33,7 +33,7 @@ abstract class Database : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     Database::class.java,
-                    "fin_db"
+                    "financial_forces_db"
                 ).build()
                 INSTANCE = instance
                 return instance

@@ -15,6 +15,7 @@ import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.customizeAlertDialog
+import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -35,10 +36,11 @@ class AdapterRecBalance(
             itemView.setOnClickListener(this)
         }
 
-        val tv1: TextView = itemView.findViewById(R.id.tvRecBalance1)
-        val tv2: TextView = itemView.findViewById(R.id.tvRecBalance2)
-        val tv3: TextView = itemView.findViewById(R.id.tvRecBalance3)
-        val tv4: TextView = itemView.findViewById(R.id.tvRecBalance4)
+        val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
+        val tvBank: TextView = itemView.findViewById(R.id.tvRecBalanceBank)
+        val tvType: TextView = itemView.findViewById(R.id.tvRecBalanceType)
+        val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
+        val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
         val fab: FloatingActionButton = itemView.findViewById(R.id.fabRecBalanceDelete)
 
@@ -62,22 +64,23 @@ class AdapterRecBalance(
 
         val bank = list[position].bank
         if (bank == "")
-            holder.tv1.visibility = View.GONE
+            holder.tvBank.visibility = View.GONE
         else {
-            holder.tv1.visibility = View.VISIBLE
-            holder.tv1.text = list[position].bank
+            holder.tvBank.visibility = View.VISIBLE
+            holder.tvBank.text = list[position].bank
         }
         val cur = list[position].currency
-        val amount = list[position].amount.toString() + " $cur"
-        holder.tv3.text = amount
+        val amount = decimalFormatter1p.format(list[position].amount) + " $cur"
+        holder.tvSum.text = amount
         val rate = list[position].rate.toString() + "%"
-        holder.tv4.text = rate
+        holder.tvRate.text = rate
+        holder.tvDate.text = list[position].date
 
         if (list[position] is Loan) {
 
             val typeEnum = (list[position] as Loan).type
-            val typeString = holder.tv2.context.getString(typeEnum.id)
-            holder.tv2.text = typeString
+            val typeString = holder.tvType.context.getString(typeEnum.id)
+            holder.tvType.text = typeString
             holder.fab.setOnClickListener {
                 getDialRemoveWarning(it.context, list[position])
             }
@@ -98,8 +101,8 @@ class AdapterRecBalance(
         } else if (list[position] is Deposit) {
 
             val freqEnum = (list[position] as Deposit).frequency
-            val freqString = holder.tv2.context.getString(freqEnum.id)
-            holder.tv2.text = freqString
+            val freqString = holder.tvType.context.getString(freqEnum.id)
+            holder.tvType.text = freqString
             holder.fab.setOnClickListener {
                 getDialRemoveWarning(it.context, list[position])
             }

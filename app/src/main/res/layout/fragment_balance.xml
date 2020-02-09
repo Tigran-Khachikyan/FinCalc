@@ -21,36 +21,42 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--imageView-->
+            <!--image-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ivDepImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layInsideImage"
+                    android:id="@+id/ivDepImage"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
-                    android:background="@mipmap/image_portfolio_main"
+                    android:background="@mipmap/image_portfolio"
+                    android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layCoverPort"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/background_aqua"
+                    app:layout_constraintBottom_toBottomOf="@id/ivDepImage"
+                    app:layout_constraintLeft_toLeftOf="@id/ivDepImage"
+                    app:layout_constraintRight_toRightOf="@id/ivDepImage"
+                    app:layout_constraintTop_toTopOf="@id/ivDepImage" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/layInsideImage" />
+                    app:layout_constraintTop_toBottomOf="@id/ivDepImage" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -71,11 +77,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutLoansBalFr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/PortPrimary"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:layout_width="match_parent"
-                android:background="@color/PortPrimaryLight"
-                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@android:color/black"
-                app:layout_constraintTop_toBottomOf="@id/layoutLoansBalFr" >
+                app:layout_constraintTop_toBottomOf="@id/layoutLoansBalFr">
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -183,13 +189,13 @@
             <!--dep-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@color/PortPrimaryLight"
                 android:id="@+id/layoutDepBalFr"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/PortPrimary"
+                android:orientation="vertical"
                 android:paddingTop="10dp"
                 android:paddingBottom="70dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layLineDist">
 
