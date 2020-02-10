@@ -5,26 +5,20 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorAccentTrans">#68D81B60</color>
     <color name="colorAccentDark">#8A0531</color>
-    <color name="colorPrimaryLight">#9d46ff</color>
     <color name="colorGrey">#323533</color>
 
 
 
-    <color name="customPrimaryLoan">#6200ea</color>
-    <color name="customLightLoan">#9d46ff</color>
-    <color name="customDarkLoan">#0a00b6</color>
-
-    <color name="PortPrimary">#5d9ab5</color>
+    <color name="PortPrimary">#197C91</color>
     <color name="PortPrimaryLight">#b1ffff</color>
-    <color name="PortPrimaryDark">#103544</color>
+    <color name="PortPrimaryIcon">#149999</color>
+    <color name="PortPrimaryDark">#073242</color>
     <color name="colorSpinner">#125068</color>
-    <color name="PortPrimaryDarkTrans">#59103544</color>
-    <color name="PortPrimaryVeryDark">#05202B</color>
+    <color name="PortPrimaryDarkTrans">#400D3A50</color>
+    <color name="PortPrimaryDarkVery">#05202B</color>
 
-    <color name="CurrencyPrimary">#00407a</color>
-    <color name="CurrencyPrimaryLight">#FC2F5392</color>
     <color name="CurrencyPrimaryDark">#02233D</color>
-    <color name="CurrencyPrimaryDarkTrans">#56001B4D</color>
+    <color name="CurrencyPrimaryDarkTrans">#40001B4D</color>
     <color name="CurrencyPrimaryVeryDark">#020F29</color>
 
 
@@ -37,8 +31,6 @@
     <color name="DepPrimaryDark">#431055</color>
     <color name="DepPrimaryDarkTrans">#41431055</color>
 
-    <color name="MetalsPrimaryLight">#bdbdbd</color>
-    <color name="MetalsPrimaryLightTrans">#40BDBDBD</color>
 
 
     <color name="BMBdimColor">#B0021627</color>

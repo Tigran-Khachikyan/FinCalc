@@ -37,6 +37,6 @@ class PortfolioActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        Animatoo.animateSlideUp(this)
+        Animatoo.animateSwipeRight(this)
     }
 }

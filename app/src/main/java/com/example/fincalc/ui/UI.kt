@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
@@ -21,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
@@ -38,32 +40,33 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun iconTrigger(view: View) {
+val decimalFormatter1p = DecimalFormat("#,###.#")
+val decimalFormatter2p = DecimalFormat("#,###.##")
+val decimalFormatter3p = DecimalFormat("#,###.###")
+@SuppressLint("SimpleDateFormat")
+val formatterCalendar = SimpleDateFormat("yyyy-MM-dd")
+@SuppressLint("SimpleDateFormat")
+val formatterLong = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+@SuppressLint("SimpleDateFormat")
+val formatterShort = SimpleDateFormat("dd MMM yyyy")
 
-    val anim1 = AnimationUtils.loadAnimation(view.context, R.anim.icontriggerleft)
+const val PRIVATE_MODE = 0
+const val PREF_NAME = "Currency_Pref"
+const val CURRENCY_PREF = "Currency"
 
-    view.startAnimation(anim1)
+fun View.trigger() {
+    val anim1 = AnimationUtils.loadAnimation(this.context, R.anim.icontriggerleft)
+    startAnimation(anim1)
 }
 
-enum class Options {
-    LOAN, DEPOSIT, CURRENCY
-}
-
-fun showSnackBar(text: Int, view: View, option: Options) {
+fun showSnackBar(text: Int, view: View) {
     val textString = view.context.getString(text)
-    val snackbar = Snackbar.make(
+    val snackBar = Snackbar.make(
         view, textString, Snackbar.LENGTH_LONG
     ).setAction("Action", null)
-    val sbView: View = snackbar.view
-    val color: Int = when (option) {
-        Options.LOAN -> R.color.PortPrimaryDark
-        Options.DEPOSIT -> R.color.DepPrimaryDark
-        Options.CURRENCY -> R.color.CurrencyPrimaryDark
-    }
-    sbView.setBackgroundColor(view.context.resources.getColor(color))
-    Log.d("yyyyop", "SNACKBAR TRIGGERED")
-
-    snackbar.show()
+    val sbView: View = snackBar.view
+    sbView.setBackgroundColor(view.context.resources.getColor(R.color.PortPrimaryDarkVery))
+    snackBar.show()
 }
 
 fun toggle(hide: Boolean, viewChild: View, viewGroup: ViewGroup) {
@@ -76,48 +79,29 @@ fun toggle(hide: Boolean, viewChild: View, viewGroup: ViewGroup) {
 }
 
 fun hideKeyboard(activity: Activity) {
-    val imm =
-        activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    var view = activity.currentFocus
-    //If no view currently has focus, create a new one, just so we can grab a window token from it
-    if (view == null) {
-        view = View(activity)
-    }
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    val view = activity.currentFocus ?: View(activity)
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun customizeAlertDialog(alertDialog: AlertDialog, positiv: Boolean) {
+fun customizeAlertDialog(alertDialog: AlertDialog, positive: Boolean) {
     alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).gravity = Gravity.END
     alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).gravity = Gravity.START
     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).textSize = 18F
     alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).textSize = 18F
     alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-
-    if (positiv)
+    if (positive)
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN)
     else
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
-
 }
-
-val decimalFormatter1p = DecimalFormat("#,###.#")
-val decimalFormatter2p = DecimalFormat("#,###.##")
-val decimalFormatter3p = DecimalFormat("#,###.###")
-@SuppressLint("SimpleDateFormat")
-val formatterCalendar = SimpleDateFormat("yyyy-MM-dd")
-@SuppressLint("SimpleDateFormat")
-val formatterLong = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
-@SuppressLint("SimpleDateFormat")
-val formatterShort = SimpleDateFormat("dd MMM yyyy")
 
 fun ImageView.setSvgColor(context: Context, color: Int) =
     this.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
 
 fun openCalendarHighOrderFunc(
-    context: Context?,
-    view: View,
-    func: (String?) -> Unit
+    context: Context?, view: View, func: (String?) -> Unit
 ) {
     context?.let {
         val calendar = Calendar.getInstance()
@@ -126,8 +110,7 @@ fun openCalendarHighOrderFunc(
         val day = calendar[Calendar.DAY_OF_MONTH]
         val dialog: Dialog =
             DatePickerDialog(
-                context,
-                DatePickerDialog.OnDateSetListener { _, y, m, d ->
+                context, DatePickerDialog.OnDateSetListener { _, y, m, d ->
                     val yr: String = y.toString()
                     val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
                     val dy = if (d < 10) "0$d" else d.toString()
@@ -136,30 +119,19 @@ fun openCalendarHighOrderFunc(
                     var selectedDate = try {
                         dateForApiRequest?.let { formatterCalendar.parse(dateForApiRequest!!) }
                     } catch (e: ParseException) {
-                        Log.d("qqqqqqq", "SELECTED: ${e.message}")
                         null
                     }
-                    Log.d("qqqqqqq", "SELECTED: $selectedDate")
 
                     selectedDate?.let {
                         if (!Date().after(selectedDate)) {
-                            Log.d("qqqqqqq", "BREAK:")
-
-                            showSnackBar(
-                                R.string.InvalidInputCalendar,
-                                view,
-                                Options.CURRENCY
-                            )
+                            showSnackBar(R.string.InvalidInputCalendar, view)
                             return@OnDateSetListener
                         }
-
                         if (formatterCalendar.format(Date()) == dateForApiRequest) {
                             dateForApiRequest = null
                             selectedDate = null
                         }
-                        Log.d("qqqqqqq", "In Cal: dateForApiRequest: $dateForApiRequest")
-
-                        func(dateForApiRequest)// high order function
+                        func(dateForApiRequest)// in high order function
                     }
                 }, year, month, day
             )
@@ -217,10 +189,6 @@ fun setBaseCurToSharedPref(sharedPref: SharedPreferences, baseCur: String) {
     editor.apply()
 }
 
-const val PRIVATE_MODE = 0
-const val PREF_NAME = "Currency_Pref"
-const val CURRENCY_PREF = "Currency"
-
 private const val FONT_PATH = "fonts/splash.ttf"
 fun TextSurface.playSplash(context: Context) {
     reset()
@@ -248,9 +216,30 @@ fun TextSurface.playSplash(context: Context) {
     )
 }
 
+fun Button.setCustomSizeVector(
+    context: Context?,
+    resLeft: Int? = null, sizeLeftdp: Int = 0, resTop: Int? = null, sizeTopdp: Int = 0,
+    resRight: Int? = null, sizeRightdp: Int = 0, resBot: Int? = null, sizeBotdp: Int = 0
+) {
+    context?.let {
+        val drawLeft = resLeft?.let { context.resources.getDrawable(it) }
+        val drawTop = resTop?.let { context.resources.getDrawable(it) }
+        val drawRight = resRight?.let { context.resources.getDrawable(it) }
+        val drawBot = resBot?.let { context.resources.getDrawable(it) }
 
+        drawLeft?.setCustomSizedp(context, sizeLeftdp)
+        drawTop?.setCustomSizedp(context, sizeTopdp)
+        drawRight?.setCustomSizedp(context, sizeRightdp)
+        drawBot?.setCustomSizedp(context, sizeBotdp)
 
+        this.setCompoundDrawables(drawLeft, drawTop, drawRight, drawBot)
+    }
+}
 
+private fun Drawable.setCustomSizedp(context: Context, size: Int) {
+    val pxSize = size * context.resources.displayMetrics.density.toInt()
+    setBounds(0, 0, pxSize, pxSize)
+}
 
 
 

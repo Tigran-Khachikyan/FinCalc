@@ -37,16 +37,23 @@
                     android:background="@mipmap/image_currency"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layCoverCur"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/background_aqua"
+                    app:layout_constraintBottom_toBottomOf="@id/layInsideImageCur"
+                    app:layout_constraintTop_toTopOf="@id/layInsideImageCur" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/black"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/layInsideImageCur" />
+                    app:layout_constraintBottom_toBottomOf="@id/layCoverCur" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -65,9 +72,10 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layCurHider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_rates">
+            android:background="@color/PortPrimary">
 
             <!--Tablo-->
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,100 +88,51 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layCurOptions"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.Group
-                        android:id="@+id/groupCur"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:constraint_referenced_ids="bmbCurMenu,tvCurDateTime,tvCurBaseCur,ivFlagCur,tvTopCurs" />
-
-
-                    <com.nightonke.boommenu.BoomMenuButton
-                        android:id="@+id/bmbCurMenu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginEnd="12dp"
-                        app:bmb_buttonEnum="ham"
-                        app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
-                        app:bmb_dimColor="@color/BMBdimColor"
-                        app:bmb_highlightedColor="@android:color/holo_red_dark"
-                        app:bmb_normalColor="@color/PortPrimaryLight"
-                        app:bmb_piecePlaceEnum="piecePlace_dot_2_1"
-                        app:bmb_shadowRadius="0dp"
+                    <Button
+                        android:id="@+id/btnDateCur"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        style="@style/button_icon"
+                        android:lines="2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btnBaseCur"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <Button
+                        android:id="@+id/btnBaseCur"
+                        android:layout_width="0dp"
+                        style="@style/button_icon"
+                        android:layout_height="0dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="32dp"
+                        app:layout_constraintLeft_toRightOf="@id/btnDateCur"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvCurDateTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="6dp"
-                        android:text="03/02/2020 ....."
-                        android:textColor="@color/MetalsPrimaryLight"
-                        android:textSize="14sp"
-                        android:textStyle="italic"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvCurBaseCur"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="2dp"
-                        android:gravity="center_vertical"
-                        android:text="Base currency  USD"
-                        android:textColor="@color/MetalsPrimaryLight"
-                        android:textSize="14sp"
-                        android:textStyle="italic"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvCurDateTime" />
-
-                    <ImageView
-                        android:id="@+id/ivFlagCur"
-                        android:layout_width="34dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="8dp"
-                        app:layout_constraintBottom_toTopOf="@id/tvTopCurs"
-                        app:layout_constraintLeft_toRightOf="@id/tvCurBaseCur"
-                        app:layout_constraintTop_toBottomOf="@id/tvCurDateTime" />
-
-                    <TextView
-                        android:id="@+id/tvTopCurs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="14dp"
-                        android:layout_marginTop="2dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/TopCur"
-                        android:textColor="@color/MetalsPrimaryLight"
-                        android:textSize="14sp"
-                        android:textStyle="italic"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvCurBaseCur" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <!--Intro-->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layCurIntro"
+                    android:id="@+id/layCursIntro"
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
+                    android:background="@color/PortPrimaryDark"
                     app:layout_constraintTop_toBottomOf="@id/layCurOptions">
 
                     <TextView
-                        android:id="@+id/tvMetalsIntro"
+                        android:id="@+id/tvCurIntro"
                         style="@style/textViewIntroInput"
                         android:layout_width="0dp"
+                        android:layout_marginStart="10dp"
                         android:layout_height="match_parent"
                         android:text="@string/Currency"
                         android:textAllCaps="true"
-                        android:textColor="@color/CurrencyPrimaryLight"
-                        app:layout_constraintHorizontal_weight="0.35"
+                        android:textColor="@color/PortPrimaryLight"
+                        app:layout_constraintHorizontal_weight="0.33"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/tvRateIntro" />
 
@@ -182,11 +141,11 @@
                         style="@style/textViewIntroInput"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="@string/price"
+                        android:text="@string/rate"
                         android:textAllCaps="true"
-                        android:textColor="@color/CurrencyPrimaryLight"
-                        app:layout_constraintHorizontal_weight="0.4"
-                        app:layout_constraintLeft_toRightOf="@id/tvMetalsIntro"
+                        android:textColor="@color/PortPrimaryLight"
+                        app:layout_constraintHorizontal_weight="0.34"
+                        app:layout_constraintLeft_toRightOf="@id/tvCurIntro"
                         app:layout_constraintRight_toLeftOf="@id/tvGrowthIntro" />
 
                     <TextView
@@ -196,8 +155,8 @@
                         android:layout_height="match_parent"
                         android:text="@string/change"
                         android:textAllCaps="true"
-                        android:textColor="@color/CurrencyPrimaryLight"
-                        app:layout_constraintHorizontal_weight="0.25"
+                        android:textColor="@color/PortPrimaryLight"
+                        app:layout_constraintHorizontal_weight="0.33"
                         app:layout_constraintLeft_toRightOf="@id/tvRateIntro"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -208,19 +167,17 @@
                     android:id="@+id/recyclerCur"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
                     android:layout_marginBottom="?attr/actionBarSize"
-                    app:layout_constraintTop_toBottomOf="@id/layCurIntro" />
+                    app:layout_constraintTop_toBottomOf="@id/layCursIntro" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--Custom Converter-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layoutCurrencyInput"
+                android:id="@+id/layoutInputCur"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:background="@drawable/background_aqua"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layTableCur">
 
@@ -231,6 +188,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/CustomCur"
+                    android:layout_marginTop="16dp"
+                    android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -257,7 +216,8 @@
                         android:id="@+id/btnCurFrom"
                         style="@style/buttonCur"
                         android:layout_height="?attr/actionBarSize"
-                        android:background="@drawable/final_btnexpand"
+                        android:background="@drawable/btn_expand"
+                        android:hint="@string/select"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="10"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -271,7 +231,7 @@
                         android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
                         android:layout_margin="6dp"
-                        android:background="@drawable/final_btnreset_cur_circle"
+                        android:background="@drawable/btn_change"
                         android:clickable="true"
                         android:focusable="true"
                         android:padding="8dp"
@@ -298,7 +258,7 @@
                         android:id="@+id/btnCurBase"
                         style="@style/buttonCur"
                         android:layout_height="?attr/actionBarSize"
-                        android:background="@drawable/final_btnexpand"
+                        android:background="@drawable/btn_expand"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="10"
                         app:layout_constraintLeft_toRightOf="@id/ivTransferCur"
@@ -334,7 +294,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:inputType="numberDecimal"
-                        android:textColorHint="@color/CurrencyPrimaryLight"
+                        android:textColorHint="@color/PortPrimaryDark"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/btnConvertCur"
@@ -343,13 +303,12 @@
 
                     <Button
                         android:id="@+id/btnConvertCur"
-                        style="@style/currencyViews"
+                        style="@style/button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:background="@drawable/final_btnreset_currency"
-                        android:padding="8dp"
+                        android:background="@drawable/btn_calculate"
                         android:text="@string/convert"
                         android:textColor="@color/PortPrimaryLight"
                         app:layout_constraintBottom_toBottomOf="@id/etCurAmountInput"

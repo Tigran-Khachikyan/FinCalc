@@ -154,14 +154,10 @@ class LoanActivity : AppCompatActivity() {
 
         return when {
             sum == 0L || months == 0 || rate == -1.0F -> {
-                if (sum == 0L)
-                    iconTrigger(ivLogoLoanSum)
-                if (months == 0)
-                    iconTrigger(ivLogoLoanTerm)
-                if (rate == -1.0F)
-                    iconTrigger(ivLogoLoanRate)
-
-                showSnackBar(R.string.InvalidInput, view, Options.LOAN)
+                if (sum == 0L) ivLogoLoanSum.trigger()
+                if (months == 0) ivLogoLoanTerm.trigger()
+                if (rate == -1.0F) ivLogoLoanRate.trigger()
+                showSnackBar(R.string.InvalidInput, view)
                 null
             }
             else -> {

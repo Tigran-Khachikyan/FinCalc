@@ -86,12 +86,7 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
         val defLoan2 = filterByCur(defLoan, cur)
         val res = sortByRate(defLoan2, isAcc)
 
-        return LoanFilter(
-            filTypeList = types,
-            prodList = res,
-            sortByAcc = isAcc,
-            curList = totalCurs
-        )
+        return LoanFilter(types, res, totalCurs, isAcc)
     }
 
     private fun filterByTypes(

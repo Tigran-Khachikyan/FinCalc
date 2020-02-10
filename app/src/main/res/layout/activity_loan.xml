@@ -112,7 +112,6 @@
                         android:gravity="center"
                         android:paddingStart="10dp"
                         android:text="@string/Amount"
-                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanAmount"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -164,7 +163,6 @@
                         android:gravity="start"
                         android:paddingEnd="10dp"
                         android:text="@string/Term_months"
-                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanTerm"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toRightOf="@id/cardLoanTerm"
@@ -216,7 +214,7 @@
                         android:gravity="end"
                         android:paddingStart="10dp"
                         android:text="@string/Interest_rate"
-                        android:textSize="16sp"
+                        android:lines="3"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanRate"
                         app:layout_constraintHorizontal_weight="3.0"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -262,7 +260,7 @@
 
                         <TextView
                             android:id="@+id/tvOneTimeComeRate"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:layout_marginTop="0dp"
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
@@ -295,7 +293,7 @@
 
                         <TextView
                             android:id="@+id/tvOneTimeComeFixed"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -309,6 +307,7 @@
                         style="@style/textViewIntroInput"
                         android:gravity="start"
                         android:paddingEnd="10dp"
+                        android:lines="2"
                         android:text="@string/One_Time_Commission"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanOneTimeCom"
                         app:layout_constraintHorizontal_weight="3.0"
@@ -343,7 +342,7 @@
 
                         <TextView
                             android:id="@+id/tvMonthlyComeRate"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -375,7 +374,7 @@
 
                         <TextView
                             android:id="@+id/tvMonthlyCommFixed"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -389,6 +388,7 @@
                         style="@style/textViewIntroInput"
                         android:gravity="end"
                         android:paddingStart="10dp"
+                        android:lines="2"
                         android:text="@string/Monthly_Commission"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanMonthlyTimeCom"
                         app:layout_constraintHorizontal_weight="3.0"
@@ -424,7 +424,7 @@
 
                         <TextView
                             android:id="@+id/tvAnnualComeRate"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:text="@string/Percent_of_Loan"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -456,7 +456,7 @@
 
                         <TextView
                             android:id="@+id/tvAnnualCommFixed"
-                            style="@style/textViewIntroInput"
+                            style="@style/textView_Under"
                             android:text="@string/Fixed_sum"
                             android:textColor="@android:color/black"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -470,6 +470,7 @@
                         style="@style/textViewIntroInput"
                         android:gravity="start"
                         android:paddingEnd="10dp"
+                        android:lines="2"
                         android:text="@string/Annual_Commission"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanAnnualTimeCom"
                         app:layout_constraintHorizontal_weight="3.0"
@@ -509,6 +510,7 @@
                         style="@style/textViewIntroInput"
                         android:gravity="end"
                         android:paddingStart="10dp"
+                        android:lines="2"
                         android:text="@string/Other_One_Time_Costs"
                         app:layout_constraintBottom_toBottomOf="@id/cardLoanOtherCosts"
                         app:layout_constraintHorizontal_weight="3.0"
@@ -534,7 +536,7 @@
                         style="@style/button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/final_btnexpand"
+                        android:background="@drawable/btn_expand"
                         android:drawableEnd="@drawable/ic_expand_more_black_24dp"
                         android:text="@string/AdvancedCalculation"
                         android:textColor="@android:color/black"
@@ -550,7 +552,7 @@
                         style="@style/button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/final_btnclear"
+                        android:background="@drawable/btn_clear"
                         android:text="@string/Clear"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="2"
@@ -564,7 +566,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:background="@drawable/final_btncalculate"
+                        android:background="@drawable/btn_calculate"
                         android:text="@string/Calculate"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintHorizontal_weight="3"

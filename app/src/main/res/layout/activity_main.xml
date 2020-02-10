@@ -33,7 +33,7 @@
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/WeMakeItEasy"
-        android:textColor="@color/PortPrimaryVeryDark"
+        android:textColor="@color/PortPrimaryDarkVery"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/ivMain"

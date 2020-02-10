@@ -28,17 +28,17 @@ class MainActivity : AppCompatActivity() {
         btnDepMainAc.setOnClickListener {
             val intent = Intent(this, DepositActivity::class.java)
             startActivity(intent)
-            Animatoo.animateSlideLeft(this)
+            Animatoo.animateSlideDown(this)
         }
         btnCurMainAc.setOnClickListener {
             val intent = Intent(this, RatesActivity::class.java)
             startActivity(intent)
-            Animatoo.animateCard(this)
+            Animatoo.animateSlideUp(this)
         }
         btnPortfolioMainAc.setOnClickListener {
             val intent = Intent(this, PortfolioActivity::class.java)
             startActivity(intent)
-            Animatoo.animateSlideDown(this)
+            Animatoo.animateSwipeLeft(this)
         }
     }
 }

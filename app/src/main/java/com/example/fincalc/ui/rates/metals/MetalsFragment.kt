@@ -16,6 +16,7 @@ import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
+import kotlinx.android.synthetic.main.fragment_crypto.*
 import kotlinx.android.synthetic.main.fragment_metals.*
 
 class MetalsFragment : Fragment() {
@@ -37,8 +38,18 @@ class MetalsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        groupMetals.visibility = View.GONE
-        bmbMetalsMenu.initialize(BMBTypes.METALS)
+        layMetalsHider.visibility = View.INVISIBLE
+
+        btnDateMetals.setCustomSizeVector(
+            context, resTop = R.drawable.ic_calendar, sizeTopdp = 24
+        )
+        btnBaseMetals.setCustomSizeVector(
+            context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24
+        )
+        btnUnitMetals.setCustomSizeVector(
+            context, resTop = R.drawable.ic_scale, sizeTopdp = 24
+        )
+
 
         adapter = AdapterRecRates(context!!, null)
         recyclerMetals.setHasFixedSize(true)
@@ -59,50 +70,48 @@ class MetalsFragment : Fragment() {
         metalViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             it?.let {
-                groupMetals.visibility = View.VISIBLE
+                layMetalsHider.visibility = View.VISIBLE
 
                 adapter.ratesRows = it.ratesBarList
                 adapter.notifyDataSetChanged()
 
-                val date = context?.getString(R.string.Date) + ": " + formatterLong.format(it.date)
-                tvMetalsDateTime.text = date
-
-                val textUnit = context?.getString(R.string.Unit) + ": " + if (it.isUnitOunce)
-                    context?.getString(R.string.ounce) else context?.getString(R.string.gram)
-                tvMetalsSortedBy.text = textUnit
-
-                val textCurName = "${context?.getString(R.string.Base)}: ${it.baseCur}"
-                tvMetalsBaseCur.text = textCurName
-
                 setBaseCurToSharedPref(sharedPref, it.baseCur)
 
-                val flag = mapRatesNameIcon[it.baseCur]?.second
-                flag?.let { ivFlagMetal.setImageResource(flag) }
+                val date = formatterLong.format(it.date)
+                btnDateMetals.text = date
 
-                bmbMetalsMenu.onBoomListener =
-                    object : OnBoomListenerAdapter() {
-                        override fun onClicked(index: Int, boomButton: BoomButton) {
-                            super.onClicked(index, boomButton)
-                            when (index) {
-                                //CALENDAR
-                                0 -> getDialogCurHighOrderFunc(context) { cur ->
-                                    metalViewModel.setCurrency(cur)
-                                }
-                                //BASE CURRENCY
-                                1 -> openCalendarHighOrderFunc(
-                                    context, bmbMetalsMenu
-                                ) { dateApi ->
-                                    metalViewModel.setDate(dateApi)
-                                }
-                                //UNIT /Ounce or gram
-                                2 -> if (it.isUnitOunce)
-                                    metalViewModel.setUnit(false)
-                                else
-                                    metalViewModel.setUnit(true)
+                val textUnit =
+                    if (it.isUnitOunce) context?.getString(R.string.ounce) else context?.getString(R.string.gram)
+                btnUnitMetals.text = textUnit
 
-                            }
-                        }
+                val textCurName = it.baseCur
+                btnBaseMetals.text = textCurName
+                val res = mapRatesNameIcon[it.baseCur]?.second
+                res?.let { icon ->
+                    btnBaseMetals.setCustomSizeVector(
+                        context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                        resRight = icon, sizeRightdp = 32
+                    )
+                }
+
+                btnDateMetals.setOnClickListener { v ->
+                    openCalendarHighOrderFunc(
+                        context, v
+                    ) { dateApi -> metalViewModel.setDate(dateApi) }
+                }
+
+                btnBaseMetals.setOnClickListener {
+                    getDialogCurHighOrderFunc(context) { cur ->
+                        metalViewModel.setCurrency(cur)
                     }
+                }
+
+                btnUnitMetals.setOnClickListener { _ ->
+                    if (it.isUnitOunce)
+                        metalViewModel.setUnit(false)
+                    else
+                        metalViewModel.setUnit(true)
+                }
             }
         })
     }

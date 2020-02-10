@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_market"
+        android:icon="@drawable/ic_converting"
+        android:title="@string/market" />
+
+    <item
         android:id="@+id/navigation_rates"
-        android:icon="@mipmap/currencyicon"
+        android:icon="@drawable/ic_converting"
         android:title="@string/rates" />
 
     <item

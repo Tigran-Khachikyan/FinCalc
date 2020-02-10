@@ -2,7 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mobile_navigation_cur"
-    app:startDestination="@+id/navigation_rates">
+    app:startDestination="@+id/navigation_market">
+
+    <fragment
+        android:id="@+id/navigation_market"
+        android:name="com.example.fincalc.ui.rates.market.MarketFragment"
+        android:label="@string/market" />
 
     <fragment
         android:id="@+id/navigation_rates"

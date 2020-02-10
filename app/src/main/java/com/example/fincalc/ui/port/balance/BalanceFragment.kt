@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -566,14 +565,14 @@ class BalanceFragment : Fragment() {
     }
 
     private fun showSelected(btn: Button, context: Context?) {
-        btn.background = context?.getDrawable(R.drawable.final_btn_checked)
+        btn.background = context?.getDrawable(R.drawable.btn_option_checked)
         btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.checked, 0)
         btn.textSize = BUTTON_DIALOG_SIZE_PRESSED
         btn.setTextColor(Color.WHITE)
     }
 
     private fun showUnSelected(btn: Button, context: Context?) {
-        btn.background = context?.getDrawable(R.drawable.final_btnexpand)
+        btn.background = context?.getDrawable(R.drawable.btn_expand)
         btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         btn.textSize = BUTTON_DIALOG_SIZE_UNPRESSED
         btn.setTextColor(Color.BLACK)

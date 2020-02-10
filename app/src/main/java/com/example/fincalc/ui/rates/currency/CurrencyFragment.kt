@@ -2,7 +2,6 @@ package com.example.fincalc.ui.rates.currency
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,6 @@ import com.example.fincalc.R
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
-import com.nightonke.boommenu.BoomButtons.BoomButton
-import com.nightonke.boommenu.OnBoomListenerAdapter
-import kotlinx.android.synthetic.main.activity_rates.*
-import kotlinx.android.synthetic.main.fragment_crypto.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 
 @Suppress("DEPRECATION")
@@ -38,7 +33,16 @@ class RateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        groupCur.visibility = View.GONE
+
+        layTableCur.visibility = View.INVISIBLE
+        layoutInputCur.visibility = View.INVISIBLE
+
+        btnDateCur.setCustomSizeVector(
+            context, resTop = R.drawable.ic_calendar, sizeTopdp = 24
+        )
+        btnBaseCur.setCustomSizeVector(
+            context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24
+        )
 
         sharedPref = view.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         val base = sharedPref.getString(CURRENCY_PREF, "USD")
@@ -46,7 +50,6 @@ class RateFragment : Fragment() {
         curViewModel.setDate(null)
 
         ivTransferCur.setSvgColor(context!!, R.color.PortPrimaryLight)
-        bmbCurMenu.initialize(BMBTypes.CURRENCY)
 
         adapter = AdapterRecRates(view.context, null)
         recyclerCur.setHasFixedSize(true)
@@ -59,69 +62,70 @@ class RateFragment : Fragment() {
 
         curViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
-            Log.d("tttt", "IT DATE FRAGMENT: ${it?.date}")
-
             it?.let {
 
-                groupCur.visibility = View.VISIBLE
+                layTableCur.visibility = View.VISIBLE
+                layoutInputCur.visibility = View.VISIBLE
 
                 adapter.ratesRows = it.ratesBarList
                 adapter.notifyDataSetChanged()
 
-                val date = context?.getString(R.string.Date) + ": " + formatterLong.format(it.date)
-                tvCurDateTime.text = date
-
-                val textCurName = "${context?.getString(R.string.Base)}: ${it.baseCur}"
-                tvCurBaseCur.text = textCurName
+                val date = formatterLong.format(it.date)
+                btnDateCur.text = date
 
                 val base = it.baseCur
                 val from = it.curFrom
 
-                setBaseCurToSharedPref(sharedPref, it.baseCur)
+                setBaseCurToSharedPref(sharedPref, base)
+
+                val textCurName = "${context?.getString(R.string.base)} $base"
+                btnBaseCur.text = textCurName
+                val res = mapRatesNameIcon[base]?.second
+                res?.let { icon ->
+                    btnBaseCur.setCustomSizeVector(
+                        context,
+                        resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                        resRight = icon, sizeRightdp = 32
+                    )
+                }
 
                 btnCurBase.text = base
-                val fromText = from?:"?"
-                btnCurFrom.text = fromText
-                tvCurResult.text = it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) +" " +base }
+                btnCurFrom.text = from
+                tvCurResult.text =
+                    it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) + " " + base }
 
                 val flagBase = mapRatesNameIcon[it.baseCur]?.second
-                flagBase?.let {
-                    ivFlagCur.setImageResource(flagBase)
-                    btnCurBase.setCompoundDrawablesWithIntrinsicBounds(flagBase, 0, 0, 0)
+                flagBase?.let { f ->
+                    btnCurBase.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
                 }
 
                 val flagFrom = mapRatesNameIcon[it.curFrom]?.second
                 flagFrom?.let { f ->
-                    btnCurFrom.setCompoundDrawablesWithIntrinsicBounds(f, 0, 0, 0)
+                    btnCurFrom.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
                 }
 
-                bmbCurMenu.onBoomListener = object : OnBoomListenerAdapter() {
-                    override fun onClicked(index: Int, boomButton: BoomButton) {
-                        super.onClicked(index, boomButton)
-                        when (index) {
-                            0 -> {
-                                Log.d("tttt", "0 INDEX BMB")
-                                getDialogCurHighOrderFunc(context) { cur ->
-                                    curViewModel.setBaseCur(cur)
-                                }
-                            }
-                            1 -> {
-                                Log.d("tttt", "1 INDEX BMB")
+                btnDateCur.setOnClickListener { btn ->
+                    openCalendarHighOrderFunc(
+                        context, btn
+                    ) { dateApi -> curViewModel.setDate(dateApi) }
+                }
 
-                                openCalendarHighOrderFunc(
-                                    context, bmbCurMenu
-                                ) { dateApi ->
-                                    curViewModel.setDate(dateApi)
-                                }
-                            }
-                        }
+                btnBaseCur.setOnClickListener {
+                    getDialogCurHighOrderFunc(context) { cur ->
+                        curViewModel.setBaseCur(cur)
                     }
                 }
 
                 btnConvertCur.setOnClickListener {
                     from?.let {
-                        curViewModel.setAmount(etCurAmountInput.text.toString().toDouble())
-                    } ?: showSnackBar(R.string.invalidCurConvert, btnConvertCur, Options.CURRENCY)
+                        val input = etCurAmountInput.text.toString()
+                        if (input != "")
+                            curViewModel.setAmount(input.toDouble())
+                        else {
+                            curViewModel.setAmount(null)
+                            showSnackBar(R.string.invalidCurInput, btnConvertCur)
+                        }
+                    } ?: showSnackBar(R.string.invalidCurSelection, btnConvertCur)
                     hideKeyboard(this.requireActivity())
                 }
 

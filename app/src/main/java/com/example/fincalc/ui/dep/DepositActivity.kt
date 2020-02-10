@@ -3,7 +3,6 @@ package com.example.fincalc.ui.dep
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -21,7 +20,6 @@ import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
-import com.example.fincalc.ui.Options.*
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -146,8 +144,8 @@ class DepositActivity : AppCompatActivity() {
 
     private fun imitateRadioGroup(btnClicked: Button, btn2: Button, btn3: Button) {
 
-        btn2.setBackgroundResource(R.drawable.final_btnexpand)
-        btn3.setBackgroundResource(R.drawable.final_btnexpand)
+        btn2.setBackgroundResource(R.drawable.btn_expand)
+        btn3.setBackgroundResource(R.drawable.btn_expand)
         btnClicked.setBackgroundResource(R.drawable.final_btn_period_select)
         btnClicked.setTextColor(resources.getColor(android.R.color.white))
         btn2.setTextColor(resources.getColor(android.R.color.black))
@@ -177,24 +175,21 @@ class DepositActivity : AppCompatActivity() {
 
         return when {
             amount == 0L || term == 0 || rate == 0.0F -> {
-                if (amount == 0L)
-                    iconTrigger(ivLogoDepSum)
-                if (term == 0)
-                    iconTrigger(ivLogoDepTerm)
-                if (rate == 0.0F)
-                    iconTrigger(ivLogoDepRate)
+                if (amount == 0L) ivLogoDepSum.trigger()
+                if (term == 0) ivLogoDepTerm.trigger()
+                if (rate == 0.0F) ivLogoDepRate.trigger()
 
-                showSnackBar(R.string.InvalidInput, view, DEPOSIT)
+                showSnackBar(R.string.InvalidInput, view)
                 null
             }
             term % check != 0 -> {
-                iconTrigger(ivLogoDepTerm)
-                showSnackBar(R.string.InvalidInputPeriod, view, DEPOSIT)
+                ivLogoDepTerm.trigger()
+                showSnackBar(R.string.InvalidInputPeriod, view)
                 null
             }
             taxRate >= 100F -> {
-                iconTrigger(ivLogoDepTax)
-                showSnackBar(R.string.InvalidInputTax, view, DEPOSIT)
+                ivLogoDepTax.trigger()
+                showSnackBar(R.string.InvalidInputTax, view)
                 null
             }
             else -> {
@@ -208,7 +203,7 @@ class DepositActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        Animatoo.animateSlideRight(this)
+        Animatoo.animateSlideUp(this)
     }
 
     @SuppressLint("InflateParams")
@@ -244,10 +239,9 @@ class DepositActivity : AppCompatActivity() {
                 dep?.bank = etBank.text.toString()
                 dep?.currency = spinnerCur.selectedItem.toString()
                 dep?.date = formatterShort.format(Date())
-                Log.d("ftftf","date Activity: ${dep?.date}")
                 dep?.let {
                     depViewModel.addDep(dep)
-                    showSnackBar(R.string.successSaved, fab_AddDep, DEPOSIT)
+                    showSnackBar(R.string.successSaved, fab_AddDep)
                     hideKeyboard(this)
                 }
             }

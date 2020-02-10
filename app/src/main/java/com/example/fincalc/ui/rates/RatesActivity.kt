@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
@@ -16,7 +15,7 @@ class RatesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_rates)
         val navView: BottomNavigationView = findViewById(R.id.nav_viewCur)
 
-        val navController = findNavController(R.id.nav_host_fragmentCur)
+        val navController = findNavController(R.id.nav_host_fragment_rates)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
@@ -24,6 +23,6 @@ class RatesActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        Animatoo.animateWindmill(this)
+        Animatoo.animateSlideDown(this)
     }
 }

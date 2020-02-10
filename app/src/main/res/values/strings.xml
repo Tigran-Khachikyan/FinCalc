@@ -28,7 +28,7 @@
     -- Activity Loan
     <string name="Amount">Amount</string>
     <string name="HintAmount"> ex. 780000</string>
-    <string name="Term_months">Term/months</string>
+    <string name="Term_months">Months</string>
     <string name="HintTerm"> ex. 36</string>
     <string name="Interest_rate">Annual Interest rate</string>
     <string name="HintRate"> ex. 9.1</string>
@@ -65,7 +65,7 @@
     <string name="crypto">Crypto</string>
     <string name="metals">Metals</string>
     <string name="latest">Latest</string>
-    <string name="CustomCur">Custom Currency Converter</string>
+    <string name="CustomCur">Custom converter</string>
     <string name="archive">Archive</string>
 
     --Activity Deposit--
@@ -162,10 +162,9 @@
     <string name="Silver">Silver</string>
     <string name="Platinum">Platinum</string>
     <string name="Palladium">Palladium</string>
-    <string name="Unit">Unit</string>
-    <string name="Base">Base</string>
     <string name="TopCur">World Top Currencies</string>
-    <string name="invalidCurConvert">Please select the currency you want to convert from!</string>
+    <string name="invalidCurSelection">Please select the convertible currency!</string>
+    <string name="invalidCurInput">Please input amount for conversion!</string>
 
 
     --Currencies
@@ -248,8 +247,14 @@
     <string name="XPT">Platinum</string>
     <string name="ounce">troy ounce</string>
     <string name="gram">gram</string>
-    <string name="orderByPrice">Order: by price</string>
-    <string name="orderByPop">Order: by popularity</string>
+    <string name="sortByPrice">by price</string>
+    <string name="sortByPop">by popularity</string>
+
+
+    ------------------------------------
+    <string name="market">Market</string>
+    <string name="base">base: </string>
+    <string name="select">select</string>
 
 
 </resources>

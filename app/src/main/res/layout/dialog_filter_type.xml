@@ -61,7 +61,7 @@
     <Button
         android:id="@+id/btnDialSelectOrClear"
         style="@style/dialCheck"
-        android:background="@drawable/final_btnclear"
+        android:background="@drawable/btn_clear"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         android:text="@string/SELECT_ALL" />

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/PortPrimaryLight">
+    android:color="@color/PortPrimaryDark">
     <item android:state_pressed="true">
         <shape>
-            <corners android:radius="12dp"/>
-            <solid android:color="@color/CurrencyPrimaryDark"/>
+            <solid android:color="@color/PortPrimary"/>
         </shape>
     </item>
 </ripple>

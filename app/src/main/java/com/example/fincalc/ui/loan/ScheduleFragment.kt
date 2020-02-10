@@ -167,7 +167,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 loan.date = formatterShort.format(Date())
                 scheduleViewModel.addLoan(loan)
 
-                showSnackBar(R.string.successSaved, fab_Loan, Options.LOAN)
+                showSnackBar(R.string.successSaved, fab_Loan)
                 hideKeyboard(this.requireActivity())
             }
 

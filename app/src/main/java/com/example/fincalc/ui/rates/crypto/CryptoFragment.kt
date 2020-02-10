@@ -15,8 +15,6 @@ import com.example.fincalc.R
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
-import com.nightonke.boommenu.BoomButtons.BoomButton
-import com.nightonke.boommenu.OnBoomListenerAdapter
 import kotlinx.android.synthetic.main.fragment_crypto.*
 
 /**
@@ -32,7 +30,6 @@ class CryptoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         cryptoViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
         return inflater.inflate(R.layout.fragment_crypto, container, false)
     }
@@ -40,9 +37,18 @@ class CryptoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        groupCrypto.visibility = View.GONE
+        layCryptoIntro.visibility = View.INVISIBLE
+        layCryptoOptions.visibility = View.INVISIBLE
 
-        bmbCryptoMenu.initialize(BMBTypes.CRYPTO)
+        btnDateCrypto.setCustomSizeVector(
+            context, resTop = R.drawable.ic_calendar, sizeTopdp = 24
+        )
+        btnBaseCrypto.setCustomSizeVector(
+            context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24
+        )
+        btnOrderCrypto.setCustomSizeVector(
+            context, resTop = R.drawable.ic_sort, sizeTopdp = 24
+        )
 
         adapter = AdapterRecRates(context!!, null)
         recyclerCrypto.setHasFixedSize(true)
@@ -62,46 +68,49 @@ class CryptoFragment : Fragment() {
         cryptoViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             it?.let {
-                groupCrypto.visibility = View.VISIBLE
-
+                layCryptoIntro.visibility = View.VISIBLE
+                layCryptoOptions.visibility = View.VISIBLE
                 adapter.ratesRows = it.ratesBarList
                 adapter.notifyDataSetChanged()
 
-                val date = context?.getString(R.string.Date) + ": " + formatterLong.format(it.date)
-                tvCryptoDateTime.text = date
+                val date =formatterLong.format(it.date)
+                btnDateCrypto.text = date
 
                 val orderType =
-                    if (it.sortedByPrice) context?.getString(R.string.orderByPrice)
-                    else context?.getString(R.string.orderByPop)
-                tvCryptoSortedBy.text = orderType
+                    if (it.sortedByPrice) context?.getString(R.string.sortByPrice)
+                    else context?.getString(R.string.sortByPop)
+                btnOrderCrypto.text = orderType
 
-                val textCurName = "${context?.getString(R.string.Base)}: ${it.baseCur}"
-                tvCryptoBaseCur.text = textCurName
-
+                val res = mapRatesNameIcon[it.baseCur]?.second
+                res?.let { icon ->
+                    btnBaseCrypto.setCustomSizeVector(
+                        context,
+                        resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                        resRight = icon, sizeRightdp = 32
+                    )
+                }
+                btnBaseCrypto.text = it.baseCur
                 setBaseCurToSharedPref(sharedPref, it.baseCur)
 
-                val flag = mapRatesNameIcon[it.baseCur]?.second
-                flag?.let { ivFlagCrypto.setImageResource(flag) }
-
-                bmbCryptoMenu.onBoomListener = object : OnBoomListenerAdapter() {
-                    override fun onClicked(index: Int, boomButton: BoomButton) {
-                        super.onClicked(index, boomButton)
-                        when (index) {
-                            0 -> getDialogCurHighOrderFunc(context) { cur ->
-                                cryptoViewModel.setCurrency(cur)
-                            }
-                            1 -> openCalendarHighOrderFunc(
-                                context, bmbCryptoMenu
-                            ) { dateApi ->
-                                cryptoViewModel.setDate(dateApi)
-                            }
-                            //UNIT /Ounce or gram
-                            2 -> if (it.sortedByPrice)
-                                cryptoViewModel.setOrder(false)
-                            else
-                                cryptoViewModel.setOrder(true)
-                        }
+                btnDateCrypto.setOnClickListener { btn ->
+                    openCalendarHighOrderFunc(
+                        context, btn
+                    ) { dateApi ->
+                        cryptoViewModel.setDate(dateApi)
                     }
+                }
+
+                btnBaseCrypto.setOnClickListener {
+                    getDialogCurHighOrderFunc(context) { cur ->
+                        cryptoViewModel.setCurrency(cur)
+                    }
+                }
+
+                btnOrderCrypto.setOnClickListener { _ ->
+                    if (it.sortedByPrice)
+                        cryptoViewModel.setOrder(false)
+                    else
+                        cryptoViewModel.setOrder(true)
                 }
             }
         })
