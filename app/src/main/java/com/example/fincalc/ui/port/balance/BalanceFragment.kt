@@ -26,10 +26,8 @@ import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.credit.getEnumFromSelection
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.getFreqFromSelec
-import com.example.fincalc.ui.BMBTypes
-import com.example.fincalc.ui.customizeAlertDialog
+import com.example.fincalc.ui.*
 import com.example.fincalc.ui.dep.DepositActivity
-import com.example.fincalc.ui.initialize
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.NavSwitcher
 import com.example.fincalc.ui.port.NavViewModel
@@ -61,6 +59,8 @@ class BalanceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tvStatusPort.setFont(FONT_PATH)
 
         fabRecBalanceAddLoan.setOnClickListener {
             val intent = Intent(context, LoanActivity::class.java)

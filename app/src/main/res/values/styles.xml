@@ -168,7 +168,7 @@
     </style>
 
     <style name="currencyViews" parent="currencyViewsSmall">
-        <item name="android:background">@drawable/final_input_frame</item>
+        <item name="android:background">@drawable/input_frame</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:layout_marginStart">4dp</item>
     </style>

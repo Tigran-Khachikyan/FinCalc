@@ -37,6 +37,8 @@ class CryptoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tvStatusCrypto.setFont(FONT_PATH)
+
         layCryptoIntro.visibility = View.INVISIBLE
         layCryptoOptions.visibility = View.INVISIBLE
 

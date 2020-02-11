@@ -15,7 +15,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +24,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.example.fincalc.R
@@ -53,6 +53,7 @@ val formatterShort = SimpleDateFormat("dd MMM yyyy")
 const val PRIVATE_MODE = 0
 const val PREF_NAME = "Currency_Pref"
 const val CURRENCY_PREF = "Currency"
+const val FONT_PATH = "fonts/assassin.ttf"
 
 fun View.trigger() {
     val anim1 = AnimationUtils.loadAnimation(this.context, R.anim.icontriggerleft)
@@ -189,23 +190,22 @@ fun setBaseCurToSharedPref(sharedPref: SharedPreferences, baseCur: String) {
     editor.apply()
 }
 
-private const val FONT_PATH = "fonts/splash.ttf"
-fun TextSurface.playSplash(context: Context) {
+fun TextSurface.playAnimation(textRes: Int, millSec: Int) {
     reset()
-    val robotoBlack = Typeface.createFromAsset(context.assets, FONT_PATH)
+    val typeface = Typeface.createFromAsset(context.assets, FONT_PATH)
     val paint = Paint()
     paint.isAntiAlias = true
-    paint.typeface = robotoBlack
+    paint.typeface = typeface
     val text = TextBuilder
-        .create(context.getString(R.string.FinCalcSplash))
+        .create(context.getString(textRes))
         .setPaint(paint)
-        .setSize(46f)
+        .setSize(40f)
         .setColor(context.resources.getColor(android.R.color.white))
         .setPosition(Align.SURFACE_CENTER).build()
     play(
         Sequential(
             ShapeReveal.create(
-                text, 3000, SideCut.show(Side.LEFT), false
+                text, millSec, SideCut.show(Side.LEFT), false
             ),
             Parallel(
                 ShapeReveal.create(
@@ -214,6 +214,10 @@ fun TextSurface.playSplash(context: Context) {
             )
         )
     )
+}
+
+fun TextView.setFont(fontPath: String) {
+    typeface = Typeface.createFromAsset(context.assets, fontPath)
 }
 
 fun Button.setCustomSizeVector(

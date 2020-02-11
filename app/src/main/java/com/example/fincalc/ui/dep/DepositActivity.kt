@@ -38,6 +38,8 @@ class DepositActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deposit)
 
+        tvStatusDep.setFont(FONT_PATH)
+
         depViewModel = ViewModelProvider(this).get(DepositViewModel::class.java)
         imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
 

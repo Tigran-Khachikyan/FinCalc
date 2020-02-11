@@ -46,13 +46,14 @@
                     app:layout_constraintTop_toTopOf="@id/layInsideImageCur" />
 
                 <TextView
+                    android:id="@+id/tvStatusCur"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="@id/layCoverCur" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

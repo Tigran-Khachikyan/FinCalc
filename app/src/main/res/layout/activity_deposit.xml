@@ -48,7 +48,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="@color/DepPrimary"
-        android:paddingBottom="20dp"
+        android:paddingBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!--imageView-->
@@ -72,14 +72,16 @@
             app:layout_constraintTop_toTopOf="@id/ivDepImage" />
 
         <TextView
+            android:id="@+id/tvStatusDep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/WeMakeItEasy"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/ivDepImage" />
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/ivDepImage" />
 
         <!--recycler-->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -108,7 +110,7 @@
                 android:id="@+id/layoutDepResultIntro"
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvResultDepIntro">
 
@@ -231,7 +233,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toTopOf="@id/cardDepTerm"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_weight="1">
@@ -277,7 +279,7 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/cardDepRate"
@@ -324,7 +326,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -382,7 +384,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/cardDepCapitalization"
                 app:layout_constraintRight_toRightOf="parent">
@@ -458,7 +460,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toTopOf="@id/cardDepTax"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -517,7 +519,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/final_input_frame"
+                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"

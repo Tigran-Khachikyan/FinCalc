@@ -87,7 +87,7 @@
     <string name="ResultShowDep">Total income: </string>
     <string name="InvalidInputPeriod">Mismatch between months \nand payment frequency!</string>
     <string name="InvalidInputTax">Invalid Tax rate. \nShould be less than 100%!</string>
-    <string name="WeMakeItEasy">Make your analysis precise and quick.</string>
+    <string name="WeMakeItEasy">Make your analysis precise and quick</string>
 
     --Activity Portfolio--
     <string name="title_activity_portfolio">PortfolioActivity</string>
@@ -255,6 +255,8 @@
     <string name="market">Market</string>
     <string name="base">base: </string>
     <string name="select">select</string>
+    <string name="texting">Гарантии и безопасность. казчик получает качественный текст, а исполнитель — оплату.</string>
+    <string name="financialMarkets">Financial markets</string>
 
 
 </resources>

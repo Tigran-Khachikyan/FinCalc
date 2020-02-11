@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        tvStatusMain.setFont(FONT_PATH)
 
         btnLoanMainAc.setOnClickListener {
             val intent = Intent(this, LoanActivity::class.java)

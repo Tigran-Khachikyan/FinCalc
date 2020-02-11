@@ -55,7 +55,7 @@
                     android:text="@string/WeMakeItEasy"
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="20dp"
-                    android:textSize="16sp"
+                    android:textSize="22sp"
                    app:layout_constraintBottom_toBottomOf="@id/layInsideImage"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

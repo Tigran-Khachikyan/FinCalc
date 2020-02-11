@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_market"
-        android:icon="@drawable/ic_converting"
+        android:icon="@drawable/ic_exchange"
         android:title="@string/market" />
 
     <item
         android:id="@+id/navigation_rates"
-        android:icon="@drawable/ic_converting"
+        android:icon="@drawable/ic_exchange"
         android:title="@string/rates" />
 
     <item
         android:id="@+id/navigation_crypto"
-        android:icon="@drawable/ic_gold"
+        android:icon="@drawable/ic_bitcoin"
         android:title="@string/crypto" />
 
     <item

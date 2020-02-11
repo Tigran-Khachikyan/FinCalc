@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
                 tvSplashSurface.animation =
                     AnimationUtils.loadAnimation(baseContext, R.anim.splash_text)
                 ivSplash.animation = AnimationUtils.loadAnimation(baseContext, R.anim.splash_image)
-                tvSplashSurface.playSplash(baseContext)
+                tvSplashSurface.playAnimation(R.string.FinCalcSplash, 3000)
                 delay(4000)
                 val intent = Intent(baseContext, MainActivity::class.java)
                 startActivity(intent)

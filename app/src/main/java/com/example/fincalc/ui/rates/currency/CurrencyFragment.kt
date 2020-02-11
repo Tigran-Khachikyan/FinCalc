@@ -33,6 +33,7 @@ class RateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tvStatusCur.setFont(FONT_PATH)
 
         layTableCur.visibility = View.INVISIBLE
         layoutInputCur.visibility = View.INVISIBLE

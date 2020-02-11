@@ -38,6 +38,8 @@ class MetalsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tvStatusMetals.setFont(FONT_PATH)
+
         layMetalsHider.visibility = View.INVISIBLE
 
         btnDateMetals.setCustomSizeVector(

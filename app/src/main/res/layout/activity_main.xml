@@ -28,17 +28,18 @@
 
 
     <TextView
+        android:id="@+id/tvStatusMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="12dp"
         android:text="@string/WeMakeItEasy"
         android:textColor="@color/PortPrimaryDarkVery"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textSize="28sp"
+        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/ivMain"
         app:layout_constraintTop_toTopOf="@id/layoutMainOptions"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintVertical_bias="0.85" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutMainOptions"
@@ -97,7 +98,7 @@
             style="@style/btnMainAc"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:drawableTop="@drawable/ic_converting"
+            android:drawableTop="@drawable/ic_exchange"
             android:text="@string/currencyConverter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="1"
