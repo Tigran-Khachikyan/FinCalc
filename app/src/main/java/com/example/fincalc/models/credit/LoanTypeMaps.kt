@@ -13,12 +13,12 @@ fun getLoanTypeListName(context: Context): ArrayList<String> {
     return arrayList
 }
 
-fun getEnumFromSelection(string: String, context: Context?): LoanType? {
+fun getLoanTypeFromString(string: String, context: Context): LoanType? {
 
     var type: LoanType? = null
 
     for (id in loanTypeMap.keys) {
-        if (string == context?.resources?.getString(id)) {
+        if (string == context.resources.getString(id)) {
             type = loanTypeMap[id]!!
             break
         }

@@ -7,6 +7,8 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface.BUTTON_NEGATIVE
+import android.content.DialogInterface.BUTTON_POSITIVE
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
@@ -54,6 +56,8 @@ const val PRIVATE_MODE = 0
 const val PREF_NAME = "Currency_Pref"
 const val CURRENCY_PREF = "Currency"
 const val FONT_PATH = "fonts/assassin.ttf"
+const val BUTTON_DIALOG_SIZE_PRESSED = 16F
+const val BUTTON_DIALOG_SIZE_UNPRESSED = 14F
 
 fun View.trigger() {
     val anim1 = AnimationUtils.loadAnimation(this.context, R.anim.icontriggerleft)
@@ -85,17 +89,16 @@ fun hideKeyboard(activity: Activity) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun customizeAlertDialog(alertDialog: AlertDialog, positive: Boolean) {
-    alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
-    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).gravity = Gravity.END
-    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).gravity = Gravity.START
-    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).textSize = 18F
-    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).textSize = 18F
-    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-    if (positive)
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN)
-    else
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
+
+fun AlertDialog.setCustomView() {
+
+    window?.setBackgroundDrawableResource(R.color.PortPrimary)
+    getButton(BUTTON_POSITIVE).gravity = Gravity.END
+    getButton(BUTTON_NEGATIVE).gravity = Gravity.START
+    getButton(BUTTON_POSITIVE).textSize = 18F
+    getButton(BUTTON_NEGATIVE).textSize = 18F
+    getButton(BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+    getButton(BUTTON_POSITIVE).setTextColor(Color.WHITE)
 }
 
 fun ImageView.setSvgColor(context: Context, color: Int) =
@@ -178,7 +181,7 @@ fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
 
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
-        customizeAlertDialog(alertDialog, true)
+        alertDialog.setCustomView()
         alertDialog.window?.setBackgroundDrawableResource(R.color.colorSpinner)
         spinnerCur.performClick()
     }

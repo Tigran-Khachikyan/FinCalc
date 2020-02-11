@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="250dp"
+    android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:layout_marginStart="10dp"
+    android:layout_marginStart="30dp"
     android:layout_marginTop="10dp"
-    android:layout_marginEnd="0dp"
+    android:layout_marginEnd="30dp"
     android:layout_marginBottom="10dp"
     app:cardBackgroundColor="@color/PortPrimary"
     app:cardCornerRadius="16dp"
@@ -33,21 +33,17 @@
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageView
             android:id="@+id/fabRecBalanceDelete"
-            style="@style/Widget.Design.FloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/delete_filter"
-            android:outlineAmbientShadowColor="@android:color/transparent"
-            android:src="@mipmap/delete_filter"
-            app:backgroundTint="@android:color/transparent"
-            app:elevation="0dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_remove"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:rippleColor="@color/colorAccentDark"
-            tools:ignore="UnusedAttribute" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

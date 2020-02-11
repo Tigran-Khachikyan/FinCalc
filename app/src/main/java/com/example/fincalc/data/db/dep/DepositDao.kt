@@ -17,4 +17,7 @@ interface DepositDao {
 
     @Query("SELECT * FROM deposits")
     fun getDeposits(): LiveData<List<Deposit>>
+
+    @Query("SELECT * FROM deposits WHERE _id = :id")
+    fun getDepositById(id: Int): LiveData<Deposit>
 }

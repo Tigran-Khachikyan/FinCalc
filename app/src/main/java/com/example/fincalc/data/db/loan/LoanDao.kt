@@ -17,4 +17,7 @@ interface LoanDao {
 
     @Query("SELECT * FROM loans")
     fun getLoans(): LiveData<List<Loan>>
+
+    @Query("SELECT * FROM loans WHERE _id = :id")
+    fun getLoanById(id: Int): LiveData<Loan>
 }

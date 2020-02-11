@@ -1,4 +1,4 @@
-package com.example.fincalc.ui.port.balance
+package com.example.fincalc.ui.port
 
 import com.example.fincalc.models.Banking
 

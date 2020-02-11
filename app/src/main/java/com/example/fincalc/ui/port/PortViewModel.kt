@@ -1,31 +1,25 @@
-package com.example.fincalc.ui.port.balance
+package com.example.fincalc.ui.port
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.fincalc.data.db.loan.Loan
-import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.data.Repository
 import com.example.fincalc.data.db.dep.Deposit
+import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.Banking
+import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
-import com.example.fincalc.ui.formatterLong
-import com.example.fincalc.ui.formatterShort
-import kotlinx.coroutines.*
-import java.time.LocalDateTime
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST")
-class BalanceViewModel(application: Application) : AndroidViewModel(application), Filtering {
+class PortViewModel(application: Application) : AndroidViewModel(application), Filtering {
 
     private val repository = Repository.getInstance(application)
 
     //Loans
     private val _loanList = repository?.getLoans()
-    private val _typeListLoan = RepoLoansFilter._typeList
-    private val _curListLoan = RepoLoansFilter._cur
-    private val _sortAccLoan = RepoLoansFilter._sortByRate
+    private val _typeListLoan = MutableLiveData<List<LoanType>?>()
+    private val _curListLoan = MutableLiveData<List<String>>()
+    private val _sortAccLoan = MutableLiveData<Boolean?>()
 
     fun deleteLoan(loan: Loan) = viewModelScope.launch {
         repository?.deleteLoan(loan)
@@ -36,15 +30,15 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setSelLoanTypeList(selList: List<LoanType>?) {
-        RepoLoansFilter._typeList.value = selList
+        _typeListLoan.value = selList
     }
 
     fun setSelLoanCurList(curs: List<String>?) {
-        RepoLoansFilter._cur.value = curs
+        _curListLoan.value = curs
     }
 
     fun setSortByLoanRate(acc: Boolean?) {
-        RepoLoansFilter._sortByRate.value = acc
+        _sortAccLoan.value = acc
     }
 
     private val mediatorLoan = MediatorLiveData<LoanFilter>()
@@ -114,9 +108,9 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
 
     //Deposits
     private val _depList = repository?.getDep()
-    private val _depFreqList = RepoDepFilter._frequencies
-    private val _curListDep = RepoDepFilter._cur
-    private val _sortAccDep = RepoDepFilter._sortByRate
+    private val _depFreqList = MutableLiveData<List<Frequency>?>()
+    private val _curListDep = MutableLiveData<List<String>>()
+    private val _sortAccDep = MutableLiveData<Boolean?>()
 
     fun deleteDep(dep: Deposit) = viewModelScope.launch {
         repository?.deleteDep(dep)
@@ -127,15 +121,15 @@ class BalanceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setSelDepFreqList(selList: List<Frequency>?) {
-        RepoDepFilter._frequencies.value = selList
+        _depFreqList.value = selList
     }
 
     fun setSelDepCurList(curs: List<String>?) {
-        RepoDepFilter._cur.value = curs
+        _curListDep.value = curs
     }
 
     fun setSortByDepRate(acc: Boolean?) {
-        RepoDepFilter._sortByRate.value = acc
+        _sortAccDep.value = acc
     }
 
     private val mediatorDep = MediatorLiveData<DepFilter>()

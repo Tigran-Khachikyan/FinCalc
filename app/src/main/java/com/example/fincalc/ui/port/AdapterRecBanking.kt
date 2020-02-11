@@ -1,12 +1,10 @@
-package com.example.fincalc.ui.port.balance
+package com.example.fincalc.ui.port
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
@@ -14,27 +12,23 @@ import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
-import com.example.fincalc.ui.customizeAlertDialog
 import com.example.fincalc.ui.decimalFormatter1p
-import com.example.fincalc.ui.port.OnViewHolderClick
+import com.example.fincalc.ui.setSvgColor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
-class AdapterRecBalance(
+class AdapterRecBanking(
     var list: List<Banking>,
-    _balanceViewModel: BalanceViewModel,
-    var onViewHolderClick: OnViewHolderClick?
+    var onViewHolderClick: OnViewHolderClick?,
+    var onHolderDeleteClick: OnHolderDeleteClick?
 ) :
-    RecyclerView.Adapter<AdapterRecBalance.Holder>() {
+    RecyclerView.Adapter<AdapterRecBanking.Holder>() {
 
-    private val balanceViewModel = _balanceViewModel
-
-    inner class Holder(itemView: View, private val mListener: OnViewHolderClick?) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
-        init {
-            itemView.setOnClickListener(this)
-        }
+    inner class Holder(
+        itemView: View,
+        private val onHolderClick: OnViewHolderClick?,
+        private val onDeleteClick: OnHolderDeleteClick?
+    ) : RecyclerView.ViewHolder(itemView) {
 
         val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
         val tvBank: TextView = itemView.findViewById(R.id.tvRecBalanceBank)
@@ -42,20 +36,26 @@ class AdapterRecBalance(
         val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
         val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
-        val fab: FloatingActionButton = itemView.findViewById(R.id.fabRecBalanceDelete)
+        private val fab: ImageView = itemView.findViewById(R.id.fabRecBalanceDelete)
 
-        override fun onClick(p0: View?) {
-            p0?.let {
-                val loanId = list[adapterPosition].id
-                mListener?.openBankProdById(loanId)
+        init {
+            itemView.setOnClickListener {
+                val bankingId = list[adapterPosition].id
+                onHolderClick?.openBankingFragment(bankingId)
             }
+
+            fab.setOnClickListener {
+                val bankingId = list[adapterPosition].id
+                onDeleteClick?.deleteBanking(bankingId)
+            }
+             fab.setSvgColor(itemView.context, R.color.colorAccentDark)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_balance, parent, false)
-        return Holder(view, onViewHolderClick)
+        return Holder(view, onViewHolderClick, onHolderDeleteClick)
     }
 
     override fun getItemCount(): Int = list.size
@@ -81,9 +81,6 @@ class AdapterRecBalance(
             val typeEnum = (list[position] as Loan).type
             val typeString = holder.tvType.context.getString(typeEnum.id)
             holder.tvType.text = typeString
-            holder.fab.setOnClickListener {
-                getDialRemoveWarning(it.context, list[position])
-            }
             holder.iv.setImageResource(
                 when ((list[position] as Loan).type) {
                     LoanType.MORTGAGE -> R.mipmap.type_mortgage
@@ -103,9 +100,6 @@ class AdapterRecBalance(
             val freqEnum = (list[position] as Deposit).frequency
             val freqString = holder.tvType.context.getString(freqEnum.id)
             holder.tvType.text = freqString
-            holder.fab.setOnClickListener {
-                getDialRemoveWarning(it.context, list[position])
-            }
             holder.iv.setImageResource(
                 when ((list[position] as Deposit).frequency) {
                     Frequency.MONTHLY -> R.mipmap.type_monthly
@@ -114,26 +108,6 @@ class AdapterRecBalance(
                     Frequency.OTHER -> R.drawable.ic_deposit
                 }
             )
-        }
-    }
-
-    private fun getDialRemoveWarning(context: Context?, prod: Banking) {
-        if (context != null) {
-            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            builder.setTitle(R.string.warning)
-            builder.setIcon(R.drawable.ic_alert)
-            builder.setMessage(R.string.AreYouSureRemove)
-            builder.setPositiveButton(R.string.OK) { _, _ ->
-                if (prod is Loan)
-                    balanceViewModel.deleteLoan(prod)
-                else if (prod is Deposit)
-                    balanceViewModel.deleteDep(prod)
-            }
-            builder.setNegativeButton(R.string.cancel) { _, _ ->
-            }
-            val alertDialog = builder.create()
-            alertDialog.show()
-            customizeAlertDialog(alertDialog, false)
         }
     }
 }

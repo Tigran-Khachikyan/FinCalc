@@ -255,7 +255,7 @@ class DepositActivity : AppCompatActivity() {
 
             val alertDialog = dialogBuilder.create()
             alertDialog.show()
-            customizeAlertDialog(alertDialog, true)
+            alertDialog.setCustomView()
             alertDialog.window?.setBackgroundDrawableResource(R.color.DepPrimary)
         }
     }

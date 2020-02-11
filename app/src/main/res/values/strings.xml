@@ -149,9 +149,10 @@
     <string name="DialogTitleCur">Select Currency</string>
     <string name="successSaved">Successfully saved in Portfolio</string>
     <string name="warning">Warning</string>
-    <string name="AreYouSureRemove">Do you really want to remove?</string>
+    <string name="AreYouSureRemove">Are you sure you want to delete this</string>
+    <string name="AreYouSureRemoveAll">Are you sure you want to delete all the</string>
     <string name="OK">OK</string>
-    <string name="SuccessfullyRemoved">Successfully removed from Portfolio</string>
+    <string name="SuccessfullyRemoved">Removed successfully!</string>
 
     --Rates--
     <string name="resetBaseCurrency">reset base currency</string>

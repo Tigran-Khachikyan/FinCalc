@@ -247,6 +247,9 @@ class Repository private constructor(
     fun getLoans(): LiveData<List<Loan>> =
         Database(context).getLoanDao().getLoans()
 
+    fun getLoanById(id: Int): LiveData<Loan> =
+        Database(context).getLoanDao().getLoanById(id)
+
     suspend fun insertLoan(loan: Loan) =
         Database(context).getLoanDao().insert(loan)
 
@@ -260,6 +263,9 @@ class Repository private constructor(
     //Deposit
     fun getDep(): LiveData<List<Deposit>> =
         Database(context).getDepDao().getDeposits()
+
+    fun getDepositById(id: Int): LiveData<Deposit> =
+        Database(context).getDepDao().getDepositById(id)
 
     suspend fun insertDep(dep: Deposit) =
         Database(context).getDepDao().insert(dep)

@@ -3,13 +3,12 @@ package com.example.fincalc.models.deposit
 import android.content.Context
 import com.example.fincalc.R
 
-fun getFreqFromSelec(string: String, context: Context?): Frequency? {
+fun getFreqFromString(string: String, context: Context?): Frequency? {
 
     var freq: Frequency? = null
-
     for (id in frequencyMap.keys) {
         if (string == context?.resources?.getString(id)) {
-            freq = frequencyMap[id]!!
+            freq = frequencyMap[id]
             break
         }
     }

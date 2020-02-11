@@ -19,7 +19,7 @@ import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.models.credit.TableLoan
-import com.example.fincalc.models.credit.getEnumFromSelection
+import com.example.fincalc.models.credit.getLoanTypeFromString
 import com.example.fincalc.models.credit.getLoanTypeListName
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
@@ -157,8 +157,8 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 getString(R.string.save)
             ) { _, _ ->
 
-                val typeEnum = getEnumFromSelection(
-                    spinnerType.selectedItem.toString(), this.context
+                val typeEnum = getLoanTypeFromString(
+                    spinnerType.selectedItem.toString(),requireContext()
                 )
                 loan.bank = etBank.text.toString()
                 loan.currency = spinnerCur.selectedItem.toString()
@@ -178,7 +178,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val alertDialog = dialogBuilder.create()
 
             alertDialog.show()
-            customizeAlertDialog(alertDialog, true)
+            alertDialog.setCustomView()
             alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
         }
     }

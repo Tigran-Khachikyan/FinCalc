@@ -98,7 +98,6 @@ class AdapterRecDepDetail(
 
 
             //Recycler
-
             holder.ivDepFr.setImageResource(
                 when (curDep.frequency) {
                     Frequency.MONTHLY -> R.mipmap.type_monthly
