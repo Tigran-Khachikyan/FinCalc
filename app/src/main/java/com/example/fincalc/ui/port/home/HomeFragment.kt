@@ -2,11 +2,11 @@ package com.example.fincalc.ui.port.home
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +14,11 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
-
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
@@ -32,7 +31,6 @@ import com.example.fincalc.ui.*
 import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.AdapterRecBanking
-import com.example.fincalc.ui.port.OnHolderDeleteClick
 import com.example.fincalc.ui.port.OnViewHolderClick
 import com.example.fincalc.ui.port.PortViewModel
 import com.example.fincalc.ui.port.deps.DepositFragment
@@ -62,6 +60,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         portViewModel = ViewModelProvider(this).get(PortViewModel::class.java)
 
         tvStatusPort.setFont(FONT_PATH)
@@ -83,16 +82,18 @@ class HomeFragment : Fragment() {
 
 
         //Loan adapter init
-        adapterRecLoan = AdapterRecBanking(arrayListOf(), null, null)
-        recLoanPort.setHasFixedSize(true)
-        recLoanPort.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        recLoanPort.adapter = adapterRecLoan
+        adapterRecLoan = AdapterRecBanking(arrayListOf(), null, portViewModel)
+        recLoanPort.initialize(adapterRecLoan)
+        indicatorLoans.attachToRecyclerView(recLoanPort)
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(recLoanPort)
 
         //Deposit adapter init
-        adapterRecDep = AdapterRecBanking(arrayListOf(), null, null)
-        recDepPort.setHasFixedSize(true)
-        recDepPort.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        recDepPort.adapter = adapterRecDep
+        adapterRecDep = AdapterRecBanking(arrayListOf(), null, portViewModel)
+        recDepPort.initialize(adapterRecDep)
+        indicatorDep.attachToRecyclerView(recDepPort)
+        val snapHelper2 = PagerSnapHelper()
+        snapHelper2.attachToRecyclerView(recDepPort)
 
         //filter closing
         tvLoanTypeFilter.setOnClickListener {
@@ -134,7 +135,6 @@ class HomeFragment : Fragment() {
         portViewModel.getLoanList().observe(this, Observer { it ->
 
 
-
             val loans = it.bankingList as List<Loan>?
             val types = it.loanTypeList
             val currencies = it.currencies
@@ -151,6 +151,8 @@ class HomeFragment : Fragment() {
 
                 adapterRecLoan.list = it
                 adapterRecLoan.notifyDataSetChanged()
+                recLoanPort.scrollToPosition(0)
+                recLoanPort.invalidate()
 
                 adapterRecLoan.onViewHolderClick = object : OnViewHolderClick {
                     override fun openBankingFragment(id: Int) {
@@ -160,16 +162,11 @@ class HomeFragment : Fragment() {
                         loanFragment.arguments = bundle
                         Log.d("ftft", "LOANFRAGMENT: $loanFragment")
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(R.id.FragmentContainerPort, loanFragment)?.addToBackStack("")?.commit()
+                            ?.add(R.id.FragmentContainerPort, loanFragment)?.addToBackStack("")
+                            ?.commit()
                     }
                 }
-
-                adapterRecLoan.onHolderDeleteClick = object : OnHolderDeleteClick {
-                    override fun deleteBanking(id: Int) {
-                        val item = it.find { loan -> loan.id == id }
-                        showRemovingDialog(item)
-                    }
-                }
+                Log.d("sfsfsfff", "it.isze outside: ${it.size}")
 
                 bmbLoansMenu.onBoomListener = object : OnBoomListenerAdapter() {
                     override fun onClicked(index: Int, boomButton: BoomButton) {
@@ -180,7 +177,11 @@ class HomeFragment : Fragment() {
                                 getDialFilterByCur(currencies, true)
                             }
                             2 -> setSortLoanByAcc(isSortedAcc)
-                            3 -> showRemovingDialog(allLoans = true)
+                            3 -> showRemovingDialog(
+                                view = boomButton,
+                                allLoans = true,
+                                portViewModel = portViewModel
+                            )
                         }
                     }
                 }
@@ -206,6 +207,8 @@ class HomeFragment : Fragment() {
 
                 adapterRecDep.list = it
                 adapterRecDep.notifyDataSetChanged()
+                recDepPort.scrollToPosition(0)
+                recLoanPort.invalidate()
 
                 adapterRecDep.onViewHolderClick = object : OnViewHolderClick {
                     override fun openBankingFragment(id: Int) {
@@ -214,14 +217,8 @@ class HomeFragment : Fragment() {
                         val depFragment = DepositFragment()
                         depFragment.arguments = bundle
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(R.id.FragmentContainerPort, depFragment)?.addToBackStack("")?.commit()
-                    }
-                }
-
-                adapterRecDep.onHolderDeleteClick = object : OnHolderDeleteClick {
-                    override fun deleteBanking(id: Int) {
-                        val item = it.find { dep -> dep.id == id }
-                        showRemovingDialog(item)
+                            ?.add(R.id.FragmentContainerPort, depFragment)?.addToBackStack("")
+                            ?.commit()
                     }
                 }
 
@@ -232,7 +229,11 @@ class HomeFragment : Fragment() {
                             0 -> showDialDepFreqFilter(freq)
                             1 -> cur?.let { getDialFilterByCur(cur, false) }
                             2 -> setSortDepByAcc(isAcc)
-                            3 -> showRemovingDialog(allLoans = false)
+                            3 -> showRemovingDialog(
+                                boomButton,
+                                allLoans = false,
+                                portViewModel = portViewModel
+                            )
                         }
                     }
                 }
@@ -542,55 +543,61 @@ class HomeFragment : Fragment() {
 
     private fun Button.isChecked(): Boolean = textSize == BUTTON_DIALOG_SIZE_PRESSED * 2
 
-    private fun showRemovingDialog(item: Banking? = null, allLoans: Boolean? = null) {
-        if (item == null && allLoans == null)
-            return
-
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(R.string.warning)
-        builder.setIcon(R.drawable.ic_alert)
-        val alertText = when {
-            item != null -> {
-                val text =
-                    if (item is Loan) getString(R.string.loan)
-                    else getString(R.string.deposit)
-                getString(R.string.AreYouSureRemove) + " " + text + "?"
-            }
-            allLoans != null -> {
-                val text =
-                    if (allLoans) getString(R.string.Loans)
-                    else getString(R.string.Deposits)
-                getString(R.string.AreYouSureRemoveAll) + " " + text + "?"
-            }
-            else -> TODO()
-        }
-        builder.setMessage(alertText)
-        builder.setPositiveButton(R.string.OK)
-        { _, _ ->
-            when {
-                item != null -> {
-                    if (item is Loan) portViewModel.deleteLoan(item)
-                    else if (item is Deposit) portViewModel.deleteDep(item)
-                }
-                allLoans != null -> {
-                    if (allLoans) portViewModel.deleteAllLoans()
-                    else portViewModel.deleteAllDep()
-                }
-                else -> TODO()
-            }
-            showSnackBar(R.string.SuccessfullyRemoved, scrollView)
-        }
-        builder.setNegativeButton(R.string.cancel)
-        { _, _ -> }
-
-        val alertDialog = builder.create()
-        alertDialog.show()
-        alertDialog.setCustomView()
-    }
-
     override fun onStop() {
         super.onStop()
         portViewModel.removeSources()
     }
-
 }
+
+fun showRemovingDialog(
+    view: View,
+    portViewModel: PortViewModel,
+    item: Banking? = null,
+    allLoans: Boolean? = null
+) {
+    if (item == null && allLoans == null)
+        return
+
+    val context = view.context
+    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+    builder.setTitle(R.string.warning)
+    builder.setIcon(R.drawable.ic_alert)
+    val alertText = when {
+        item != null -> {
+            val text =
+                if (item is Loan) context.getString(R.string.loan)
+                else context.getString(R.string.deposit)
+            context.getString(R.string.AreYouSureRemove) + " " + text + "?"
+        }
+        allLoans != null -> {
+            val text =
+                if (allLoans) context.getString(R.string.Loans)
+                else context.getString(R.string.Deposits)
+            context.getString(R.string.AreYouSureRemoveAll) + " " + text + "?"
+        }
+        else -> TODO()
+    }
+    builder.setMessage(alertText)
+    builder.setPositiveButton(R.string.OK)
+    { _, _ ->
+        when {
+            item != null -> {
+                if (item is Loan) portViewModel.deleteLoan(item)
+                else if (item is Deposit) portViewModel.deleteDep(item)
+            }
+            allLoans != null -> {
+                if (allLoans) portViewModel.deleteAllLoans()
+                else portViewModel.deleteAllDep()
+            }
+            else -> TODO()
+        }
+        showSnackBar(R.string.SuccessfullyRemoved, view)
+    }
+    builder.setNegativeButton(R.string.cancel)
+    { _, _ -> }
+
+    val alertDialog = builder.create()
+    alertDialog.show()
+    alertDialog.setCustomView()
+}
+

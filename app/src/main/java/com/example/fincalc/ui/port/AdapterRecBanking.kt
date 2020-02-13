@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
@@ -13,21 +14,20 @@ import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.decimalFormatter1p
-import com.example.fincalc.ui.setSvgColor
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.fincalc.ui.port.home.showRemovingDialog
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
 class AdapterRecBanking(
     var list: List<Banking>,
     var onViewHolderClick: OnViewHolderClick?,
-    var onHolderDeleteClick: OnHolderDeleteClick?
+    var port: PortViewModel
 ) :
     RecyclerView.Adapter<AdapterRecBanking.Holder>() {
 
     inner class Holder(
         itemView: View,
         private val onHolderClick: OnViewHolderClick?,
-        private val onDeleteClick: OnHolderDeleteClick?
+        var port: PortViewModel
     ) : RecyclerView.ViewHolder(itemView) {
 
         val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
@@ -36,7 +36,8 @@ class AdapterRecBanking(
         val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
         val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
-        private val fab: ImageView = itemView.findViewById(R.id.fabRecBalanceDelete)
+        private val fab: ImageView = itemView.findViewById(R.id.btnRemove)
+        val layBackData: ConstraintLayout = itemView.findViewById(R.id.layBackData)
 
         init {
             itemView.setOnClickListener {
@@ -45,17 +46,19 @@ class AdapterRecBanking(
             }
 
             fab.setOnClickListener {
-                val bankingId = list[adapterPosition].id
-                onDeleteClick?.deleteBanking(bankingId)
+                showRemovingDialog(
+                    view = itemView,
+                    item = list[adapterPosition],
+                    portViewModel = port
+                )
             }
-             fab.setSvgColor(itemView.context, R.color.colorAccentDark)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_balance, parent, false)
-        return Holder(view, onViewHolderClick, onHolderDeleteClick)
+        return Holder(view, onViewHolderClick, port)
     }
 
     override fun getItemCount(): Int = list.size
@@ -95,6 +98,7 @@ class AdapterRecBanking(
                     LoanType.OTHER -> R.mipmap.type_other_loan
                 }
             )
+            holder.layBackData.setBackgroundResource(R.color.PortPrimaryLight)
         } else if (list[position] is Deposit) {
 
             val freqEnum = (list[position] as Deposit).frequency
@@ -108,6 +112,8 @@ class AdapterRecBanking(
                     Frequency.OTHER -> R.drawable.ic_deposit
                 }
             )
+            holder.layBackData.setBackgroundResource(R.color.DepPrimaryLight)
+
         }
     }
 }

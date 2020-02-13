@@ -113,4 +113,8 @@ dependencies {
 
     //text animating
     implementation 'com.github.elevenetc:textsurface:0.9.1'
+
+    //Infinite indicator
+    implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
+
 }
