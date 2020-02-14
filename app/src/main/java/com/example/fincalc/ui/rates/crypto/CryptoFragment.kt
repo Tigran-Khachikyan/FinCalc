@@ -60,9 +60,26 @@ class CryptoFragment : Fragment() {
         sharedPref = view.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         val base = sharedPref.getString(CURRENCY_PREF, "USD")
         cryptoViewModel.setCurrency(base!!)
-
-        cryptoViewModel.setOrder(true)
+        cryptoViewModel.setOrder(Order.POPULARITY)
         cryptoViewModel.setDate(null)
+
+        btnDateCrypto.setOnClickListener { btn ->
+            openCalendarHighOrderFunc(
+                requireContext(), btn
+            ) { dateApi ->
+                cryptoViewModel.setDate(dateApi)
+            }
+        }
+
+        btnBaseCrypto.setOnClickListener {
+            getDialogCurHighOrderFunc(requireContext()) { cur ->
+                cryptoViewModel.setCurrency(cur)
+            }
+        }
+
+        btnOrderCrypto.setOnClickListener {
+            cryptoViewModel.changeOrder()
+        }
     }
 
     override fun onStart() {
@@ -75,11 +92,11 @@ class CryptoFragment : Fragment() {
                 adapter.ratesRows = it.ratesBarList
                 adapter.notifyDataSetChanged()
 
-                val date =formatterLong.format(it.date)
+                val date = formatterLong.format(it.date)
                 btnDateCrypto.text = date
 
                 val orderType =
-                    if (it.sortedByPrice) context?.getString(R.string.sortByPrice)
+                    if (it.order == Order.PRICE) context?.getString(R.string.sortByPrice)
                     else context?.getString(R.string.sortByPop)
                 btnOrderCrypto.text = orderType
 
@@ -93,27 +110,6 @@ class CryptoFragment : Fragment() {
                 }
                 btnBaseCrypto.text = it.baseCur
                 setBaseCurToSharedPref(sharedPref, it.baseCur)
-
-                btnDateCrypto.setOnClickListener { btn ->
-                    openCalendarHighOrderFunc(
-                        context, btn
-                    ) { dateApi ->
-                        cryptoViewModel.setDate(dateApi)
-                    }
-                }
-
-                btnBaseCrypto.setOnClickListener {
-                    getDialogCurHighOrderFunc(context) { cur ->
-                        cryptoViewModel.setCurrency(cur)
-                    }
-                }
-
-                btnOrderCrypto.setOnClickListener { _ ->
-                    if (it.sortedByPrice)
-                        cryptoViewModel.setOrder(false)
-                    else
-                        cryptoViewModel.setOrder(true)
-                }
             }
         })
     }

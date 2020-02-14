@@ -1,4 +1,5 @@
-package com.example.fincalc.ui.port
+/*
+package com.example.fincalc.ui.port.home
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -8,10 +9,14 @@ import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
+import com.example.fincalc.ui.port.DepFilter
+import com.example.fincalc.ui.port.Filtering
+import com.example.fincalc.ui.port.LoanFilter
 import kotlinx.coroutines.launch
 
 @Suppress("UNCHECKED_CAST")
-class PortViewModel(application: Application) : AndroidViewModel(application), Filtering {
+class HomeViewModel(application: Application) : AndroidViewModel(application),
+    Filtering {
 
     private val repository = Repository.getInstance(application)
 
@@ -80,7 +85,12 @@ class PortViewModel(application: Application) : AndroidViewModel(application), F
         val defLoan2 = filterByCur(defLoan, cur)
         val res = sortByRate(defLoan2, isAcc)
 
-        return LoanFilter(types, res, totalCurs, isAcc)
+        return LoanFilter(
+            types,
+            res,
+            totalCurs,
+            isAcc
+        )
     }
 
     private fun filterByTypes(
@@ -171,7 +181,12 @@ class PortViewModel(application: Application) : AndroidViewModel(application), F
         val defLoan2 = filterByCur(def, cur)
         val res = sortByRate(defLoan2, isAcc)
 
-        return DepFilter(freqList, prodList = res, curList = totalCurs, sortByAcc = isAcc)
+        return DepFilter(
+            freqList,
+            prodList = res,
+            curList = totalCurs,
+            sortByAcc = isAcc
+        )
     }
 
     private fun filterByFreq(
@@ -196,45 +211,6 @@ class PortViewModel(application: Application) : AndroidViewModel(application), F
         else null
     }
 
-    override fun filterByCur(products: List<Banking>?, cur: List<String>?): List<Banking>? {
-        return if (products != null) {
-            return if (cur == null) products else {
-                val inner = arrayListOf<Banking>()
-                for (lo in products)
-                    if (lo.currency == cur[0])
-                        inner.add(lo)
-                inner
-            }
-        } else null
-    }
-
-    override fun sortCur(products: List<Banking>?, curs: List<String>?): List<String>? {
-        return if (products != null) {
-            if (curs != null) {
-                val newCurList = ArrayList<String>()
-                newCurList.add(curs[0])
-                for (pr in products)
-                    if (pr.currency != curs[0])
-                        newCurList.add(pr.currency)
-                newCurList.distinct()
-            } else {
-                val newCurList = arrayListOf<String>()
-                for (pr in products)
-                    newCurList.add(pr.currency)
-                newCurList.distinct()
-            }
-        } else null
-    }
-
-    override fun sortByRate(product: List<Banking>?, acc: Boolean?): List<Banking>? {
-        return if (product != null)
-            return when (acc) {
-                null -> product
-                true -> product.sortedBy { l -> l.rate }
-                else -> product.sortedByDescending { l -> l.rate }
-            }
-        else null
-    }
 
     fun removeSources() {
         mediatorLoan.removeSource(_loanList!!)
@@ -255,3 +231,4 @@ class PortViewModel(application: Application) : AndroidViewModel(application), F
 
 
 
+*/

@@ -8,5 +8,5 @@ class ResultMet(
     override val ratesBarList: List<RatesBar>,
     override var baseCur: String,
     override var date: Date,
-    var isUnitOunce: Boolean
+    var unit: MetalsUnit
 ) : ResultToShow

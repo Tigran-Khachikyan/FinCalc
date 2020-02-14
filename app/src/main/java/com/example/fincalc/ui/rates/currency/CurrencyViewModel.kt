@@ -123,6 +123,13 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         return result
     }
 
+    fun replaceCurrencies() {
+        val base = _curBase.value
+        val from = _curFrom.value
+        _curFrom.value = base
+        _curBase.value = from
+    }
+
     fun removeSources() {
         _convertRates.removeSource(_curBase)
         _convertRates.removeSource(_curFrom)

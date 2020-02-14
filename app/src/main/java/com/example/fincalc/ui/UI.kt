@@ -105,86 +105,82 @@ fun ImageView.setSvgColor(context: Context, color: Int) =
     this.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
 
 fun openCalendarHighOrderFunc(
-    context: Context?, view: View, func: (String?) -> Unit
+    context: Context, view: View, func: (String?) -> Unit
 ) {
-    context?.let {
-        val calendar = Calendar.getInstance()
-        val year = calendar[Calendar.YEAR]
-        val month = calendar[Calendar.MONTH]
-        val day = calendar[Calendar.DAY_OF_MONTH]
-        val dialog: Dialog =
-            DatePickerDialog(
-                context, DatePickerDialog.OnDateSetListener { _, y, m, d ->
-                    val yr: String = y.toString()
-                    val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
-                    val dy = if (d < 10) "0$d" else d.toString()
-                    var dateForApiRequest: String? = "$yr-$mnt-$dy"
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val day = calendar[Calendar.DAY_OF_MONTH]
+    val dialog: Dialog =
+        DatePickerDialog(
+            context, DatePickerDialog.OnDateSetListener { _, y, m, d ->
+                val yr: String = y.toString()
+                val mnt = if (m + 1 < 10) "0${m + 1}" else "${m + 1}"
+                val dy = if (d < 10) "0$d" else d.toString()
+                var dateForApiRequest: String? = "$yr-$mnt-$dy"
 
-                    var selectedDate = try {
-                        dateForApiRequest?.let { formatterCalendar.parse(dateForApiRequest!!) }
-                    } catch (e: ParseException) {
-                        null
-                    }
+                var selectedDate = try {
+                    dateForApiRequest?.let { formatterCalendar.parse(dateForApiRequest!!) }
+                } catch (e: ParseException) {
+                    null
+                }
 
-                    selectedDate?.let {
-                        if (!Date().after(selectedDate)) {
-                            showSnackBar(R.string.InvalidInputCalendar, view)
-                            return@OnDateSetListener
-                        }
-                        if (formatterCalendar.format(Date()) == dateForApiRequest) {
-                            dateForApiRequest = null
-                            selectedDate = null
-                        }
-                        func(dateForApiRequest)// in high order function
+                selectedDate?.let {
+                    if (!Date().after(selectedDate)) {
+                        showSnackBar(R.string.InvalidInputCalendar, view)
+                        return@OnDateSetListener
                     }
-                }, year, month, day
-            )
-        dialog.setCancelable(true)
-        dialog.setOnCancelListener {
-        }
-        dialog.show()
+                    if (formatterCalendar.format(Date()) == dateForApiRequest) {
+                        dateForApiRequest = null
+                        selectedDate = null
+                    }
+                    func(dateForApiRequest)// in high order function
+                }
+            }, year, month, day
+        )
+    dialog.setCancelable(true)
+    dialog.setOnCancelListener {
     }
+    dialog.show()
 }
 
 @SuppressLint("InflateParams")
-fun getDialogCurHighOrderFunc(context: Context?, func: (String) -> Unit) {
-    if (context != null) {
-        val dialogBuilder = AlertDialog.Builder(context)
-        val inflater = LayoutInflater.from(context)
-        val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
-        dialogBuilder.setView(dialogView)
+fun getDialogCurHighOrderFunc(context: Context, func: (String) -> Unit) {
+    val dialogBuilder = AlertDialog.Builder(context)
+    val inflater = LayoutInflater.from(context)
+    val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
+    dialogBuilder.setView(dialogView)
 
-        //spinner Currency
-        val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialFilCurr)
-        val adapterSpinCur = AdapterSpinnerRates(
-            context, R.layout.spinner_currencies, arrayCurCodes
-        )
-        adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
-        spinnerCur.adapter = adapterSpinCur
-        spinnerCur.setHasTransientState(true)
+    //spinner Currency
+    val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialFilCurr)
+    val adapterSpinCur = AdapterSpinnerRates(
+        context, R.layout.spinner_currencies, arrayCurCodes
+    )
+    adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
+    spinnerCur.adapter = adapterSpinCur
+    spinnerCur.setHasTransientState(true)
 
 
-        dialogBuilder.setTitle(R.string.DialogTitleCur)
-        dialogBuilder.setIcon(R.mipmap.currencyicon)
+    dialogBuilder.setTitle(R.string.DialogTitleCur)
+    dialogBuilder.setIcon(R.mipmap.currencyicon)
 
-        //click SAVE
-        dialogBuilder.setPositiveButton(
-            context.getString(R.string.OK)
-        ) { _, _ ->
-            val selectedCur = spinnerCur.selectedItem.toString()
-            func(selectedCur)
-        }
-
-        dialogBuilder.setNegativeButton(
-            context.getString(R.string.cancel)
-        ) { _, _ -> }
-
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
-        alertDialog.setCustomView()
-        alertDialog.window?.setBackgroundDrawableResource(R.color.colorSpinner)
-        spinnerCur.performClick()
+    //click SAVE
+    dialogBuilder.setPositiveButton(
+        context.getString(R.string.OK)
+    ) { _, _ ->
+        val selectedCur = spinnerCur.selectedItem.toString()
+        func(selectedCur)
     }
+
+    dialogBuilder.setNegativeButton(
+        context.getString(R.string.cancel)
+    ) { _, _ -> }
+
+    val alertDialog = dialogBuilder.create()
+    alertDialog.show()
+    alertDialog.setCustomView()
+    alertDialog.window?.setBackgroundDrawableResource(R.color.colorSpinner)
+    spinnerCur.performClick()
 }
 
 fun setBaseCurToSharedPref(sharedPref: SharedPreferences, baseCur: String) {

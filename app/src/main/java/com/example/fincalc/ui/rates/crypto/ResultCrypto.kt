@@ -8,5 +8,5 @@ class ResultCrypto(
     override val ratesBarList: List<RatesBarCrypto>,
     override var baseCur: String,
     override var date: Date,
-    var sortedByPrice: Boolean
+    var order: Order
 ) : ResultToShow

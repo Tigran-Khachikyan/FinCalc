@@ -8,7 +8,6 @@ import com.example.fincalc.data.network.api_crypto.CryptoRates
 import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.RatesFull
 import com.example.fincalc.models.rates.*
-import com.example.fincalc.ui.rates.RatesBar
 import kotlinx.coroutines.launch
 
 class CryptoViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,7 +16,7 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _convertRates = MediatorLiveData<ResultCrypto>()
     private val _baseCurrency = MutableLiveData<String>()
-    private val _orderType = MutableLiveData<Boolean>()
+    private val _orderType = MutableLiveData<Order>()
     private val _data = MutableLiveData<String>()
     private val _ratesCrypto: LiveData<RatesFull> = Transformations.switchMap(_data) {
         if (it == null)
@@ -36,8 +35,14 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         _baseCurrency.value = cur
     }
 
-    fun setOrder(byPrice: Boolean) {
-        _orderType.value = byPrice
+    fun setOrder(order: Order) {
+        _orderType.value = order
+    }
+
+    fun changeOrder() {
+        if (_orderType.value == Order.POPULARITY)
+            _orderType.value = Order.PRICE
+        else _orderType.value = Order.POPULARITY
     }
 
     fun setDate(date: String?) {
@@ -65,13 +70,13 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun combine(
         _selCur: LiveData<String>,
-        _orderByPrice: LiveData<Boolean>,
+        _order: LiveData<Order>,
         _ratesCrypto: LiveData<RatesFull>,
         _ratesCur: LiveData<RatesFull>
     ): ResultCrypto? {
 
         val selCur = _selCur.value
-        val orderByPrice = _orderByPrice.value
+        val order = _order.value
 
         val cryptoRatesLatest = _ratesCrypto.value?.latRates as CryptoRates?
         val cryptoRatesElder = _ratesCrypto.value?.elderRates as CryptoRates?
@@ -84,7 +89,7 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
         val ratesBarList: ArrayList<RatesBarCrypto>?
         var result: ResultCrypto? = null
-        if (cryptoRatesLatest != null && curRatesLatest != null && orderByPrice != null && selCur != null && date != null) {
+        if (cryptoRatesLatest != null && curRatesLatest != null && order != null && selCur != null && date != null) {
             val cryptoMapLatest = getMapFromCryptoRates(cryptoRatesLatest)
             val codeCryptoLatestList = cryptoMapLatest?.keys?.toList()
             val cryptoMapElder = cryptoRatesElder?.let { getMapFromCryptoRates(cryptoRatesElder) }
@@ -145,15 +150,16 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
                     }
                 }
             }
-            if (orderByPrice)
+            if (order == Order.PRICE)
                 ratesBarList.sortByDescending { r -> r.price }
             else //by popularity
                 ratesBarList.sortBy { r -> r.pop }
 
-            result = ResultCrypto(ratesBarList, selCur, date, orderByPrice)
+            result = ResultCrypto(ratesBarList, selCur, date, order)
         }
         return result
     }
+
 
     fun removeSources() {
         _convertRates.removeSource(_baseCurrency)

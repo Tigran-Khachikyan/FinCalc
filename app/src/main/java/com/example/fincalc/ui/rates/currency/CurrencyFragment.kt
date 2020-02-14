@@ -56,6 +56,52 @@ class RateFragment : Fragment() {
         recyclerCur.setHasFixedSize(true)
         recyclerCur.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         recyclerCur.adapter = adapter
+
+        btnDateCur.setOnClickListener { btn ->
+            openCalendarHighOrderFunc(
+                requireContext(), btn
+            ) { dateApi -> curViewModel.setDate(dateApi) }
+        }
+
+        btnBaseCur.setOnClickListener {
+            getDialogCurHighOrderFunc(requireContext()) { cur ->
+                curViewModel.setBaseCur(cur)
+            }
+        }
+
+        btnConvertCur.setOnClickListener {
+            if (btnCurFrom.text != "") {
+                val input = etCurAmountInput.text.toString()
+                if (input != "")
+                    curViewModel.setAmount(input.toDouble())
+                else {
+                    curViewModel.setAmount(null)
+                    showSnackBar(R.string.invalidCurInput, btnConvertCur)
+                }
+            } else
+                showSnackBar(R.string.invalidCurSelection, btnConvertCur)
+            hideKeyboard(this.requireActivity())
+        }
+
+        btnCurBase.setOnClickListener {
+            getDialogCurHighOrderFunc(requireContext()) { selCur ->
+                curViewModel.setBaseCur(selCur)
+            }
+        }
+
+        btnCurFrom.setOnClickListener {
+            getDialogCurHighOrderFunc(requireContext()) { selCur ->
+                curViewModel.setCurFrom(selCur)
+                curViewModel.setAmount(1.0)
+                etCurAmountInput.setText("1.0")
+            }
+        }
+
+        ivTransferCur.setOnClickListener {
+            if (btnCurFrom.text != "") {
+                curViewModel.replaceCurrencies()
+            }
+        }
     }
 
     override fun onStart() {
@@ -103,52 +149,6 @@ class RateFragment : Fragment() {
                 val flagFrom = mapRatesNameIcon[it.curFrom]?.second
                 flagFrom?.let { f ->
                     btnCurFrom.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
-                }
-
-                btnDateCur.setOnClickListener { btn ->
-                    openCalendarHighOrderFunc(
-                        context, btn
-                    ) { dateApi -> curViewModel.setDate(dateApi) }
-                }
-
-                btnBaseCur.setOnClickListener {
-                    getDialogCurHighOrderFunc(context) { cur ->
-                        curViewModel.setBaseCur(cur)
-                    }
-                }
-
-                btnConvertCur.setOnClickListener {
-                    from?.let {
-                        val input = etCurAmountInput.text.toString()
-                        if (input != "")
-                            curViewModel.setAmount(input.toDouble())
-                        else {
-                            curViewModel.setAmount(null)
-                            showSnackBar(R.string.invalidCurInput, btnConvertCur)
-                        }
-                    } ?: showSnackBar(R.string.invalidCurSelection, btnConvertCur)
-                    hideKeyboard(this.requireActivity())
-                }
-
-                btnCurBase.setOnClickListener {
-                    getDialogCurHighOrderFunc(context) { selCur ->
-                        curViewModel.setBaseCur(selCur)
-                    }
-                }
-
-                btnCurFrom.setOnClickListener {
-                    getDialogCurHighOrderFunc(context) { selCur ->
-                        curViewModel.setCurFrom(selCur)
-                        curViewModel.setAmount(1.0)
-                        etCurAmountInput.setText("1.0")
-                    }
-                }
-
-                ivTransferCur.setOnClickListener {
-                    from?.let {
-                        curViewModel.setBaseCur(from)
-                        curViewModel.setCurFrom(base)
-                    }
                 }
             }
         })

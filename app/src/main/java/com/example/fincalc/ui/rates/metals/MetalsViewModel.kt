@@ -10,7 +10,6 @@ import com.example.fincalc.models.rates.*
 import com.example.fincalc.ui.rates.RatesBar
 import kotlinx.coroutines.launch
 
-private const val TROY_OUNCE = 31.1034768
 
 class MetalsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,7 +18,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _convertRates = MediatorLiveData<ResultMet>()
     private val _baseCurrency = MutableLiveData<String>()
-    private val _unitType = MutableLiveData<Boolean>()
+    private val _unitType = MutableLiveData<MetalsUnit>()
     private val _data = MutableLiveData<String?>()
     private val _rates: LiveData<RatesFull> = Transformations.switchMap(_data) {
         Log.d("qqqqqqq", "IT TRIGGERED SWITCHED MAP $it")
@@ -34,8 +33,10 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         _baseCurrency.value = cur
     }
 
-    fun setUnit(byOunce: Boolean) {
-        _unitType.value = byOunce
+    fun changeUnit() {
+        if (_unitType.value == MetalsUnit.GRAM)
+            _unitType.value = MetalsUnit.TROY_OUNCE
+        else _unitType.value = MetalsUnit.GRAM
     }
 
     fun setDate(date: String?) {
@@ -60,7 +61,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun combine(
         _selCur: LiveData<String>,
-        _unit: LiveData<Boolean>,
+        _unit: LiveData<MetalsUnit>,
         _rates: LiveData<RatesFull>
     ): ResultMet? {
 
@@ -68,7 +69,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
 
 
         val selCur = _selCur.value
-        val isUnitOunce = _unit.value
+        val unit = _unit.value
 
         val ratesLatest = _rates.value?.latRates as CurMetRates?
         val date = _rates.value?.dateTime
@@ -80,7 +81,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         val baseCurForRates = _rates.value?.base ?: "USD"
 
         var result: ResultMet? = null
-        if (ratesLatest != null && isUnitOunce != null && selCur != null && date != null) {
+        if (ratesLatest != null && unit != null && selCur != null && date != null) {
 
             val mapLatest = getMapFromRates(ratesLatest)
             val mapElder = ratesElder?.let { getMapFromRates(ratesElder) }
@@ -133,12 +134,12 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
                     }
                 }
             }
-            Log.d("derdd", "isUnitOunce VM: $isUnitOunce")
+            Log.d("derdd", "isUnitOunce VM: $unit")
             Log.d("derdd", "dare VM: $date")
 
-            if (!isUnitOunce)
-                ratesBarList.forEach { r -> r.price = r.price / TROY_OUNCE }
-            result = ResultMet(ratesBarList, selCur, date, isUnitOunce)
+            if (unit == MetalsUnit.GRAM)
+                ratesBarList.forEach { r -> r.price = r.price / MetalsUnit.TROY_OUNCE.weight }
+            result = ResultMet(ratesBarList, selCur, date, unit)
             Log.d("qqqqqqq", "DATE HAS BEEN CHANGED $date")
 
         }

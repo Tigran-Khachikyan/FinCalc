@@ -121,7 +121,7 @@
                         android:text="@string/Capitalization"
                         app:layout_constraintLeft_toLeftOf="@id/tvCurrencyDepFr"
                         android:paddingEnd="20dp"
-                        android:drawableEnd="@mipmap/checked"
+                        android:drawableEnd="@drawable/ic_check"
                         app:layout_constraintBottom_toTopOf="@id/tvTaxDepFr"
                         app:layout_constraintTop_toBottomOf="@id/tvCurrencyDepFr"
                         tools:ignore="RtlSymmetry" />

@@ -250,6 +250,8 @@
     <string name="gram">gram</string>
     <string name="sortByPrice">by price</string>
     <string name="sortByPop">by popularity</string>
+    <string name="sortByRate">highest rates</string>
+    <string name="sortByDate">latest</string>
 
 
     ------------------------------------

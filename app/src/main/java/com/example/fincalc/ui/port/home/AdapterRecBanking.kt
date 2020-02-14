@@ -1,4 +1,4 @@
-package com.example.fincalc.ui.port
+package com.example.fincalc.ui.port.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,20 +14,20 @@ import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.decimalFormatter1p
-import com.example.fincalc.ui.port.home.showRemovingDialog
+import com.example.fincalc.ui.port.OnViewHolderClick
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
 class AdapterRecBanking(
     var list: List<Banking>,
     var onViewHolderClick: OnViewHolderClick?,
-    var port: PortViewModel
+    var port: BaseViewModel
 ) :
     RecyclerView.Adapter<AdapterRecBanking.Holder>() {
 
     inner class Holder(
         itemView: View,
         private val onHolderClick: OnViewHolderClick?,
-        var port: PortViewModel
+        var port: BaseViewModel
     ) : RecyclerView.ViewHolder(itemView) {
 
         val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
@@ -46,11 +46,11 @@ class AdapterRecBanking(
             }
 
             fab.setOnClickListener {
-                showRemovingDialog(
+              /*  showRemovingDialog(
                     view = itemView,
                     item = list[adapterPosition],
                     portViewModel = port
-                )
+                )*/
             }
         }
     }

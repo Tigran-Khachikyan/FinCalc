@@ -95,17 +95,29 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent">
 
+
+
                     <TextView
                         android:id="@+id/tvLoanHeader"
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="60dp"
                         android:gravity="center"
                         android:text="@string/Loans"
                         android:textColor="@android:color/black"
                         android:textSize="28sp"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                    </TextView>
+                    <Button
+                        android:id="@+id/btnSortLoan"
+                        android:layout_width="0dp"
+                        app:layout_constraintWidth_percent="0.23"
+                        android:layout_height="0dp"
+                        android:text="By Price"
+                        style="@style/button_icon"
+                        android:layout_marginStart="36dp"
+                        app:layout_constraintBottom_toBottomOf="@id/tvLoanHeader"
+                        app:layout_constraintLeft_toLeftOf="@id/tvLoanHeader"
+                        app:layout_constraintTop_toTopOf="@id/tvLoanHeader"/>
 
                     <com.nightonke.boommenu.BoomMenuButton
                         android:id="@+id/bmbLoansMenu"
@@ -236,7 +248,7 @@
 
                     </TextView>
 
-                    <com.nightonke.boommenu.BoomMenuButton
+               <!--     <com.nightonke.boommenu.BoomMenuButton
                         android:id="@+id/bmbDepMenu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -250,7 +262,7 @@
                         app:bmb_shadowRadius="0dp"
                         app:layout_constraintBottom_toBottomOf="@id/tvDepHeader"
                         app:layout_constraintEnd_toEndOf="@id/tvDepHeader"
-                        app:layout_constraintTop_toTopOf="@id/tvDepHeader" />
+                        app:layout_constraintTop_toTopOf="@id/tvDepHeader" />-->
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
