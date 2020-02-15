@@ -1,10 +1,11 @@
 package com.example.fincalc.ui.port
 
 import com.example.fincalc.models.Banking
-import com.example.fincalc.ui.port.filter.Sort
+import com.example.fincalc.ui.port.filter.SearchOption
 
-abstract class Filter(
+abstract class BaseFilter(
     var bankingList: List<Banking>?,
     var currencies: MutableSet<String>?,
-    var sort: Sort
+    var sort: Boolean?,
+    val searchOptions: MutableSet<SearchOption>
 )

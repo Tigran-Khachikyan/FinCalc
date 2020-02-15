@@ -7,8 +7,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface.BUTTON_NEGATIVE
-import android.content.DialogInterface.BUTTON_POSITIVE
+import android.content.DialogInterface.*
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
@@ -17,6 +16,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -97,8 +97,10 @@ fun AlertDialog.setCustomView() {
     getButton(BUTTON_NEGATIVE).gravity = Gravity.START
     getButton(BUTTON_POSITIVE).textSize = 18F
     getButton(BUTTON_NEGATIVE).textSize = 18F
+    getButton(BUTTON_NEUTRAL).textSize = 18F
     getButton(BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     getButton(BUTTON_POSITIVE).setTextColor(Color.WHITE)
+    getButton(BUTTON_NEUTRAL).setTextColor(Color.WHITE)
 }
 
 fun ImageView.setSvgColor(context: Context, color: Int) =
@@ -243,6 +245,34 @@ private fun Drawable.setCustomSizedp(context: Context, size: Int) {
     val pxSize = size * context.resources.displayMetrics.density.toInt()
     setBounds(0, 0, pxSize, pxSize)
 }
+
+
+//FILTERING
+fun Button.setViewChecked(checked: Boolean, icon: Int?) {
+    if (checked) {
+        background = context.getDrawable(R.drawable.btn_option_checked)
+        //  setCompoundDrawablesWithIntrinsicBounds(icon, 0, R.drawable.ic_check, 0)
+        setCustomSizeVector(
+            context,
+            resLeft = icon,
+            sizeLeftdp = 24,
+            resRight = R.drawable.ic_check,
+            sizeRightdp = 24
+        )
+        textSize = BUTTON_DIALOG_SIZE_PRESSED
+        setTextColor(Color.WHITE)
+    } else {
+        background = context?.getDrawable(R.drawable.btn_expand)
+        // setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+        setCustomSizeVector(context, resLeft = icon, sizeLeftdp = 24)
+
+        textSize = BUTTON_DIALOG_SIZE_UNPRESSED
+        setTextColor(Color.BLACK)
+    }
+}
+
+val Button.isChecked: Boolean
+    get() = currentTextColor == Color.WHITE
 
 
 

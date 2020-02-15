@@ -12,9 +12,7 @@ import com.example.fincalc.R
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.rates.mapRatesNameIcon
-import com.example.fincalc.ui.BUTTON_DIALOG_SIZE_PRESSED
-import com.example.fincalc.ui.BUTTON_DIALOG_SIZE_UNPRESSED
-import com.example.fincalc.ui.setCustomSizeVector
+import com.example.fincalc.ui.*
 
 @Suppress("UNCHECKED_CAST")
 class AdapterRecyclerMultiChoice(
@@ -29,18 +27,16 @@ class AdapterRecyclerMultiChoice(
 
         init {
             raw.setOnClickListener {
-                val curButton = it as Button
-
                 selOptions = when (val curPref = possibleOptions.elementAt(adapterPosition)) {
                     is LoanType -> {
-                        curButton.changeSelection(
+                        raw.changeSelection(
                             selOptions as MutableSet<LoanType>,
                             possibleOptions as MutableSet<LoanType>,
                             adapterPosition, null
                         )
                     }
                     is Frequency -> {
-                        curButton.changeSelection(
+                        raw.changeSelection(
                             selOptions as MutableSet<Frequency>,
                             possibleOptions as MutableSet<Frequency>,
                             adapterPosition, null
@@ -48,7 +44,7 @@ class AdapterRecyclerMultiChoice(
                     }
                     is String -> {
                         val flag = mapRatesNameIcon[curPref]?.second ?: 0
-                        curButton.changeSelection(
+                        raw.changeSelection(
                             selOptions as MutableSet<String>,
                             possibleOptions as MutableSet<String>,
                             adapterPosition, flag
@@ -73,11 +69,17 @@ class AdapterRecyclerMultiChoice(
 
         val text = when (val rawPos = possibleOptions.elementAt(position)) {
             is LoanType -> {
-                holder.raw.setViewChecked((selOptions as MutableSet<LoanType>).contains(rawPos), null)
+                holder.raw.setViewChecked(
+                    (selOptions as MutableSet<LoanType>).contains(rawPos),
+                    null
+                )
                 context.getString(rawPos.id)
             }
             is Frequency -> {
-                holder.raw.setViewChecked((selOptions as MutableSet<Frequency>).contains(rawPos), null)
+                holder.raw.setViewChecked(
+                    (selOptions as MutableSet<Frequency>).contains(rawPos),
+                    null
+                )
                 context.getString(rawPos.id)
             }
             is String -> {
@@ -93,77 +95,30 @@ class AdapterRecyclerMultiChoice(
         }
         holder.raw.text = text
     }
-}
 
-private fun Button.setViewChecked(checked: Boolean, icon: Int?) {
-    if (checked) {
-        background = context.getDrawable(R.drawable.btn_option_checked)
-        //  setCompoundDrawablesWithIntrinsicBounds(icon, 0, R.drawable.ic_check, 0)
-        setCustomSizeVector(
-            context,
-            resLeft = icon,
-            sizeLeftdp = 24,
-            resRight = R.drawable.ic_check,
-            sizeRightdp = 24
-        )
-        textSize = BUTTON_DIALOG_SIZE_PRESSED
-        setTextColor(Color.WHITE)
-    } else {
-        background = context?.getDrawable(R.drawable.btn_expand)
-        // setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
-        setCustomSizeVector(context, resLeft = icon, sizeLeftdp = 24)
+    private fun <T> Button.changeSelection(
+        selectedOptions: MutableSet<T>,
+        possibleOptions: MutableSet<T>,
+        position: Int,
+        icon: Int?
+    ): MutableSet<T> {
 
-        textSize = BUTTON_DIALOG_SIZE_UNPRESSED
-        setTextColor(Color.BLACK)
+
+        if (isChecked) {
+            selectedOptions.remove(possibleOptions.elementAt(position))
+            setViewChecked(false, icon)
+        } else {
+            selectedOptions.add(possibleOptions.elementAt(position))
+            setViewChecked(true, icon)
+        }
+        Log.d("uuuuurrib", "BOTTON.changeSelection() return : ${selectedOptions.size}")
+
+        return selectedOptions
     }
 }
 
 
-private val Button.isChecked: Boolean
-    get() = currentTextColor == Color.WHITE
-
-/*private fun <T> Button.changeSelection(
-    selOpt: ArrayList<T>,
-    possibleOptions: List<T>,
-    position: Int
-): ArrayList<T> {
-
-    Log.d("uuuuuuui","BOTTON.CHANGE() is triggered" )
-    Log.d("uuuuuuui","BOTTON.CHECKED(): ${this.isChecked}" )
-    Log.d("uuuuuuui","BOTTON.currentTextColor: ${this.currentTextColor}" )
-    Log.d("uuuuuuui","currentTextColor == Color.WHITE : ${currentTextColor == Color.WHITE}" )
-
-    if (isChecked) {
-        selOpt.remove(possibleOptions[position])
-        setViewChecked(false)
-    }
-    else {
-        selOpt.add(possibleOptions[position])
-        setViewChecked(true)
-    }
-    Log.d("uuuuuuui","BOTTON.CHANGE() return : ${selOpt.size}" )
-
-    return selOpt
-}*/
-
-private fun <T> Button.changeSelection(
-    selectedOptions: MutableSet<T>,
-    possibleOptions: MutableSet<T>,
-    position: Int,
-    icon: Int?
-): MutableSet<T> {
 
 
-    if (isChecked) {
-        selectedOptions.remove(possibleOptions.elementAt(position))
-        setViewChecked(false, icon)
-    } else {
-        selectedOptions.add(possibleOptions.elementAt(position))
-        setViewChecked(true, icon)
-    }
-    Log.d("uuuuurrib", "BOTTON.changeSelection() return : ${selectedOptions.size}")
-
-    return selectedOptions
-}
 
 

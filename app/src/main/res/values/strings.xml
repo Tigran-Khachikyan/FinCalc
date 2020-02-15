@@ -131,13 +131,10 @@
     <string name="selectTheCriteria">Select the criteria you want to filter with.</string>
 
     --BalanceFragment-
-    <string name="selectedCurrency">Filtered by currency</string>
-    <string name="selectedType">Filtered by Loan Type</string>
-    <string name="selectedFreq">Filtered by repayment frequency</string>
+    <string name="filteredByCur">by currency</string>
+    <string name="filteredByType">by Loan Type</string>
+    <string name="filteredByFreq">by repayment frequency</string>
     <string name="oneTimeComeAndCost">One Time Commission and costs -></string>
-    <string name="sortedByInterestRate">Sorted by rate: </string>
-    <string name="ascending">ascending</string>
-    <string name="descending">descending</string>
     <string name="noLoanFound">No loan found</string>
     <string name="noDepositFound">No deposit found</string>
     <string name="Report">Report</string>
@@ -250,8 +247,7 @@
     <string name="gram">gram</string>
     <string name="sortByPrice">by price</string>
     <string name="sortByPop">by popularity</string>
-    <string name="sortByRate">highest rates</string>
-    <string name="sortByDate">latest</string>
+
 
 
     ------------------------------------
@@ -260,6 +256,12 @@
     <string name="select">select</string>
     <string name="texting">Гарантии и безопасность. казчик получает качественный текст, а исполнитель — оплату.</string>
     <string name="financialMarkets">Financial markets</string>
-
+    <string name="highestRates">highest rates</string>
+    <string name="lowestRates">Lowest rates</string>
+    <string name="sortingOptions">Sorting options</string>
+    <string name="editFilter">Edit filter</string>
+    <string name="filterRemoveEditText">Do you want to edit filter or remove?</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
 
 </resources>

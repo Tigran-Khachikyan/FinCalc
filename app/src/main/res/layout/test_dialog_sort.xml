@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingBottom="20dp"
+    android:paddingTop="10dp">
+
+    <Button
+        android:id="@+id/btnSortByLatest"
+        style="@style/dialCheck"
+        android:background="@drawable/btn_option_checked"
+        android:text="@string/latest" />
+
+    <Button
+        android:id="@+id/btnSortByRateHighest"
+        style="@style/dialCheck"
+        android:background="@drawable/btn_option_checked"
+        android:text="@string/highestRates" />
+
+    <Button
+        android:id="@+id/btnSortByRateLowest"
+        style="@style/dialCheck"
+        android:background="@drawable/btn_option_checked"
+        android:text="@string/lowestRates" />
+
+</LinearLayout>
