@@ -33,7 +33,6 @@ class AdapterSpinnerRates(
     private fun createItemView(position: Int, parent: ViewGroup): View {
         val view = LayoutInflater.from(mContext).inflate(mResource, parent, false)
 
-        val laySpinner: ConstraintLayout = view.findViewById(R.id.laySpinner)
         val tvRateCode: TextView = view.findViewById(R.id.tvRateCode)
         val tvRateName: TextView = view.findViewById(R.id.tvRateName)
         val ivRateIcon: ImageView = view.findViewById(R.id.ivRateIcon)

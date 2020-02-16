@@ -12,6 +12,7 @@
         app:layout_constraintHorizontal_weight="236"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textSize="13sp"
+        android:background="@color/PortPrimaryDarkTrans"
         android:textStyle="italic|bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@id/tvOneTimeCommissionAndCosts">
@@ -21,6 +22,7 @@
         style="@style/textView"
         android:textSize="13sp"
         android:paddingStart="18dp"
+        android:background="@color/PortPrimaryDarkTrans"
         android:paddingEnd="30dp"
         android:textStyle="bold"
         app:layout_constraintHorizontal_weight="134"

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layContainerDep"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dep.DepositActivity">
@@ -48,192 +49,62 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="@color/DepPrimary"
-        android:paddingBottom="40dp"
+        android:paddingBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!--imageView-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ivDepImage"
+            android:id="@+id/layDepImage"
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:layout_marginBottom="10dp"
-            android:background="@mipmap/image_savings_main"
             android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layCoverDep"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/background_violet"
-            app:layout_constraintBottom_toBottomOf="@id/ivDepImage"
-            app:layout_constraintLeft_toLeftOf="@id/ivDepImage"
-            app:layout_constraintRight_toRightOf="@id/ivDepImage"
-            app:layout_constraintTop_toTopOf="@id/ivDepImage" />
-
-        <TextView
-            android:id="@+id/tvStatusDep"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/WeMakeItEasy"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/ivDepImage" />
-
-        <!--recycler-->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutDepResult"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/DepPrimary"
-            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
 
-
-            <TextView
-                android:id="@+id/tvResultDepIntro"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ivDepImage"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
-                android:gravity="start"
-                android:paddingStart="4dp"
-                android:text="@string/Report"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/layoutDepResultIntro"
-                tools:ignore="RtlSymmetry" />
+                android:layout_height="match_parent"
+                android:background="@mipmap/image_savings_main"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layoutDepResultIntro"
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:background="@drawable/input_frame"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tvResultDepIntro">
-
-                <TextView
-                    android:id="@+id/tvNumberDepIntro"
-                    style="@style/textView"
-                    android:layout_height="wrap_content"
-                    android:background="@color/DepPrimary"
-                    android:text="N"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepBalanceIntro"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/tvDepBalanceIntro"
-                    style="@style/textView"
-                    android:layout_height="wrap_content"
-                    android:background="@color/DepPrimary"
-                    android:text="@string/BalanceDep"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="9"
-                    app:layout_constraintLeft_toRightOf="@id/tvNumberDepIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepPercentIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDepPercentIntro"
-                    style="@style/textView"
-                    android:layout_height="wrap_content"
-                    android:background="@color/DepPrimary"
-                    android:text="@string/PercentDep"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="7"
-                    app:layout_constraintLeft_toRightOf="@id/tvDepBalanceIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvPercentAfterTaxIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvPercentAfterTaxIntro"
-                    style="@style/textView"
-                    android:layout_height="wrap_content"
-                    android:background="@color/DepPrimary"
-                    android:text="@string/PercentAfterTaxDep"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="7"
-                    app:layout_constraintLeft_toRightOf="@id/tvDepPercentIntro"
-                    app:layout_constraintRight_toLeftOf="@id/tvDepPaymentIntro"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDepPaymentIntro"
-                    style="@style/textView"
-                    android:layout_height="wrap_content"
-                    android:background="@color/DepPrimary"
-                    android:text="@string/Payment"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="10"
-                    app:layout_constraintLeft_toRightOf="@id/tvPercentAfterTaxIntro"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerDep"
-                android:layout_width="match_parent"
-                android:layout_height="196dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDepResultIntro" />
-
+                android:id="@+id/layCoverDep"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/background_violet"
+                app:layout_constraintBottom_toBottomOf="@id/ivDepImage"
+                app:layout_constraintLeft_toLeftOf="@id/ivDepImage"
+                app:layout_constraintRight_toRightOf="@id/ivDepImage"
+                app:layout_constraintTop_toTopOf="@id/ivDepImage" />
 
             <TextView
-                android:id="@+id/tvEffectRateDepShow"
+                android:id="@+id/tvStatusDep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="4dp"
-                android:gravity="start"
-                android:textColor="@android:color/black"
-                android:textSize="24sp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="@string/WeMakeItEasy"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/recyclerDep" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_AddDep"
-                style="@style/Widget.Design.FloatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/ic_save" />
+                app:layout_constraintBottom_toBottomOf="@id/ivDepImage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <!--mandatory-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutDepMandatoryInput"
+            android:id="@+id/layDepManInput"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            app:layout_constraintBottom_toTopOf="@id/layoutDepOptionalInput">
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/layDepOptionalInput">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepAmount"
+                style="@style/Deposit_Input_Frame"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/input_frame"
                 app:layout_constraintBottom_toTopOf="@id/cardDepTerm"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_weight="1">
@@ -253,13 +124,13 @@
                     android:id="@+id/etSumDep"
                     style="@style/editTextMainInput"
                     android:layout_width="0dp"
-                    android:hint="@string/HintAmount"
+                    android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="9"
+                    android:layout_marginBottom="6dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/ivLogoDepSum"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintRight_toLeftOf="@id/ivLogoDepSum" />
 
                 <ImageView
                     android:id="@+id/ivLogoDepSum"
@@ -275,11 +146,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepTerm"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/input_frame"
+                style="@style/Deposit_Input_Frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/cardDepRate"
@@ -302,7 +169,6 @@
                     android:id="@+id/etRateDep"
                     style="@style/editTextMainInput"
                     android:layout_width="0dp"
-                    android:hint="@string/HintRate"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -323,13 +189,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepRate"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/input_frame"
+                style="@style/Deposit_Input_Frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginEnd="0dp"
                 app:layout_constraintRight_toLeftOf="@id/cardDepTerm"
                 app:layout_constraintTop_toBottomOf="@id/cardDepAmount"
                 app:layout_constraintVertical_weight="1">
@@ -349,7 +213,6 @@
                     android:id="@+id/etTermDep"
                     style="@style/editTextMainInput"
                     android:layout_width="0dp"
-                    android:hint="@string/HintTerm"
                     android:inputType="number"
                     android:maxLength="2"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -373,19 +236,19 @@
 
         <!--optional-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutDepOptionalInput"
+            android:id="@+id/layDepOptionalInput"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/layEmptyContainer">
+            app:layout_constraintBottom_toTopOf="@id/layMargin"
+            app:layout_constraintVertical_bias="1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepPeriod"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:background="@drawable/input_frame"
+                style="@style/Deposit_Input_Frame"
+                android:layout_height="194dp"
                 app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/cardDepCapitalization"
                 app:layout_constraintRight_toRightOf="parent">
 
@@ -456,14 +319,11 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepCapitalization"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/input_frame"
+                style="@style/Deposit_Input_Frame"
                 app:layout_constraintBottom_toTopOf="@id/cardDepTax"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginEnd="0dp"
                 app:layout_constraintRight_toLeftOf="@id/cardDepPeriod"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_weight="1">
@@ -516,10 +376,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cardDepTax"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/input_frame"
+                style="@style/Deposit_Input_Frame"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -580,21 +437,20 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--margin-->
+        <!--marginLayout-->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layEmptyContainer"
+            android:id="@+id/layMargin"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="40dp"
             app:layout_constraintBottom_toTopOf="@id/layoutDepButtons" />
 
         <!--buttons-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutDepButtons"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <Button

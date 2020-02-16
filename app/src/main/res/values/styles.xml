@@ -36,12 +36,19 @@
 
 
 
-    <style name="cardViewOptions">
-        <item name="android:layout_width">328dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:shadowColor">@android:color/black</item>
+   <style name="Loan_Input_Frame">
+       <item name="android:layout_height">80dp</item>
+       <item name="android:layout_width">0dp</item>
+       <item name="android:layout_marginStart">10dp</item>
+       <item name="android:layout_marginEnd">10dp</item>
+       <item name="android:layout_marginTop">10dp</item>
+       <item name="android:background">@drawable/input_frame</item>
+   </style>
+
+    <style name="Deposit_Input_Frame" parent="Loan_Input_Frame">
+        <item name="android:layout_height">92dp</item>
     </style>
+
 
 
     <style name="btnMainAc">
@@ -60,14 +67,29 @@
         <item name="android:background">@color/PortPrimaryLight</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:layout_margin">1dp</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:layout_marginTop">1dp</item>
         <item name="android:layout_height">24dp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_width">0dp</item>
     </style>
 
     <style name="texViewDep" parent="textView">
-        <item name="android:background">@color/DepPrimaryLight</item>
+        <item name="android:background">@color/DepPrimaryDarkTrans</item>
+    </style>
+
+    <style name="texViewLoan" parent="textView">
+        <item name="android:background">@color/PortPrimaryDarkTrans</item>
+    </style>
+
+    <style name="texViewDepReport" parent="textView">
+        <item name="android:background">@color/PortPrimaryDark</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="textViewBigMain">
@@ -112,7 +134,7 @@
 
     <style name="editTextMainInput">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">34sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
@@ -125,7 +147,7 @@
     <style name="editTextOptional">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>

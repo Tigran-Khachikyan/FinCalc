@@ -50,7 +50,7 @@
     <string name="Clear">Clear</string>
     <string name="Loan_Balance">Balance</string>
     <string name="Percent">Percent</string>
-    <string name="Commission">Commission</string>
+    <string name="Commission">Commiss</string>
     <string name="TOTAL">TOTAL</string>
     <string name="TOTAL_PAYMENT">Total payment</string>
     <string name="InvalidInput">"Invalid input! \"Amount\" , \"Term\" and \"Interest rate\" fields are mandatory!"</string>
@@ -141,7 +141,7 @@
     <string name="Terms">Terms</string>
     <string name="RealRate">Real interest rate</string>
     <string name="EffectiveRate">Effective Rate</string>
-    <string name="Income">Income</string>
+    <string name="Income">Total Income</string>
     <string name="DialogTitleSave">Saving options</string>
     <string name="DialogTitleCur">Select Currency</string>
     <string name="successSaved">Successfully saved in Portfolio</string>
@@ -247,7 +247,6 @@
     <string name="gram">gram</string>
     <string name="sortByPrice">by price</string>
     <string name="sortByPop">by popularity</string>
-
 
 
     ------------------------------------

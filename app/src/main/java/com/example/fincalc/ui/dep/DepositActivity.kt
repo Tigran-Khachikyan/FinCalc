@@ -21,16 +21,24 @@ import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
+import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import java.util.*
 
+
+const val KEY_AMOUNT = "Amount"
+const val KEY_TERM = "Term"
+const val KEY_RATE = "Rate"
+const val KEY_CAPITALIZATION = "Capitalization"
+const val KEY_TAX_RATE = "TaxRate"
+const val KEY_FREQUENCY = "Frequency"
+
+
 @Suppress("DEPRECATION")
 class DepositActivity : AppCompatActivity() {
-    private var dep: Deposit? = null
-    private lateinit var adapterRec: AdapterRecViewDep
-    private lateinit var depViewModel: DepositViewModel
+
     private var period: Frequency = Frequency.MONTHLY
 
 
@@ -40,13 +48,12 @@ class DepositActivity : AppCompatActivity() {
 
         tvStatusDep.setFont(FONT_PATH)
 
-        depViewModel = ViewModelProvider(this).get(DepositViewModel::class.java)
         imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
-
+/*
         recyclerDep.setHasFixedSize(true)
         recyclerDep.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         adapterRec = AdapterRecViewDep(null)
-        recyclerDep.adapter = adapterRec
+        recyclerDep.adapter = adapterRec*/
 
         btnClearDep.setOnClickListener {
             clear()
@@ -76,71 +83,81 @@ class DepositActivity : AppCompatActivity() {
             expand()
         }
 
-        fab_AddDep.setOnClickListener {
+        /*fab_AddDep.setOnClickListener {
             getDialog(this, dep)
-        }
+        }*/
     }
 
     private fun clear() {
         etSumDep.text.clear()
         etRateDep.text.clear()
         etTermDep.text.clear()
-        layoutDepResult.visibility = View.GONE
     }
 
     private fun calculate(view: View) {
         hideKeyboard(this)
-        dep = getDep(view)
+        val dep = getDep(view)
 
-        if (dep == null) {
+        dep?.let {
+
+            val bundle = Bundle()
+            bundle.putLong(KEY_AMOUNT, dep.amount)
+            bundle.putInt(KEY_TERM, dep.months)
+            bundle.putFloat(KEY_RATE, dep.rate)
+            bundle.putBoolean(KEY_CAPITALIZATION, dep.capitalize)
+            bundle.putFloat(KEY_TAX_RATE, dep.taxRate)
+            bundle.putString(KEY_FREQUENCY, dep.frequency.name)
+            val fragmentReport = DepScheduleFragment()
+            fragmentReport.arguments = bundle
+
+            this.supportFragmentManager.beginTransaction().add(R.id.layContainerDep, fragmentReport)
+                .addToBackStack(" ").commit()
+
+        }
+
+        /*if (dep == null) {
             adapterRec.scheduleDep = null
         } else {
             CoroutineScope(Main).launch {
                 val scheduleDep = TableDep(dep as Deposit)
                 adapterRec.scheduleDep = scheduleDep
                 adapterRec.notifyDataSetChanged()
-                /*   val text: String = resources.getString(R.string.ResultShowDep) +
-                           " ${dec.format(scheduleDep.totalPerAfterTax)}"*/
+                *//*   val text: String = resources.getString(R.string.ResultShowDep) +
+                           " ${dec.format(scheduleDep.totalPerAfterTax)}"*//*
                 val effRate: String = resources.getString(R.string.EffectiveRate) + ": " +
                         decimalFormatter2p.format(scheduleDep.effectiveRate).toString() + "%"
                 tvEffectRateDepShow.text = effRate
             }
-            if (layoutDepOptionalInput.visibility != View.GONE) {
-                btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.ic_expand_more_black_24dp,
-                    0
-                )
+            if (layDepOptionalInput.visibility != View.GONE) {
+                btnExpandDep.setCustomSizeVector(baseContext,resRight = R.drawable.ic_expand_more_black_24dp, sizeRightdp = 24)
                 btnExpandDep.setText(R.string.AdvancedCalculation)
-                toggle(true, layoutDepOptionalInput, layDepInput)
+                toggle(true, layDepOptionalInput, layDepInput)
             }
             layoutDepResult.visibility = View.VISIBLE
-        }
+        }*/
+
+
     }
 
     private fun expand() {
-        if (layoutDepOptionalInput.visibility == View.GONE) {
-            ivDepImage.visibility = View.GONE
-            btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_expand_less_black_24dp,
-                0
+        if (layDepOptionalInput.visibility == View.GONE) {
+            layDepImage.visibility = View.GONE
+            btnExpandDep.setCustomSizeVector(
+                baseContext,
+                resRight = R.drawable.ic_expand_less_black_24dp,
+                sizeRightdp = 24
             )
             btnExpandDep.setText(R.string.SimpleCalculation)
-            toggle(false, layoutDepOptionalInput, layDepInput)
-            layoutDepResult.visibility = View.GONE
+            toggle(false, layDepOptionalInput, layDepInput)
         } else {
-            ivDepImage.visibility = View.VISIBLE
-            btnExpandDep.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_expand_more_black_24dp,
-                0
+            layDepImage.visibility = View.VISIBLE
+            btnExpandDep.setCustomSizeVector(
+                baseContext,
+                resRight = R.drawable.ic_expand_more_black_24dp,
+                sizeRightdp = 24
             )
             btnExpandDep.setText(R.string.AdvancedCalculation)
-            toggle(true, layoutDepOptionalInput, layDepInput)
+            toggle(true, layDepOptionalInput, layDepInput)
         }
     }
 
@@ -208,56 +225,5 @@ class DepositActivity : AppCompatActivity() {
         Animatoo.animateSlideUp(this)
     }
 
-    @SuppressLint("InflateParams")
-    private fun getDialog(context: Context?, dep: Deposit?) {
-        if (context != null) {
-            val dialogBuilder = AlertDialog.Builder(context)
-            val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_save, null)
-            dialogBuilder.setView(dialogView)
-
-            dialogBuilder.setTitle(R.string.savingOptions)
-            val etBank: EditText = dialogView.findViewById(R.id.etDialBank)
-
-            //spinner Currency
-            val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
-            val adapterSpinCur = AdapterSpinnerRates(
-                context, R.layout.spinner_currencies, arrayCurCodes
-            )
-            adapterSpinCur.setDropDownViewResource(R.layout.spinner_currencies)
-            spinnerCur.adapter = adapterSpinCur
-
-            //spinner LoanType
-            val spinnerType = dialogView.findViewById<Spinner>(R.id.spinnerDialLoanType)
-            spinnerType.visibility = View.GONE
-            val tvSpinner = dialogView.findViewById<TextView>(R.id.tvDialLoanType)
-            tvSpinner.visibility = View.GONE
-
-            //click SAVE
-            dialogBuilder.setPositiveButton(
-                getString(R.string.save)
-            ) { _, _ ->
-
-                dep?.bank = etBank.text.toString()
-                dep?.currency = spinnerCur.selectedItem.toString()
-                dep?.date = formatterShort.format(Date())
-                dep?.let {
-                    depViewModel.addDep(dep)
-                    showSnackBar(R.string.successSaved, fab_AddDep)
-                    hideKeyboard(this)
-                }
-            }
-
-            //click CANCEL
-            dialogBuilder.setNegativeButton(
-                getString(R.string.cancel)
-            ) { _, _ -> }
-
-            val alertDialog = dialogBuilder.create()
-            alertDialog.show()
-            alertDialog.setCustomView()
-            alertDialog.window?.setBackgroundDrawableResource(R.color.DepPrimary)
-        }
-    }
 
 }

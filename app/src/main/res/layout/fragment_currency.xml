@@ -94,26 +94,26 @@
 
                     <Button
                         android:id="@+id/btnDateCur"
+                        style="@style/button_icon"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        style="@style/button_icon"
                         android:lines="2"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/btnBaseCur"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/btnBaseCur"
-                        android:layout_width="0dp"
                         style="@style/button_icon"
+                        android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@id/btnDateCur"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <!--Intro-->
@@ -128,8 +128,8 @@
                         android:id="@+id/tvCurIntro"
                         style="@style/textViewIntroInput"
                         android:layout_width="0dp"
-                        android:layout_marginStart="10dp"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
                         android:text="@string/Currency"
                         android:textAllCaps="true"
                         android:textColor="@color/PortPrimaryLight"
@@ -187,9 +187,9 @@
                     style="@style/textViewBigMain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="@string/CustomCur"
-                    android:layout_marginTop="16dp"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -298,24 +298,31 @@
                         android:textColorHint="@color/PortPrimaryDark"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/btnConvertCur"
+                        app:layout_constraintRight_toLeftOf="@id/btnFrameConvertCur"
                         app:layout_constraintTop_toBottomOf="@id/tvSpinnerAmount"
                         tools:ignore="LabelFor" />
 
-                    <Button
-                        android:id="@+id/btnConvertCur"
-                        style="@style/button"
+                  <!--  button_Convert-->
+                    <FrameLayout
+                        android:id="@+id/btnFrameConvertCur"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="4dp"
-                        android:background="@drawable/btn_calculate"
-                        android:text="@string/convert"
-                        android:textColor="@color/PortPrimaryLight"
+                        android:layout_height="?attr/actionBarSize"
                         app:layout_constraintBottom_toBottomOf="@id/etCurAmountInput"
                         app:layout_constraintLeft_toRightOf="@id/etCurAmountInput"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/etCurAmountInput" />
+                        app:layout_constraintTop_toTopOf="@id/etCurAmountInput">
+
+                        <Button
+                            android:id="@+id/btnConvertCur"
+                            style="@style/button"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_calculate"
+                            android:paddingTop="0dp"
+                            android:text="@string/convert"
+                            android:textColor="@color/PortPrimaryLight" />
+
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tvCurResult"

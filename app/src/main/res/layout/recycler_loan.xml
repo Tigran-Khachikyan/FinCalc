@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tvNumber"
-        style="@style/textView"
+        style="@style/texViewLoan"
         app:layout_constraintHorizontal_weight="22"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/tvLoanSumRemain"
-        style="@style/textView"
+        style="@style/texViewLoan"
         app:layout_constraintHorizontal_weight="76"
         app:layout_constraintLeft_toRightOf="@id/tvNumber"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/tvLoanSumMonthly"
-        style="@style/textView"
+        style="@style/texViewLoan"
         app:layout_constraintHorizontal_weight="68"
         app:layout_constraintLeft_toRightOf="@id/tvLoanSumRemain"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/tvPercentMonthly"
-        style="@style/textView"
+        style="@style/texViewLoan"
         app:layout_constraintHorizontal_weight="64"
         app:layout_constraintLeft_toRightOf="@id/tvLoanSumMonthly"
         app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
     </TextView>
     <TextView
         android:id="@+id/tvCommissionMonthly"
-        style="@style/textView"
+        style="@style/texViewLoan"
         app:layout_constraintHorizontal_weight="52"
         app:layout_constraintLeft_toRightOf="@id/tvPercentMonthly"
         app:layout_constraintTop_toTopOf="parent"
@@ -51,10 +51,9 @@
 
     <TextView
         android:id="@+id/tvTotalPaymentMonthly"
-        style="@style/textView"
+        style="@style/texViewLoan"
         android:textSize="13sp"
         android:textStyle="bold"
-        android:background="@color/PortPrimary"
         app:layout_constraintHorizontal_weight="80"
         app:layout_constraintLeft_toRightOf="@id/tvCommissionMonthly"
         app:layout_constraintTop_toTopOf="parent"

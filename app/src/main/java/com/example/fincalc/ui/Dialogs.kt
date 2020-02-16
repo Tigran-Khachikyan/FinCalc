@@ -6,15 +6,27 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Button
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.data.db.dep.Deposit
+import com.example.fincalc.data.db.loan.Loan
+import com.example.fincalc.models.Banking
+import com.example.fincalc.models.credit.Formula
+import com.example.fincalc.models.credit.getLoanTypeFromString
+import com.example.fincalc.models.credit.getLoanTypeListName
+import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.port.filter.AdapterRecyclerMultiChoice
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.SearchOption
+import com.example.fincalc.ui.port.home.AdapterRecBanking
 import com.example.fincalc.ui.port.home.LoansFilterViewModel
+import kotlinx.android.synthetic.main.fragment_schedule.*
+import java.util.*
 
 
 /*
@@ -135,7 +147,7 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
     //click CANCEL
     dialBuilder.setNegativeButton(
         context.getString(R.string.cancel)
-    ) { d, _ ->  }
+    ) { _, _ -> }
 
     dialBuilder.setNeutralButton(
         if (adapter.selOptions.size != 0)
@@ -164,7 +176,6 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
             }
             adapter.notifyDataSetChanged()
         }
-
 }
 
 @SuppressLint("InflateParams")
@@ -260,3 +271,5 @@ fun showDialogRemoveOrEditFilter(context: Context, filterPref: FilterQuery, opti
     alertDialog.setCustomView()
 
 }
+
+

@@ -11,35 +11,24 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = Repository.getInstance(application)
 
-    object RepoSchedule {
-        val scheduleAnnLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
-        val scheduleDiffLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
-        val scheduleOverLiveData: MutableLiveData<TableLoan?> = MutableLiveData()
+    object Container {
+        val schedules = MutableLiveData<Array<TableLoan>>()
 
-        fun setScheduleAnn(schedule: TableLoan) {
-            scheduleAnnLiveData.value = schedule
-        }
-
-        fun setScheduleDiff(schedule: TableLoan) {
-            scheduleDiffLiveData.value = schedule
-        }
-
-        fun setScheduleOver(schedule: TableLoan) {
-            scheduleOverLiveData.value = schedule
+        fun setSchedule(schedules: Array<TableLoan>) {
+            this.schedules.value = schedules
         }
 
         fun clear() {
-            scheduleAnnLiveData.value = null
-            scheduleDiffLiveData.value = null
-            scheduleOverLiveData.value = null
+            schedules.value = null
         }
+    }
+
+    fun getSchedules(): LiveData<Array<TableLoan>?> {
+        return Container.schedules
     }
 
     fun addLoan(loan: Loan) = viewModelScope.launch {
         repository?.insertLoan(loan)
     }
 
-    fun getScheduleAnnuity(): LiveData<TableLoan?> = RepoSchedule.scheduleAnnLiveData
-    fun getScheduleDifferential(): LiveData<TableLoan?> = RepoSchedule.scheduleDiffLiveData
-    fun getScheduleOverdraft(): LiveData<TableLoan?> = RepoSchedule.scheduleOverLiveData
 }

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/PortPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
@@ -10,7 +11,7 @@
         style="@style/textView"
         android:text="@string/TOTAL"
         android:textSize="13sp"
-        app:layout_constraintHorizontal_weight="100"
+        app:layout_constraintHorizontal_weight="99"
         android:layout_height="34dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,8 +31,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
         android:background="@color/PortPrimaryDark"
-        app:layout_constraintRight_toLeftOf="@id/tvTotalPercent">
-    </TextView>
+        app:layout_constraintRight_toLeftOf="@id/tvTotalPercent"/>
 
     <TextView
         android:id="@+id/tvTotalPercent"
@@ -43,8 +43,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
         android:background="@color/PortPrimaryDark"
-        app:layout_constraintRight_toLeftOf="@id/tvTotalCommission">
-    </TextView>
+        app:layout_constraintRight_toLeftOf="@id/tvTotalCommission"/>
+
     <TextView
         android:id="@+id/tvTotalCommission"
         style="@style/textView"
@@ -55,8 +55,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@android:color/white"
         android:background="@color/PortPrimaryDark"
-        app:layout_constraintRight_toLeftOf="@id/tvTotalPayment">
-    </TextView>
+        app:layout_constraintRight_toLeftOf="@id/tvTotalPayment"/>
 
     <TextView
         android:id="@+id/tvTotalPayment"
@@ -69,8 +68,7 @@
         android:background="@color/PortPrimaryDark"
         app:layout_constraintLeft_toRightOf="@id/tvTotalCommission"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-    </TextView>
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

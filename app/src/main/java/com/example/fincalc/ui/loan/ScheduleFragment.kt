@@ -43,12 +43,12 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
     ): View? {
 
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         recycler.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
@@ -56,69 +56,28 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
         adapterRecSchedule = AdapterRecScheduleLoan(null)
         recycler.adapter = adapterRecSchedule
 
+        fab_Loan.setOnClickListener {
+            CoroutineScope(Main).launch {
 
-        if (formula != Formula.ANNUITY) {
-            if (formula == Formula.DIFFERENTIAL) scheduleViewModel.getScheduleDifferential().observe(
-                viewLifecycleOwner,
-                Observer {
-
-                    refreshSchedule(it)
-                    it?.let {
-                        val table = it
-                        fab_Loan.setOnClickListener {
-                            this.context?.let {
-                                getDialog(this.context, table.loan, formula)
-                            }
-                        }
-                    }
-                })
-            else if (formula == Formula.OVERDRAFT) scheduleViewModel.getScheduleOverdraft().observe(
-                viewLifecycleOwner,
-                Observer {
-
-                    refreshSchedule(it)
-                    it?.let {
-                        val schedule = it
-                        fab_Loan.setOnClickListener {
-                            CoroutineScope(Main).launch {
-                                getDialog(context, schedule.loan, formula)
-                            }
-                        }
-                    }
-                })
-        } else
-            scheduleViewModel.getScheduleAnnuity().observe(
-                viewLifecycleOwner,
-                Observer {
-
-                    refreshSchedule(it)
-                    it?.let {
-                        val schedule = it
-                        fab_Loan.setOnClickListener {
-                            CoroutineScope(Main).launch {
-                                getDialog(context, schedule.loan, formula)
-                            }
-                        }
-                    }
-                })
-    }
-
-    private fun refreshSchedule(sch: TableLoan?) {
-        if (sch != null) {
-            constraintLayoutFragment.visibility = View.VISIBLE
-            /*   adapterSchedule.items = sch.rowList
-               adapterSchedule.notifyDataSetChanged()*/
-            adapterRecSchedule.item = sch
-            adapterRecSchedule.notifyDataSetChanged()
-            val realRate = context?.getString(R.string.RealRate) + ": " +
-                    decimalFormatter1p.format(sch.realRate).toString() + "%"
-            tvRealRateLoanAc.text = realRate
-            val total = context?.getString(R.string.TOTAL_PAYMENT) + ": " +
-                    decimalFormatter1p.format((sch.totalPayment + sch.oneTimeComAndCosts)).toString()
-            tvTotalPayLoanAc.text = total
-        } else {
-            constraintLayoutFragment.visibility = View.GONE
+            }
         }
+
+        scheduleViewModel.getSchedules().observe(viewLifecycleOwner, Observer {
+
+            if (it != null) {
+                constraintLayoutFragment.visibility = View.VISIBLE
+                val schedule = it.filter { sch -> sch.formulaLoan == formula }[0]
+                adapterRecSchedule.item = schedule
+                adapterRecSchedule.notifyDataSetChanged()
+
+                val realRate = decimalFormatter2p.format(schedule.realRate) + "%"
+                tvRealRateLoanAc.text = realRate
+                val total =
+                    decimalFormatter1p.format((schedule.totalPayment + schedule.oneTimeComAndCosts))
+                tvTotalPayLoanAc.text = total
+
+            } else constraintLayoutFragment.visibility = View.GONE
+        })
     }
 
     @SuppressLint("InflateParams")
@@ -158,7 +117,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             ) { _, _ ->
 
                 val typeEnum = getLoanTypeFromString(
-                    spinnerType.selectedItem.toString(),requireContext()
+                    spinnerType.selectedItem.toString(), requireContext()
                 )
                 loan.bank = etBank.text.toString()
                 loan.currency = spinnerCur.selectedItem.toString()

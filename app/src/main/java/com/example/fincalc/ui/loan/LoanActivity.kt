@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
@@ -16,9 +17,12 @@ import com.example.fincalc.models.credit.Formula
 import com.example.fincalc.ui.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoanActivity : AppCompatActivity() {
@@ -26,6 +30,8 @@ class LoanActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan)
+
+        ScheduleViewModel.Container.clear()
 
         tvStatusLoan.setFont(FONT_PATH)
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -42,7 +48,7 @@ class LoanActivity : AppCompatActivity() {
     }
 
     private fun clear() {
-        scrollAppBarLayoutInit(0)
+        scrollAppBarLayoutInit(0, 0, 0)
         etSum.text.clear()
         etTerm.text.clear()
         etRate.text.clear()
@@ -56,7 +62,7 @@ class LoanActivity : AppCompatActivity() {
         checkboxOneTime.isChecked = false
         checkboxMonthly.isChecked = false
         checkboxAnnual.isChecked = false
-        ScheduleViewModel.RepoSchedule.clear()
+        ScheduleViewModel.Container.clear()
     }
 
     private fun calculate(view: View) {
@@ -64,44 +70,39 @@ class LoanActivity : AppCompatActivity() {
         val loan: Loan? = getLoan(view)
 
         if (loan != null) {
-            CoroutineScope(Dispatchers.Main).launch {
-                val schAnn = getSchedule(Formula.ANNUITY, loan)
-                val schDiff = getSchedule(Formula.DIFFERENTIAL, loan)
-                val schOver = getSchedule(Formula.OVERDRAFT, loan)
-                ScheduleViewModel.RepoSchedule.setScheduleAnn(schAnn)
-                ScheduleViewModel.RepoSchedule.setScheduleDiff(schDiff)
-                ScheduleViewModel.RepoSchedule.setScheduleOver(schOver)
+            CoroutineScope(Main).launch {
+                val schedules = arrayOf(
+                    getSchedule(Formula.ANNUITY, loan),
+                    getSchedule(Formula.DIFFERENTIAL, loan),
+                    getSchedule(Formula.OVERDRAFT, loan)
+                )
+                ScheduleViewModel.Container.setSchedule(schedules)
             }
-
-            val handler = Handler()
-            val runnable = Runnable {
-                scrollAppBarLayoutInit(-resources.displayMetrics.heightPixels)
-            }
-            handler.postDelayed(runnable, 1000)
+            scrollAppBarLayoutInit(-resources.displayMetrics.heightPixels, 1200, 600)
         }
     }
 
     private fun expand() {
         if (layoutLoanInputOptional.visibility == View.GONE) {
-            ivLoanImage.visibility = View.GONE
-            btnExpand.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_expand_less_black_24dp,
-                0
+            layLoanImage.visibility = View.GONE
+            btnExpand.setCustomSizeVector(
+                baseContext,
+                resRight = R.drawable.ic_expand_less_black_24dp,
+                sizeRightdp = 24
             )
             btnExpand.setText(R.string.SimpleCalculation)
             toggle(false, layoutLoanInputOptional, layoutLoanInput)
+            scrollAppBarLayoutInit(-200, 400, 0)
         } else {
-            ivLoanImage.visibility = View.VISIBLE
-            btnExpand.setCompoundDrawablesWithIntrinsicBounds(
-                0,
-                0,
-                R.drawable.ic_expand_more_black_24dp,
-                0
+            layLoanImage.visibility = View.VISIBLE
+            btnExpand.setCustomSizeVector(
+                baseContext,
+                resRight = R.drawable.ic_expand_more_black_24dp,
+                sizeRightdp = 24
             )
             btnExpand.setText(R.string.AdvancedCalculation)
             toggle(true, layoutLoanInputOptional, layoutLoanInput)
+            scrollAppBarLayoutInit(200, 400, 0)
         }
     }
 
@@ -181,20 +182,24 @@ class LoanActivity : AppCompatActivity() {
         }
     }
 
-    private fun scrollAppBarLayoutInit(scrollY: Int) {
+    private fun scrollAppBarLayoutInit(scrollY: Int, duration: Long, delay: Long) {
 
-        val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
-        val behavior = params.behavior as AppBarLayout.Behavior?
-        val valueAnimatorExtend = ValueAnimator.ofInt()
-        if (behavior != null) {
-            valueAnimatorExtend.interpolator = AccelerateDecelerateInterpolator()
-            valueAnimatorExtend.addUpdateListener { animation ->
-                behavior.topAndBottomOffset = (animation.animatedValue as Int)
-                appBarLayout.requestLayout()
+        CoroutineScope(Main).launch {
+            delay(delay)
+
+            val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
+            val behavior = params.behavior as AppBarLayout.Behavior?
+            val valueAnimatorExtend = ValueAnimator.ofInt()
+            if (behavior != null) {
+                valueAnimatorExtend.interpolator = AccelerateDecelerateInterpolator()
+                valueAnimatorExtend.addUpdateListener { animation ->
+                    behavior.topAndBottomOffset = (animation.animatedValue as Int)
+                    appBarLayout.requestLayout()
+                }
+                valueAnimatorExtend.setIntValues(0, scrollY)
+                valueAnimatorExtend.duration = duration
+                valueAnimatorExtend.start()
             }
-            valueAnimatorExtend.setIntValues(0, scrollY)
-            valueAnimatorExtend.duration = 1200
-            valueAnimatorExtend.start()
         }
     }
 
