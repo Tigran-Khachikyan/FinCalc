@@ -9,8 +9,8 @@ interface LoanDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(loan: Loan)
 
-    @Delete
-    suspend fun delete(loan: Loan)
+    @Query("DELETE FROM loans WHERE _id = :id")
+    suspend fun deleteById(id: Int)
 
     @Query("DELETE FROM loans")
     suspend fun deleteAll()

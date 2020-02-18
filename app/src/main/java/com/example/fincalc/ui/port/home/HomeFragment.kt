@@ -4,7 +4,6 @@ package com.example.fincalc.ui.port.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
+import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.ui.*
+import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.OnViewHolderClick
+import com.example.fincalc.ui.port.deps.DepositFragment
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.SearchOption
 import com.example.fincalc.ui.port.filter.SearchOption.*
@@ -26,6 +28,10 @@ import com.example.fincalc.ui.port.loans.LoansFragment
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 const val LOAN_ID_KEY = "Loan Key"
 const val DEPOSIT_ID_KEY = "Deposit Key"
@@ -33,55 +39,35 @@ const val DEPOSIT_ID_KEY = "Deposit Key"
 @Suppress("UNCHECKED_CAST")
 class HomeFragment : Fragment() {
 
-    // private lateinit var homeViewModel: HomeViewModel
     private lateinit var loansFilterViewModel: LoansFilterViewModel
+    private lateinit var depFilterViewModel: DepFilterViewModel
     private lateinit var adapterRecLoan: AdapterRecBanking
     private lateinit var adapterRecDep: AdapterRecBanking
+    private var delay: Boolean = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        // homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         loansFilterViewModel = ViewModelProvider(this).get(LoansFilterViewModel::class.java)
+        depFilterViewModel = ViewModelProvider(this).get(DepFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        loansFilterViewModel.setSortPref(null)
-
-
-
-
-
-
         tvStatusPort.setFont(FONT_PATH)
 
-        bmbLoansMenu.initialize(BMBTypes.LOAN)
-        //bmbDepMenu.initialize(BMBTypes.DEPOSIT)
+        /*LOANS*/
+        loansFilterViewModel.setSortPref(null)
 
-        //Loan adapter init
-        adapterRecLoan = AdapterRecBanking(
-            arrayListOf(), null, loansFilterViewModel
-        )
+        bmbLoansMenu.initialize(BMBTypes.LOAN)
+
+        adapterRecLoan = AdapterRecBanking(arrayListOf(), null, loansFilterViewModel)
         recLoanPort.initialize(adapterRecLoan)
         indicatorLoans.attachToRecyclerView(recLoanPort)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recLoanPort)
-
-        //Deposit adapter init
-        /*  adapterRecDep = AdapterRecBanking(
-              arrayListOf(), null, homeViewModel
-          )*/
-        /*       recDepPort.initialize(adapterRecDep)
-               indicatorDep.attachToRecyclerView(recDepPort)
-               val snapHelper2 = PagerSnapHelper()
-               snapHelper2.attachToRecyclerView(recDepPort)*/
-
-        //filter closing
 
         fabAddLoan.setOnClickListener {
             val intent = Intent(requireActivity(), LoanActivity::class.java)
@@ -101,56 +87,64 @@ class HomeFragment : Fragment() {
             btnLoansFilter3.editOrRemoveFilter(requireContext(), loansFilterViewModel)
         }
 
-        /*fabAddDep.setOnClickListener {
-            val intent = Intent(requireActivity(), DepositActivity::class.java)
-            startActivity(intent)
-            Animatoo.animateInAndOut(requireActivity())
-        }*/
-
-        /* tvLoanTypeFilter.setOnClickListener {
-             tvLoanTypeFilter.visibility = View.GONE
-             loansFilterViewModel.setSelLoanTypeList(null)
-         }
-
-         tvLoanCurFilter.setOnClickListener {
-             tvLoanCurFilter.visibility = View.GONE
-             homeViewModel.setSelLoanCurList(null)
-         }
-
-         tvLoanSortFilter.setOnClickListener {
-             tvLoanSortFilter.visibility = View.GONE
-             homeViewModel.setSortByLoanRate(null)
-         }
-
-         tvDepTypeFilter.setOnClickListener {
-             tvDepTypeFilter.visibility = View.GONE
-             homeViewModel.setSelDepFreqList(null)
-         }
-
-         tvDepCurFilter.setOnClickListener {
-             tvDepCurFilter.visibility = View.GONE
-             homeViewModel.setSelDepCurList(null)
-         }
-
-         tvDepSortFilter.setOnClickListener {
-             tvDepSortFilter.visibility = View.GONE
-             homeViewModel.setSortByDepRate(null)
-         }*/
-
         adapterRecLoan.onViewHolderClick = object : OnViewHolderClick {
             override fun openBankingFragment(id: Int) {
                 val bundle = Bundle()
                 bundle.putInt(LOAN_ID_KEY, id)
                 val loanFragment = LoansFragment()
                 loanFragment.arguments = bundle
-                Log.d("ftft", "LOANFRAGMENT: $loanFragment")
                 activity?.supportFragmentManager?.beginTransaction()
                     ?.add(R.id.FragmentContainerPort, loanFragment)?.addToBackStack("")
                     ?.commit()
             }
         }
 
-/*
+        bmbLoansMenu.onBoomListener = object : OnBoomListenerAdapter() {
+            override fun onClicked(index: Int, boomButton: BoomButton) {
+                super.onClicked(index, boomButton)
+                when (index) {
+                    0 -> showDialogTypeFilter(requireContext(), loansFilterViewModel)
+                    1 -> showDialogCurrencyFilter(requireContext(), loansFilterViewModel)
+                    2 -> showDialogSort(requireContext(), loansFilterViewModel)
+                    3 -> showDialogRemoveBanking(
+                        bmbLoansMenu, loansFilterViewModel, allLoans = true
+                    ){
+                        showSnackBar(R.string.SuccessfullyRemoved, bmbLoansMenu)
+                    }
+                }
+            }
+        }
+
+
+        /*DEPOSIT*/
+        depFilterViewModel.setSortPref(null)
+
+        bmbDepMenu.initialize(BMBTypes.DEPOSIT)
+
+        adapterRecDep = AdapterRecBanking(arrayListOf(), null, depFilterViewModel)
+        recDepPort.initialize(adapterRecDep)
+        indicatorDep.attachToRecyclerView(recDepPort)
+        val snapHelperDep = PagerSnapHelper()
+        snapHelperDep.attachToRecyclerView(recDepPort)
+
+        fabAddDep.setOnClickListener {
+            val intent = Intent(requireActivity(), DepositActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateSpin(requireActivity())
+        }
+
+        btnDepFilter1.setOnClickListener {
+            btnDepFilter1.editOrRemoveFilter(requireContext(), depFilterViewModel)
+        }
+
+        btnDepFilter2.setOnClickListener {
+            btnDepFilter2.editOrRemoveFilter(requireContext(), depFilterViewModel)
+        }
+
+        btnDepFilter3.setOnClickListener {
+            btnDepFilter3.editOrRemoveFilter(requireContext(), depFilterViewModel)
+        }
+
         adapterRecDep.onViewHolderClick = object : OnViewHolderClick {
             override fun openBankingFragment(id: Int) {
                 val bundle = Bundle()
@@ -162,17 +156,19 @@ class HomeFragment : Fragment() {
                     ?.commit()
             }
         }
-*/
 
-        bmbLoansMenu.onBoomListener = object : OnBoomListenerAdapter() {
+        bmbDepMenu.onBoomListener = object : OnBoomListenerAdapter() {
             override fun onClicked(index: Int, boomButton: BoomButton) {
                 super.onClicked(index, boomButton)
                 when (index) {
-                    0 -> showDialogTypeFilter(requireContext(), loansFilterViewModel)
-                    1 -> showDialogCurrencyFilter(requireContext(), loansFilterViewModel)
-                    2 -> showDialogSort(requireContext(), loansFilterViewModel)
-                    /*        2 -> showDialogOrderPref(homeViewModel)      //setSortLoanByAcc(isSortedAcc)
-                            3 -> showDialogRemoveLoans(homeViewModel)*/ // showRemovingDialog(view = boomButton, allLoans = true, portViewModel = homeViewModel)*/
+                    0 -> showDialogTypeFilter(requireContext(), depFilterViewModel)
+                    1 -> showDialogCurrencyFilter(requireContext(), depFilterViewModel)
+                    2 -> showDialogSort(requireContext(), depFilterViewModel)
+                    3 -> showDialogRemoveBanking(
+                        bmbDepMenu, depFilterViewModel, allLoans = false
+                    ){
+                        showSnackBar(R.string.SuccessfullyRemoved, bmbDepMenu)
+                    }
                 }
             }
         }
@@ -185,447 +181,167 @@ class HomeFragment : Fragment() {
         //Loans
         loansFilterViewModel.getLoanList().observe(this, Observer { it ->
 
-            val loans = it.bankingList as List<Loan>?
-            val types = it.loanTypeList
-            val currencies = it.currencies
-            val isSortedAcc = it.sort
+            progressBarHomeFr.visibility = View.VISIBLE
+
             val sortTextRes = when (it.sort) {
                 null -> R.string.latest
                 true -> R.string.highestRates
                 false -> R.string.lowestRates
             }
-
-            Log.d("sfsfsfff", "LOANS OBSERVER: $loans")
-
+            val loans = it.bankingList as List<Loan>?
             val queue = it.searchOptions
-            if (queue.size > 0)
-                btnLoansFilter1.setTextFromQuerySet(
-                    requireContext(), queue.elementAt(0), sortTextRes
-                )
-            else {
-                btnLoansFilter1.visibility = View.GONE
-                btnLoansFilter2.visibility = View.GONE
-                btnLoansFilter3.visibility = View.GONE
-            }
 
-            if (queue.size > 1)
-                btnLoansFilter2.setTextFromQuerySet(
-                    requireContext(), queue.elementAt(1), sortTextRes
-                )
-            else {
-                btnLoansFilter2.visibility = View.GONE
-                btnLoansFilter3.visibility = View.GONE
-            }
+            CoroutineScope(Main).launch {
+                val delayTime: Long = if (!delay) {
+                    delay = true
+                    0
+                } else 700
+                delay(delayTime)
 
-            if (queue.size > 2)
-                btnLoansFilter3.setTextFromQuerySet(
-                    requireContext(), queue.elementAt(2), sortTextRes
-                )
-            else
-                btnLoansFilter3.visibility = View.GONE
+                progressBarHomeFr.visibility = View.GONE
+
+                if (queue.size > 0)
+                    btnLoansFilter1.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(0), sortTextRes,true
+                    )
+                else {
+                    btnLoansFilter1.visibility = View.GONE
+                    btnLoansFilter2.visibility = View.GONE
+                    btnLoansFilter3.visibility = View.GONE
+                }
+
+                if (queue.size > 1)
+                    btnLoansFilter2.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(1), sortTextRes, true
+                    )
+                else {
+                    btnLoansFilter2.visibility = View.GONE
+                    btnLoansFilter3.visibility = View.GONE
+                }
+
+                if (queue.size > 2)
+                    btnLoansFilter3.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(2), sortTextRes, true
+                    )
+                else
+                    btnLoansFilter3.visibility = View.GONE
 
 
-            val textLoanHeader = when {
-                loans == null || loans.isEmpty() -> getString(R.string.noLoanFound)
-                loans.size == 1 -> "1 ${getString(R.string.loan)}"
-                else -> loans.size.toString() + " " + getString(R.string.Loans)
-            }
-            tvLoanHeader.text = textLoanHeader
+                val textLoanHeader = when {
+                    loans == null || loans.isEmpty() -> getString(R.string.noLoanFound)
+                    loans.size == 1 -> "1 ${getString(R.string.loan)}"
+                    else -> loans.size.toString() + " " + getString(R.string.Loans)
+                }
+                tvLoanHeader.text = textLoanHeader
 
-            loans?.let {
+                loans?.let {
 
-
-                adapterRecLoan.list = it
-                adapterRecLoan.notifyDataSetChanged()
-                recLoanPort.scrollToPosition(0)
-                recLoanPort.invalidate()
-                /*  btnSortLoan.text = if(sort == true)
-                      requireContext().getString(R.string.sortByDate)
-                  else requireContext().getString(R.string.sortByRate)*/
+                    adapterRecLoan.list = it
+                    adapterRecLoan.notifyDataSetChanged()
+                    recLoanPort.scrollToPosition(0)
+                    recLoanPort.invalidate()
+                }
             }
         })
 
-        //Deposits
-/*
-        homeViewModel.getDepList().observe(viewLifecycleOwner, Observer { it ->
+        //Deposit
+        depFilterViewModel.getDepList().observe(this, Observer { it ->
 
+            progressBarHomeFr.visibility = View.VISIBLE
+
+            val sortTextRes = when (it.sort) {
+                null -> R.string.latest
+                true -> R.string.highestRates
+                false -> R.string.lowestRates
+            }
             val depList = it.bankingList as List<Deposit>?
-            val freq = it.freqList
-            val cur = it.currencies
-            val isAcc = it.sortByRate
+            val queue = it.searchOptions
 
-            val textDepHeader = when {
-                depList == null || depList.isEmpty() -> getString(R.string.noDepositFound)
-                depList.size == 1 -> "1 ${getString(R.string.deposit)}"
-                else -> depList.size.toString() + " " + getString(R.string.deposits)
-            }
+            CoroutineScope(Main).launch {
+                val delayTime: Long = if (!delay) {
+                    delay = true
+                    0
+                } else 700
+                delay(delayTime)
 
-            tvDepHeader.text = textDepHeader
-            depList?.let {
+                progressBarHomeFr.visibility = View.GONE
 
-                adapterRecDep.list = it
-                adapterRecDep.notifyDataSetChanged()
-                recDepPort.scrollToPosition(0)
-                recDepPort.invalidate()
+                if (queue.size > 0)
+                    btnDepFilter1.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(0), sortTextRes, false
+                    )
+                else {
+                    btnDepFilter1.visibility = View.GONE
+                    btnDepFilter2.visibility = View.GONE
+                    btnDepFilter3.visibility = View.GONE
+                }
 
-                bmbDepMenu.onBoomListener = object : OnBoomListenerAdapter() {
-                    override fun onClicked(index: Int, boomButton: BoomButton) {
-                        super.onClicked(index, boomButton)
-                        when (index) {
-                            0 -> showDialDepFreqFilter(freq)
-                            1 -> cur?.let { getDialFilterByCur(cur, false) }
-                            2 -> setSortDepByAcc(isAcc)
-                            3 -> showRemovingDialog(
-                                boomButton,
-                                allLoans = false,
-                                portViewModel = homeViewModel
-                            )
-                        }
-                    }
+                if (queue.size > 1)
+                    btnDepFilter2.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(1), sortTextRes, false
+                    )
+                else {
+                    btnDepFilter2.visibility = View.GONE
+                    btnDepFilter3.visibility = View.GONE
+                }
+
+                if (queue.size > 2)
+                    btnDepFilter3.setTextFromQuerySet(
+                        requireContext(), queue.elementAt(2), sortTextRes, false
+                    )
+                else
+                    btnDepFilter3.visibility = View.GONE
+
+                val textDepHeader = when {
+                    depList == null || depList.isEmpty() -> getString(R.string.noDepositFound)
+                    depList.size == 1 -> "1 ${getString(R.string.deposit)}"
+                    else -> depList.size.toString() + " " + getString(R.string.deposits)
+                }
+                tvDepHeader.text = textDepHeader
+
+                depList?.let {
+                    adapterRecDep.list = it
+                    adapterRecDep.notifyDataSetChanged()
+                    recDepPort.scrollToPosition(0)
+                    recDepPort.invalidate()
                 }
             }
         })
-*/
     }
-
-
-/*    //Loans
-    @SuppressLint("InflateParams")
-    private fun showDialLoanTypeFilter(types: List<LoanType>?) {
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_filter_type, null)
-        dialogBuilder.setView(dialogView)
-
-        dialogBuilder.setTitle(R.string.Filtering)
-        dialogBuilder.setIcon(R.drawable.ic_filter)
-        dialogBuilder.setMessage(R.string.selectTheCriteria)
-
-        //Buttons
-        val typeList = arrayListOf<LoanType>()
-
-        fun Button.setChecked(checked: Boolean) {
-            setViewChecked(checked)
-            val type = getLoanTypeFromString(text.toString(), context)
-            type?.let {
-                when (checked) {
-                    true -> if (!typeList.contains(it)) typeList.add(it)
-                    false -> if (typeList.contains(it)) typeList.remove(it)
-                }
-            }
-        }
-
-        val onClickListener = View.OnClickListener {
-
-            val curBut = it as Button
-            curBut.setChecked(!curBut.isChecked())
-        }
-
-        val btnMort: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
-        val btnCar: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
-        val btnBus: Button = dialogView.findViewById(R.id.btnDialLoanTypeBus)
-        val btnCons: Button = dialogView.findViewById(R.id.btnDialLoanTypeCons)
-        val btnCrLines: Button = dialogView.findViewById(R.id.btnDialLoanTypeCrLines)
-        val btnDepSec: Button = dialogView.findViewById(R.id.btnDialLoanTypeDepSec)
-        val btnGoldSec: Button = dialogView.findViewById(R.id.btnDialLoanTypeGold)
-        val btnStud: Button = dialogView.findViewById(R.id.btnDialLoanTypeStud)
-        val btnUnsecured: Button = dialogView.findViewById(R.id.btnDialLoanTypeUnsecured)
-        val btnSelAllOrClear: Button = dialogView.findViewById(R.id.btnDialSelectOrClear)
-
-        btnMort.setOnClickListener(onClickListener)
-        btnCar.setOnClickListener(onClickListener)
-        btnBus.setOnClickListener(onClickListener)
-        btnCons.setOnClickListener(onClickListener)
-        btnCrLines.setOnClickListener(onClickListener)
-        btnDepSec.setOnClickListener(onClickListener)
-        btnGoldSec.setOnClickListener(onClickListener)
-        btnStud.setOnClickListener(onClickListener)
-        btnUnsecured.setOnClickListener(onClickListener)
-
-        fun selectAllOrClear(isSelectAll: Boolean) {
-            btnMort.setChecked(isSelectAll)
-            btnCons.setChecked(isSelectAll)
-            btnCar.setChecked(isSelectAll)
-            btnStud.setChecked(isSelectAll)
-            btnCrLines.setChecked(isSelectAll)
-            btnUnsecured.setChecked(isSelectAll)
-            btnDepSec.setChecked(isSelectAll)
-            btnGoldSec.setChecked(isSelectAll)
-            btnBus.setChecked(isSelectAll)
-            btnSelAllOrClear.text =
-                if (isSelectAll) requireContext().getString(R.string.CLEAR)
-                else requireContext().getString(R.string.SELECT_ALL)
-        }
-
-        btnSelAllOrClear.setOnClickListener {
-            val curButton = it as Button
-            val text = curButton.text.toString()
-            selectAllOrClear(text == requireContext().getString(R.string.SELECT_ALL))
-        }
-
-        //initialize
-        when {
-            types == null || types.size == 9 -> selectAllOrClear(true)
-            types.isEmpty() -> selectAllOrClear(false)
-            else -> {
-                btnMort.setChecked(types.contains(LoanType.MORTGAGE))
-                btnCar.setChecked(types.contains(LoanType.CAR_LOAN))
-                btnStud.setChecked(types.contains(LoanType.STUDENT_LOAN))
-                btnCrLines.setChecked(types.contains(LoanType.CREDIT_LINES))
-                btnUnsecured.setChecked(types.contains(LoanType.UNSECURED))
-                btnDepSec.setChecked(types.contains(LoanType.DEPOSIT_SECURED))
-                btnGoldSec.setChecked(types.contains(LoanType.GOLD_PLEDGE_SECURED))
-                btnBus.setChecked(types.contains(LoanType.BUSINESS))
-            }
-        }
-    }*/
-/*        //click SAVE
-        dialogBuilder.setPositiveButton(
-            getString(R.string.save)
-        ) { _, _ ->
-
-            if (typeList.size < 9) tvLoanTypeFilter.visibility = View.VISIBLE
-            else tvLoanTypeFilter.visibility = View.GONE
-            homeViewModel.setSelLoanTypeList(typeList)
-        }
-        //click CANCEL
-        dialogBuilder.setNegativeButton(
-            getString(R.string.cancel)
-        ) { _, _ -> }
-
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
-        alertDialog.setCustomView()
-    }
-
-    private fun setSortLoanByAcc(acc: Boolean?) {
-        val asc = when (acc) {
-            null, false -> {
-                homeViewModel.setSortByLoanRate(true)
-                getString(R.string.sortedByInterestRate) + " " +
-                        getString(R.string.ascending)
-            }
-            true -> {
-                homeViewModel.setSortByLoanRate(false)
-                getString(R.string.sortedByInterestRate) + " " +
-                        getString(R.string.descending)
-            }
-        }
-        tvLoanSortFilter.text = asc
-        tvLoanSortFilter.visibility = View.VISIBLE
-    }
-
-    //Deposit
-    @SuppressLint("InflateParams")
-    private fun showDialDepFreqFilter(freq: List<Frequency>?) {
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_filter_type, null)
-        dialogBuilder.setView(dialogView)
-
-        dialogBuilder.setTitle(R.string.Filtering)
-        dialogBuilder.setIcon(R.drawable.ic_filter)
-        dialogBuilder.setMessage(R.string.selectTheCriteria)
-
-        //Buttons
-        val freqList = arrayListOf<Frequency>()
-
-        fun Button.setChecked(checked: Boolean) {
-            setViewChecked(checked)
-            val type = getFreqFromString(text.toString(), context)
-            type?.let {
-                when (checked) {
-                    true -> if (!freqList.contains(it)) freqList.add(it)
-                    false -> if (freqList.contains(it)) freqList.remove(it)
-                }
-            }
-        }
-
-        val onClickListener = View.OnClickListener {
-            val curBut = it as Button
-            curBut.setChecked(!curBut.isChecked())
-        }
-
-        dialogView.findViewById<Button>(R.id.btnDialLoanTypeCrLines).visibility = View.GONE
-        dialogView.findViewById<Button>(R.id.btnDialLoanTypeDepSec).visibility = View.GONE
-        dialogView.findViewById<Button>(R.id.btnDialLoanTypeGold).visibility = View.GONE
-        dialogView.findViewById<Button>(R.id.btnDialLoanTypeStud).visibility = View.GONE
-        dialogView.findViewById<Button>(R.id.btnDialLoanTypeUnsecured).visibility = View.GONE
-
-        val btnMonthly: Button = dialogView.findViewById(R.id.btnDialLoanTypeMort)
-        val btnQuart: Button = dialogView.findViewById(R.id.btnDialLoanTypeCar)
-        val btnAtTheEnd: Button = dialogView.findViewById(R.id.btnDialLoanTypeBus)
-        val btnOther: Button = dialogView.findViewById(R.id.btnDialLoanTypeCons)
-        val btnSelAllOrClear: Button = dialogView.findViewById(R.id.btnDialSelectOrClear)
-
-        btnMonthly.text = requireContext().getString(R.string.MonthlyPaymentDep)
-        btnQuart.text = requireContext().getString(R.string.QuarterlyPaymentDep)
-        btnAtTheEnd.text = requireContext().getString(R.string.AtTheEndPayment)
-        btnOther.text = requireContext().getString(R.string.OTHER)
-
-        btnMonthly.setOnClickListener(onClickListener)
-        btnQuart.setOnClickListener(onClickListener)
-        btnAtTheEnd.setOnClickListener(onClickListener)
-        btnOther.setOnClickListener(onClickListener)
-
-        fun selectAllOrClear(isSelectAll: Boolean) {
-            btnMonthly.setChecked(true)
-            btnOther.setChecked(true)
-            btnQuart.setChecked(true)
-            btnAtTheEnd.setChecked(true)
-            btnSelAllOrClear.text =
-                if (isSelectAll) requireContext().getString(R.string.CLEAR)
-                else requireContext().getString(R.string.SELECT_ALL)
-        }
-
-        btnSelAllOrClear.setOnClickListener {
-            val curButton = it as Button
-            val text = curButton.text.toString()
-            selectAllOrClear(text == requireContext().getString(R.string.SELECT_ALL))
-        }
-
-        //initialize
-        when {
-            freq == null || freq.size == 4 -> selectAllOrClear(true)
-            freq.isEmpty() -> selectAllOrClear(false)
-            else -> {
-                btnMonthly.setChecked(freq.contains(Frequency.MONTHLY))
-                btnQuart.setChecked(freq.contains(Frequency.QUARTERLY))
-                btnAtTheEnd.setChecked(freq.contains(Frequency.AT_THE_END))
-                btnOther.setChecked(freq.contains(Frequency.OTHER))
-            }
-        }
-        //click SAVE
-        dialogBuilder.setPositiveButton(
-            getString(R.string.save)
-        ) { _, _ ->
-
-            if (freqList.size < 4) tvDepTypeFilter.visibility = View.VISIBLE
-            else tvDepTypeFilter.visibility = View.GONE
-            homeViewModel.setSelDepFreqList(freqList)
-        }
-        //click CANCEL
-        dialogBuilder.setNegativeButton(
-            getString(R.string.cancel)
-        ) { _, _ -> }
-
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
-        alertDialog.setCustomView()
-    }
-
-    private fun setSortDepByAcc(acc: Boolean?) {
-        val asc = when (acc) {
-            null, false -> {
-                homeViewModel.setSortByDepRate(true)
-                getString(R.string.sortedByInterestRate) + " " +
-                        getString(R.string.ascending)
-            }
-            true -> {
-                homeViewModel.setSortByDepRate(false)
-                getString(R.string.sortedByInterestRate) + " " +
-                        getString(R.string.descending)
-            }
-        }
-        tvDepSortFilter.text = asc
-        tvDepSortFilter.visibility = View.VISIBLE
-    }
-
-    //Common
-    @SuppressLint("InflateParams")
-    private fun getDialFilterByCur(curs: List<String>, loan: Boolean) {
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
-        dialogBuilder.setView(dialogView)
-
-        val spinner: Spinner = dialogView.findViewById(R.id.spinDialFilCurr)
-        spinner.adapter =
-            ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, curs)
-        spinner.setSelection(0)
-
-        dialogBuilder.setMessage(R.string.CurSpinnerText)
-        dialogBuilder.setIcon(R.drawable.ic_filter)
-        dialogBuilder.setTitle(R.string.Filtering)
-        //click SAVE
-        dialogBuilder.setPositiveButton(
-            getString(R.string.save)
-        ) { _, _ ->
-
-            val selection = spinner.selectedItem.toString()
-            val list = arrayListOf<String>()
-            list.add(selection)
-
-            if (loan) {
-                homeViewModel.setSelLoanCurList(list)
-                tvLoanCurFilter.visibility = View.VISIBLE
-            } else {
-                homeViewModel.setSelDepCurList(list)
-                tvDepCurFilter.visibility = View.VISIBLE
-            }
-        }
-        //click CANCEL
-        dialogBuilder.setNegativeButton(
-            getString(R.string.cancel)
-        ) { _, _ -> }
-
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
-        alertDialog.setCustomView()
-    }*/
-
-    /* private fun Button.setViewChecked(checked: Boolean) {
-         if (checked) {
-             background = context.getDrawable(R.drawable.btn_option_checked)
-             setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check, 0)
-             textSize = BUTTON_DIALOG_SIZE_PRESSED
-             setTextColor(Color.WHITE)
-         } else {
-             background = context?.getDrawable(R.drawable.btn_expand)
-             setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-             textSize = BUTTON_DIALOG_SIZE_UNPRESSED
-             setTextColor(Color.BLACK)
-         }
-     }
-
-     private fun Button.isChecked(): Boolean = textSize == BUTTON_DIALOG_SIZE_PRESSED * 2*/
-
-    override fun onStop() {
-        super.onStop()
-        //homeViewModel.removeSources()
-        loansFilterViewModel.removeSources()
-    }
-
 
     private fun Button.setTextFromQuerySet(
-        context: Context, option: SearchOption, sortTextRes: Int
+        c: Context,
+        opt: SearchOption,
+        sortTextRes: Int,
+        isLoan: Boolean
     ) {
-
         visibility = View.VISIBLE
-        text = when (option) {
+        text = when (opt) {
             FILTER_TYPE -> {
                 setCustomSizeVector(
-                    context,
+                    c,
                     resLeft = R.drawable.ic_filter, sizeLeftdp = 24,
                     resRight = R.drawable.ic_next, sizeRightdp = 24
                 )
-                context.getString(R.string.filteredByType)
+                if (isLoan) c.getString(R.string.filteredByType)
+                else c.getString(R.string.filteredByFreq)
+
             }
             FILTER_CURRENCY -> {
                 setCustomSizeVector(
-                    context,
+                    c,
                     resLeft = R.drawable.ic_filter, sizeLeftdp = 24,
                     resRight = R.drawable.ic_next, sizeRightdp = 24
                 )
-                context.getString(R.string.filteredByCur)
+                c.getString(R.string.filteredByCur)
             }
             SORT -> {
                 setCustomSizeVector(
-                    context,
+                    c,
                     resLeft = R.drawable.ic_sort, sizeLeftdp = 24,
                     resRight = R.drawable.ic_next, sizeRightdp = 24
                 )
-                context.getString(sortTextRes)
+                c.getString(sortTextRes)
             }
         }
     }
@@ -634,65 +350,22 @@ class HomeFragment : Fragment() {
         val option = when (text) {
             requireContext().getString(R.string.filteredByCur) -> FILTER_CURRENCY
             requireContext().getString(R.string.filteredByType) -> FILTER_TYPE
+            requireContext().getString(R.string.filteredByFreq) -> FILTER_TYPE
             requireContext().getString(R.string.latest) -> SORT
             requireContext().getString(R.string.lowestRates) -> SORT
             requireContext().getString(R.string.highestRates) -> SORT
             else -> TODO()
         }
         showDialogRemoveOrEditFilter(context, filterQuery, option)
-
     }
+
+    override fun onStop() {
+        super.onStop()
+        loansFilterViewModel.removeSources()
+        depFilterViewModel.removeSources()
+    }
+
 }
 
-/*fun showRemovingDialog(
-    view: View,
-    portViewModel: HomeViewModel,
-    item: Banking? = null,
-    allLoans: Boolean? = null
-) {
-    if (item == null && allLoans == null)
-        return
 
-    val context = view.context
-    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-    builder.setTitle(R.string.warning)
-    builder.setIcon(R.drawable.ic_alert)
-    val alertText = when {
-        item != null -> {
-            val text =
-                if (item is Loan) context.getString(R.string.loan)
-                else context.getString(R.string.deposit)
-            context.getString(R.string.AreYouSureRemove) + " " + text + "?"
-        }
-        allLoans != null -> {
-            val text =
-                if (allLoans) context.getString(R.string.Loans)
-                else context.getString(R.string.Deposits)
-            context.getString(R.string.AreYouSureRemoveAll) + " " + text + "?"
-        }
-        else -> TODO()
-    }
-    builder.setMessage(alertText)
-    builder.setPositiveButton(R.string.OK)
-    { _, _ ->
-        when {
-            item != null -> {
-                if (item is Loan) portViewModel.deleteLoan(item)
-                else if (item is Deposit) portViewModel.deleteDep(item)
-            }
-            allLoans != null -> {
-                if (allLoans) portViewModel.deleteAllLoans()
-                else portViewModel.deleteAllDep()
-            }
-            else -> TODO()
-        }
-        showSnackBar(R.string.SuccessfullyRemoved, view)
-    }
-    builder.setNegativeButton(R.string.cancel)
-    { _, _ -> }
-
-    val alertDialog = builder.create()
-    alertDialog.show()
-    alertDialog.setCustomView()
-}*/
 

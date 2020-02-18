@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
@@ -18,9 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.credit.Formula
-import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.models.credit.getLoanTypeFromString
-import com.example.fincalc.models.credit.getLoanTypeListName
+import com.example.fincalc.models.credit.getLoanTypesNames
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
@@ -49,6 +47,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fabSaveLoan.setSvgColor(requireContext(),android.R.color.white)
 
         recycler.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
@@ -56,9 +55,11 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
         adapterRecSchedule = AdapterRecScheduleLoan(null)
         recycler.adapter = adapterRecSchedule
 
-        fab_Loan.setOnClickListener {
-            CoroutineScope(Main).launch {
 
+        fabSaveLoan.setOnClickListener {
+            CoroutineScope(Main).launch {
+                val loan = ScheduleViewModel.Container.schedules.value?.get(0)?.loan
+                loan?.let { getDialog(requireContext(), loan, formula) }
             }
         }
 
@@ -67,6 +68,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             if (it != null) {
                 constraintLayoutFragment.visibility = View.VISIBLE
                 val schedule = it.filter { sch -> sch.formulaLoan == formula }[0]
+
                 adapterRecSchedule.item = schedule
                 adapterRecSchedule.notifyDataSetChanged()
 
@@ -91,7 +93,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             val etBank = dialogView.findViewById<EditText>(R.id.etDialBank)
 
             //spinner Currency
-            val spinnerCur = dialogView.findViewById<Spinner>(R.id.spinDialCurrency)
+            val spinnerCur: Spinner = dialogView.findViewById(R.id.spinDialCurrency)
             val adapterSpinCur = AdapterSpinnerRates(
                 context, R.layout.spinner_currencies, arrayCurCodes
             )
@@ -99,22 +101,18 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             spinnerCur.adapter = adapterSpinCur
 
             //spinner LoanType
-            val spinnerType = dialogView.findViewById<Spinner>(R.id.spinnerDialLoanType)
+            val spinnerType: Spinner = dialogView.findViewById(R.id.spinnerDialLoanType)
             val adapterSpinType =
-                ArrayAdapter<String>(
-                    context,
-                    android.R.layout.simple_spinner_item,
-                    getLoanTypeListName(context)
+                AdapterSpinnerTypes(
+                    context, R.layout.spinner_loan_types, getLoanTypesNames(context)
                 )
+            adapterSpinType.setDropDownViewResource(R.layout.spinner_loan_types)
             spinnerType.adapter = adapterSpinType
             spinnerType.setSelection(adapterSpinType.count - 1)
-
             dialogBuilder.setTitle(R.string.DialogTitleSave)
 
             //click SAVE
-            dialogBuilder.setPositiveButton(
-                getString(R.string.save)
-            ) { _, _ ->
+            dialogBuilder.setPositiveButton(getString(R.string.save)) { _, _ ->
 
                 val typeEnum = getLoanTypeFromString(
                     spinnerType.selectedItem.toString(), requireContext()
@@ -126,7 +124,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
                 loan.date = formatterShort.format(Date())
                 scheduleViewModel.addLoan(loan)
 
-                showSnackBar(R.string.successSaved, fab_Loan)
+                showSnackBar(R.string.successSaved, fabSaveLoan)
                 hideKeyboard(this.requireActivity())
             }
 
@@ -138,7 +136,6 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
             alertDialog.show()
             alertDialog.setCustomView()
-            alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimary)
         }
     }
 }

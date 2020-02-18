@@ -1,13 +1,14 @@
 package com.example.fincalc.ui.port.home
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.ui.port.LoanFilter
-import com.example.fincalc.ui.port.filter.FilterBanking
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.Filtering
 import com.example.fincalc.ui.port.filter.SearchOption
@@ -18,7 +19,6 @@ import kotlinx.coroutines.launch
 class LoansFilterViewModel(application: Application) : BaseViewModel(application),
     FilterQuery, Filtering {
 
-
     //Loans
     private val _loans = repository?.getLoans()
     private val _types = MutableLiveData<MutableSet<LoanType>>()
@@ -26,8 +26,8 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
     private val _sort = MutableLiveData<Boolean>()
     private val _queue = MutableLiveData<MutableSet<SearchOption>>()
 
-    fun deleteLoan(loan: Loan) = viewModelScope.launch {
-        repository?.deleteLoan(loan)
+    fun deleteLoanById(id: Int) = viewModelScope.launch {
+        repository?.deleteLoanById(id)
     }
 
     fun deleteAllLoans() = viewModelScope.launch {
@@ -71,56 +71,29 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
         queueLD: MutableLiveData<MutableSet<SearchOption>>
     ): LoanFilter {
 
-        Log.d("uuuuurrib", "MEDIATOR Triggered")
-
-
         val loans = loanLD.value
-        var types = typeLD.value
-        var curList = curLD.value
+        val types = typeLD.value ?: this.getExistTypes()
+        val curList = curLD.value ?: this.getExistCur()
         val sort = sortLD.value
         val filterQueue = queueLD.value ?: mutableSetOf()
-        if (types == null) types = this.getExistTypes()
-        if (curList == null) curList = this.getExistCur()
-
-        Log.d("uuuuurrib", "MEDIATOR loans: $loans")
-        Log.d("uuuuurrib", "MEDIATOR types: $types")
-        Log.d("uuuuurrib", "MEDIATOR curList: $curList")
-        Log.d("uuuuurrib", "MEDIATOR sort: $sort")
-        Log.d("uuuuurrib", "MEDIATOR filterQueue: $filterQueue")
-        Log.d("uuuuurrib", "MEDIATOR Triggered")
-
 
         val result = filterCascade(filterQueue, loans, types, curList, sort)
         return LoanFilter(types, result, curList, sort, filterQueue)
     }
 
-
     //FilterQuery
     override fun getExistCur(): MutableSet<String> {
         val result = mutableSetOf<String>()
         _loans?.value?.forEach { loan -> result.add(loan.currency) }
-        Log.d("uuuuurrib", "resultALL in VM: $result")
-
         return result
     }
 
-    override fun getSelCur(): MutableSet<String> {
-        Log.d("uuuuurrib", "resultSEL in VM: ${_currencies.value ?: _mediatorLoan.value?.currencies ?: mutableSetOf()}")
-        Log.d("uuuuurrib", "get CURR _currencies.value:${_currencies.value}")
-        Log.d("uuuuurrib", "get CURR _mediatorLoan.value?.currencies:${_mediatorLoan.value?.currencies}")
-
-
-        return _currencies.value ?: getExistCur()// _mediatorLoan.value?.currencies ?: mutableSetOf()
-    }
+    override fun getSelCur(): MutableSet<String> = _currencies.value ?: getExistCur()
 
     override fun setCur(curList: MutableSet<String>) {
-        Log.d("uuuuurrib", "SET CURR Triggered")
-        Log.d("uuuuurrib", "SET CURR Triggered")
-
         val query = _queue.value ?: mutableSetOf()
         query.add(FILTER_CURRENCY)
         _queue.value = query
-        Log.d("uuuuurrib", "SET CURR query:$query")
         _currencies.value = curList
     }
 
@@ -130,9 +103,7 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
         return allPossTypes
     }
 
-    override fun getSelTypes(): MutableSet<LoanType> {
-        return _types.value ?: getExistTypes()//_mediatorLoan.value?.loanTypeList ?: mutableSetOf()
-    }
+    override fun getSelTypes(): MutableSet<LoanType> = _types.value ?: getExistTypes()
 
     override fun setType(typeList: MutableSet<*>) {
         val query = _queue.value ?: mutableSetOf()
@@ -141,9 +112,7 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
         _types.value = typeList as MutableSet<LoanType>
     }
 
-    override fun getSortPref(): Boolean? {
-        return _sort.value
-    }
+    override fun getSortPref(): Boolean? = _sort.value
 
     override fun setSortPref(asc: Boolean?) {
         val query = _queue.value ?: mutableSetOf()
@@ -154,14 +123,12 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
 
     override fun removePref(option: SearchOption) {
         _queue.value?.remove(option)
-
         when (option) {
             FILTER_TYPE -> _types.value = null
             FILTER_CURRENCY -> _currencies.value = null
             SORT -> _sort.value = null
         }
     }
-
     //Filtering
 
     override fun filterCascade(
@@ -210,11 +177,11 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-
     fun removeSources() {
         _mediatorLoan.removeSource(_loans!!)
         _mediatorLoan.removeSource(_currencies)
         _mediatorLoan.removeSource(_types)
         _mediatorLoan.removeSource(_sort)
+        _mediatorLoan.removeSource(_queue)
     }
 }

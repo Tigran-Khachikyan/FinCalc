@@ -95,12 +95,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:background="@drawable/background_aqua"
         app:layout_constraintTop_toBottomOf="@id/layMarginSchedule">
 
         <TextView
             android:id="@+id/tvNumberInfo"
             android:text="N"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="22"
@@ -111,7 +112,7 @@
 
         <TextView
             android:id="@+id/tvBalanceInfoLoanFr"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:background="@android:color/transparent"
             android:text="@string/Loan_Balance"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +123,7 @@
 
         <TextView
             android:id="@+id/tvLoanMonthlyInfoLoanFr"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:text="@string/Amount"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -133,7 +134,7 @@
 
         <TextView
             android:id="@+id/tvPercentMonthlyInfoLoanFr"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:background="@android:color/transparent"
             android:text="@string/Percent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -144,7 +145,7 @@
 
         <TextView
             android:id="@+id/tvComMonthlyInfoLoanFr"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:text="@string/Commission"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -155,7 +156,7 @@
 
         <TextView
             android:id="@+id/tvTotPayMonInfoLoanFr"
-            style="@style/texViewDepReport"
+            style="@style/texViewLoanReport"
             android:text="@string/Payment"
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -174,7 +175,7 @@
         android:layout_marginTop="106dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_Loan"
+        android:id="@+id/fabSaveLoan"
         style="@style/Widget.Design.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

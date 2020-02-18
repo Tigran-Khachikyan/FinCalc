@@ -51,7 +51,8 @@ class MetalsFragment : Fragment() {
 
         adapter = AdapterRecRates(requireContext(), null)
         recyclerMetals.setHasFixedSize(true)
-        recyclerMetals.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        recyclerMetals.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recyclerMetals.adapter = adapter
 
         sharedPref = view.context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
@@ -83,7 +84,10 @@ class MetalsFragment : Fragment() {
 
         metalViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
+            progressBarMetalsFr.visibility = View.VISIBLE
+
             it?.let {
+                progressBarMetalsFr.visibility = View.GONE
                 layMetalsHider.visibility = View.VISIBLE
 
                 adapter.ratesRows = it.ratesBarList

@@ -23,6 +23,7 @@ import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_dep_schedule.*
+import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
 /**
@@ -57,6 +58,8 @@ class DepScheduleFragment : Fragment() {
             val dep = Deposit(amount, months, rate, capitalize, taxRate, frequency)
             val scheduleDep = TableDep(dep)
 
+            fabSaveDep.setSvgColor(requireContext(),android.R.color.white)
+
             adapterRec = AdapterRecViewDep(scheduleDep)
             recyclerDepReport.setHasFixedSize(true)
             recyclerDepReport.layoutManager =
@@ -68,7 +71,7 @@ class DepScheduleFragment : Fragment() {
             tvTotalIncomeResDep.text = totalIncome
             tvEffRateResDep.text = effectiveRate
 
-            fab_AddDep.setOnClickListener {
+            fabSaveDep.setOnClickListener {
                 showDialogSaveDeposit(requireContext(), it, dep, depViewModel)
             }
         }
@@ -121,7 +124,7 @@ class DepScheduleFragment : Fragment() {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
         alertDialog.setCustomView()
-        alertDialog.window?.setBackgroundDrawableResource(R.color.DepPrimary)
+        //alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimaryLight)
     }
 
 }

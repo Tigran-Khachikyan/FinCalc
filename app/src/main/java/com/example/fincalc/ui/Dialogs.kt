@@ -4,39 +4,21 @@ package com.example.fincalc.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.models.Banking
-import com.example.fincalc.models.credit.Formula
-import com.example.fincalc.models.credit.getLoanTypeFromString
-import com.example.fincalc.models.credit.getLoanTypeListName
-import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.port.filter.AdapterRecyclerMultiChoice
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.SearchOption
-import com.example.fincalc.ui.port.home.AdapterRecBanking
+import com.example.fincalc.ui.port.home.DepFilterViewModel
 import com.example.fincalc.ui.port.home.LoansFilterViewModel
-import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.util.*
-
-
-/*
-showDialogLoansTypeFilter(homeViewModel)
-showDialogCurrencyFilter(homeViewModel)
-showDialogOrderPref(homeViewModel)
-showDialogRemoveLoans(homeViewModel)*/
-
-
-
 
 
 @SuppressLint("InflateParams")
@@ -50,66 +32,49 @@ fun showDialogTypeFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setMessage(R.string.selectTheCriteria)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
-    val adapter = when (filterPref) {
-        is LoansFilterViewModel -> {
-            val possiblePrefs = filterPref.getExistTypes()
-            val selPrefs = filterPref.getSelTypes()
-            AdapterRecyclerMultiChoice(context, possiblePrefs, selPrefs)
-        }
-        else -> TODO()
-    }
+    val adp =
+        AdapterRecyclerMultiChoice(context, filterPref.getExistTypes(), filterPref.getSelTypes())
     recycler.setHasFixedSize(true)
     recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    recycler.adapter = adapter
-
+    recycler.adapter = adp
 
     //click SAVE
-    dialBuilder.setPositiveButton(
-        context.getString(R.string.OK)
-    ) { _, _ ->
-
-        val resultList = adapter.selOptions
+    dialBuilder.setPositiveButton(context.getString(R.string.OK)) { _, _ ->
+        val resultList = adp.selOptions
         filterPref.setType(resultList)
     }
     //click CANCEL
-    dialBuilder.setNegativeButton(
-        context.getString(R.string.cancel)
-    ) { _, _ -> }
-
+    dialBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
 
     dialBuilder.setNeutralButton(
-        if (adapter.selOptions.size != 0)
-            context.getString(R.string.CLEAR)
+        if (adp.selOptions.size != 0) context.getString(R.string.CLEAR)
         else context.getString(R.string.SELECT_ALL)
-    ) { _, _ ->
-    }
+    ) { _, _ -> }
 
     val alertDialog = dialBuilder.create()
     alertDialog.show()
     alertDialog.setCustomView()
-    var isClear = adapter.selOptions.size != 0
+    var isClear = adp.selOptions.size != 0
     alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
         .setOnClickListener {
-
             if (isClear) {
-                adapter.selOptions.clear()
+                adp.selOptions.clear()
                 isClear = false
                 alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).text =
                     context.getString(R.string.SELECT_ALL)
             } else {
-                adapter.selOptions = filterPref.getExistTypes()
+                adp.selOptions = filterPref.getExistTypes()
                 isClear = true
                 alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).text =
                     context.getString(R.string.CLEAR)
             }
-            adapter.notifyDataSetChanged()
+            adp.notifyDataSetChanged()
         }
 
 }
 
 @SuppressLint("InflateParams")
 fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
-
 
     val dialBuilder = AlertDialog.Builder(context)
     val dialogView = LayoutInflater.from(context).inflate(R.layout.test_multichoice_dialog, null)
@@ -119,68 +84,48 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setMessage(R.string.filteredByCur)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
-    val adapter = when (filterPref) {
-        is LoansFilterViewModel -> {
-            val possiblePrefs = filterPref.getExistCur()
-            val selPrefs = filterPref.getSelCur()
-            Log.d("uuuuurrib", "possiblePrefs: $possiblePrefs")
-            Log.d("uuuuurrib", "selPrefs: $selPrefs")
-            AdapterRecyclerMultiChoice(context, possiblePrefs, selPrefs)
-        }
-        else -> TODO()
-    }
+    val adp = AdapterRecyclerMultiChoice(context, filterPref.getExistCur(), filterPref.getSelCur())
     recycler.setHasFixedSize(true)
     recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    recycler.adapter = adapter
+    recycler.adapter = adp
 
     //click SAVE
-    dialBuilder.setPositiveButton(
-        context.getString(R.string.OK)
-    ) { _, _ ->
-
-        val resultList = adapter.selOptions as MutableSet<String>
-
-        Log.d("uuuuurrib", "resultList: ${resultList.size}")
-
+    dialBuilder.setPositiveButton(context.getString(R.string.OK)) { _, _ ->
+        val resultList = adp.selOptions as MutableSet<String>
         filterPref.setCur(resultList)
     }
     //click CANCEL
-    dialBuilder.setNegativeButton(
-        context.getString(R.string.cancel)
-    ) { _, _ -> }
+    dialBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
 
     dialBuilder.setNeutralButton(
-        if (adapter.selOptions.size != 0)
-            context.getString(R.string.CLEAR)
+        if (adp.selOptions.size != 0) context.getString(R.string.CLEAR)
         else context.getString(R.string.SELECT_ALL)
-    ) { _, _ ->
-    }
+    ) { _, _ -> }
 
     val alertDialog = dialBuilder.create()
     alertDialog.show()
     alertDialog.setCustomView()
-    var isClear = adapter.selOptions.size != 0
+    var isClear = adp.selOptions.size != 0
     alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
         .setOnClickListener {
 
             if (isClear) {
-                adapter.selOptions.clear()
+                adp.selOptions.clear()
                 isClear = false
                 alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).text =
                     context.getString(R.string.SELECT_ALL)
             } else {
-                adapter.selOptions = filterPref.getExistCur()
+                adp.selOptions = filterPref.getExistCur()
                 isClear = true
                 alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).text =
                     context.getString(R.string.CLEAR)
             }
-            adapter.notifyDataSetChanged()
+            adp.notifyDataSetChanged()
         }
 }
 
 @SuppressLint("InflateParams")
 fun showDialogSort(context: Context, filterPref: FilterQuery) {
-
 
     val dialBuilder = AlertDialog.Builder(context)
     val dialogView = LayoutInflater.from(context).inflate(R.layout.test_dialog_sort, null)
@@ -223,25 +168,19 @@ fun showDialogSort(context: Context, filterPref: FilterQuery) {
 
 
     //click SAVE
-    dialBuilder.setPositiveButton(
-        context.getString(R.string.OK)
-    ) { _, _ ->
+    dialBuilder.setPositiveButton(context.getString(R.string.OK)) { _, _ ->
         filterPref.setSortPref(sort)
     }
     //click CANCEL
-    dialBuilder.setNegativeButton(
-        context.getString(R.string.cancel)
-    ) { _, _ -> }
+    dialBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
 
     val alertDialog = dialBuilder.create()
     alertDialog.show()
     alertDialog.setCustomView()
-
 }
 
 @SuppressLint("InflateParams")
 fun showDialogRemoveOrEditFilter(context: Context, filterPref: FilterQuery, option: SearchOption) {
-
 
     val dialBuilder = AlertDialog.Builder(context)
     dialBuilder.setTitle(R.string.editFilter)
@@ -249,9 +188,7 @@ fun showDialogRemoveOrEditFilter(context: Context, filterPref: FilterQuery, opti
     dialBuilder.setMessage(R.string.filterRemoveEditText)
 
     //click SAVE
-    dialBuilder.setPositiveButton(
-        context.getString(R.string.edit)
-    ) { _, _ ->
+    dialBuilder.setPositiveButton(context.getString(R.string.edit)) { _, _ ->
         when (option) {
             SearchOption.FILTER_CURRENCY -> showDialogCurrencyFilter(context, filterPref)
             SearchOption.FILTER_TYPE -> showDialogTypeFilter(context, filterPref)
@@ -259,9 +196,7 @@ fun showDialogRemoveOrEditFilter(context: Context, filterPref: FilterQuery, opti
         }
     }
     //click CANCEL
-    dialBuilder.setNegativeButton(
-        context.getString(R.string.cancel)
-    ) { _, _ -> }
+    dialBuilder.setNegativeButton(context.getString(R.string.cancel)) { _, _ -> }
 
     dialBuilder.setNeutralButton(context.getString(R.string.remove)) { _, _ ->
         filterPref.removePref(option)
@@ -269,7 +204,56 @@ fun showDialogRemoveOrEditFilter(context: Context, filterPref: FilterQuery, opti
     val alertDialog = dialBuilder.create()
     alertDialog.show()
     alertDialog.setCustomView()
-
 }
 
+fun showDialogRemoveBanking(
+    view: View,
+    filterPref: FilterQuery,
+    isLoan: Boolean? = null,
+    id: Int = 0,
+    allLoans: Boolean? = null,
+    func: ()->Unit
+) {
+    if (isLoan == null && allLoans == null)
+        return
 
+    val context = view.context
+    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+    builder.setTitle(R.string.warning)
+    builder.setIcon(R.drawable.ic_alert)
+    val alertText = when {
+        isLoan != null -> {
+            val text =
+                if (isLoan) context.getString(R.string.loan) else context.getString(R.string.deposit)
+            context.getString(R.string.AreYouSureRemove) + " " + text + "?"
+        }
+        allLoans != null -> {
+            val text =
+                if (allLoans) context.getString(R.string.Loans) else context.getString(R.string.Deposits)
+            context.getString(R.string.AreYouSureRemoveAll) + " " + text + "?"
+        }
+        else -> ""
+    }
+    builder.setMessage(alertText)
+    builder.setPositiveButton(R.string.OK)
+    { _, _ ->
+        when {
+            isLoan != null -> {
+                if (isLoan) (filterPref as LoansFilterViewModel).deleteLoanById(id)
+                else (filterPref as DepFilterViewModel).deleteDepById(id)
+            }
+            allLoans != null -> {
+                if (allLoans) (filterPref as LoansFilterViewModel).deleteAllLoans()
+                else (filterPref as DepFilterViewModel).deleteAllDep()
+            }
+            else -> {}
+        }
+        func()
+    }
+    builder.setNegativeButton(R.string.cancel)
+    { _, _ -> }
+
+    val alertDialog = builder.create()
+    alertDialog.show()
+    alertDialog.setCustomView()
+}

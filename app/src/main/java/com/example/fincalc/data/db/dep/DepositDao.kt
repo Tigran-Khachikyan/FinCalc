@@ -9,8 +9,8 @@ interface DepositDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(dep: Deposit)
 
-    @Delete
-    suspend fun delete(dep: Deposit)
+    @Query("DELETE FROM deposits WHERE _id =:id")
+    suspend fun deleteById(id: Int)
 
     @Query("DELETE FROM deposits")
     suspend fun deleteAll()

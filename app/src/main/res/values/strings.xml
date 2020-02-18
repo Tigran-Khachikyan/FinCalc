@@ -50,7 +50,7 @@
     <string name="Clear">Clear</string>
     <string name="Loan_Balance">Balance</string>
     <string name="Percent">Percent</string>
-    <string name="Commission">Commiss</string>
+    <string name="Commission">Commis</string>
     <string name="TOTAL">TOTAL</string>
     <string name="TOTAL_PAYMENT">Total payment</string>
     <string name="InvalidInput">"Invalid input! \"Amount\" , \"Term\" and \"Interest rate\" fields are mandatory!"</string>
@@ -106,16 +106,16 @@
     <string name="Deposits">Deposits</string>
     <string name="Balance">Balance</string>
 
-    <string name="MORTGAGE">MORTGAGE</string>
-    <string name="BUSINESS">BUSINESS</string>
-    <string name="CREDIT_LINES">CREDIT LINES</string>
-    <string name="GOLD_PLEDGE_SECURED">  GOLD PLEDGE SECURED</string>
-    <string name="DEPOSIT_SECURED">DEPOSIT SECURED</string>
-    <string name="UNSECURED">UNSECURED</string>
-    <string name="CAR_LOAN">CAR LOAN</string>
-    <string name="CONSUMER_LOAN">CONSUMER LOAN</string>
-    <string name="STUDENT_LOAN">STUDENT LOAN</string>
-    <string name="OTHER">OTHER</string>
+    <string name="MORTGAGE">Mortgage</string>
+    <string name="BUSINESS">Business</string>
+    <string name="CREDIT_LINES">Credit lines</string>
+    <string name="GOLD_PLEDGE_SECURED">  Gold pledge secured</string>
+    <string name="DEPOSIT_SECURED">Deposit secured</string>
+    <string name="UNSECURED">Unsecured</string>
+    <string name="CAR_LOAN">Car loan</string>
+    <string name="CONSUMER_LOAN">Consumer loan</string>
+    <string name="STUDENT_LOAN">Student loan</string>
+    <string name="OTHER">Other</string>
     <string name="SELECT_ALL">SELECT ALL</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -133,7 +133,7 @@
     --BalanceFragment-
     <string name="filteredByCur">by currency</string>
     <string name="filteredByType">by Loan Type</string>
-    <string name="filteredByFreq">by repayment frequency</string>
+    <string name="filteredByFreq">by repay frequency</string>
     <string name="oneTimeComeAndCost">One Time Commission and costs -></string>
     <string name="noLoanFound">No loan found</string>
     <string name="noDepositFound">No deposit found</string>
@@ -262,5 +262,7 @@
     <string name="filterRemoveEditText">Do you want to edit filter or remove?</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="computing">Computing</string>
+    <string name="loading">Loading</string>
 
 </resources>

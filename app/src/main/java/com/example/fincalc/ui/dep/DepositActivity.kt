@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -96,23 +97,28 @@ class DepositActivity : AppCompatActivity() {
 
     private fun calculate(view: View) {
         hideKeyboard(this)
-        val dep = getDep(view)
+        CoroutineScope(Main).launch {
+            val dep = getDep(view)
 
-        dep?.let {
+            dep?.let {
+                progressBarDepAct.visibility = View.VISIBLE
+                delay(1000)
+                val bundle = Bundle()
+                bundle.putLong(KEY_AMOUNT, dep.amount)
+                bundle.putInt(KEY_TERM, dep.months)
+                bundle.putFloat(KEY_RATE, dep.rate)
+                bundle.putBoolean(KEY_CAPITALIZATION, dep.capitalize)
+                bundle.putFloat(KEY_TAX_RATE, dep.taxRate)
+                bundle.putString(KEY_FREQUENCY, dep.frequency.name)
+                val fragmentReport = DepScheduleFragment()
+                fragmentReport.arguments = bundle
 
-            val bundle = Bundle()
-            bundle.putLong(KEY_AMOUNT, dep.amount)
-            bundle.putInt(KEY_TERM, dep.months)
-            bundle.putFloat(KEY_RATE, dep.rate)
-            bundle.putBoolean(KEY_CAPITALIZATION, dep.capitalize)
-            bundle.putFloat(KEY_TAX_RATE, dep.taxRate)
-            bundle.putString(KEY_FREQUENCY, dep.frequency.name)
-            val fragmentReport = DepScheduleFragment()
-            fragmentReport.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.layContainerDep, fragmentReport)
+                    .addToBackStack(" ").commit()
+                progressBarDepAct.visibility = View.GONE
 
-            this.supportFragmentManager.beginTransaction().add(R.id.layContainerDep, fragmentReport)
-                .addToBackStack(" ").commit()
-
+            }
         }
 
         /*if (dep == null) {

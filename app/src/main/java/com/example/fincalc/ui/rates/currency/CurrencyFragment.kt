@@ -109,8 +109,11 @@ class RateFragment : Fragment() {
 
         curViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
+            progressBarCurFr.visibility = View.VISIBLE
+
             it?.let {
 
+                progressBarCurFr.visibility = View.GONE
                 layTableCur.visibility = View.VISIBLE
                 layoutInputCur.visibility = View.VISIBLE
 

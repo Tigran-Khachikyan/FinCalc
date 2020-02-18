@@ -13,7 +13,8 @@
     <color name="PortPrimaryLight">#b1ffff</color>
     <color name="PortPrimaryIcon">#149999</color>
     <color name="PortPrimaryDark">#073242</color>
-    <color name="colorSpinner">#125068</color>
+    <color name="colorSpinner">#197C91</color>
+   <!-- <color name="colorSpinnerDark">#</color>-->
     <color name="PortPrimaryDarkTrans">#400D3A50</color>
     <color name="PortPrimaryDarkVery">#05202B</color>
 
@@ -27,9 +28,9 @@
 
     //Deposit
     <color name="DepPrimary">#c77eda</color>
-    <color name="DepPrimaryLight">#fbafff</color>
+    <color name="DepPrimaryLight">#F7B6FA</color>
     <color name="DepPrimaryDark">#431055</color>
-    <color name="DepPrimaryDarkTrans">#41431055</color>
+    <color name="DepPrimaryDarkTrans">#4156146D</color>
 
 
 

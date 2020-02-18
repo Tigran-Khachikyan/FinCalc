@@ -92,7 +92,7 @@ fun hideKeyboard(activity: Activity) {
 
 fun AlertDialog.setCustomView() {
 
-    window?.setBackgroundDrawableResource(R.color.PortPrimary)
+    window?.setBackgroundDrawableResource(R.color.colorSpinner)
     getButton(BUTTON_POSITIVE).gravity = Gravity.END
     getButton(BUTTON_NEGATIVE).gravity = Gravity.START
     getButton(BUTTON_POSITIVE).textSize = 18F

@@ -18,7 +18,14 @@ import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.decimalFormatter2p
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
 import com.example.fincalc.ui.port.home.LOAN_ID_KEY
+import com.example.fincalc.ui.port.home.LoansFilterViewModel
+import com.example.fincalc.ui.setSvgColor
+import com.example.fincalc.ui.showDialogRemoveBanking
 import kotlinx.android.synthetic.main.fragment_loans.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /*val snapHelper = PagerSnapHelper()
 snapHelper.attachToRecyclerView(recLoansPager)*/
@@ -26,12 +33,14 @@ snapHelper.attachToRecyclerView(recLoansPager)*/
 class LoansFragment : Fragment() {
 
     private lateinit var loanViewModel: LoanViewModel
+    private lateinit var loansFilterViewModel: LoansFilterViewModel
     private lateinit var adapter: AdapterRecScheduleLoan
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         loanViewModel = ViewModelProvider(this).get(LoanViewModel::class.java)
+        loansFilterViewModel = ViewModelProvider(this).get(LoansFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_loans, container, false)
     }
 
@@ -44,12 +53,17 @@ class LoansFragment : Fragment() {
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         recScheduleLoanFr.adapter = adapter
 
-        val loanId = arguments?.getInt(LOAN_ID_KEY, 0)
-        Log.d("sasass","IT: $loanId")
+        val loanId = arguments?.getInt(LOAN_ID_KEY)
+
+        fabRemoveLoansFr.setOnClickListener {
+            loanId?.let {
+                showDialogRemoveBanking(fabRemoveLoansFr, loansFilterViewModel, true, id = it){
+                    requireActivity().supportFragmentManager.popBackStack()
+                }
+            }
+        }
 
         loanId?.let {
-
-
             loanViewModel.getLoan(loanId)?.observe(viewLifecycleOwner, Observer { curLoan ->
 
                 if (curLoan.bank != "") {
@@ -59,7 +73,8 @@ class LoansFragment : Fragment() {
                 } else tvBankLoanFr.visibility = View.GONE
 
 
-                val sum = requireContext().getString(R.string.Amount) + ": ${curLoan.amount}"
+                val sum = requireContext().getString(R.string.Amount) +
+                        ": ${decimalFormatter1p.format(curLoan.amount)} ${curLoan.currency}"
                 tvAmountLoanFr.text = sum
 
                 if (curLoan.type == LoanType.OTHER)
@@ -77,8 +92,6 @@ class LoansFragment : Fragment() {
                 val rate = requireContext().getString(R.string.Interest_rate) + ": ${curLoan.rate}%"
                 tvRateLoanFr.text = rate
 
-                val cur = requireContext().getString(R.string.Currency) + ": ${curLoan.currency}"
-                tvCurrencyLoanFr.text = cur
                 val flag = mapRatesNameIcon[curLoan.currency]?.second
                 flag?.let { ivCurrencyLoanFr.setImageResource(flag) }
 
@@ -135,34 +148,22 @@ class LoansFragment : Fragment() {
                     tvCostsLoanFr.visibility = View.VISIBLE
                 }
 
-                ivLoansFr.setImageResource(
-                    when (curLoan.type) {
-                        LoanType.MORTGAGE -> R.mipmap.type_mortgage
-                        LoanType.BUSINESS -> R.mipmap.type_business
-                        LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.type_gold_secured
-                        LoanType.CAR_LOAN -> R.mipmap.type_car_loan
-                        LoanType.DEPOSIT_SECURED -> R.mipmap.type_other_loan
-                        LoanType.CONSUMER_LOAN -> R.mipmap.type_consumer
-                        LoanType.STUDENT_LOAN -> R.mipmap.type_student
-                        LoanType.UNSECURED -> R.mipmap.type_other_loan
-                        LoanType.CREDIT_LINES -> R.mipmap.type_card_loans
-                        LoanType.OTHER -> R.mipmap.type_other_loan
-                    }
-                )
-
                 val loanTable = TableLoan(curLoan)
                 val totalRes = loanTable.totalPayment + loanTable.oneTimeComAndCosts
-                val total = requireContext().getString(R.string.TOTAL_PAYMENT) + ": " +
-                        decimalFormatter1p.format(totalRes).toString() + " " + curLoan.currency
-                tvLoanFrTotalPayment.text = total
-                val realRate =
-                    requireContext().getString(R.string.RealRate) + ": " + decimalFormatter1p.format(
-                        loanTable.realRate
-                    ).toString() + "%"
+                tvLoanFrTotalPayment.text = decimalFormatter1p.format(totalRes)
+                val realRate = decimalFormatter2p.format(loanTable.realRate) + "%"
                 tvLoanFrRealRate.text = realRate
 
                 adapter.item = loanTable
                 adapter.notifyDataSetChanged()
+
+                CoroutineScope(Main).launch {
+
+                    delay(500)
+                    progressBarLoansFrag.visibility = View.GONE
+                    appBarLayoutLoansFrag.visibility = View.VISIBLE
+                    layLoansResultFrag.visibility = View.VISIBLE
+                }
             })
         }
     }
@@ -187,7 +188,4 @@ class LoansFragment : Fragment() {
         return ""
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
 }

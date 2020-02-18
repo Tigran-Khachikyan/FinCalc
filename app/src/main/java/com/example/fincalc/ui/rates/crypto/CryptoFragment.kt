@@ -86,7 +86,10 @@ class CryptoFragment : Fragment() {
         super.onStart()
         cryptoViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
+            progressBarCryptoFr.visibility = View.VISIBLE
+
             it?.let {
+                progressBarCryptoFr.visibility = View.GONE
                 layCryptoIntro.visibility = View.VISIBLE
                 layCryptoOptions.visibility = View.VISIBLE
                 adapter.ratesRows = it.ratesBarList

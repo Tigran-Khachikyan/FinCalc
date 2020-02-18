@@ -70,6 +70,7 @@ class LoanActivity : AppCompatActivity() {
         val loan: Loan? = getLoan(view)
 
         if (loan != null) {
+            progressBarLoanAc.visibility = View.VISIBLE
             CoroutineScope(Main).launch {
                 val schedules = arrayOf(
                     getSchedule(Formula.ANNUITY, loan),
@@ -78,7 +79,7 @@ class LoanActivity : AppCompatActivity() {
                 )
                 ScheduleViewModel.Container.setSchedule(schedules)
             }
-            scrollAppBarLayoutInit(-resources.displayMetrics.heightPixels, 1200, 600)
+            scrollAppBarLayoutInit(-resources.displayMetrics.heightPixels, 1200, 1000)
         }
     }
 
@@ -186,6 +187,7 @@ class LoanActivity : AppCompatActivity() {
 
         CoroutineScope(Main).launch {
             delay(delay)
+            progressBarLoanAc.visibility = View.GONE
 
             val params = appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
             val behavior = params.behavior as AppBarLayout.Behavior?

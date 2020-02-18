@@ -253,8 +253,8 @@ class Repository private constructor(
     suspend fun insertLoan(loan: Loan) =
         Database(context).getLoanDao().insert(loan)
 
-    suspend fun deleteLoan(loan: Loan) =
-        Database(context).getLoanDao().delete(loan)
+    suspend fun deleteLoanById(id: Int) =
+        Database(context).getLoanDao().deleteById(id)
 
     suspend fun deleteAllLoans() =
         Database(context).getLoanDao().deleteAll()
@@ -270,8 +270,8 @@ class Repository private constructor(
     suspend fun insertDep(dep: Deposit) =
         Database(context).getDepDao().insert(dep)
 
-    suspend fun deleteDep(dep: Deposit) =
-        Database(context).getDepDao().delete(dep)
+    suspend fun deleteDepById(id: Int) =
+        Database(context).getDepDao().deleteById(id)
 
     suspend fun deleteAllDeps() =
         Database(context).getDepDao().deleteAll()

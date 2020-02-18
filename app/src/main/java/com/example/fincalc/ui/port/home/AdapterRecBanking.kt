@@ -15,6 +15,7 @@ import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.port.OnViewHolderClick
+import com.example.fincalc.ui.showDialogRemoveBanking
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
 class AdapterRecBanking(
@@ -36,21 +37,12 @@ class AdapterRecBanking(
         val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
         val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
-        private val fab: ImageView = itemView.findViewById(R.id.btnRemove)
         val layBackData: ConstraintLayout = itemView.findViewById(R.id.layBackData)
 
         init {
             itemView.setOnClickListener {
                 val bankingId = list[adapterPosition].id
                 onHolderClick?.openBankingFragment(bankingId)
-            }
-
-            fab.setOnClickListener {
-              /*  showRemovingDialog(
-                    view = itemView,
-                    item = list[adapterPosition],
-                    portViewModel = port
-                )*/
             }
         }
     }
@@ -113,7 +105,6 @@ class AdapterRecBanking(
                 }
             )
             holder.layBackData.setBackgroundResource(R.color.DepPrimaryLight)
-
         }
     }
 }

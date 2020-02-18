@@ -7,7 +7,7 @@
         android:id="@+id/btnMultiChoice"
         style="@style/dialCheck"
         android:drawableEnd="@drawable/ic_check"
-        android:background="@drawable/btn_option_checked"
+        android:background="@drawable/final_btn_period_select"
         android:text="@string/BUSINESS" />
 
 </LinearLayout>
