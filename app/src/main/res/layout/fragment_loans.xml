@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@android:color/white">
 
     <!--progressBar-->
     <LinearLayout
@@ -40,10 +40,10 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutLoansFrag"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:background="@color/DepPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:background="@color/DepPrimaryLight"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:visibility="gone">
 
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -51,11 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:paddingBottom="10dp"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layInputLoanFr"
+                android:background="@mipmap/png_fon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -65,8 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="@string/Terms"
-                    android:textSize="14sp"
                     android:textColor="@android:color/black"
+                    android:textSize="14sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,20 +76,20 @@
                     android:id="@+id/fabRemoveLoansFr"
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="?attr/actionBarSize"
-                    android:src="@drawable/ic_delete_forever_black_24dp"
                     android:layout_margin="10dp"
-                    app:rippleColor="@color/colorAccentDark"
+                    android:src="@drawable/ic_delete_forever_black_24dp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:rippleColor="@color/colorAccentDark"
                     tools:ignore="ContentDescription" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:padding="4dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_height="wrap_content">
+                    android:padding="4dp"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/tvBankLoanFr"
@@ -101,19 +103,19 @@
                         android:id="@+id/tvAmountLoanFr"
                         style="@style/textViewDetailRes"
                         android:layout_width="wrap_content"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         android:text="@string/Amount"
                         app:layout_constraintBottom_toTopOf="@id/tvTermLoanFr"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvBankLoanFr" />
 
                     <ImageView
                         android:id="@+id/ivCurrencyLoanFr"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:text="@string/Currency"
                         android:layout_marginStart="10dp"
-                        app:layout_constraintLeft_toRightOf="@id/tvAmountLoanFr"
+                        android:text="@string/Currency"
                         app:layout_constraintBottom_toBottomOf="@id/tvAmountLoanFr"
+                        app:layout_constraintLeft_toRightOf="@id/tvAmountLoanFr"
                         app:layout_constraintTop_toTopOf="@id/tvAmountLoanFr"
                         tools:ignore="ContentDescription" />
 
@@ -130,8 +132,8 @@
                         style="@style/textViewDetailRes"
                         android:layout_width="match_parent"
                         android:text="@string/LoanType"
-                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/tvRateLoanFr"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvTermLoanFr" />
 
                     <TextView
@@ -184,14 +186,12 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layLoansResultFrag"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="match_parent">
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layLoanFrResult"
@@ -226,9 +226,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@android:color/white"
                     android:text="@string/RealRate"
                     android:textAllCaps="true"
+                    android:textColor="@android:color/white"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toRightOf="@id/tvTotalIncomeDep"
                     app:layout_constraintRight_toRightOf="parent"
@@ -239,10 +239,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/DepPrimaryLight"
-                    android:textStyle="bold"
                     android:textAllCaps="true"
+                    android:textColor="@color/PortPrimaryLight"
                     android:textSize="26sp"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/tvLoanFrRealRate"
                     app:layout_constraintTop_toBottomOf="@id/tvTotalIncomeDep" />
@@ -252,10 +252,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/DepPrimaryLight"
-                    android:textStyle="bold"
                     android:textAllCaps="true"
+                    android:textColor="@color/PortPrimaryLight"
                     android:textSize="26sp"
+                    android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/tvLoanFrTotalPayment"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvEffRateDep" />
@@ -265,9 +265,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layMarginLoanFr"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:background="@color/PortPrimaryLight"
-                app:layout_constraintTop_toBottomOf="@id/layReportLayLoanFr"
-                android:layout_height="1dp"/>
+                app:layout_constraintTop_toBottomOf="@id/layReportLayLoanFr" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -277,9 +277,9 @@
 
                 <TextView
                     android:id="@+id/tvNumberInfo"
-                    android:text="N"
                     style="@style/texViewLoanReport"
                     android:background="@android:color/transparent"
+                    android:text="N"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="22"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -301,8 +301,8 @@
                 <TextView
                     android:id="@+id/tvLoanMonthlyInfoLoanFr"
                     style="@style/texViewLoanReport"
-                    android:text="@string/Amount"
                     android:background="@android:color/transparent"
+                    android:text="@string/Amount"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="68"
                     app:layout_constraintLeft_toRightOf="@id/tvBalanceInfoLoanFr"
@@ -323,8 +323,8 @@
                 <TextView
                     android:id="@+id/tvComMonthlyInfoLoanFr"
                     style="@style/texViewLoanReport"
-                    android:text="@string/Commission"
                     android:background="@android:color/transparent"
+                    android:text="@string/Commission"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="56"
                     app:layout_constraintLeft_toRightOf="@id/tvPercentMonthlyInfoLoanFr"
@@ -334,8 +334,8 @@
                 <TextView
                     android:id="@+id/tvTotPayMonInfoLoanFr"
                     style="@style/texViewLoanReport"
-                    android:text="@string/Payment"
                     android:background="@android:color/transparent"
+                    android:text="@string/Payment"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="78"
                     app:layout_constraintLeft_toRightOf="@id/tvComMonthlyInfoLoanFr"
@@ -345,14 +345,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recScheduleLoanFr"
-            android:background="@color/PortPrimaryLight"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="101dp"
-            app:layout_constraintTop_toBottomOf="@id/layLoanFrResult" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layLoanFrResult">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recScheduleLoanFr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/PortPrimaryLight"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,14 +24,19 @@ import com.example.fincalc.ui.showDialogRemoveBanking
 import kotlinx.android.synthetic.main.fragment_loans.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /*val snapHelper = PagerSnapHelper()
 snapHelper.attachToRecyclerView(recLoansPager)*/
 
-class LoansFragment : Fragment() {
+class LoansFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private lateinit var loanViewModel: LoanViewModel
     private lateinit var loansFilterViewModel: LoansFilterViewModel
     private lateinit var adapter: AdapterRecScheduleLoan
@@ -39,6 +44,7 @@ class LoansFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         loanViewModel = ViewModelProvider(this).get(LoanViewModel::class.java)
         loansFilterViewModel = ViewModelProvider(this).get(LoansFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_loans, container, false)
@@ -57,7 +63,7 @@ class LoansFragment : Fragment() {
 
         fabRemoveLoansFr.setOnClickListener {
             loanId?.let {
-                showDialogRemoveBanking(fabRemoveLoansFr, loansFilterViewModel, true, id = it){
+                showDialogRemoveBanking(fabRemoveLoansFr, loansFilterViewModel, true, id = it) {
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }
@@ -157,8 +163,7 @@ class LoansFragment : Fragment() {
                 adapter.item = loanTable
                 adapter.notifyDataSetChanged()
 
-                CoroutineScope(Main).launch {
-
+                launch {
                     delay(500)
                     progressBarLoansFrag.visibility = View.GONE
                     appBarLayoutLoansFrag.visibility = View.VISIBLE
@@ -186,6 +191,11 @@ class LoansFragment : Fragment() {
             }
         }
         return ""
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 
 }

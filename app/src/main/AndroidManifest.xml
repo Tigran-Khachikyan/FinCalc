@@ -16,18 +16,30 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".ui.SplashActivity">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.rates.RatesActivity" />
-        <activity android:name=".ui.loan.LoanActivity"/>
-        <activity android:name=".ui.dep.DepositActivity" />
-        <activity android:name=".ui.port.PortfolioActivity" />
-        <activity android:name=".ui.MainActivity" />
+        <activity
+            android:name=".ui.rates.RatesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.loan.LoanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.dep.DepositActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.port.PortfolioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -15,9 +15,13 @@ import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
 import kotlinx.android.synthetic.main.fragment_currency.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 @Suppress("DEPRECATION")
-class RateFragment : Fragment() {
+class RateFragment : Fragment(){
 
     private lateinit var curViewModel: CurrencyViewModel
     private lateinit var sharedPref: SharedPreferences
@@ -160,6 +164,7 @@ class RateFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         curViewModel.removeSources()
+        curViewModel.cancelLoading()
     }
 }
 

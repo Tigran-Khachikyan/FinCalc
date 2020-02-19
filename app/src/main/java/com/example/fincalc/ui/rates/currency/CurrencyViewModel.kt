@@ -136,4 +136,8 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         _convertRates.removeSource(_amount)
         _convertRates.removeSource(_rates)
     }
+
+    fun cancelLoading(){
+        repository?.cancelLoading()
+    }
 }

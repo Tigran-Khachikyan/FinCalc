@@ -23,14 +23,26 @@ import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A simple [Fragment] subclass.
  */
-class ScheduleFragment(private val formula: Formula) : Fragment() {
+class ScheduleFragment() : Fragment(), CoroutineScope {
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
+    private var form: Formula? = null
+
+    constructor(formula: Formula) : this() {
+        this.form = formula
+    }
 
     private lateinit var scheduleViewModel: ScheduleViewModel
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
@@ -39,7 +51,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        job = Job()
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
@@ -47,7 +59,7 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fabSaveLoan.setSvgColor(requireContext(),android.R.color.white)
+        fabSaveLoan.setSvgColor(requireContext(), android.R.color.white)
 
         recycler.layoutManager =
             LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
@@ -57,17 +69,20 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
 
 
         fabSaveLoan.setOnClickListener {
-            CoroutineScope(Main).launch {
-                val loan = ScheduleViewModel.Container.schedules.value?.get(0)?.loan
-                loan?.let { getDialog(requireContext(), loan, formula) }
+            launch {
+                form?.let {
+                    val loan = ScheduleViewModel.Container.schedules.value?.get(0)?.loan
+                    loan?.let { getDialog(requireContext(), loan, form as Formula) }
+                    hideKeyboard(requireActivity())
+                }
             }
         }
 
         scheduleViewModel.getSchedules().observe(viewLifecycleOwner, Observer {
 
-            if (it != null) {
+            if (it != null && form != null) {
                 constraintLayoutFragment.visibility = View.VISIBLE
-                val schedule = it.filter { sch -> sch.formulaLoan == formula }[0]
+                val schedule = it.filter { sch -> sch.formulaLoan == form }[0]
 
                 adapterRecSchedule.item = schedule
                 adapterRecSchedule.notifyDataSetChanged()
@@ -137,5 +152,10 @@ class ScheduleFragment(private val formula: Formula) : Fragment() {
             alertDialog.show()
             alertDialog.setCustomView()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 }

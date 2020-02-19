@@ -11,7 +11,9 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
@@ -28,26 +30,30 @@ import com.example.fincalc.ui.port.loans.LoansFragment
 import com.nightonke.boommenu.BoomButtons.BoomButton
 import com.nightonke.boommenu.OnBoomListenerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 const val LOAN_ID_KEY = "Loan Key"
 const val DEPOSIT_ID_KEY = "Deposit Key"
 
 @Suppress("UNCHECKED_CAST")
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
     private lateinit var loansFilterViewModel: LoansFilterViewModel
     private lateinit var depFilterViewModel: DepFilterViewModel
     private lateinit var adapterRecLoan: AdapterRecBanking
     private lateinit var adapterRecDep: AdapterRecBanking
     private var delay: Boolean = false
 
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         loansFilterViewModel = ViewModelProvider(this).get(LoansFilterViewModel::class.java)
         depFilterViewModel = ViewModelProvider(this).get(DepFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -64,7 +70,11 @@ class HomeFragment : Fragment() {
         bmbLoansMenu.initialize(BMBTypes.LOAN)
 
         adapterRecLoan = AdapterRecBanking(arrayListOf(), null, loansFilterViewModel)
-        recLoanPort.initialize(adapterRecLoan)
+        // recLoanPort.initialize(adapterRecLoan)
+        recLoanPort.setHasFixedSize(true)
+        recLoanPort.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        recLoanPort.adapter = adapterRecLoan
         indicatorLoans.attachToRecyclerView(recLoanPort)
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recLoanPort)
@@ -108,7 +118,7 @@ class HomeFragment : Fragment() {
                     2 -> showDialogSort(requireContext(), loansFilterViewModel)
                     3 -> showDialogRemoveBanking(
                         bmbLoansMenu, loansFilterViewModel, allLoans = true
-                    ){
+                    ) {
                         showSnackBar(R.string.SuccessfullyRemoved, bmbLoansMenu)
                     }
                 }
@@ -122,7 +132,11 @@ class HomeFragment : Fragment() {
         bmbDepMenu.initialize(BMBTypes.DEPOSIT)
 
         adapterRecDep = AdapterRecBanking(arrayListOf(), null, depFilterViewModel)
-        recDepPort.initialize(adapterRecDep)
+        //recDepPort.initialize(adapterRecDep)
+        recDepPort.setHasFixedSize(true)
+        recDepPort.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        recDepPort.adapter = adapterRecDep
         indicatorDep.attachToRecyclerView(recDepPort)
         val snapHelperDep = PagerSnapHelper()
         snapHelperDep.attachToRecyclerView(recDepPort)
@@ -166,7 +180,7 @@ class HomeFragment : Fragment() {
                     2 -> showDialogSort(requireContext(), depFilterViewModel)
                     3 -> showDialogRemoveBanking(
                         bmbDepMenu, depFilterViewModel, allLoans = false
-                    ){
+                    ) {
                         showSnackBar(R.string.SuccessfullyRemoved, bmbDepMenu)
                     }
                 }
@@ -190,19 +204,19 @@ class HomeFragment : Fragment() {
             }
             val loans = it.bankingList as List<Loan>?
             val queue = it.searchOptions
-
-            CoroutineScope(Main).launch {
+            launch {
                 val delayTime: Long = if (!delay) {
                     delay = true
                     0
                 } else 700
+
                 delay(delayTime)
 
                 progressBarHomeFr.visibility = View.GONE
 
                 if (queue.size > 0)
                     btnLoansFilter1.setTextFromQuerySet(
-                        requireContext(), queue.elementAt(0), sortTextRes,true
+                        requireContext(), queue.elementAt(0), sortTextRes, true
                     )
                 else {
                     btnLoansFilter1.visibility = View.GONE
@@ -257,11 +271,11 @@ class HomeFragment : Fragment() {
             val depList = it.bankingList as List<Deposit>?
             val queue = it.searchOptions
 
-            CoroutineScope(Main).launch {
+            launch {
                 val delayTime: Long = if (!delay) {
                     delay = true
                     0
-                } else 700
+                } else 5000
                 delay(delayTime)
 
                 progressBarHomeFr.visibility = View.GONE
@@ -361,8 +375,10 @@ class HomeFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        job.cancel()
         loansFilterViewModel.removeSources()
         depFilterViewModel.removeSources()
+
     }
 
 }

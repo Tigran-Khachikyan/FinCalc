@@ -22,11 +22,10 @@ import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.android.synthetic.main.activity_loan.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 
 const val KEY_AMOUNT = "Amount"
@@ -38,23 +37,22 @@ const val KEY_FREQUENCY = "Frequency"
 
 
 @Suppress("DEPRECATION")
-class DepositActivity : AppCompatActivity() {
+class DepositActivity : AppCompatActivity(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private var period: Frequency = Frequency.MONTHLY
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deposit)
+        job = Job()
 
         tvStatusDep.setFont(FONT_PATH)
 
         imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
-/*
-        recyclerDep.setHasFixedSize(true)
-        recyclerDep.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        adapterRec = AdapterRecViewDep(null)
-        recyclerDep.adapter = adapterRec*/
 
         btnClearDep.setOnClickListener {
             clear()
@@ -83,10 +81,6 @@ class DepositActivity : AppCompatActivity() {
         btnExpandDep.setOnClickListener {
             expand()
         }
-
-        /*fab_AddDep.setOnClickListener {
-            getDialog(this, dep)
-        }*/
     }
 
     private fun clear() {
@@ -97,7 +91,7 @@ class DepositActivity : AppCompatActivity() {
 
     private fun calculate(view: View) {
         hideKeyboard(this)
-        CoroutineScope(Main).launch {
+        launch {
             val dep = getDep(view)
 
             dep?.let {
@@ -117,32 +111,8 @@ class DepositActivity : AppCompatActivity() {
                     .add(R.id.layContainerDep, fragmentReport)
                     .addToBackStack(" ").commit()
                 progressBarDepAct.visibility = View.GONE
-
             }
         }
-
-        /*if (dep == null) {
-            adapterRec.scheduleDep = null
-        } else {
-            CoroutineScope(Main).launch {
-                val scheduleDep = TableDep(dep as Deposit)
-                adapterRec.scheduleDep = scheduleDep
-                adapterRec.notifyDataSetChanged()
-                *//*   val text: String = resources.getString(R.string.ResultShowDep) +
-                           " ${dec.format(scheduleDep.totalPerAfterTax)}"*//*
-                val effRate: String = resources.getString(R.string.EffectiveRate) + ": " +
-                        decimalFormatter2p.format(scheduleDep.effectiveRate).toString() + "%"
-                tvEffectRateDepShow.text = effRate
-            }
-            if (layDepOptionalInput.visibility != View.GONE) {
-                btnExpandDep.setCustomSizeVector(baseContext,resRight = R.drawable.ic_expand_more_black_24dp, sizeRightdp = 24)
-                btnExpandDep.setText(R.string.AdvancedCalculation)
-                toggle(true, layDepOptionalInput, layDepInput)
-            }
-            layoutDepResult.visibility = View.VISIBLE
-        }*/
-
-
     }
 
     private fun expand() {
@@ -231,5 +201,9 @@ class DepositActivity : AppCompatActivity() {
         Animatoo.animateSlideUp(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
 }

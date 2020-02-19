@@ -19,18 +19,21 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.android.synthetic.main.activity_loan.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class LoanActivity : AppCompatActivity() {
+class LoanActivity : AppCompatActivity(), CoroutineScope {
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loan)
 
+        job = Job()
         ScheduleViewModel.Container.clear()
 
         tvStatusLoan.setFont(FONT_PATH)
@@ -71,7 +74,7 @@ class LoanActivity : AppCompatActivity() {
 
         if (loan != null) {
             progressBarLoanAc.visibility = View.VISIBLE
-            CoroutineScope(Main).launch {
+            launch {
                 val schedules = arrayOf(
                     getSchedule(Formula.ANNUITY, loan),
                     getSchedule(Formula.DIFFERENTIAL, loan),
@@ -84,6 +87,7 @@ class LoanActivity : AppCompatActivity() {
     }
 
     private fun expand() {
+        val heightPx = 140 * resources.displayMetrics.density
         if (layoutLoanInputOptional.visibility == View.GONE) {
             layLoanImage.visibility = View.GONE
             btnExpand.setCustomSizeVector(
@@ -93,7 +97,7 @@ class LoanActivity : AppCompatActivity() {
             )
             btnExpand.setText(R.string.SimpleCalculation)
             toggle(false, layoutLoanInputOptional, layoutLoanInput)
-            scrollAppBarLayoutInit(-200, 400, 0)
+            scrollAppBarLayoutInit(-heightPx.toInt(), 400, 0)
         } else {
             layLoanImage.visibility = View.VISIBLE
             btnExpand.setCustomSizeVector(
@@ -103,7 +107,7 @@ class LoanActivity : AppCompatActivity() {
             )
             btnExpand.setText(R.string.AdvancedCalculation)
             toggle(true, layoutLoanInputOptional, layoutLoanInput)
-            scrollAppBarLayoutInit(200, 400, 0)
+            scrollAppBarLayoutInit(heightPx.toInt(), 400, 0)
         }
     }
 
@@ -185,7 +189,7 @@ class LoanActivity : AppCompatActivity() {
 
     private fun scrollAppBarLayoutInit(scrollY: Int, duration: Long, delay: Long) {
 
-        CoroutineScope(Main).launch {
+        launch {
             delay(delay)
             progressBarLoanAc.visibility = View.GONE
 
@@ -198,6 +202,7 @@ class LoanActivity : AppCompatActivity() {
                     behavior.topAndBottomOffset = (animation.animatedValue as Int)
                     appBarLayout.requestLayout()
                 }
+
                 valueAnimatorExtend.setIntValues(0, scrollY)
                 valueAnimatorExtend.duration = duration
                 valueAnimatorExtend.start()
@@ -217,6 +222,7 @@ class LoanActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        job.cancel()
         clear()
     }
 }

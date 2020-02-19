@@ -151,5 +151,9 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         _convertRates.removeSource(_unitType)
         _convertRates.removeSource(_rates)
     }
+
+    fun cancelLoading(){
+        repository?.cancelLoading()
+    }
 }
 

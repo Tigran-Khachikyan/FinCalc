@@ -33,7 +33,6 @@ class AdapterRecBanking(
 
         val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
         val tvBank: TextView = itemView.findViewById(R.id.tvRecBalanceBank)
-        val tvType: TextView = itemView.findViewById(R.id.tvRecBalanceType)
         val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
         val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
         val iv: ImageView = itemView.findViewById(R.id.ivRecBalance)
@@ -74,8 +73,6 @@ class AdapterRecBanking(
         if (list[position] is Loan) {
 
             val typeEnum = (list[position] as Loan).type
-            val typeString = holder.tvType.context.getString(typeEnum.id)
-            holder.tvType.text = typeString
             holder.iv.setImageResource(
                 when ((list[position] as Loan).type) {
                     LoanType.MORTGAGE -> R.mipmap.type_mortgage
@@ -94,14 +91,11 @@ class AdapterRecBanking(
         } else if (list[position] is Deposit) {
 
             val freqEnum = (list[position] as Deposit).frequency
-            val freqString = holder.tvType.context.getString(freqEnum.id)
-            holder.tvType.text = freqString
             holder.iv.setImageResource(
                 when ((list[position] as Deposit).frequency) {
                     Frequency.MONTHLY -> R.mipmap.type_monthly
                     Frequency.QUARTERLY -> R.mipmap.type_quarter
-                    Frequency.AT_THE_END -> R.mipmap.type_at_the_end
-                    Frequency.OTHER -> R.drawable.ic_deposit
+                   else -> R.mipmap.type_at_the_end
                 }
             )
             holder.layBackData.setBackgroundResource(R.color.DepPrimaryLight)

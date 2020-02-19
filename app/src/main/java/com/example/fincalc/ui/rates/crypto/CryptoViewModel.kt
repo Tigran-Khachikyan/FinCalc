@@ -167,5 +167,9 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         _convertRates.removeSource(_ratesCrypto)
         _convertRates.removeSource(_ratesCur)
     }
+
+    fun canvelLoading() {
+        repository?.cancelLoading()
+    }
 }
 

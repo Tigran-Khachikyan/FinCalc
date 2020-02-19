@@ -120,6 +120,7 @@ class CryptoFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         cryptoViewModel.removeSources()
+        cryptoViewModel.canvelLoading()
     }
 
 }

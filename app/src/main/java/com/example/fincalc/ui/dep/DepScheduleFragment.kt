@@ -58,7 +58,7 @@ class DepScheduleFragment : Fragment() {
             val dep = Deposit(amount, months, rate, capitalize, taxRate, frequency)
             val scheduleDep = TableDep(dep)
 
-            fabSaveDep.setSvgColor(requireContext(),android.R.color.white)
+            fabSaveDep.setSvgColor(requireContext(), android.R.color.white)
 
             adapterRec = AdapterRecViewDep(scheduleDep)
             recyclerDepReport.setHasFixedSize(true)
@@ -73,6 +73,7 @@ class DepScheduleFragment : Fragment() {
 
             fabSaveDep.setOnClickListener {
                 showDialogSaveDeposit(requireContext(), it, dep, depViewModel)
+                hideKeyboard(requireActivity())
             }
         }
     }
@@ -113,7 +114,6 @@ class DepScheduleFragment : Fragment() {
             dep.date = formatterShort.format(Date())
             depViewModel.addDep(dep)
             showSnackBar(R.string.successSaved, view)
-            hideKeyboard(requireActivity())
         }
 
         //click CANCEL
@@ -124,7 +124,6 @@ class DepScheduleFragment : Fragment() {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
         alertDialog.setCustomView()
-        //alertDialog.window?.setBackgroundDrawableResource(R.color.PortPrimaryLight)
     }
 
 }

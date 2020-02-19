@@ -20,21 +20,26 @@ import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 
 @Suppress("UNCHECKED_CAST")
 class Repository private constructor(
     private val context: Context
-) {
+) : CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
 
     companion object {
         @Volatile
         private var INSTANCE: Repository? = null
+        private lateinit var job: Job
 
         fun getInstance(context: Context): Repository? {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE
-                    ?: Repository(context)
+                job = Job()
+                INSTANCE ?: Repository(context)
             }
         }
     }
@@ -44,31 +49,35 @@ class Repository private constructor(
     private val cryptoLiveData = MutableLiveData<RatesFull>()
 
     fun getLatestCur(): LiveData<RatesFull> {
-        CoroutineScope(Main).launch {
+        launch {
             curLiveData.value = getLatestRates(CURRENCY)
         }
         return curLiveData
     }
 
     fun getHistoricCur(date: String): LiveData<RatesFull> {
-        CoroutineScope(Main).launch {
+        launch {
             curLiveData.value = getHistoricRates(date, CURRENCY)
         }
         return curLiveData
     }
 
     fun getLatestCrypto(): LiveData<RatesFull> {
-        CoroutineScope(Main).launch {
+        launch {
             cryptoLiveData.value = getLatestRates(CRYPTO)
         }
         return cryptoLiveData
     }
 
     fun getHistoricCrypto(date: String): LiveData<RatesFull> {
-        CoroutineScope(Main).launch {
+        launch {
             cryptoLiveData.value = getHistoricRates(date, CRYPTO)
         }
         return cryptoLiveData
+    }
+
+    fun cancelLoading() {
+        job.cancel()
     }
 
     private suspend fun getLatestRates(type: RatesType): RatesFull {
@@ -275,5 +284,6 @@ class Repository private constructor(
 
     suspend fun deleteAllDeps() =
         Database(context).getDepDao().deleteAll()
+
 
 }

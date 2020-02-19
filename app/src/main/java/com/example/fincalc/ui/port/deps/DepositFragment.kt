@@ -10,25 +10,27 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.dep.AdapterRecViewDep
 import com.example.fincalc.ui.port.home.DEPOSIT_ID_KEY
 import com.example.fincalc.ui.port.home.DepFilterViewModel
-import com.example.fincalc.ui.port.home.LOAN_ID_KEY
 import com.example.fincalc.ui.showDialogRemoveBanking
 import kotlinx.android.synthetic.main.fragment_deps.*
-import kotlinx.android.synthetic.main.fragment_loans.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 
-class DepositFragment : Fragment() {
+class DepositFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private lateinit var depViewModel: DepViewModel
     private lateinit var depFilterViewModel: DepFilterViewModel
     private lateinit var adapter: AdapterRecViewDep
@@ -37,6 +39,7 @@ class DepositFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         depViewModel = ViewModelProvider(this).get(DepViewModel::class.java)
         depFilterViewModel = ViewModelProvider(this).get(DepFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_deps, container, false)
@@ -76,7 +79,9 @@ class DepositFragment : Fragment() {
                     tvBankDepFr.visibility = View.GONE
 
                 val sum =
-                    requireContext().getString(R.string.Amount) + ": ${decimalFormatter1p.format(curDep.amount)} ${curDep.currency}"
+                    requireContext().getString(R.string.Amount) + ": ${decimalFormatter1p.format(
+                        curDep.amount
+                    )} ${curDep.currency}"
                 tvAmountDepFr.text = sum
 
                 val text = requireContext().getString(curDep.frequency.id)
@@ -115,7 +120,7 @@ class DepositFragment : Fragment() {
                 adapter.scheduleDep = depTable
                 adapter.notifyDataSetChanged()
 
-                CoroutineScope(Dispatchers.Main).launch {
+                launch {
                     delay(500)
                     progressBarDepFrag.visibility = View.GONE
                     appBarLayoutDepFrag.visibility = View.VISIBLE
@@ -123,6 +128,10 @@ class DepositFragment : Fragment() {
                 }
             })
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 }

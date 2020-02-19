@@ -120,6 +120,7 @@ class MetalsFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         metalViewModel.removeSources()
+        metalViewModel.cancelLoading()
     }
 
 }
