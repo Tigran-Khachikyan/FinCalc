@@ -1,30 +1,20 @@
 package com.example.fincalc.ui.dep
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.dep.Deposit
 import com.example.fincalc.models.deposit.Frequency
-import com.example.fincalc.models.deposit.TableDep
-import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.activity_deposit.*
-import kotlinx.android.synthetic.main.activity_loan.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
-import java.util.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -49,6 +39,9 @@ class DepositActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_deposit)
         job = Job()
+
+        val taxInfo = baseContext.getString(R.string.Tax) + " (%)"
+        tvTaxIntro.text = taxInfo
 
         tvStatusDep.setFont(FONT_PATH)
 

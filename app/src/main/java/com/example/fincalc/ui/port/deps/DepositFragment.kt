@@ -106,7 +106,7 @@ class DepositFragment : Fragment(), CoroutineScope {
                     tvCapitalizedDepFr.visibility = View.VISIBLE
                 }
                 //Tax
-                val tax = requireContext().getString(R.string.Tax) + ": ${curDep.taxRate}"
+                val tax = requireContext().getString(R.string.Tax) + ": ${curDep.taxRate}" + "%"
                 tvTaxDepFr.text = tax
 
                 //Recycler

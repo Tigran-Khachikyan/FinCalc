@@ -29,7 +29,12 @@ fun showDialogTypeFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
-    dialBuilder.setMessage(R.string.selectTheCriteria)
+    val criteria =
+        if (filterPref is LoansFilterViewModel) context.getString(R.string.LoanType)
+        else context.getString(R.string.Frequency)
+    val message =
+        "${context.getString(R.string.selectThe)} $criteria ${context.getString(R.string.youWantToFilterWith)}"
+    dialBuilder.setMessage(message)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
     val adp =
@@ -81,7 +86,11 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
-    dialBuilder.setMessage(R.string.filteredByCur)
+    val message =
+        "${context.getString(R.string.selectThe)} ${context.getString(R.string.Currency)} ${context.getString(
+            R.string.youWantToFilterWith
+        )}"
+    dialBuilder.setMessage(message)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
     val adp = AdapterRecyclerMultiChoice(context, filterPref.getExistCur(), filterPref.getSelCur())
@@ -136,6 +145,9 @@ fun showDialogSort(context: Context, filterPref: FilterQuery) {
     val btnLatest: Button = dialogView.findViewById(R.id.btnSortByLatest)
     val btnHighestRates: Button = dialogView.findViewById(R.id.btnSortByRateHighest)
     val btnLowestRates: Button = dialogView.findViewById(R.id.btnSortByRateLowest)
+
+    val byDefault = "${context.getString(R.string.latest)} ${context.getString(R.string.byDefault)}"
+    btnLatest.text = byDefault
 
     fun Button.setCheckedOtherUnchecked(icon: Int) {
         btnLatest.setViewChecked(false, R.drawable.ic_calendar)
@@ -212,7 +224,7 @@ fun showDialogRemoveBanking(
     isLoan: Boolean? = null,
     id: Int = 0,
     allLoans: Boolean? = null,
-    func: ()->Unit
+    func: () -> Unit
 ) {
     if (isLoan == null && allLoans == null)
         return
@@ -246,7 +258,8 @@ fun showDialogRemoveBanking(
                 if (allLoans) (filterPref as LoansFilterViewModel).deleteAllLoans()
                 else (filterPref as DepFilterViewModel).deleteAllDep()
             }
-            else -> {}
+            else -> {
+            }
         }
         func()
     }

@@ -65,20 +65,14 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         _rates: LiveData<RatesFull>
     ): ResultMet? {
 
-        Log.d("qqqqqqq", "COMBINE")
-
-
         val selCur = _selCur.value
         val unit = _unit.value
 
         val ratesLatest = _rates.value?.latRates as CurMetRates?
         val date = _rates.value?.dateTime
-        Log.d("qqqqqqq", "COMBINE  $date")
-
-        Log.d("derdd", "_ratesCur.value?.elderRates: ${_rates.value?.elderRates}")
-
         val ratesElder = _rates.value?.elderRates as CurMetRates?
         val baseCurForRates = _rates.value?.base ?: "USD"
+        val status = _rates.value?.status ?:0
 
         var result: ResultMet? = null
         if (ratesLatest != null && unit != null && selCur != null && date != null) {
@@ -86,8 +80,6 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
             val mapLatest = getMapFromRates(ratesLatest)
             val mapElder = ratesElder?.let { getMapFromRates(ratesElder) }
             val codeRatesLatestList = mapLatest?.keys?.toList()
-
-            Log.d("derdd", "curRatesElder: $ratesElder")
 
             val baseCurRateLatest = mapLatest?.get(baseCurForRates)
             val selCurRateLatest = mapLatest?.get(selCur)
@@ -134,13 +126,10 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
                     }
                 }
             }
-            Log.d("derdd", "isUnitOunce VM: $unit")
-            Log.d("derdd", "dare VM: $date")
 
             if (unit == MetalsUnit.GRAM)
                 ratesBarList.forEach { r -> r.price = r.price / MetalsUnit.TROY_OUNCE.weight }
-            result = ResultMet(ratesBarList, selCur, date, unit)
-            Log.d("qqqqqqq", "DATE HAS BEEN CHANGED $date")
+            result = ResultMet(ratesBarList, selCur, date,status, unit)
 
         }
         return result
@@ -150,10 +139,6 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         _convertRates.removeSource(_baseCurrency)
         _convertRates.removeSource(_unitType)
         _convertRates.removeSource(_rates)
-    }
-
-    fun cancelLoading(){
-        repository?.cancelLoading()
     }
 }
 

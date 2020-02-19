@@ -11,25 +11,35 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.data.network.firebase.NO_NETWORK
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
+import kotlinx.android.synthetic.main.fragment_crypto.*
 import kotlinx.android.synthetic.main.fragment_currency.*
+import kotlinx.android.synthetic.main.fragment_metals.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @Suppress("DEPRECATION")
-class RateFragment : Fragment(){
+class RateFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private lateinit var curViewModel: CurrencyViewModel
     private lateinit var sharedPref: SharedPreferences
     private lateinit var adapter: AdapterRecRates
+    private var noNetworkWarningShown: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         curViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         return inflater.inflate(R.layout.fragment_currency, container, false)
     }
@@ -114,57 +124,71 @@ class RateFragment : Fragment(){
         curViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarCurFr.visibility = View.VISIBLE
+            tvProgLoadCur.text = requireContext().getString(R.string.loading)
 
             it?.let {
+                launch {
+                    if (it.status == NO_NETWORK && !noNetworkWarningShown) {
+                        noNetworkWarningShown = true
+                        tvProgLoadCur.text = requireContext().getString(R.string.noNetwork)
+                        delay(3000)
+                        tvProgLoadCur.text = requireContext().getString(R.string.loadingFromCache)
+                        delay(2000)
+                    }
 
-                progressBarCurFr.visibility = View.GONE
-                layTableCur.visibility = View.VISIBLE
-                layoutInputCur.visibility = View.VISIBLE
+                    progressBarCurFr.visibility = View.GONE
+                    layTableCur.visibility = View.VISIBLE
+                    layoutInputCur.visibility = View.VISIBLE
 
-                adapter.ratesRows = it.ratesBarList
-                adapter.notifyDataSetChanged()
+                    adapter.ratesRows = it.ratesBarList
+                    adapter.notifyDataSetChanged()
 
-                val date = formatterLong.format(it.date)
-                btnDateCur.text = date
+                    val date = formatterLong.format(it.date)
+                    btnDateCur.text = date
 
-                val base = it.baseCur
-                val from = it.curFrom
+                    val base = it.baseCur
+                    val from = it.curFrom
 
-                setBaseCurToSharedPref(sharedPref, base)
+                    setBaseCurToSharedPref(sharedPref, base)
 
-                val textCurName = "${context?.getString(R.string.base)} $base"
-                btnBaseCur.text = textCurName
-                val res = mapRatesNameIcon[base]?.second
-                res?.let { icon ->
-                    btnBaseCur.setCustomSizeVector(
-                        context,
-                        resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
-                        resRight = icon, sizeRightdp = 32
-                    )
-                }
+                    val textCurName = "${context?.getString(R.string.base)} $base"
+                    btnBaseCur.text = textCurName
+                    val res = mapRatesNameIcon[base]?.second
+                    res?.let { icon ->
+                        btnBaseCur.setCustomSizeVector(
+                            context,
+                            resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                            resRight = icon, sizeRightdp = 32
+                        )
+                    }
 
-                btnCurBase.text = base
-                btnCurFrom.text = from
-                tvCurResult.text =
-                    it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) + " " + base }
+                    btnCurBase.text = base
+                    btnCurFrom.text = from
+                    tvCurResult.text =
+                        it.resAmount?.let { d -> "= " + decimalFormatter3p.format(d) + " " + base }
 
-                val flagBase = mapRatesNameIcon[it.baseCur]?.second
-                flagBase?.let { f ->
-                    btnCurBase.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
-                }
+                    val flagBase = mapRatesNameIcon[it.baseCur]?.second
+                    flagBase?.let { f ->
+                        btnCurBase.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
+                    }
 
-                val flagFrom = mapRatesNameIcon[it.curFrom]?.second
-                flagFrom?.let { f ->
-                    btnCurFrom.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
+                    val flagFrom = mapRatesNameIcon[it.curFrom]?.second
+                    flagFrom?.let { f ->
+                        btnCurFrom.setCustomSizeVector(context, resLeft = f, sizeLeftdp = 32)
+                    }
                 }
             }
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
+    }
+
     override fun onStop() {
         super.onStop()
         curViewModel.removeSources()
-        curViewModel.cancelLoading()
     }
 }
 

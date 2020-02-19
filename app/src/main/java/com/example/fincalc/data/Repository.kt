@@ -1,7 +1,6 @@
 package com.example.fincalc.data
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.fincalc.data.db.Database
@@ -18,7 +17,7 @@ import com.example.fincalc.models.rates.getRatesFromMap
 import com.example.fincalc.ui.formatterCalendar
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Dispatchers.IO
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -29,7 +28,7 @@ class Repository private constructor(
 ) : CoroutineScope {
 
     override val coroutineContext: CoroutineContext
-        get() = Main + job
+        get() = IO + job
 
     companion object {
         @Volatile
@@ -48,36 +47,32 @@ class Repository private constructor(
     private val curLiveData = MutableLiveData<RatesFull>()
     private val cryptoLiveData = MutableLiveData<RatesFull>()
 
-    fun getLatestCur(): LiveData<RatesFull> {
+     fun getLatestCur(): LiveData<RatesFull> {
         launch {
-            curLiveData.value = getLatestRates(CURRENCY)
+            curLiveData.postValue(getLatestRates(CURRENCY))
         }
         return curLiveData
     }
 
     fun getHistoricCur(date: String): LiveData<RatesFull> {
         launch {
-            curLiveData.value = getHistoricRates(date, CURRENCY)
+            curLiveData.postValue(getHistoricRates(date, CURRENCY))
         }
         return curLiveData
     }
 
     fun getLatestCrypto(): LiveData<RatesFull> {
         launch {
-            cryptoLiveData.value = getLatestRates(CRYPTO)
+            cryptoLiveData.postValue(getLatestRates(CRYPTO))
         }
         return cryptoLiveData
     }
 
     fun getHistoricCrypto(date: String): LiveData<RatesFull> {
         launch {
-            cryptoLiveData.value = getHistoricRates(date, CRYPTO)
+            cryptoLiveData.postValue(getHistoricRates(date, CRYPTO))
         }
         return cryptoLiveData
-    }
-
-    fun cancelLoading() {
-        job.cancel()
     }
 
     private suspend fun getLatestRates(type: RatesType): RatesFull {
@@ -92,7 +87,6 @@ class Repository private constructor(
                 val latestDoc = docSnapshot.last()
                 val base = latestDoc.get(BASE) as String?
                 val elderDoc = docSnapshot.firstOrNull()
-                Log.d("derdd", "REPO elderDoc: $elderDoc")
                 val latestDateTime = latestDoc.getTime()!!
                 val duration = duration(latestDateTime, nowDate)
 
@@ -100,8 +94,6 @@ class Repository private constructor(
                 if (duration < 180) {
                     val latRates = getRatesFromSnapshot(latestDoc, type)!!
                     val elderRates = getRatesFromSnapshot(elderDoc, type)
-                    Log.d("derdd", "REPO elderRates<180: $elderRates")
-
                     RatesFull(latestDateTime, latRates, elderRates, base)
                 } else {  //catch new rates
                     try {
@@ -117,11 +109,8 @@ class Repository private constructor(
                                 baseApi = response.base
                                 response.rates
                             }
-                            else -> TODO()
                         }
                         val elderRates = getRatesFromSnapshot(latestDoc, type)
-                        Log.d("derdd", "REPO elderRates>180 Api: $elderRates")
-
                         FireStoreApi.setLatestRatesFire(curRates, baseApi)
                         RatesFull(nowDate, curRates, elderRates, baseApi)
                     } catch (ex: Exception) {
@@ -129,8 +118,6 @@ class Repository private constructor(
                         try {
                             val latRates = getRatesFromSnapshot(latestDoc, type)!!
                             val elderRates = getRatesFromSnapshot(elderDoc, type)
-                            Log.d("derdd", "REPO elderRates no Api: $elderRates")
-
                             RatesFull(
                                 latestDateTime, latRates, elderRates, base, API_SOURCE_PROBLEM
                             )
@@ -154,7 +141,6 @@ class Repository private constructor(
                             baseApi = response.base
                             response.rates
                         }
-                        else -> TODO()
                     }
                     FireStoreApi.setLatestRatesFire(curRates, baseApi)
                     RatesFull(nowDate, curRates, null, baseApi)
@@ -204,7 +190,6 @@ class Repository private constructor(
                             baseApi = response.base
                             response.rates
                         }
-                        else -> TODO()
                     }
                     FireStoreApi.setHisRatesFire(date, hisRates, baseApi)
                     val dateFrom = formatterCalendar.parse(date)
@@ -239,17 +224,12 @@ class Repository private constructor(
     }
 
     private fun getRatesFromSnapshot(snapshot: DocumentSnapshot?, type: RatesType): Rates? {
-
         val ratesMap = snapshot?.let { snapshot.get(RATES) as HashMap<String, Double> }
         return when (type) {
             CURRENCY -> ratesMap?.let { getRatesFromMap(ratesMap) }
             CRYPTO -> ratesMap?.let { getCryptoRatesFromMap(ratesMap) }
-            else -> TODO()
         }
     }
-
-    /* private fun getBaseFromSnapshot(snapshot: DocumentSnapshot?) =
-         snapshot?.let { snapshot.get(BASE) as String? }*/
 
     //Database
     //Loans
@@ -284,6 +264,5 @@ class Repository private constructor(
 
     suspend fun deleteAllDeps() =
         Database(context).getDepDao().deleteAll()
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.fincalc.ui.port.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,10 @@ import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.decimalFormatter1p
 import com.example.fincalc.ui.port.OnViewHolderClick
-import com.example.fincalc.ui.showDialogRemoveBanking
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
 class AdapterRecBanking(
+    val context: Context,
     var list: List<Banking>,
     var onViewHolderClick: OnViewHolderClick?,
     var port: BaseViewModel
@@ -32,6 +33,7 @@ class AdapterRecBanking(
     ) : RecyclerView.ViewHolder(itemView) {
 
         val tvSum: TextView = itemView.findViewById(R.id.tvRecBalanceSum)
+        val tvTerm: TextView = itemView.findViewById(R.id.tvRecBalanceTerm)
         val tvBank: TextView = itemView.findViewById(R.id.tvRecBalanceBank)
         val tvDate: TextView = itemView.findViewById(R.id.tvRecBalanceDate)
         val tvRate: TextView = itemView.findViewById(R.id.tvRecBalanceRate)
@@ -57,15 +59,17 @@ class AdapterRecBanking(
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
         val bank = list[position].bank
-        if (bank == "")
-            holder.tvBank.visibility = View.GONE
+        if (bank == "") holder.tvBank.visibility = View.GONE
         else {
             holder.tvBank.visibility = View.VISIBLE
-            holder.tvBank.text = list[position].bank
+            val bankText = context.getString(R.string.bank) + ": " + list[position].bank
+            holder.tvBank.text = bankText
         }
         val cur = list[position].currency
         val amount = decimalFormatter1p.format(list[position].amount) + " $cur"
         holder.tvSum.text = amount
+        val term = list[position].months.toString() + " " + context.getString(R.string.Term_months)
+        holder.tvTerm.text = term
         val rate = list[position].rate.toString() + "%"
         holder.tvRate.text = rate
         holder.tvDate.text = list[position].date
@@ -87,7 +91,7 @@ class AdapterRecBanking(
                     LoanType.OTHER -> R.mipmap.type_other_loan
                 }
             )
-            holder.layBackData.setBackgroundResource(R.color.PortPrimaryLight)
+            holder.layBackData.setBackgroundResource(R.color.PortPrimaryDark)
         } else if (list[position] is Deposit) {
 
             val freqEnum = (list[position] as Deposit).frequency
@@ -95,10 +99,10 @@ class AdapterRecBanking(
                 when ((list[position] as Deposit).frequency) {
                     Frequency.MONTHLY -> R.mipmap.type_monthly
                     Frequency.QUARTERLY -> R.mipmap.type_quarter
-                   else -> R.mipmap.type_at_the_end
+                    else -> R.mipmap.type_at_the_end
                 }
             )
-            holder.layBackData.setBackgroundResource(R.color.DepPrimaryLight)
+            holder.layBackData.setBackgroundResource(R.color.DepPrimaryDark)
         }
     }
 }

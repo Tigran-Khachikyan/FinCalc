@@ -6,4 +6,5 @@ interface ResultToShow {
     val ratesBarList: List<RatesBar>
     val baseCur: String
     val date: Date
+    val status: Int
 }

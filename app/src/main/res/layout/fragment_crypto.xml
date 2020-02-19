@@ -89,7 +89,6 @@
                 app:layout_constraintRight_toLeftOf="@id/btnBaseCrypto"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:drawableTop="@drawable/ic_calendar"
-                android:text="05 sep 2020 24:05:16"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <Button
@@ -97,7 +96,6 @@
                 android:layout_width="0dp"
                 style="@style/button_icon"
                 android:layout_height="0dp"
-                android:text="AMD"
                 android:paddingStart="12dp"
                 android:paddingEnd="16dp"
                 app:layout_constraintLeft_toRightOf="@id/btnDateCrypto"
@@ -109,7 +107,6 @@
                 android:id="@+id/btnOrderCrypto"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="By Popularity"
                 style="@style/button_icon"
                 app:layout_constraintLeft_toRightOf="@id/btnBaseCrypto"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -197,7 +194,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tvProgressLoadingCur"
+            android:id="@+id/tvProgLoadCrypto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

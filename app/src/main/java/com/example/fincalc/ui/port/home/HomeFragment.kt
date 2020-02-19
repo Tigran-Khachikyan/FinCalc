@@ -67,9 +67,10 @@ class HomeFragment : Fragment(), CoroutineScope {
         /*LOANS*/
         loansFilterViewModel.setSortPref(null)
 
-        bmbLoansMenu.initialize(BMBTypes.LOAN)
+        bmbLoansMenu.initialize(requireContext(), true)
 
-        adapterRecLoan = AdapterRecBanking(arrayListOf(), null, loansFilterViewModel)
+        adapterRecLoan =
+            AdapterRecBanking(requireContext(), arrayListOf(), null, loansFilterViewModel)
         // recLoanPort.initialize(adapterRecLoan)
         recLoanPort.setHasFixedSize(true)
         recLoanPort.layoutManager =
@@ -129,9 +130,9 @@ class HomeFragment : Fragment(), CoroutineScope {
         /*DEPOSIT*/
         depFilterViewModel.setSortPref(null)
 
-        bmbDepMenu.initialize(BMBTypes.DEPOSIT)
+        bmbDepMenu.initialize(requireContext(), false)
 
-        adapterRecDep = AdapterRecBanking(arrayListOf(), null, depFilterViewModel)
+        adapterRecDep = AdapterRecBanking(requireContext(), arrayListOf(), null, depFilterViewModel)
         //recDepPort.initialize(adapterRecDep)
         recDepPort.setHasFixedSize(true)
         recDepPort.layoutManager =
@@ -275,7 +276,7 @@ class HomeFragment : Fragment(), CoroutineScope {
                 val delayTime: Long = if (!delay) {
                     delay = true
                     0
-                } else 5000
+                } else 700
                 delay(delayTime)
 
                 progressBarHomeFr.visibility = View.GONE
@@ -355,6 +356,8 @@ class HomeFragment : Fragment(), CoroutineScope {
                     resLeft = R.drawable.ic_sort, sizeLeftdp = 24,
                     resRight = R.drawable.ic_next, sizeRightdp = 24
                 )
+                if (sortTextRes == R.string.latest)
+                    visibility = View.GONE
                 c.getString(sortTextRes)
             }
         }
@@ -378,7 +381,6 @@ class HomeFragment : Fragment(), CoroutineScope {
         job.cancel()
         loansFilterViewModel.removeSources()
         depFilterViewModel.removeSources()
-
     }
 
 }

@@ -1,57 +1,58 @@
 package com.example.fincalc.ui
 
+import android.content.Context
 import android.graphics.PointF
 import com.example.fincalc.R
+import com.example.fincalc.ui.port.home.LoansFilterViewModel
 import com.nightonke.boommenu.BoomButtons.*
 import com.nightonke.boommenu.BoomMenuButton
 
 
-enum class BMBTypes {
-    LOAN, DEPOSIT, CURRENCY, METALS, CRYPTO
-}
-
-fun BoomMenuButton.initialize(type: BMBTypes) {
+fun BoomMenuButton.initialize(context: Context, isLoan: Boolean) {
     createPositions(this)
 
-    when (type) {
-        BMBTypes.LOAN -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_loan, R.string.loan, R.string.LoanType, R.color.DepPrimaryLight))
-        }
-        BMBTypes.DEPOSIT -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, R.string.deposit, R.string.deposits, R.color.DepPrimaryLight))
-        }
-        BMBTypes.METALS -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.metals, R.string.precious_metals, R.color.DepPrimaryLight))
-        }
-        BMBTypes.CRYPTO -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.crypto, R.string.precious_metals, R.color.DepPrimaryLight))
-        }
-        BMBTypes.CURRENCY -> {
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.Currency, R.string.currencyConverter, R.color.DepPrimaryLight))
-            this.addBuilder(createHamButtonBuilder(R.drawable.ic_accounting, R.string.Currency, R.string.currencyConverter, R.color.DepPrimaryLight))
-        }
-    }
+    val normTextType =
+        context.getString(R.string.Filtering) + " " + if (isLoan) context.getString(R.string.filteredByType) else context.getString(
+            R.string.filteredByFreq
+        )
+    val normTextCur =
+        context.getString(R.string.Filtering) + " " + context.getString(R.string.filteredByCur)
+    val sortOptions = context.getString(R.string.sortingOptions)
+    val deleteAll = context.getString(R.string.remove)
+
+    val criteria =
+        if (isLoan) context.getString(R.string.LoanType)
+        else context.getString(R.string.Frequency)
+    val subTextType =
+        "${context.getString(R.string.selectThe)} $criteria ${context.getString(R.string.youWantToFilterWith)}"
+
+    val subTextCur =
+        "${context.getString(R.string.selectThe)} ${context.getString(R.string.Currency)} ${context.getString(
+            R.string.youWantToFilterWith
+        )}"
+
+    val subSortText = context.getString(R.string.sortingOptionsExtended)
+
+    val subRemoveText = "${context.getString(R.string.remove)} ${
+    if (isLoan) context.getString(R.string.allTheLoans)
+    else context.getString(R.string.allTheDeposits)}"
+
+
+    this.addBuilder(createHamButtonBuilder(R.drawable.ic_filter, normTextType, subTextType))
+    this.addBuilder(createHamButtonBuilder(R.drawable.ic_base_cur, normTextCur, subTextCur))
+    this.addBuilder(createHamButtonBuilder(R.drawable.ic_sort, sortOptions, subSortText))
+    this.addBuilder(createHamButtonBuilder(R.drawable.ic_alert, deleteAll, subRemoveText))
 
 }
 
 private fun createHamButtonBuilder(
-    imageSource: Int, textRes: Int, subText: Int, color: Int
+    imageSource: Int, text: String, textSub: String
 ): HamButton.Builder {
     return HamButton.Builder()
         .normalImageRes(imageSource)
-        .normalTextRes(textRes)
-        .subNormalTextRes(subText)
-        .normalColor(color)
+        .normalText(text)
+        .subNormalText(textSub)
+        .normalColor(R.color.PortPrimaryDarkVery)
 }
 
 private fun createPositions(bmb: BoomMenuButton) {

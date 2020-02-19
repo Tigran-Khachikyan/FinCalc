@@ -77,11 +77,11 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
 
         val selCur = _selCur.value
         val order = _order.value
+        val status = _ratesCrypto.value?.status?:0
 
         val cryptoRatesLatest = _ratesCrypto.value?.latRates as CryptoRates?
         val cryptoRatesElder = _ratesCrypto.value?.elderRates as CryptoRates?
         val curRatesLatest = _ratesCur.value?.latRates as CurMetRates?
-        Log.d("derdd", "_ratesCur.value?.elderRates: ${_ratesCur.value?.elderRates}")
 
         val curRatesElder = _ratesCur.value?.elderRates as CurMetRates?
         val baseCurForCrypto = _ratesCrypto.value?.base ?: "USD"
@@ -144,18 +144,14 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
                                     code, name, icon, priceLatest, growthRate, pop
                                 ) else null
 
-
-
                         rateBar?.let { ratesBarList.add(rateBar) }
                     }
                 }
             }
-            if (order == Order.PRICE)
-                ratesBarList.sortByDescending { r -> r.price }
-            else //by popularity
-                ratesBarList.sortBy { r -> r.pop }
+            if (order == Order.PRICE) ratesBarList.sortByDescending { r -> r.price }
+            else ratesBarList.sortBy { r -> r.pop }
 
-            result = ResultCrypto(ratesBarList, selCur, date, order)
+            result = ResultCrypto(ratesBarList, selCur, date, status, order)
         }
         return result
     }
@@ -166,10 +162,6 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
         _convertRates.removeSource(_orderType)
         _convertRates.removeSource(_ratesCrypto)
         _convertRates.removeSource(_ratesCur)
-    }
-
-    fun canvelLoading() {
-        repository?.cancelLoading()
     }
 }
 

@@ -75,7 +75,7 @@
     <string name="QuarterlyPaymentDep">Quarterly payment</string>
     <string name="AtTheEndPayment">At the end of the Contract</string>
     <string name="taxRegulation">State tax Regulation</string>
-    <string name="Tax">Tax rate (%)</string>
+    <string name="Tax">Tax rate</string>
     <string name="Capitalization">Capitalization</string>
     <string name="withCapitalizing">Adding accrued interest</string>
     <string name="BalanceDep">Amount</string>
@@ -126,14 +126,15 @@
     <string name="save">Save</string>
     <string name="savingOptions">Saving options</string>
     <string name="CLEAR">CLEAR ALL</string>
-    <string name="Filtering">Filtering</string>
-    <string name="CurSpinnerText">Select the currency you want to filter with.</string>
-    <string name="selectTheCriteria">Select the criteria you want to filter with.</string>
+    <string name="Filtering">Filter</string>
+    <string name="selectThe">Select the</string>
+    <string name="youWantToFilterWith">you want to filter with.</string>
 
     --BalanceFragment-
     <string name="filteredByCur">by currency</string>
     <string name="filteredByType">by Loan Type</string>
     <string name="filteredByFreq">by repay frequency</string>
+    <string name="sortingOptionsExtended">Sort items by date and interest rate.</string>
     <string name="oneTimeComeAndCost">One Time Commission and costs -></string>
     <string name="noLoanFound">No loan found</string>
     <string name="noDepositFound">No deposit found</string>
@@ -156,11 +157,6 @@
     <string name="Date">Date</string>
     <string name="change">Change</string>
     <string name="price">Price</string>
-    <string name="Gold">Gold</string>
-    <string name="Silver">Silver</string>
-    <string name="Platinum">Platinum</string>
-    <string name="Palladium">Palladium</string>
-    <string name="TopCur">World Top Currencies</string>
     <string name="invalidCurSelection">Please select the convertible currency!</string>
     <string name="invalidCurInput">Please input amount for conversion!</string>
 
@@ -246,14 +242,17 @@
     <string name="ounce">troy ounce</string>
     <string name="gram">gram</string>
     <string name="sortByPrice">by price</string>
-    <string name="sortByPop">by popularity</string>
+    <string name="sortByPop">by Rating</string>
+    <string name="byDefault">(by Default)</string>
 
 
     ------------------------------------
     <string name="market">Market</string>
     <string name="base">base: </string>
     <string name="select">select</string>
-    <string name="texting">Гарантии и безопасность. казчик получает качественный текст, а исполнитель — оплату.</string>
+    <string name="currencyTextAbout">Get real-time and historical exchange rates for 56 world currencies covering over 138 countries. Use currency converter for custom conversion.</string>
+    <string name="cryptoTextAbout">Are You interested in cryptoCurrency? Real-time and historical rates for 25 most popular cryptoCurrencies are available in this section.</string>
+    <string name="metalsTextAbout">We provide real-time and historical trading prices for 4 common precious metals synchronized with worlds major financial and stock markets. </string>
     <string name="financialMarkets">Financial markets</string>
     <string name="highestRates">highest rates</string>
     <string name="lowestRates">Lowest rates</string>
@@ -262,7 +261,13 @@
     <string name="filterRemoveEditText">Do you want to edit filter or remove?</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="allTheLoans">all the loans!</string>
+    <string name="allTheDeposits">all the deposits!</string>
     <string name="computing">Computing</string>
     <string name="loading">Loading</string>
+    <string name="portfolioAbout">Get saved loan/deposit schedules here, add new items, filter and sort by your preference.</string>
+    <string name="noNetwork">Check Network connection to get latest data!</string>
+    <string name="loadingFromCache">Loading from cache</string>
+
 
 </resources>

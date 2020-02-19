@@ -12,24 +12,36 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.data.network.firebase.NO_NETWORK
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
 import kotlinx.android.synthetic.main.fragment_crypto.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A simple [Fragment] subclass.
  */
-class CryptoFragment : Fragment() {
+class CryptoFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private lateinit var cryptoViewModel: CryptoViewModel
     private lateinit var adapter: AdapterRecRates
     private lateinit var sharedPref: SharedPreferences
+    private var noNetworkWarningShown: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         cryptoViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
         return inflater.inflate(R.layout.fragment_crypto, container, false)
     }
@@ -87,40 +99,54 @@ class CryptoFragment : Fragment() {
         cryptoViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarCryptoFr.visibility = View.VISIBLE
+            tvProgLoadCrypto.text = requireContext().getString(R.string.loading)
 
             it?.let {
-                progressBarCryptoFr.visibility = View.GONE
-                layCryptoIntro.visibility = View.VISIBLE
-                layCryptoOptions.visibility = View.VISIBLE
-                adapter.ratesRows = it.ratesBarList
-                adapter.notifyDataSetChanged()
+                launch {
+                    if (it.status == NO_NETWORK && !noNetworkWarningShown) {
+                        noNetworkWarningShown = true
+                        tvProgLoadCrypto.text = requireContext().getString(R.string.noNetwork)
+                        delay(3000)
+                        tvProgLoadCrypto.text = requireContext().getString(R.string.loadingFromCache)
+                        delay(2000)
+                    }
+                    progressBarCryptoFr.visibility = View.GONE
+                    layCryptoIntro.visibility = View.VISIBLE
+                    layCryptoOptions.visibility = View.VISIBLE
+                    adapter.ratesRows = it.ratesBarList
+                    adapter.notifyDataSetChanged()
 
-                val date = formatterLong.format(it.date)
-                btnDateCrypto.text = date
+                    val date = formatterLong.format(it.date)
+                    btnDateCrypto.text = date
 
-                val orderType =
-                    if (it.order == Order.PRICE) context?.getString(R.string.sortByPrice)
-                    else context?.getString(R.string.sortByPop)
-                btnOrderCrypto.text = orderType
+                    val orderType =
+                        if (it.order == Order.PRICE) context?.getString(R.string.sortByPrice)
+                        else context?.getString(R.string.sortByPop)
+                    btnOrderCrypto.text = orderType
 
-                val res = mapRatesNameIcon[it.baseCur]?.second
-                res?.let { icon ->
-                    btnBaseCrypto.setCustomSizeVector(
-                        context,
-                        resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
-                        resRight = icon, sizeRightdp = 32
-                    )
+                    val res = mapRatesNameIcon[it.baseCur]?.second
+                    res?.let { icon ->
+                        btnBaseCrypto.setCustomSizeVector(
+                            context,
+                            resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                            resRight = icon, sizeRightdp = 32
+                        )
+                    }
+                    btnBaseCrypto.text = it.baseCur
+                    setBaseCurToSharedPref(sharedPref, it.baseCur)
                 }
-                btnBaseCrypto.text = it.baseCur
-                setBaseCurToSharedPref(sharedPref, it.baseCur)
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 
     override fun onStop() {
         super.onStop()
         cryptoViewModel.removeSources()
-        cryptoViewModel.canvelLoading()
     }
 
 }

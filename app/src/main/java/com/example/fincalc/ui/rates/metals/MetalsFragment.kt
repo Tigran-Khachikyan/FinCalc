@@ -11,23 +11,35 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
+import com.example.fincalc.data.network.firebase.NO_NETWORK
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
+import kotlinx.android.synthetic.main.fragment_crypto.*
+import kotlinx.android.synthetic.main.fragment_currency.*
 import kotlinx.android.synthetic.main.fragment_metals.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
-class MetalsFragment : Fragment() {
+class MetalsFragment : Fragment(), CoroutineScope {
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Main + job
     private lateinit var metalViewModel: MetalsViewModel
     private lateinit var adapter: AdapterRecRates
     private lateinit var sharedPref: SharedPreferences
+    private var noNetworkWarningShown: Boolean = false
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        job = Job()
         metalViewModel = ViewModelProvider(this).get(MetalsViewModel::class.java)
         return inflater.inflate(R.layout.fragment_metals, container, false)
     }
@@ -85,42 +97,57 @@ class MetalsFragment : Fragment() {
         metalViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarMetalsFr.visibility = View.VISIBLE
+            tvProgLoadMetals.text = requireContext().getString(R.string.loading)
 
             it?.let {
-                progressBarMetalsFr.visibility = View.GONE
-                layMetalsHider.visibility = View.VISIBLE
+                launch {
+                    if (it.status == NO_NETWORK && !noNetworkWarningShown) {
+                        noNetworkWarningShown = true
+                        tvProgLoadMetals.text = requireContext().getString(R.string.noNetwork)
+                        delay(3000)
+                        tvProgLoadMetals.text = requireContext().getString(R.string.loadingFromCache)
+                        delay(2000)
+                    }
 
-                adapter.ratesRows = it.ratesBarList
-                adapter.notifyDataSetChanged()
+                    progressBarMetalsFr.visibility = View.GONE
+                    layMetalsHider.visibility = View.VISIBLE
 
-                setBaseCurToSharedPref(sharedPref, it.baseCur)
+                    adapter.ratesRows = it.ratesBarList
+                    adapter.notifyDataSetChanged()
 
-                val date = formatterLong.format(it.date)
-                btnDateMetals.text = date
+                    setBaseCurToSharedPref(sharedPref, it.baseCur)
 
-                val textUnit =
-                    if (it.unit == MetalsUnit.TROY_OUNCE) context?.getString(R.string.ounce) else context?.getString(
-                        R.string.gram
-                    )
-                btnUnitMetals.text = textUnit
+                    val date = formatterLong.format(it.date)
+                    btnDateMetals.text = date
 
-                val textCurName = it.baseCur
-                btnBaseMetals.text = textCurName
-                val res = mapRatesNameIcon[it.baseCur]?.second
-                res?.let { icon ->
-                    btnBaseMetals.setCustomSizeVector(
-                        context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
-                        resRight = icon, sizeRightdp = 32
-                    )
+                    val textUnit =
+                        if (it.unit == MetalsUnit.TROY_OUNCE) context?.getString(R.string.ounce) else context?.getString(
+                            R.string.gram
+                        )
+                    btnUnitMetals.text = textUnit
+
+                    val textCurName = it.baseCur
+                    btnBaseMetals.text = textCurName
+                    val res = mapRatesNameIcon[it.baseCur]?.second
+                    res?.let { icon ->
+                        btnBaseMetals.setCustomSizeVector(
+                            context, resTop = R.drawable.ic_base_cur, sizeTopdp = 24,
+                            resRight = icon, sizeRightdp = 32
+                        )
+                    }
                 }
             }
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
+    }
+
     override fun onStop() {
         super.onStop()
         metalViewModel.removeSources()
-        metalViewModel.cancelLoading()
     }
 
 }

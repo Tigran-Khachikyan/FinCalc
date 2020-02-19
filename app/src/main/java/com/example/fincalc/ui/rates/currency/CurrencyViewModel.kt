@@ -76,6 +76,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         val latestRates = ratesLiveData.value?.latRates as CurMetRates?
         val elderRates = ratesLiveData.value?.elderRates as CurMetRates?
         val date = ratesLiveData.value?.dateTime
+        val status = ratesLiveData.value?.status?:0
 
         var result: ResultCur? = null
         if (curBase != null && latestRates != null && date != null) {
@@ -118,7 +119,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
                     amount * baseRate / fromRate else null
             } else null
 
-            result = ResultCur(ratesBarList, curBase, date, curFrom, resAmount)
+            result = ResultCur(ratesBarList, curBase, date, status, curFrom, resAmount)
         }
         return result
     }
@@ -135,9 +136,5 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
         _convertRates.removeSource(_curFrom)
         _convertRates.removeSource(_amount)
         _convertRates.removeSource(_rates)
-    }
-
-    fun cancelLoading(){
-        repository?.cancelLoading()
     }
 }
