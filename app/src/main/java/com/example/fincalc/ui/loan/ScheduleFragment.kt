@@ -124,7 +124,7 @@ class ScheduleFragment() : Fragment(), CoroutineScope {
             adapterSpinType.setDropDownViewResource(R.layout.spinner_loan_types)
             spinnerType.adapter = adapterSpinType
             spinnerType.setSelection(adapterSpinType.count - 1)
-            dialogBuilder.setTitle(R.string.DialogTitleSave)
+            dialogBuilder.setTitle(R.string.savingOptions)
 
             //click SAVE
             dialogBuilder.setPositiveButton(getString(R.string.save)) { _, _ ->

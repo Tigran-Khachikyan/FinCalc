@@ -39,7 +39,6 @@ class MetalsFragment : Fragment(), CoroutineScope {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        job = Job()
         metalViewModel = ViewModelProvider(this).get(MetalsViewModel::class.java)
         return inflater.inflate(R.layout.fragment_metals, container, false)
     }
@@ -94,6 +93,7 @@ class MetalsFragment : Fragment(), CoroutineScope {
     override fun onStart() {
         super.onStart()
 
+        job = Job()
         metalViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarMetalsFr.visibility = View.VISIBLE
@@ -140,13 +140,9 @@ class MetalsFragment : Fragment(), CoroutineScope {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        job.cancel()
-    }
-
     override fun onStop() {
         super.onStop()
+        job.cancel()
         metalViewModel.removeSources()
     }
 

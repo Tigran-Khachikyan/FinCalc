@@ -33,7 +33,7 @@ class SplashActivity : AppCompatActivity(), CoroutineScope {
             tvSplashSurface.animation =
                 AnimationUtils.loadAnimation(baseContext, R.anim.splash_text)
             ivSplash.animation = AnimationUtils.loadAnimation(baseContext, R.anim.splash_image)
-            tvSplashSurface.playAnimation(R.string.FinCalcSplash, 3000)
+            tvSplashSurface.playAnimation(R.string.app_name, 3000)
             delay(4000)
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)

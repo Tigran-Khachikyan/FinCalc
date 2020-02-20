@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_market"
         android:icon="@drawable/ic_markets"
-        android:title="@string/market" />
+        android:title="@string/financialMarkets" />
 
     <item
         android:id="@+id/navigation_rates"
@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_metals"
-        android:icon="@drawable/ic_gold"
+        android:icon="@drawable/ic_precious_metals"
         android:title="@string/precious_metals" />
 
 </menu>

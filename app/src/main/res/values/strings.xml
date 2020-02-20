@@ -1,38 +1,21 @@
 <resources>
-    <string name="app_name">FinCalc</string>
-    <string name="FinCalcSplash">Financial Calculator</string>
+    <string name="app_name">Financial buddy</string>
 
     -- Activity Main
-    <string name="contentDescriptionLoanLogo">Loan Logo</string>
-    <string name="contentDescriptionDepositLogo">Deposit Logo</string>
-    <string name="contentDescriptionCurrencyLogo">Currency Logo</string>
-    <string name="contentDescriptionPortfolioLogo">Portfolio Logo</string>
-    <string name="contentDescriptionMainFinanceImage">Portfolio Logo</string>
-
     <string name="depositCalculator">DEPOSIT CALCULATOR</string>
-    <!--
-    <string name="depositCalculator">депозитный калькулятор</string>
--->
     <string name="loanCalculator">LOAN CALCULATOR</string>
     <string name="currencyConverter">CURRENCY CONVERTER</string>
     <string name="convert">CONVERT</string>
     <string name="portfolio">PORTFOLIO</string>
-
-    <string name="depositCalculatorInfo">DEPOSIT CALCULATOR \nasasasas</string>
-    <string name="loanCalculatorInfo">LOAN CALCULATOR</string>
-    <string name="currencyConverterInfo">CURRENCY CONVERTER</string>
-    <string name="portfolioInfo">PORTFOLIO</string>
-
     -- Activity Main />
 
     -- Activity Loan
     <string name="Amount">Amount</string>
-    <string name="HintAmount"> ex. 780000</string>
+    <string name="HintAmount">ex. 780000</string>
     <string name="Term_months">Months</string>
-    <string name="HintTerm"> ex. 36</string>
+    <string name="HintTerm">ex. 36</string>
     <string name="Interest_rate">Annual Interest rate</string>
-    <string name="HintRate"> ex. 9.1</string>
-    <string name="HintOtherCosts"> ex. 15000  </string>
+    <string name="HintRate">ex. 9.1</string>
     <string name="Optional">Optional</string>
     <string name="One_Time_Commission">One Time Commission</string>
     <string name="Percent_of_Loan">% of Loan</string>
@@ -58,7 +41,6 @@
     --
 
     --Activity Currency
-    <string name="title_activity_currency">CurrencyActivity</string>
     <string name="rates">Currencies</string>
     <string name="rate">Rate</string>
     <string name="precious_metals">Precious metals</string>
@@ -66,10 +48,8 @@
     <string name="metals">Metals</string>
     <string name="latest">Latest</string>
     <string name="CustomCur">Custom converter</string>
-    <string name="archive">Archive</string>
 
     --Activity Deposit--
-    <string name="DepositAmount">Deposit Amount</string>
     <string name="Frequency">Repayment frequency</string>
     <string name="MonthlyPaymentDep">Monthly payment</string>
     <string name="QuarterlyPaymentDep">Quarterly payment</string>
@@ -78,33 +58,24 @@
     <string name="Tax">Tax rate</string>
     <string name="Capitalization">Capitalization</string>
     <string name="withCapitalizing">Adding accrued interest</string>
-    <string name="BalanceDep">Amount</string>
-    <string name="PercentDep">Percent</string>
     <string name="PercentAfterTaxDep">Percent \nafter tax</string>
     <string name="Payment">Payment</string>
     <string name="Currency">Currency</string>
     <string name="Result">Result</string>
-    <string name="ResultShowDep">Total income: </string>
     <string name="InvalidInputPeriod">Mismatch between months \nand payment frequency!</string>
     <string name="InvalidInputTax">Invalid Tax rate. \nShould be less than 100%!</string>
     <string name="WeMakeItEasy">Make your analysis precise and quick</string>
 
     --Activity Portfolio--
-    <string name="title_activity_portfolio">PortfolioActivity</string>
-    <string name="balance">Balance</string>
     <string name="loan">Loan</string>
     <string name="deposits">Deposits</string>
     <string name="deposit">deposit</string>
     <string name="bank">Bank</string>
-    <string name="nameOrId">Name, contract</string>
+    <string name="nameOrId">name/id/contract</string>
     <string name="LoanType">Type</string>
     <string name="RepaymentProgram">Repayment program</string>
-    <string name="LoanDirectory">Loan Directory</string>
-    <string name="Credit">Credit</string>
     <string name="Deposit">Deposit</string>
     <string name="Loans">Loans</string>
-    <string name="Deposits">Deposits</string>
-    <string name="Balance">Balance</string>
 
     <string name="MORTGAGE">Mortgage</string>
     <string name="BUSINESS">Business</string>
@@ -118,17 +89,19 @@
     <string name="OTHER">Other</string>
     <string name="SELECT_ALL">SELECT ALL</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     --dialogs--
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="savingOptions">Saving options</string>
+    <string name="sortingOptions">Sorting options</string>
+    <string name="base">base: </string>
     <string name="CLEAR">CLEAR ALL</string>
     <string name="Filtering">Filter</string>
     <string name="selectThe">Select the</string>
-    <string name="youWantToFilterWith">you want to filter with.</string>
+    <string name="select">Select</string>
+    <string name="youWantToFilterWithCur">Select the criteria of filtration from currencies.</string>
+    <string name="youWantToFilterWithLoanType">Select the criteria of filtration from loan types</string>
+    <string name="youWantToFilterWithFreq">Select the criteria of filtration from repayment frequencies</string>
 
     --BalanceFragment-
     <string name="filteredByCur">by currency</string>
@@ -143,8 +116,6 @@
     <string name="RealRate">Real interest rate</string>
     <string name="EffectiveRate">Effective Rate</string>
     <string name="Income">Total Income</string>
-    <string name="DialogTitleSave">Saving options</string>
-    <string name="DialogTitleCur">Select Currency</string>
     <string name="successSaved">Successfully saved in Portfolio</string>
     <string name="warning">Warning</string>
     <string name="AreYouSureRemove">Are you sure you want to delete this</string>
@@ -158,7 +129,7 @@
     <string name="change">Change</string>
     <string name="price">Price</string>
     <string name="invalidCurSelection">Please select the convertible currency!</string>
-    <string name="invalidCurInput">Please input amount for conversion!</string>
+    <string name="invalidCurInput">Please enter amount for conversion!</string>
 
 
     --Currencies
@@ -247,16 +218,12 @@
 
 
     ------------------------------------
-    <string name="market">Market</string>
-    <string name="base">base: </string>
-    <string name="select">select</string>
     <string name="currencyTextAbout">Get real-time and historical exchange rates for 56 world currencies covering over 138 countries. Use currency converter for custom conversion.</string>
     <string name="cryptoTextAbout">Are You interested in cryptoCurrency? Real-time and historical rates for 25 most popular cryptoCurrencies are available in this section.</string>
     <string name="metalsTextAbout">We provide real-time and historical trading prices for 4 common precious metals synchronized with worlds major financial and stock markets. </string>
     <string name="financialMarkets">Financial markets</string>
     <string name="highestRates">highest rates</string>
     <string name="lowestRates">Lowest rates</string>
-    <string name="sortingOptions">Sorting options</string>
     <string name="editFilter">Edit filter</string>
     <string name="filterRemoveEditText">Do you want to edit filter or remove?</string>
     <string name="edit">Edit</string>
@@ -268,6 +235,11 @@
     <string name="portfolioAbout">Get saved loan/deposit schedules here, add new items, filter and sort by your preference.</string>
     <string name="noNetwork">Check Network connection to get latest data!</string>
     <string name="loadingFromCache">Loading from cache</string>
+
+
+    <string name="DIFFERENTIAL">DIFFERENTIAL</string>
+    <string name="ANNUITY">ANNUITY</string>
+    <string name="OVERDRAFT">OVERDRAFT</string>
 
 
 </resources>

@@ -15,15 +15,9 @@ object Calculator {
     //Loan
     fun getRowsLoan(loan: Loan): ArrayList<RowLoan> = when (loan.formula) {
 
-        Formula.DIFFERENTIAL -> differential(
-            loan
-        )
-        Formula.ANNUITY -> annuity(
-            loan
-        )
-        Formula.OVERDRAFT -> overdraft(
-            loan
-        )
+        Formula.DIFFERENTIAL -> differential(loan)
+        Formula.ANNUITY -> annuity(loan)
+        Formula.OVERDRAFT -> overdraft(loan)
     }
 
     fun getTotalPerOrCom(percent: Boolean, rows: ArrayList<RowLoan>): Double {
@@ -274,20 +268,22 @@ object Calculator {
             Frequency.QUARTERLY -> 4F
             Frequency.AT_THE_END, Frequency.OTHER -> (12 / months.toFloat())
         }
-        return ((1 + rate / perCoef).pow(perCoef) - 1)*100
+        return ((1 + rate / perCoef).pow(perCoef) - 1) * 100
     }
 
     fun getRealRate(table: TableLoan): Float {
-        val t = table.rowCount
-        val s = table.sumBasic
-        val add = table.totalPercent + table.totalComDuring + table.oneTimeComAndCosts
-        var tt = 0
-        var i = 1
-        while (i <= t) {
-            tt += i
-            i++
+        val rate = table.loan.rate / 100
+        val months = table.loan.months
+        val sumBasic = table.sumBasic
+        val annualCom = (table.totalComDuring + table.oneTimeComAndCosts) * 12 / months
+        val annComRate = annualCom * 100 / sumBasic
+
+        val perCoef: Float = when (table.loan.formula) {
+            Formula.ANNUITY, Formula.DIFFERENTIAL -> 12F
+            Formula.OVERDRAFT -> (12 / months.toFloat())
         }
-        return (add * t * 1200 / (s * tt)).toFloat()
+        val effRate = ((1 + rate / perCoef).pow(perCoef) - 1) * 100
+        return (effRate + annComRate).toFloat()
     }
 }
 

@@ -53,7 +53,6 @@ class HomeFragment : Fragment(), CoroutineScope {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        job = Job()
         loansFilterViewModel = ViewModelProvider(this).get(LoansFilterViewModel::class.java)
         depFilterViewModel = ViewModelProvider(this).get(DepFilterViewModel::class.java)
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -192,6 +191,8 @@ class HomeFragment : Fragment(), CoroutineScope {
 
     override fun onStart() {
         super.onStart()
+
+        job = Job()
 
         //Loans
         loansFilterViewModel.getLoanList().observe(this, Observer { it ->

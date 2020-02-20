@@ -484,7 +484,6 @@
                                 android:id="@+id/etOtherCosts"
                                 style="@style/editTextMainInput"
                                 android:layout_width="match_parent"
-                                android:hint="@string/HintOtherCosts"
                                 android:inputType="number"
                                 android:maxLength="7"
                                 android:textSize="28sp"

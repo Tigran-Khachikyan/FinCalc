@@ -163,7 +163,9 @@ fun getDialogCurHighOrderFunc(context: Context, func: (String) -> Unit) {
     spinnerCur.setHasTransientState(true)
 
 
-    dialogBuilder.setTitle(R.string.DialogTitleCur)
+    val text = context.getString(R.string.select)+ " " + context.getString(R.string.Currency)
+
+    dialogBuilder.setTitle(text)
     dialogBuilder.setIcon(R.mipmap.currencyicon)
 
     //click SAVE
@@ -251,7 +253,6 @@ private fun Drawable.setCustomSizedp(context: Context, size: Int) {
 fun Button.setViewChecked(checked: Boolean, icon: Int?) {
     if (checked) {
         background = context.getDrawable(R.drawable.btn_option_checked)
-        //  setCompoundDrawablesWithIntrinsicBounds(icon, 0, R.drawable.ic_check, 0)
         setCustomSizeVector(
             context,
             resLeft = icon,
@@ -263,7 +264,6 @@ fun Button.setViewChecked(checked: Boolean, icon: Int?) {
         setTextColor(Color.WHITE)
     } else {
         background = context?.getDrawable(R.drawable.btn_expand)
-        // setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
         setCustomSizeVector(context, resLeft = icon, sizeLeftdp = 24)
 
         textSize = BUTTON_DIALOG_SIZE_UNPRESSED
@@ -273,17 +273,4 @@ fun Button.setViewChecked(checked: Boolean, icon: Int?) {
 
 val Button.isChecked: Boolean
     get() = currentTextColor == Color.WHITE
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -48,10 +48,6 @@ class PortfolioActivity : AppCompatActivity() {
             .add(R.id.FragmentContainerPort, HomeFragment()).commit()
     }
 
-
-
-
-
     override fun onBackPressed() {
         super.onBackPressed()
         Animatoo.animateSwipeRight(this)

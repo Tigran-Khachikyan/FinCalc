@@ -29,11 +29,9 @@ fun showDialogTypeFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
-    val criteria =
-        if (filterPref is LoansFilterViewModel) context.getString(R.string.LoanType)
-        else context.getString(R.string.Frequency)
     val message =
-        "${context.getString(R.string.selectThe)} $criteria ${context.getString(R.string.youWantToFilterWith)}"
+        if (filterPref is LoansFilterViewModel) context.getString(R.string.youWantToFilterWithLoanType)
+        else context.getString(R.string.youWantToFilterWithFreq)
     dialBuilder.setMessage(message)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
@@ -86,10 +84,7 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
-    val message =
-        "${context.getString(R.string.selectThe)} ${context.getString(R.string.Currency)} ${context.getString(
-            R.string.youWantToFilterWith
-        )}"
+    val message = context.getString(R.string.youWantToFilterWithCur)
     dialBuilder.setMessage(message)
 
     val recycler: RecyclerView = dialogView.findViewById(R.id.recyclerMultiChoice)
@@ -241,7 +236,7 @@ fun showDialogRemoveBanking(
         }
         allLoans != null -> {
             val text =
-                if (allLoans) context.getString(R.string.Loans) else context.getString(R.string.Deposits)
+                if (allLoans) context.getString(R.string.Loans) else context.getString(R.string.deposits)
             context.getString(R.string.AreYouSureRemoveAll) + " " + text + "?"
         }
         else -> ""

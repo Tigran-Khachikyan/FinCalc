@@ -20,16 +20,11 @@ fun BoomMenuButton.initialize(context: Context, isLoan: Boolean) {
     val sortOptions = context.getString(R.string.sortingOptions)
     val deleteAll = context.getString(R.string.remove)
 
-    val criteria =
-        if (isLoan) context.getString(R.string.LoanType)
-        else context.getString(R.string.Frequency)
     val subTextType =
-        "${context.getString(R.string.selectThe)} $criteria ${context.getString(R.string.youWantToFilterWith)}"
+        if (isLoan) context.getString(R.string.youWantToFilterWithLoanType)
+        else context.getString(R.string.youWantToFilterWithFreq)
 
-    val subTextCur =
-        "${context.getString(R.string.selectThe)} ${context.getString(R.string.Currency)} ${context.getString(
-            R.string.youWantToFilterWith
-        )}"
+    val subTextCur = context.getString(R.string.youWantToFilterWithCur)
 
     val subSortText = context.getString(R.string.sortingOptionsExtended)
 

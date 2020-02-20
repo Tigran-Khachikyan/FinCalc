@@ -41,7 +41,6 @@ class CryptoFragment : Fragment(), CoroutineScope {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        job = Job()
         cryptoViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
         return inflater.inflate(R.layout.fragment_crypto, container, false)
     }
@@ -96,6 +95,9 @@ class CryptoFragment : Fragment(), CoroutineScope {
 
     override fun onStart() {
         super.onStart()
+
+        job = Job()
+
         cryptoViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarCryptoFr.visibility = View.VISIBLE
@@ -139,13 +141,9 @@ class CryptoFragment : Fragment(), CoroutineScope {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        job.cancel()
-    }
-
     override fun onStop() {
         super.onStop()
+        job.cancel()
         cryptoViewModel.removeSources()
     }
 

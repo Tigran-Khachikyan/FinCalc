@@ -111,7 +111,7 @@
             <TextView
                 android:id="@+id/tvDepBalanceIntro"
                 style="@style/texViewLoanReport"
-                android:text="@string/BalanceDep"
+                android:text="@string/Loan_Balance"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="7"
                 app:layout_constraintLeft_toRightOf="@id/tvNumberDepIntro"
@@ -121,7 +121,7 @@
             <TextView
                 android:id="@+id/tvDepPercentIntro"
                 style="@style/texViewLoanReport"
-                android:text="@string/PercentDep"
+                android:text="@string/Percent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="8"
                 app:layout_constraintLeft_toRightOf="@id/tvDepBalanceIntro"

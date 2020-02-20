@@ -39,7 +39,6 @@ class RateFragment : Fragment(), CoroutineScope {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        job = Job()
         curViewModel = ViewModelProvider(this).get(CurrencyViewModel::class.java)
         return inflater.inflate(R.layout.fragment_currency, container, false)
     }
@@ -121,6 +120,8 @@ class RateFragment : Fragment(), CoroutineScope {
     override fun onStart() {
         super.onStart()
 
+        job = Job()
+
         curViewModel.getConvertRates().observe(viewLifecycleOwner, Observer {
 
             progressBarCurFr.visibility = View.VISIBLE
@@ -181,13 +182,9 @@ class RateFragment : Fragment(), CoroutineScope {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        job.cancel()
-    }
-
     override fun onStop() {
         super.onStop()
+        job.cancel()
         curViewModel.removeSources()
     }
 }

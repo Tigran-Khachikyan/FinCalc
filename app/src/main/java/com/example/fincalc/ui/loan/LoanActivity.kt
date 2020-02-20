@@ -37,11 +37,9 @@ class LoanActivity : AppCompatActivity(), CoroutineScope {
         ScheduleViewModel.Container.clear()
 
         tvStatusLoan.setFont(FONT_PATH)
-        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
+        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, baseContext)
+        view_pager.adapter = sectionsPagerAdapter
+        tabs.setupWithViewPager(view_pager)
 
         btnClear.setOnClickListener { clear() }
 
@@ -223,6 +221,5 @@ class LoanActivity : AppCompatActivity(), CoroutineScope {
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
-        clear()
     }
 }

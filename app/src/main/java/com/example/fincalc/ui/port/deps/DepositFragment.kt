@@ -85,7 +85,7 @@ class DepositFragment : Fragment(), CoroutineScope {
                 tvAmountDepFr.text = sum
 
                 val text = requireContext().getString(curDep.frequency.id)
-                val typeText = requireContext().getString(R.string.LoanType) + ": $text"
+                val typeText = requireContext().getString(R.string.Frequency) + ": $text"
                 tvFreqDepFr.text = typeText
 
                 val term = requireContext().getString(R.string.Term_months) + ": ${curDep.months}"

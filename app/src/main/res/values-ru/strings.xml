@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Financial buddy</string>
+
+    -- Activity Main
+    <string name="depositCalculator">Депозитный калькулятор</string>
+    <string name="loanCalculator">Кредитный калькулятор</string>
+    <string name="currencyConverter">Конвертер валют</string>
+    <string name="convert">конвертировать</string>
+    <string name="portfolio">Портфель</string>
+
+    -- Activity Main />
+
+    -- Activity Loan
+    <string name="Amount">Сумма</string>
+    <string name="HintAmount">Пр. 780000</string>
+    <string name="Term_months">месяц</string>
+    <string name="HintTerm">Пр. 36</string>
+    <string name="Interest_rate">Процент. ставка</string>
+    <string name="HintRate">Пр. 9.1</string>
+    <string name="Optional">Необязательный</string>
+    <string name="One_Time_Commission">Единовр. комиссия</string>
+    <string name="Percent_of_Loan">Проц. от суммы</string>
+    <string name="Percent_of_Balance">Проц. от остатка</string>
+    <string name="But_Min">но не меньше, чем</string>
+    <string name="ofTheAmount">от суммы</string>
+    <string name="ofTheBalance">от остатка</string>
+    <string name="Fixed_sum">фикс. сумма</string>
+    <string name="Monthly_Commission">Ежемесяч. комис</string>
+    <string name="Annual_Commission">Ежегод. комиссия</string>
+    <string name="Other_One_Time_Costs">Другие затраты</string>
+    <string name="Calculate">рассчитать</string>
+    <string name="AdvancedCalculation">расширенный расчет</string>
+    <string name="SimpleCalculation">Простой расчет</string>
+    <string name="Clear">очистить</string>
+    <string name="Loan_Balance">остаток</string>
+    <string name="Percent">Процент</string>
+    <string name="Commission">комиссия</string>
+    <string name="TOTAL">Общее</string>
+    <string name="TOTAL_PAYMENT">общая оплата</string>
+    <string name="InvalidInput">Неверный Ввод!\"Сумма\" , \"Срок\" и \"Процентная ставка\" поля обязательные!</string>
+    <string name="InvalidInputCalendar">"выбрана неверная дата!"</string>
+    --
+
+    --Activity Currency
+    <string name="rates">Курсы валют</string>
+    <string name="rate">Курсы</string>
+    <string name="precious_metals">Драгоценные металлы</string>
+    <string name="crypto">Криптовалюты</string>
+    <string name="metals">Металлы</string>
+    <string name="latest">Последний</string>
+    <string name="CustomCur">Пользовательский конвертер</string>
+
+    --Activity Deposit--
+    <string name="Frequency">Частота платежей</string>
+    <string name="MonthlyPaymentDep">месячная оплата</string>
+    <string name="QuarterlyPaymentDep">поквартальная оплата</string>
+    <string name="AtTheEndPayment">в конце контракта</string>
+    <string name="taxRegulation">Гос. налоговое рег.</string>
+    <string name="Tax">Налоговая ставка</string>
+    <string name="Capitalization">Капитализация</string>
+    <string name="withCapitalizing">Добав. начисл. процентов</string>
+    <string name="PercentAfterTaxDep">Процент после налогов</string>
+    <string name="Payment">Оплата</string>
+    <string name="Currency">валюта</string>
+    <string name="Result">Отчёт</string>
+    <string name="InvalidInputPeriod">Несоответствие между сроком и частотой возвраты!</string>
+    <string name="InvalidInputTax">некорректный ввод. \nпроцентной ставка должна быть не больше 100%!</string>
+    <string name="WeMakeItEasy">Сделайте свой анализ точным и быстрым.</string>
+
+    --Activity Portfolio--
+    <string name="loan">кредит</string>
+    <string name="deposits">депозиты</string>
+    <string name="deposit">депозит</string>
+    <string name="bank">Банк</string>
+    <string name="nameOrId">имя/id/контракт</string>
+    <string name="LoanType">вид кредита</string>
+    <string name="RepaymentProgram">План погашения</string>
+    <string name="Deposit">Deposit</string>
+    <string name="Loans">кредиты</string>
+
+    <string name="MORTGAGE">Ипотека</string>
+    <string name="BUSINESS">Бизнес кредит</string>
+    <string name="CREDIT_LINES">кредитная линия</string>
+    <string name="GOLD_PLEDGE_SECURED">кредиты под залог</string>
+    <string name="DEPOSIT_SECURED">под залог вклада</string>
+    <string name="UNSECURED">необеспеченные</string>
+    <string name="CAR_LOAN">автокредиты</string>
+    <string name="CONSUMER_LOAN">потребительские кредиты</string>
+    <string name="STUDENT_LOAN">студенческие кредиты</string>
+    <string name="OTHER">Другой</string>
+    <string name="SELECT_ALL">выберите все</string>
+
+    --dialogs--
+    <string name="cancel">отменить</string>
+    <string name="save">сохранить</string>
+    <string name="savingOptions">Параметры сохранения</string>
+    <string name="CLEAR">очистить все</string>
+    <string name="Filtering">фильтр</string>
+    <string name="selectThe">выберите</string>
+    <string name="youWantToFilterWithCur">выберите критерию фильтрации из списка валют</string>
+    <string name="youWantToFilterWithLoanType">выберите критерию фильтрации из списка видов кредитов</string>
+    <string name="youWantToFilterWithFreq">выберите критерию фильтрации из списка частот платежей</string>
+
+    --BalanceFragment-
+    <string name="filteredByCur">по валюте</string>
+    <string name="filteredByType"> по типу кредита</string>
+    <string name="filteredByFreq">по частоте оплаты</string>
+    <string name="sortingOptionsExtended">Сортировать предметы по дате и процентной ставке.</string>
+    <string name="oneTimeComeAndCost">Единовременная комиссия и расходы -></string>
+    <string name="noLoanFound">кредитов не найдено</string>
+    <string name="noDepositFound"> депозитов не найдено</string>
+    <string name="Report">доклад</string>
+    <string name="Terms">усло</string>
+    <string name="RealRate">реальная ставка</string>
+    <string name="EffectiveRate">Эффектив. ставка</string>
+    <string name="Income">суммарный доход</string>
+    <string name="successSaved">Успешно сохранено в \"Портфель"</string>
+    <string name="warning">Предупреждение</string>
+    <string name="AreYouSureRemove">Вы уверены, что хотите удалить этот</string>
+    <string name="AreYouSureRemoveAll">Вы уверены, что хотите удалить все</string>
+    <string name="OK">ОК</string>
+    <string name="SuccessfullyRemoved">успешно удалено!</string>
+
+    --Rates--
+    <string name="resetBaseCurrency">изменить базовую валюту date</string>
+    <string name="Date">Дата</string>
+    <string name="change">изменения</string>
+    <string name="price">цена</string>
+    <string name="invalidCurSelection">Пожалуйста, выберите конвертируемую валюту!</string>
+    <string name="invalidCurInput">Пожалуйста, введите значение для обмена!</string>
+
+
+    --Currencies
+    <string name="USD">доллар США</string>
+    <string name="EUR">Евро</string>
+    <string name="GBP">фунт стерлингов</string>
+    <string name="CNY">Китайский Юань</string>
+    <string name="RUB">Русский рубль</string>
+    <string name="AMD">армянский драм</string>
+    <string name="AED">дирхам ОАЭ</string>
+    <string name="ARS">аргентинское песо</string>
+    <string name="AUD">австралийский доллар</string>
+    <string name="BOB">Боливиано</string>
+    <string name="BRL">бразильский реал</string>
+    <string name="BYN">белорусский рубль</string>
+    <string name="CAD">канадский доллар</string>
+    <string name="CHF">швейцарский франк</string>
+    <string name="CUC">кубинское конвертируемое песо</string>
+    <string name="DKK">датская крона</string>
+    --new
+    <string name="EGP">египетский фунт</string>
+    <string name="GEL">Грузинский лари</string>
+    <string name="HKD">гонконгский доллар</string>
+    --new
+    <string name="IDR">индонезийская рупия</string>
+    --new
+    <string name="ILS">новый израильский шекель</string>
+    <string name="INR">индийская рупия</string>
+    <string name="IQD">иракский динар</string>
+    <string name="IRR">иранский риал</string>
+    <string name="JPY">Японская иена (¥)</string>
+    <string name="KPW">Северокорейская вона</string>
+    --new
+    <string name="KRW">южнокорейская вона</string>
+    <string name="KWD">кувейтский динар</string>
+    <string name="KZT">Казахстанский тенге</string>
+    --new
+    <string name="LBP">ливанский фунт</string>
+    <string name="MAD">марокканский дирхам</string>
+    <string name="MXN">мексиканское песо</string>
+    <string name="MYR">малайзийский ринггит</string>
+    --new
+    <string name="NGN">Нигерийская Найра</string>
+    --new
+    <string name="NOK">норвежская крона</string>
+    --new
+    <string name="NZD">новозеландский доллар</string>
+    <string name="OMR">оманский риал</string>
+    --new
+    <string name="PEN">Перуанский новый соль</string>
+    <string name="PHP">филиппинское песо</string>
+    --new
+    <string name="PYG">Парагвайский гуарани</string>
+    --new
+    <string name="QAR">катарский риал</string>
+    <string name="RSD">сербский динар</string>
+    --new
+    <string name="SAR">саудовский риял</string>
+    <string name="SEK">шведская крона</string>
+    <string name="SGD">сингапурский доллар</string>
+    <string name="SYP">сирийский фунт</string>
+    <string name="THB">Тайский бат</string>
+    <string name="TMT">туркменский манат</string>
+    --new
+    <string name="TND">тунисский динар</string>
+    <string name="TRY">турецкая лира</string>
+    <string name="UAH">Украинская гривна</string>
+    <string name="UYU">уругвайское песо</string>
+    <string name="UZS">узбекский сум</string>
+    --new
+    <string name="VES">Суверенный боливар</string>
+    --new
+    <string name="VND">Вьетнамский донг</string>
+    <string name="ZAR">Южноафриканский рэнд</string>
+
+    --metals
+    <string name="XAG">Серебро</string>
+    <string name="XAU">Золото</string>
+    <string name="XPD">Палладиум</string>
+    <string name="XPT">Платина</string>
+    <string name="ounce">тройская унция</string>
+    <string name="gram">грамм</string>
+    <string name="sortByPrice">по ценеe</string>
+    <string name="sortByPop">по рейтингу</string>
+    <string name="byDefault">(по умолчанию)</string>
+
+
+    ------------------------------------
+    <string name="currencyTextAbout">Получите в режиме реального времени курсы обмена 56 мировых валют покрывающих 138 стран мира. Используйте конвертер валют для пользовательской конвертации.</string>
+    <string name="cryptoTextAbout">Интересуетесь криптовалютами? в этой части доступно курсы топ 25 криптовалют в реальном режиме с процентами изменений во времени.</string>
+    <string name="metalsTextAbout">Мы предоставляем реальновременные и архивные торговые цены на драгоценные металлы синхронизированные c мировыми торговыми и финансовыми рынками.</string>
+    <string name="financialMarkets">финансовые рынки</string>
+    <string name="highestRates">наивысшие ставки</string>
+    <string name="lowestRates">наименьшие ставки</string>
+    <string name="editFilter">редактировать фильтр</string>
+    <string name="filterRemoveEditText">Вы хотите изменить фильтр или удалить?</string>
+    <string name="edit">изменить</string>
+    <string name="remove">удалить</string>
+    <string name="allTheLoans">все кредиты!</string>
+    <string name="allTheDeposits">все депозиты!</string>
+    <string name="computing">вычисления</string>
+    <string name="loading">загрузка</string>
+    <string name="portfolioAbout">В этой части Вы можете получить сохранённые таблицы кредитов/депозитов, добавлять новые элементы, фильтровать и сортировать по своему усмотрению.</string>
+    <string name="noNetwork">Проверьте подключение к сети, чтобы получить последние данные!</string>
+    <string name="loadingFromCache">Загрузка из кеша</string>
+    <string name="select">Выберите</string>
+    <string name="sortingOptions">Параметры сортировки</string>
+    <string name="base">базовая: </string>
+
+    <string name="DIFFERENTIAL">Дифференцированный</string>
+    <string name="ANNUITY">Аннуитет</string>
+    <string name="OVERDRAFT">Овердрафт</string>
+
+
+</resources>

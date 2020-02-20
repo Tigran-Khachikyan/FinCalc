@@ -79,16 +79,16 @@ class AdapterRecBanking(
             val typeEnum = (list[position] as Loan).type
             holder.iv.setImageResource(
                 when ((list[position] as Loan).type) {
-                    LoanType.MORTGAGE -> R.mipmap.type_mortgage
-                    LoanType.BUSINESS -> R.mipmap.type_business
-                    LoanType.GOLD_PLEDGE_SECURED -> R.mipmap.type_gold_secured
-                    LoanType.CAR_LOAN -> R.mipmap.type_car_loan
-                    LoanType.DEPOSIT_SECURED -> R.mipmap.type_other_loan
-                    LoanType.CONSUMER_LOAN -> R.mipmap.type_consumer
-                    LoanType.STUDENT_LOAN -> R.mipmap.type_student
-                    LoanType.UNSECURED -> R.mipmap.type_other_loan
-                    LoanType.CREDIT_LINES -> R.mipmap.type_card_loans
-                    LoanType.OTHER -> R.mipmap.type_other_loan
+                    LoanType.MORTGAGE -> R.drawable.ic_mortgage
+                    LoanType.BUSINESS -> R.drawable.ic_business_loan
+                    LoanType.GOLD_PLEDGE_SECURED -> R.drawable.ic_gold
+                    LoanType.CAR_LOAN -> R.drawable.ic_car_loan
+                    LoanType.DEPOSIT_SECURED -> R.drawable.ic_loan_other
+                    LoanType.CONSUMER_LOAN -> R.drawable.ic_consumer
+                    LoanType.STUDENT_LOAN -> R.drawable.ic_student_loan
+                    LoanType.UNSECURED -> R.drawable.ic_loan_other
+                    LoanType.CREDIT_LINES -> R.drawable.ic_credit_lines
+                    LoanType.OTHER -> R.drawable.ic_loan_other
                 }
             )
             holder.layBackData.setBackgroundResource(R.color.PortPrimaryDark)
@@ -97,9 +97,9 @@ class AdapterRecBanking(
             val freqEnum = (list[position] as Deposit).frequency
             holder.iv.setImageResource(
                 when ((list[position] as Deposit).frequency) {
-                    Frequency.MONTHLY -> R.mipmap.type_monthly
-                    Frequency.QUARTERLY -> R.mipmap.type_quarter
-                    else -> R.mipmap.type_at_the_end
+                    Frequency.MONTHLY -> R.drawable.ic_monthly
+                    Frequency.QUARTERLY -> R.drawable.ic_quarterly
+                    else -> R.drawable.ic_contract
                 }
             )
             holder.layBackData.setBackgroundResource(R.color.DepPrimaryDark)
