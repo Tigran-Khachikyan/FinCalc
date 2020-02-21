@@ -168,7 +168,7 @@ fun getDialogCurHighOrderFunc(context: Context, func: (String) -> Unit) {
     val text = context.getString(R.string.select)+ " " + context.getString(R.string.Currency)
 
     dialogBuilder.setTitle(text)
-    dialogBuilder.setIcon(R.mipmap.currencyicon)
+    dialogBuilder.setIcon(R.drawable.ic_exchange)
 
     //click SAVE
     dialogBuilder.setPositiveButton(
