@@ -21,7 +21,6 @@ import com.example.fincalc.data.db.loan.Loan
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.loan.LoanActivity
-import com.example.fincalc.ui.port.OnViewHolderClick
 import com.example.fincalc.ui.port.deps.DepositFragment
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.SearchOption
@@ -97,7 +96,8 @@ class HomeFragment : Fragment(), CoroutineScope {
             btnLoansFilter3.editOrRemoveFilter(requireContext(), loansFilterViewModel)
         }
 
-        adapterRecLoan.onViewHolderClick = object : OnViewHolderClick {
+        adapterRecLoan.onViewHolderClick = object :
+            OnViewHolderClick {
             override fun openBankingFragment(id: Int) {
                 val bundle = Bundle()
                 bundle.putInt(LOAN_ID_KEY, id)
@@ -159,7 +159,8 @@ class HomeFragment : Fragment(), CoroutineScope {
             btnDepFilter3.editOrRemoveFilter(requireContext(), depFilterViewModel)
         }
 
-        adapterRecDep.onViewHolderClick = object : OnViewHolderClick {
+        adapterRecDep.onViewHolderClick = object :
+            OnViewHolderClick {
             override fun openBankingFragment(id: Int) {
                 val bundle = Bundle()
                 bundle.putInt(DEPOSIT_ID_KEY, id)

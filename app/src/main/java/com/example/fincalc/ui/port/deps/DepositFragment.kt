@@ -25,7 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-
 class DepositFragment : Fragment(), CoroutineScope {
 
     private lateinit var job: Job
@@ -36,8 +35,7 @@ class DepositFragment : Fragment(), CoroutineScope {
     private lateinit var adapter: AdapterRecViewDep
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         job = Job()
         depViewModel = ViewModelProvider(this).get(DepViewModel::class.java)
@@ -56,7 +54,6 @@ class DepositFragment : Fragment(), CoroutineScope {
 
         val depId = arguments?.getInt(DEPOSIT_ID_KEY)
 
-
         fabRemoveDepFr.setOnClickListener {
             depId?.let {
                 showDialogRemoveBanking(fabRemoveDepFr, depFilterViewModel, false, id = it) {
@@ -69,7 +66,6 @@ class DepositFragment : Fragment(), CoroutineScope {
 
         loanId?.let {
             depViewModel.getDeposit(loanId)?.observe(viewLifecycleOwner, Observer { curDep ->
-
 
                 if (curDep.bank != "") {
                     val bank = requireContext().getString(R.string.bank) + ": ${curDep.bank}"
@@ -111,10 +107,10 @@ class DepositFragment : Fragment(), CoroutineScope {
 
                 //Recycler
                 val depTable = TableDep(curDep)
-                val incomeText = decimalFormatter1p.format(depTable.totalPerAfterTax)
-                tvDepFrTotalIncome.text = incomeText
+                tvDepFrTotalIncome.text = decimalFormatter1p.format(depTable.totalPerAfterTax)
 
-                val effectRate = decimalFormatter1p.format(depTable.effectiveRate) + "%"
+                val effectRate =
+                    decimalFormatter1p.format(depTable.effectiveRate).replace(',', '.') + "%"
                 tvDepEffRateResFr.text = effectRate
 
                 adapter.scheduleDep = depTable

@@ -2,25 +2,23 @@ package com.example.fincalc.ui.loan
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
 import com.example.fincalc.data.db.loan.Loan
-import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.models.credit.Formula
+import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.ui.*
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_deposit.*
 import kotlinx.android.synthetic.main.activity_loan.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class LoanActivity : AppCompatActivity(), CoroutineScope {
@@ -37,6 +35,8 @@ class LoanActivity : AppCompatActivity(), CoroutineScope {
         ScheduleViewModel.Container.clear()
 
         tvStatusLoan.setFont(FONT_PATH)
+        tvHeaderLoanAct.setFont(FONT_PATH)
+
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, baseContext)
         view_pager.adapter = sectionsPagerAdapter
         tabs.setupWithViewPager(view_pager)

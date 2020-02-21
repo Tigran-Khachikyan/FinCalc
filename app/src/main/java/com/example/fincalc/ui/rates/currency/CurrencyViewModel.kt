@@ -1,14 +1,14 @@
 package com.example.fincalc.ui.rates.currency
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
 import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.rates.*
+import com.example.fincalc.models.rates.getGrowthRate
+import com.example.fincalc.models.rates.getMapFromRates
+import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.rates.RatesBar
-import com.example.fincalc.ui.rates.metals.ResultMet
 import kotlinx.coroutines.launch
 
 

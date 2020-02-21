@@ -15,7 +15,6 @@ import com.example.fincalc.models.Banking
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.ui.decimalFormatter1p
-import com.example.fincalc.ui.port.OnViewHolderClick
 
 @Suppress("DEPRECATION", "UNUSED_VARIABLE")
 class AdapterRecBanking(
@@ -81,7 +80,7 @@ class AdapterRecBanking(
                 when ((list[position] as Loan).type) {
                     LoanType.MORTGAGE -> R.drawable.ic_mortgage
                     LoanType.BUSINESS -> R.drawable.ic_business_loan
-                    LoanType.GOLD_PLEDGE_SECURED -> R.drawable.ic_gold
+                    LoanType.GOLD_PLEDGE_SECURED -> R.drawable.ic_precious_metals
                     LoanType.CAR_LOAN -> R.drawable.ic_car_loan
                     LoanType.DEPOSIT_SECURED -> R.drawable.ic_loan_other
                     LoanType.CONSUMER_LOAN -> R.drawable.ic_consumer

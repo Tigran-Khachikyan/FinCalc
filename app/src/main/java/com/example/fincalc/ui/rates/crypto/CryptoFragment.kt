@@ -38,8 +38,7 @@ class CryptoFragment : Fragment(), CoroutineScope {
     private var noNetworkWarningShown: Boolean = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         cryptoViewModel = ViewModelProvider(this).get(CryptoViewModel::class.java)
         return inflater.inflate(R.layout.fragment_crypto, container, false)

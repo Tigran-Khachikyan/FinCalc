@@ -23,7 +23,6 @@ import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -48,8 +47,7 @@ class ScheduleFragment() : Fragment(), CoroutineScope {
     private lateinit var adapterRecSchedule: AdapterRecScheduleLoan
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         job = Job()
         scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
@@ -87,7 +85,7 @@ class ScheduleFragment() : Fragment(), CoroutineScope {
                 adapterRecSchedule.item = schedule
                 adapterRecSchedule.notifyDataSetChanged()
 
-                val realRate = decimalFormatter2p.format(schedule.realRate) + "%"
+                val realRate = decimalFormatter2p.format(schedule.realRate).replace(',', '.') + "%"
                 tvRealRateLoanAc.text = realRate
                 val total =
                     decimalFormatter1p.format((schedule.totalPayment + schedule.oneTimeComAndCosts))
@@ -143,9 +141,7 @@ class ScheduleFragment() : Fragment(), CoroutineScope {
                 hideKeyboard(this.requireActivity())
             }
 
-            dialogBuilder.setNegativeButton(
-                getString(R.string.cancel)
-            ) { _, _ -> }
+            dialogBuilder.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
 
             val alertDialog = dialogBuilder.create()
 

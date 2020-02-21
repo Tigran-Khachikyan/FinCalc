@@ -5,6 +5,7 @@
     android:id="@+id/layContainerDep"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="Autofill,LabelFor,ContentDescription"
     tools:context=".ui.dep.DepositActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,7 +20,9 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tvHeaderDepAct"
                 android:layout_width="match_parent"
+                android:paddingStart="10dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/depositCalculator"
@@ -27,7 +30,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlSymmetry" />
 
             <ImageView
                 android:layout_width="?attr/actionBarSize"
@@ -115,7 +119,6 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="4dp"
                     android:drawableEnd="@drawable/ic_star_black_24dp"
-                    android:text="@string/Amount"
                     android:textSize="15sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -140,7 +143,8 @@
                     android:src="@mipmap/money"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -184,7 +188,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.75" />
+                    app:layout_constraintVertical_bias="0.75"
+                    tools:ignore="ContentDescription" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -14,7 +14,6 @@ object Calculator {
 
     //Loan
     fun getRowsLoan(loan: Loan): ArrayList<RowLoan> = when (loan.formula) {
-
         Formula.DIFFERENTIAL -> differential(loan)
         Formula.ANNUITY -> annuity(loan)
         Formula.OVERDRAFT -> overdraft(loan)
@@ -163,11 +162,9 @@ object Calculator {
     //Deposit
     fun getRowsDep(dep: Deposit): ArrayList<RowDep> = when (dep.frequency) {
 
-        Frequency.MONTHLY, Frequency.QUARTERLY -> getRowsByPeriodDep(
-            dep
-        )
+        Frequency.MONTHLY, Frequency.QUARTERLY -> getRowsByPeriodDep(dep)
 
-        Frequency.AT_THE_END -> {
+        else -> {
             val result = ArrayList<RowDep>()
             val newRow = RowDep()
             newRow.curRowN = 1
@@ -178,27 +175,21 @@ object Calculator {
             result.add(newRow)
             result
         }
-
-        else -> TODO()
     }
 
     private fun getRowsByPeriodDep(dep: Deposit): ArrayList<RowDep> {
 
         val result = ArrayList<RowDep>()
 
-        val factor: Int
-        val rowCount: Int
+        var factor = 0
+        var rowCount = 0
 
-        when (dep.frequency) {
-            Frequency.MONTHLY -> {
-                factor = 1
-                rowCount = dep.months
-            }
-            Frequency.QUARTERLY -> {
-                rowCount = dep.months / 3
-                factor = 3
-            }
-            else -> TODO()
+        if (dep.frequency == Frequency.MONTHLY) {
+            factor = 1
+            rowCount = dep.months
+        } else if (dep.frequency == Frequency.QUARTERLY) {
+            rowCount = dep.months / 3
+            factor = 3
         }
 
         if (dep.capitalize) {
@@ -228,7 +219,6 @@ object Calculator {
             }
 
         } else {
-
             for (i in 0 until rowCount - 1) {
                 val newRow = RowDep()
                 newRow.curRowN = i + 1
@@ -251,12 +241,9 @@ object Calculator {
     }
 
     fun getTotalPerDep(rows: ArrayList<RowDep>): Double {
-
         var result = 0.0
-
         for (r in rows)
             result += r.percent
-
         return result
     }
 

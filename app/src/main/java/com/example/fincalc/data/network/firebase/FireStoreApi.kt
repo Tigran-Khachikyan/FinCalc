@@ -24,9 +24,7 @@ const val API_SOURCE_PROBLEM = 255
 const val OK = 777
 
 object FireStoreApi {
-
     private val fireStoreDb by lazy { FirebaseFirestore.getInstance() }
-
 
     fun setLatestRatesFire(rates: Rates?, base: String) {
 
@@ -44,7 +42,6 @@ object FireStoreApi {
                     val ratesMap = getMapFromCryptoRates(rates)
                     setToFBLatestColl(ratesMap, CRYPTO_LATEST, nowShort, now, base)
                 }
-                else -> TODO()
             }
         }
     }
@@ -102,7 +99,6 @@ object FireStoreApi {
                 .orderBy(DATE_TIME, Query.Direction.ASCENDING).limitToLast(3).get().asDeferred()
             CRYPTO -> fireStoreDb.collection(CRYPTO_LATEST.name)
                 .orderBy(DATE_TIME, Query.Direction.ASCENDING).limitToLast(3).get().asDeferred()
-            else -> TODO()
         }
         return def.await()
     }
@@ -124,7 +120,6 @@ object FireStoreApi {
                 result ?: fireStoreDb.collection(CRYPTO_HISTORICAL.name).whereEqualTo(DATE, date)
                     .get().asDeferred().await().firstOrNull()
             }
-            else -> TODO()
         }
     }
 
@@ -134,7 +129,6 @@ object FireStoreApi {
                 .get(Source.CACHE).asDeferred()
             CRYPTO -> fireStoreDb.collection(CRYPTO_LATEST.name).document(CACHE)
                 .get(Source.CACHE).asDeferred()
-            else -> TODO()
         }
     }
 
@@ -145,7 +139,6 @@ object FireStoreApi {
                 .get(Source.CACHE).asDeferred().await()
             CRYPTO -> fireStoreDb.collection(CRYPTO_HISTORICAL.name).document(date)
                 .get(Source.CACHE).asDeferred().await()
-            else -> TODO()
         }
     }
 
@@ -156,7 +149,6 @@ object FireStoreApi {
                 .whereEqualTo(DATE, date).get(Source.CACHE).asDeferred()
             CRYPTO -> fireStoreDb.collection(CURRENCY_LATEST.name)
                 .whereEqualTo(DATE, date).get(Source.CACHE).asDeferred()
-            else -> TODO()
         }
         return deferredDocList.await().lastOrNull()
     }
@@ -172,6 +164,4 @@ object FireStoreApi {
                 .addOnFailureListener {}
         }
     }
-
-
 }

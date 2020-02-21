@@ -5,9 +5,7 @@ import com.example.fincalc.models.deposit.Frequency
 
 class DepFrequencyConverter {
     @TypeConverter
-    fun fromEnumToString(type: Frequency): String {
-        return type.name
-    }
+    fun fromEnumToString(type: Frequency): String = type.name
 
     @TypeConverter
     fun fromStringToEnum(string: String): Frequency {

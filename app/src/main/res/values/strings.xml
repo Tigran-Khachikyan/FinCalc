@@ -222,6 +222,7 @@
     <string name="cryptoTextAbout">Are You interested in cryptoCurrency? Real-time and historical rates for 25 most popular cryptoCurrencies are available in this section.</string>
     <string name="metalsTextAbout">We provide real-time and historical trading prices for 4 common precious metals synchronized with worlds major financial and stock markets. </string>
     <string name="financialMarkets">Financial markets</string>
+    <string name="markets">Financial markets</string>
     <string name="highestRates">highest rates</string>
     <string name="lowestRates">Lowest rates</string>
     <string name="editFilter">Edit filter</string>
@@ -240,6 +241,9 @@
     <string name="DIFFERENTIAL">DIFFERENTIAL</string>
     <string name="ANNUITY">ANNUITY</string>
     <string name="OVERDRAFT">OVERDRAFT</string>
+
+    <string name="from">From</string>
+    <string name="to">To</string>
 
 
 </resources>

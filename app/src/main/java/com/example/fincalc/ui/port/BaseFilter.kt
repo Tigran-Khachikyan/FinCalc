@@ -5,7 +5,6 @@ import com.example.fincalc.ui.port.filter.SearchOption
 
 abstract class BaseFilter(
     var bankingList: List<Banking>?,
-    var currencies: MutableSet<String>?,
     var sort: Boolean?,
     val searchOptions: MutableSet<SearchOption>
 )

@@ -1,12 +1,13 @@
 package com.example.fincalc.ui.rates.metals
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
 import com.example.fincalc.data.network.api_cur_metal.CurMetRates
 import com.example.fincalc.data.network.firebase.RatesFull
-import com.example.fincalc.models.rates.*
+import com.example.fincalc.models.rates.getGrowthRate
+import com.example.fincalc.models.rates.getMapFromRates
+import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.rates.RatesBar
 import kotlinx.coroutines.launch
 
@@ -21,8 +22,6 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
     private val _unitType = MutableLiveData<MetalsUnit>()
     private val _data = MutableLiveData<String?>()
     private val _rates: LiveData<RatesFull> = Transformations.switchMap(_data) {
-        Log.d("qqqqqqq", "IT TRIGGERED SWITCHED MAP $it")
-
         if (it == null)
             repository?.getLatestCur()
         else
@@ -72,7 +71,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
         val date = _rates.value?.dateTime
         val ratesElder = _rates.value?.elderRates as CurMetRates?
         val baseCurForRates = _rates.value?.base ?: "USD"
-        val status = _rates.value?.status ?:0
+        val status = _rates.value?.status ?: 0
 
         var result: ResultMet? = null
         if (ratesLatest != null && unit != null && selCur != null && date != null) {
@@ -114,11 +113,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
                         val rateBar =
                             if (name != null && icon != null && priceLatest != null)
                                 RatesBar(
-                                    code,
-                                    name,
-                                    icon,
-                                    priceLatest,
-                                    growthRate
+                                    code, name, icon, priceLatest, growthRate
                                 )
                             else null
 
@@ -129,7 +124,7 @@ class MetalsViewModel(application: Application) : AndroidViewModel(application) 
 
             if (unit == MetalsUnit.GRAM)
                 ratesBarList.forEach { r -> r.price = r.price / MetalsUnit.TROY_OUNCE.weight }
-            result = ResultMet(ratesBarList, selCur, date,status, unit)
+            result = ResultMet(ratesBarList, selCur, date, status, unit)
 
         }
         return result

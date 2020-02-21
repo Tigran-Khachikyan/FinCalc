@@ -44,6 +44,7 @@ class DepositActivity : AppCompatActivity(), CoroutineScope {
         tvTaxIntro.text = taxInfo
 
         tvStatusDep.setFont(FONT_PATH)
+        tvHeaderDepAct.setFont(FONT_PATH)
 
         imitateRadioGroup(btnMonthly, btnQuarterly, btnEndOfPeriod)
 

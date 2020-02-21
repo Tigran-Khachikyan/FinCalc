@@ -1,7 +1,6 @@
 package com.example.fincalc.ui.rates.crypto
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.fincalc.data.Repository
 import com.example.fincalc.data.network.api_crypto.CryptoRates
@@ -118,19 +117,7 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
                         val name = mapCryptoNameIcon[code]?.first
                         val icon = mapCryptoNameIcon[code]?.second
                         val priceLatest = cryptoMapLatest[code]?.let { it * factorLatestRates }
-                        Log.d("derdd", "factorElderRates: $factorElderRates")
-
                         val priceElder = factorElderRates?.let {
-                            Log.d("derdd", "cryptoMapElder: $cryptoMapElder")
-                            Log.d(
-                                "derdd",
-                                "cryptoMapElder?.get(code): ${cryptoMapElder?.get(code)}"
-                            )
-                            Log.d(
-                                "derdd",
-                                "cryptoMapElder?.get(code): ${cryptoMapElder?.get(code)}"
-                            )
-
                             cryptoMapElder?.get(code)?.let {
                                 it * factorElderRates
                             }

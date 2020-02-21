@@ -27,8 +27,7 @@ class MarketFragment : Fragment(), CoroutineScope {
         get() = Main + job
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         job = Job()
         return inflater.inflate(R.layout.fragment_market, container, false)
@@ -38,9 +37,8 @@ class MarketFragment : Fragment(), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
 
         launch {
-            textSurfaceMarket.playAnimation(R.string.financialMarkets, 5000)
+            textSurfaceMarket.playAnimation(R.string.markets, 5000)
         }
-
         fabCurMarket.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navigation_rates))
         fabCryptoMarket.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navigation_crypto))
         fabMetalsMarket.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.navigation_metals))

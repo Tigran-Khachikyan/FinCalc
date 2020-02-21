@@ -24,10 +24,10 @@ private const val CACHE_SIZE = 5 * 1024 * 1024.toLong()
 interface ApiCurMetal {
 
     @GET("latest")
-    fun getLatestRates(): Deferred<ResponseCurMetal>
+    fun getLatestRatesAsync(): Deferred<ResponseCurMetal>
 
     @GET("historical")
-    fun getHistoricalRates(
+    fun getHistoricalRatesAsync(
         @Query("date") date: String
     ): Deferred<ResponseCurMetal>
 

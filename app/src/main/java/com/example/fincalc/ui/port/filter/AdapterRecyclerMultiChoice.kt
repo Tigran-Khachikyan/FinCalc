@@ -1,8 +1,6 @@
 package com.example.fincalc.ui.port.filter
 
 import android.content.Context
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +10,13 @@ import com.example.fincalc.R
 import com.example.fincalc.models.credit.LoanType
 import com.example.fincalc.models.deposit.Frequency
 import com.example.fincalc.models.rates.mapRatesNameIcon
-import com.example.fincalc.ui.*
+import com.example.fincalc.ui.isChecked
+import com.example.fincalc.ui.setViewChecked
 
 @Suppress("UNCHECKED_CAST")
 class AdapterRecyclerMultiChoice(
-    val context: Context,
-    private val possibleOptions: MutableSet<*>,
-    var selOptions: MutableSet<*>
+    val context: Context, private val possibleOptions: MutableSet<*>, var selOptions: MutableSet<*>
 ) : RecyclerView.Adapter<AdapterRecyclerMultiChoice.Holder>() {
-
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val raw: Button = itemView.findViewById(R.id.btnMultiChoice)
@@ -52,14 +48,13 @@ class AdapterRecyclerMultiChoice(
                     }
                     else -> TODO()
                 }
-                // notifyDataSetChanged()
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_multichoice_item, parent, false)
+            .inflate(R.layout.multichoice_item, parent, false)
         return Holder(view)
     }
 
@@ -70,15 +65,13 @@ class AdapterRecyclerMultiChoice(
         val text = when (val rawPos = possibleOptions.elementAt(position)) {
             is LoanType -> {
                 holder.raw.setViewChecked(
-                    (selOptions as MutableSet<LoanType>).contains(rawPos),
-                    null
+                    (selOptions as MutableSet<LoanType>).contains(rawPos), null
                 )
                 context.getString(rawPos.id)
             }
             is Frequency -> {
                 holder.raw.setViewChecked(
-                    (selOptions as MutableSet<Frequency>).contains(rawPos),
-                    null
+                    (selOptions as MutableSet<Frequency>).contains(rawPos), null
                 )
                 context.getString(rawPos.id)
             }
@@ -91,18 +84,14 @@ class AdapterRecyclerMultiChoice(
                 )
                 rawPos + " (${nameRes?.let { context.getString(it) }})"
             }
-            else -> TODO()
+            else -> ""
         }
         holder.raw.text = text
     }
 
     private fun <T> Button.changeSelection(
-        selectedOptions: MutableSet<T>,
-        possibleOptions: MutableSet<T>,
-        position: Int,
-        icon: Int?
+        selectedOptions: MutableSet<T>, possibleOptions: MutableSet<T>, position: Int, icon: Int?
     ): MutableSet<T> {
-
 
         if (isChecked) {
             selectedOptions.remove(possibleOptions.elementAt(position))
@@ -111,8 +100,6 @@ class AdapterRecyclerMultiChoice(
             selectedOptions.add(possibleOptions.elementAt(position))
             setViewChecked(true, icon)
         }
-        Log.d("uuuuurrib", "BOTTON.changeSelection() return : ${selectedOptions.size}")
-
         return selectedOptions
     }
 }

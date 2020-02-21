@@ -10,45 +10,32 @@ import com.example.fincalc.models.credit.TableLoan
 import com.example.fincalc.ui.decimalFormatter1p
 
 
-class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<AdapterRecScheduleLoan.GenericViewHolder>() {
+class AdapterRecScheduleLoan(var item: TableLoan?) :
+    RecyclerView.Adapter<AdapterRecScheduleLoan.GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         when (viewType) {
-            1 ->
-                ScheduleListHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                        R.layout.recycler_loan,
-                        parent,
-                        false
-                    )
-                )
-            0 ->
-                ScheduleTotalHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                        R.layout.recycler_loan_total,
-                        parent,
-                        false
-                    )
-                )
-            else -> CommissionAndCostHolder(
+            1 -> ScheduleListHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.recycler_com_and_costs,
-                    parent,
-                    false
+                    R.layout.recycler_loan, parent, false
                 )
             )
-
+            0 -> ScheduleTotalHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.recycler_loan_total, parent, false
+                )
+            )
+            else -> CommissionAndCostHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.recycler_com_and_costs, parent, false
+                )
+            )
         }
 
-    override fun getItemCount() =
-        if (item != null)
-            (item as TableLoan).rowCount + 2 else 0
-
+    override fun getItemCount() = item?.let { (item as TableLoan).rowCount + 2 } ?: 0
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
-
-        if (item != null)
-            holder.setDataOnView(position)
+        item?.let { holder.setDataOnView(position) }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -71,7 +58,7 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
 
         override fun setDataOnView(position: Int) {
 
-            val items = item?.rows?.get(position-1)
+            val items = item?.rows?.get(position - 1)
 
             tvNumber.text = items?.curRowN.toString()
             tvLoanSumRemain.text = decimalFormatter1p.format(items?.balance)
@@ -100,7 +87,6 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
     }
 
     inner class CommissionAndCostHolder(itemView: View) : GenericViewHolder(itemView) {
-
         private val tvOneTimeCommissionAndCosts =
             itemView.findViewById<TextView>(R.id.tvOneTimeCommissionAndCosts)
 
@@ -109,8 +95,8 @@ class AdapterRecScheduleLoan(var item: TableLoan?) : RecyclerView.Adapter<Adapte
             tvOneTimeCommissionAndCosts.text = decimalFormatter1p.format(item?.oneTimeComAndCosts)
         }
     }
-    abstract class GenericViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    abstract class GenericViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun setDataOnView(position: Int)
     }
 }

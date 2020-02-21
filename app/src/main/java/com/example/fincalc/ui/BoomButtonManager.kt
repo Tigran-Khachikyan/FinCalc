@@ -3,7 +3,6 @@ package com.example.fincalc.ui
 import android.content.Context
 import android.graphics.PointF
 import com.example.fincalc.R
-import com.example.fincalc.ui.port.home.LoansFilterViewModel
 import com.nightonke.boommenu.BoomButtons.*
 import com.nightonke.boommenu.BoomMenuButton
 

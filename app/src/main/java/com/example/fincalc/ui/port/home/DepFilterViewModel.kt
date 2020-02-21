@@ -77,7 +77,7 @@ class DepFilterViewModel(application: Application) : BaseViewModel(application),
         val filterQueue = queueLD.value ?: mutableSetOf()
 
         val result = filterCascade(filterQueue, depList, frequencies, curList, sort)
-        return DepFilter(frequencies, result, curList, sort, filterQueue)
+        return DepFilter(result, sort, filterQueue)
     }
 
 
@@ -184,6 +184,5 @@ class DepFilterViewModel(application: Application) : BaseViewModel(application),
         _mediatorDep.removeSource(_frequencies)
         _mediatorDep.removeSource(_sort)
         _mediatorDep.removeSource(_queue)
-
     }
 }

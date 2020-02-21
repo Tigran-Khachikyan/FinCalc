@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_marginBottom="?attr/actionBarSize"
     android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
     tools:context=".ui.rates.market.MarketFragment">
 
 
@@ -179,7 +180,7 @@
                 android:padding="14dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_precious_metals"
+                android:src="@drawable/ic_gold"
                 app:layout_constraintBottom_toBottomOf="@id/tvMetalsInfoMarket"
                 app:layout_constraintLeft_toRightOf="@id/tvMetalsInfoMarket"
                 app:layout_constraintRight_toRightOf="@id/tvMetalsInfoMarket"

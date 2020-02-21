@@ -1,7 +1,6 @@
 package com.example.fincalc.data.network.firebase
 
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,7 +18,6 @@ fun duration(serverTime: Date, curTime: Date): Long {
     return TimeUnit.SECONDS.convert(differenceInSeconds, TimeUnit.MILLISECONDS)
 }
 
-
 fun String.getDateWithServerTimeStamp(): Date? {
     val dateFormat = SimpleDateFormat(FORMAT, Locale.getDefault())
     dateFormat.timeZone = TimeZone.getTimeZone(SERVER_TIME_ZONE)
@@ -36,13 +34,6 @@ fun Date.getStringTimeStampWithDate(): String {
     val dateFormat = SimpleDateFormat(FORMAT, Locale.getDefault())
     dateFormat.timeZone = TimeZone.getTimeZone(SERVER_TIME_ZONE)
     return dateFormat.format(this)
-}
-
-fun QuerySnapshot.getTime(): Date? {
-
-    val value = this.firstOrNull()
-    val timeString = value?.let { value[DATE_TIME] } as String?
-    return timeString?.getDateWithServerTimeStamp()
 }
 
 fun DocumentSnapshot.getTime(): Date? {

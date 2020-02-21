@@ -22,6 +22,8 @@ import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 
+private const val UPDATE_INTERVAL = 60 * 60 * 2
+
 @Suppress("UNCHECKED_CAST")
 class Repository private constructor(
     private val context: Context
@@ -47,7 +49,7 @@ class Repository private constructor(
     private val curLiveData = MutableLiveData<RatesFull>()
     private val cryptoLiveData = MutableLiveData<RatesFull>()
 
-     fun getLatestCur(): LiveData<RatesFull> {
+    fun getLatestCur(): LiveData<RatesFull> {
         launch {
             curLiveData.postValue(getLatestRates(CURRENCY))
         }
@@ -91,7 +93,7 @@ class Repository private constructor(
                 val duration = duration(latestDateTime, nowDate)
 
                 //newer rates
-                if (duration < 180) {
+                if (duration < UPDATE_INTERVAL) {
                     val latRates = getRatesFromSnapshot(latestDoc, type)!!
                     val elderRates = getRatesFromSnapshot(elderDoc, type)
                     RatesFull(latestDateTime, latRates, elderRates, base)
@@ -100,12 +102,12 @@ class Repository private constructor(
                         val baseApi: String?
                         val curRates = when (type) {
                             CURRENCY -> {
-                                val response = ApiCurMetal(context).getLatestRates().await()
+                                val response = ApiCurMetal(context).getLatestRatesAsync().await()
                                 baseApi = response.response.base
                                 response.response.rates
                             }
                             CRYPTO -> {
-                                val response = ApiCrypto(context).getLatestRates().await()
+                                val response = ApiCrypto(context).getLatestRatesAsync().await()
                                 baseApi = response.base
                                 response.rates
                             }
@@ -132,12 +134,12 @@ class Repository private constructor(
                     val baseApi: String?
                     val curRates = when (type) {
                         CURRENCY -> {
-                            val response = ApiCurMetal(context).getLatestRates().await()
+                            val response = ApiCurMetal(context).getLatestRatesAsync().await()
                             baseApi = response.response.base
                             response.response.rates
                         }
                         CRYPTO -> {
-                            val response = ApiCrypto(context).getLatestRates().await()
+                            val response = ApiCrypto(context).getLatestRatesAsync().await()
                             baseApi = response.base
                             response.rates
                         }
@@ -152,7 +154,6 @@ class Repository private constructor(
                 val fireCache = FireStoreApi.getLatestRatesFromCacheAsync(type)?.await()
                 val base = fireCache?.let { it.get(BASE) as String? }
                 val ratesCached = getRatesFromSnapshot(fireCache, type)!!
-                //fireCache?.getTime()?.let { formatterLong.format(fireCache.getTime()) }
                 RatesFull(fireCache?.getTime(), ratesCached, null, base, NO_NETWORK)
             } catch (ex: Exception) {
                 //fireStore CACHE error
@@ -181,12 +182,13 @@ class Repository private constructor(
                     val baseApi: String?
                     val hisRates = when (type) {
                         CURRENCY -> {
-                            val response = ApiCurMetal(context).getHistoricalRates(date).await()
+                            val response =
+                                ApiCurMetal(context).getHistoricalRatesAsync(date).await()
                             baseApi = response.response.base
                             response.response.rates
                         }
                         CRYPTO -> {
-                            val response = ApiCrypto(context).getHistoricalRates(date).await()
+                            val response = ApiCrypto(context).getHistoricalRatesAsync(date).await()
                             baseApi = response.base
                             response.rates
                         }

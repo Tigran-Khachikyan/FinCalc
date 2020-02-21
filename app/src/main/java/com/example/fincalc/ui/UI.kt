@@ -16,7 +16,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,10 @@ import com.example.fincalc.models.rates.arrayCurCodes
 import com.google.android.material.snackbar.Snackbar
 import su.levenetc.android.textsurface.TextBuilder
 import su.levenetc.android.textsurface.TextSurface
-import su.levenetc.android.textsurface.animations.*
+import su.levenetc.android.textsurface.animations.Parallel
+import su.levenetc.android.textsurface.animations.Sequential
+import su.levenetc.android.textsurface.animations.ShapeReveal
+import su.levenetc.android.textsurface.animations.SideCut
 import su.levenetc.android.textsurface.contants.Align
 import su.levenetc.android.textsurface.contants.Side
 import java.text.DecimalFormat

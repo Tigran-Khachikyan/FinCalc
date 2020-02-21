@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.fincalc.R
 import com.example.fincalc.models.rates.mapRatesNameIcon
 
@@ -22,13 +21,13 @@ class AdapterSpinnerRates(
     private val mContext = context
     private val mResource = resource
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, parent)
-    }
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
+        createItemView(position, parent)
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, parent)
-    }
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View =
+        createItemView(position, parent)
+
 
     private fun createItemView(position: Int, parent: ViewGroup): View {
         val view = LayoutInflater.from(mContext).inflate(mResource, parent, false)

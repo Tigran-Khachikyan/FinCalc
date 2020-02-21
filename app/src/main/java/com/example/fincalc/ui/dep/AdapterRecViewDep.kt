@@ -12,7 +12,6 @@ import com.example.fincalc.ui.decimalFormatter1p
 class AdapterRecViewDep(var scheduleDep: TableDep?) :
     RecyclerView.Adapter<AdapterRecViewDep.GenericViewHolderDep>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolderDep {
         return when (viewType) {
             0 -> RowViewHolder(
@@ -27,7 +26,7 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
     }
 
     override fun getItemCount(): Int =
-        if (scheduleDep != null) (scheduleDep as TableDep).rows.size + 1 else 0
+        scheduleDep?.let { (scheduleDep as TableDep).rows.size + 1 } ?: 0
 
     override fun onBindViewHolder(holder: GenericViewHolderDep, position: Int) {
         holder.setDataOnView(position)
@@ -69,8 +68,7 @@ class AdapterRecViewDep(var scheduleDep: TableDep?) :
             tvTotalPayment.text = decimalFormatter1p.format(scheduleDep?.totalPayment)
         }
     }
-
-
+    
     abstract class GenericViewHolderDep(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun setDataOnView(position: Int)
     }

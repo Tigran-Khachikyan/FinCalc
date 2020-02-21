@@ -9,9 +9,7 @@ import android.widget.TextView
 import com.example.fincalc.R
 
 class AdapterSpinnerTypes(
-    context: Context,
-    resource: Int,
-    types: Array<String>
+    context: Context, resource: Int, types: Array<String>
 ) :
     ArrayAdapter<String>(context, resource, types) {
 
@@ -19,13 +17,13 @@ class AdapterSpinnerTypes(
     private val mContext = context
     private val mResource = resource
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, parent)
-    }
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
+        createItemView(position, parent)
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return createItemView(position, parent)
-    }
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View =
+        createItemView(position, parent)
+
 
     private fun createItemView(position: Int, parent: ViewGroup): View {
         val view = LayoutInflater.from(mContext).inflate(mResource, parent, false)

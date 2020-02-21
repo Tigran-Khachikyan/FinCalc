@@ -14,5 +14,4 @@ class DepositViewModel(application: Application): AndroidViewModel(application) 
     fun addDep(dep:Deposit) = viewModelScope.launch {
         repo?.insertDep(dep)
     }
-
 }

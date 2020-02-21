@@ -15,8 +15,6 @@ import com.example.fincalc.data.network.firebase.NO_NETWORK
 import com.example.fincalc.models.rates.mapRatesNameIcon
 import com.example.fincalc.ui.*
 import com.example.fincalc.ui.rates.AdapterRecRates
-import kotlinx.android.synthetic.main.fragment_crypto.*
-import kotlinx.android.synthetic.main.fragment_currency.*
 import kotlinx.android.synthetic.main.fragment_metals.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main

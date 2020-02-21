@@ -78,7 +78,7 @@ class LoansFilterViewModel(application: Application) : BaseViewModel(application
         val filterQueue = queueLD.value ?: mutableSetOf()
 
         val result = filterCascade(filterQueue, loans, types, curList, sort)
-        return LoanFilter(types, result, curList, sort, filterQueue)
+        return LoanFilter(result, sort, filterQueue)
     }
 
     //FilterQuery

@@ -23,7 +23,6 @@ import com.example.fincalc.models.deposit.TableDep
 import com.example.fincalc.models.rates.arrayCurCodes
 import com.example.fincalc.ui.*
 import kotlinx.android.synthetic.main.fragment_dep_schedule.*
-import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
 
 /**
@@ -66,7 +65,7 @@ class DepScheduleFragment : Fragment() {
                 LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             recyclerDepReport.adapter = adapterRec
 
-            val effectiveRate = decimalFormatter2p.format(scheduleDep.effectiveRate) + "%"
+            val effectiveRate = decimalFormatter2p.format(scheduleDep.effectiveRate).replace(',','.') + "%"
             val totalIncome = decimalFormatter1p.format(scheduleDep.totalPerAfterTax)
             tvTotalIncomeResDep.text = totalIncome
             tvEffRateResDep.text = effectiveRate

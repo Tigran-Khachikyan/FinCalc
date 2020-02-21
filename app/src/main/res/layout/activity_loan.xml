@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.loan.LoanActivity"
-    tools:ignore="Autofill">
+    tools:ignore="Autofill,LabelFor,ContentDescription">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -607,15 +607,18 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/tvHeaderLoanAct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingStart="10dp"
                         android:text="@string/loanCalculator"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
 
                     <ImageView
                         android:layout_width="?attr/actionBarSize"

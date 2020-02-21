@@ -8,13 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.network.firebase.RatesType
 import com.example.fincalc.ui.decimalFormatter3p
 import kotlin.math.absoluteValue
 
 class AdapterRecRates(
-    val context: Context,
-    var ratesRows: List<RatesBar>?
+    val context: Context, var ratesRows: List<RatesBar>?
 ) :
     RecyclerView.Adapter<AdapterRecRates.Holder>() {
 

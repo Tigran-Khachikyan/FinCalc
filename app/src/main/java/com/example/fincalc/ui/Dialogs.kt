@@ -6,14 +6,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fincalc.R
-import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.data.db.loan.Loan
-import com.example.fincalc.models.Banking
 import com.example.fincalc.ui.port.filter.AdapterRecyclerMultiChoice
 import com.example.fincalc.ui.port.filter.FilterQuery
 import com.example.fincalc.ui.port.filter.SearchOption
@@ -25,7 +22,7 @@ import com.example.fincalc.ui.port.home.LoansFilterViewModel
 fun showDialogTypeFilter(context: Context, filterPref: FilterQuery) {
 
     val dialBuilder = AlertDialog.Builder(context)
-    val dialogView = LayoutInflater.from(context).inflate(R.layout.test_multichoice_dialog, null)
+    val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_multichoice, null)
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
@@ -73,14 +70,13 @@ fun showDialogTypeFilter(context: Context, filterPref: FilterQuery) {
             }
             adp.notifyDataSetChanged()
         }
-
 }
 
 @SuppressLint("InflateParams")
 fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
 
     val dialBuilder = AlertDialog.Builder(context)
-    val dialogView = LayoutInflater.from(context).inflate(R.layout.test_multichoice_dialog, null)
+    val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_multichoice, null)
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.Filtering)
     dialBuilder.setIcon(R.drawable.ic_filter)
@@ -132,7 +128,7 @@ fun showDialogCurrencyFilter(context: Context, filterPref: FilterQuery) {
 fun showDialogSort(context: Context, filterPref: FilterQuery) {
 
     val dialBuilder = AlertDialog.Builder(context)
-    val dialogView = LayoutInflater.from(context).inflate(R.layout.test_dialog_sort, null)
+    val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_sort, null)
     dialBuilder.setView(dialogView)
     dialBuilder.setTitle(R.string.sortingOptions)
     dialBuilder.setIcon(R.drawable.ic_sort)
@@ -172,7 +168,6 @@ fun showDialogSort(context: Context, filterPref: FilterQuery) {
         btnLowestRates.setCheckedOtherUnchecked(R.drawable.ic_interest)
         sort = false
     }
-
 
     //click SAVE
     dialBuilder.setPositiveButton(context.getString(R.string.OK)) { _, _ ->

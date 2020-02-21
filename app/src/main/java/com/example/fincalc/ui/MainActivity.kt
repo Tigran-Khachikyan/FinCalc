@@ -1,16 +1,14 @@
 package com.example.fincalc.ui
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.fincalc.R
-import com.example.fincalc.ui.rates.RatesActivity
 import com.example.fincalc.ui.dep.DepositActivity
 import com.example.fincalc.ui.loan.LoanActivity
 import com.example.fincalc.ui.port.PortfolioActivity
+import com.example.fincalc.ui.rates.RatesActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

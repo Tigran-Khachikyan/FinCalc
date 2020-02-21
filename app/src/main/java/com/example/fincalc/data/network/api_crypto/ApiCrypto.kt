@@ -22,14 +22,11 @@ private const val CACHE_SIZE = 5 * 1024 * 1024.toLong()
 interface ApiCrypto {
 
     @GET("live")
-    fun getLatestRates(): Deferred<ResponseCrypto>
+    fun getLatestRatesAsync(): Deferred<ResponseCrypto>
 
     @GET("{data}")
-    fun getHistoricalRates(
-        @Path(
-            value = "data",
-            encoded = false
-        ) data: String
+    fun getHistoricalRatesAsync(
+        @Path(value = "data", encoded = false) data: String
     ): Deferred<ResponseCrypto>
 
     companion object {

@@ -16,8 +16,6 @@ class RatesActivity : AppCompatActivity() {
         val navView: BottomNavigationView = findViewById(R.id.nav_viewCur)
 
         val navController = findNavController(R.id.nav_host_fragment_rates)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
     }
 

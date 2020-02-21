@@ -1,7 +1,6 @@
 package com.example.fincalc.models.deposit
 
 import com.example.fincalc.data.db.dep.Deposit
-import com.example.fincalc.models.deposit.RowDep
 import com.example.fincalc.models.Calculator
 
 class TableDep(val deposit: Deposit) {

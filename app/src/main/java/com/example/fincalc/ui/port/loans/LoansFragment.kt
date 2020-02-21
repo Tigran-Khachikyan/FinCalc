@@ -1,7 +1,6 @@
 package com.example.fincalc.ui.port.loans
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.example.fincalc.ui.decimalFormatter2p
 import com.example.fincalc.ui.loan.AdapterRecScheduleLoan
 import com.example.fincalc.ui.port.home.LOAN_ID_KEY
 import com.example.fincalc.ui.port.home.LoansFilterViewModel
-import com.example.fincalc.ui.setSvgColor
 import com.example.fincalc.ui.showDialogRemoveBanking
 import kotlinx.android.synthetic.main.fragment_loans.*
 import kotlinx.coroutines.CoroutineScope
@@ -28,9 +26,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
-
-/*val snapHelper = PagerSnapHelper()
-snapHelper.attachToRecyclerView(recLoansPager)*/
 
 class LoansFragment : Fragment(), CoroutineScope {
 
@@ -155,9 +150,9 @@ class LoansFragment : Fragment(), CoroutineScope {
                 }
 
                 val loanTable = TableLoan(curLoan)
-                val totalRes = loanTable.totalPayment + loanTable.oneTimeComAndCosts
-                tvLoanFrTotalPayment.text = decimalFormatter1p.format(totalRes)
-                val realRate = decimalFormatter2p.format(loanTable.realRate) + "%"
+                tvLoanFrTotalPayment.text =
+                    decimalFormatter1p.format(loanTable.totalPayment + loanTable.oneTimeComAndCosts)
+                val realRate = decimalFormatter2p.format(loanTable.realRate).replace(',', '.') + "%"
                 tvLoanFrRealRate.text = realRate
 
                 adapter.item = loanTable
