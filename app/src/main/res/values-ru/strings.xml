@@ -246,5 +246,9 @@
     <string name="from">из</string>
     <string name="to">в</string>
 
+    <string name="banner_ad_unit_id"> </string>
+    <string name="interstitial_ad_unit_id"> </string>
+
+
 
 </resources>

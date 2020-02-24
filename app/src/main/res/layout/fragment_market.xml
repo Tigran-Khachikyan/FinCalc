@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginBottom="?attr/actionBarSize"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription"
-    tools:context=".ui.rates.market.MarketFragment">
-
+    android:layout_marginBottom="?attr/actionBarSize"
+    android:background="@color/PortPrimary"
+    tools:context=".ui.rates.market.MarketFragment"
+    tools:ignore="ContentDescription">
 
     <!--image-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,11 +47,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/PortPrimary"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layImageMarket">
-
-        <!--status-->
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,19 +66,19 @@
                 android:id="@+id/tvCurInfoMarket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:text="@string/currencyTextAbout"
                 android:background="@drawable/input_frame"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="2dp"
+                android:text="@string/currencyTextAbout"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.8" />
 
             <ImageView
@@ -87,9 +86,9 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/btn_change"
-                android:padding="14dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="14dp"
                 android:src="@drawable/ic_exchange"
                 app:layout_constraintBottom_toBottomOf="@id/tvCurInfoMarket"
                 app:layout_constraintLeft_toRightOf="@id/tvCurInfoMarket"
@@ -112,19 +111,19 @@
                 android:id="@+id/tvCryptoInfoMarket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:text="@string/cryptoTextAbout"
                 android:background="@drawable/input_frame"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="2dp"
+                android:text="@string/cryptoTextAbout"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.8" />
 
             <ImageView
@@ -132,13 +131,13 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/btn_change"
-                android:padding="14dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="14dp"
                 android:src="@drawable/ic_bitcoin"
                 app:layout_constraintBottom_toBottomOf="@id/tvCryptoInfoMarket"
-                app:layout_constraintRight_toLeftOf="@id/tvCryptoInfoMarket"
                 app:layout_constraintLeft_toLeftOf="@id/tvCryptoInfoMarket"
+                app:layout_constraintRight_toLeftOf="@id/tvCryptoInfoMarket"
                 app:layout_constraintTop_toBottomOf="@id/tvCryptoInfoMarket" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -157,19 +156,19 @@
                 android:id="@+id/tvMetalsInfoMarket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:text="@string/metalsTextAbout"
                 android:background="@drawable/input_frame"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="2dp"
+                android:text="@string/metalsTextAbout"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 android:textStyle="italic"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.8" />
 
             <ImageView
@@ -177,9 +176,9 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/btn_change"
-                android:padding="14dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:padding="14dp"
                 android:src="@drawable/ic_gold"
                 app:layout_constraintBottom_toBottomOf="@id/tvMetalsInfoMarket"
                 app:layout_constraintLeft_toRightOf="@id/tvMetalsInfoMarket"
@@ -190,5 +189,24 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -219,7 +219,7 @@
 
     ------------------------------------
     <string name="currencyTextAbout">Get real-time and historical exchange rates for 56 world currencies covering over 138 countries. Use currency converter for custom conversion.</string>
-    <string name="cryptoTextAbout">Are You interested in cryptoCurrency? Real-time and historical rates for 25 most popular cryptoCurrencies are available in this section.</string>
+    <string name="cryptoTextAbout">Are You interested in cryptocurrency? Real-time and historical rates for 25 most popular cryptocurrencies are available in this section.</string>
     <string name="metalsTextAbout">We provide real-time and historical trading prices for 4 common precious metals synchronized with worlds major financial and stock markets. </string>
     <string name="financialMarkets">Financial markets</string>
     <string name="markets">Financial markets</string>
@@ -244,6 +244,9 @@
 
     <string name="from">From</string>
     <string name="to">To</string>
+
+    <string name="banner_ad_unit_id"> </string>
+    <string name="interstitial_ad_unit_id"> </string>
 
 
 </resources>

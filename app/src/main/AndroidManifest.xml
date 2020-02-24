@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.fincalc">
+    package="com.my_1st.fincalc">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/buddy_square"
+        android:icon="@mipmap/ic_launcher_sq"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/buddy_circle"
+        android:roundIcon="@mipmap/ic_launcher_ro"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning"
         tools:targetApi="m">
         <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.my_1st.fincalc.ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,20 +26,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.rates.RatesActivity"
+            android:name="com.my_1st.fincalc.ui.rates.RatesActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.my_1st.fincalc.ui.loan.LoanActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.my_1st.fincalc.ui.dep.DepositActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.loan.LoanActivity"
+            android:name="com.my_1st.fincalc.ui.port.PortfolioActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.dep.DepositActivity"
+            android:name="com.my_1st.fincalc.ui.MainActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.port.PortfolioActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3219000049333673~2604691196"/>
 
     </application>
 

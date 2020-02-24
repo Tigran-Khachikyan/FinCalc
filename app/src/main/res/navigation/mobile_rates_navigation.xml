@@ -6,22 +6,22 @@
 
     <fragment
         android:id="@+id/navigation_market"
-        android:name="com.example.fincalc.ui.rates.market.MarketFragment"
+        android:name="com.my_1st.fincalc.ui.rates.market.MarketFragment"
         android:label="@string/financialMarkets" />
 
     <fragment
         android:id="@+id/navigation_rates"
-        android:name="com.example.fincalc.ui.rates.currency.RateFragment"
+        android:name="com.my_1st.fincalc.ui.rates.currency.RateFragment"
         android:label="@string/rates" />
 
     <fragment
         android:id="@+id/navigation_crypto"
-        android:name="com.example.fincalc.ui.rates.crypto.CryptoFragment"
+        android:name="com.my_1st.fincalc.ui.rates.crypto.CryptoFragment"
         android:label="@string/crypto" />
 
     <fragment
         android:id="@+id/navigation_metals"
-        android:name="com.example.fincalc.ui.rates.metals.MetalsFragment"
+        android:name="com.my_1st.fincalc.ui.rates.metals.MetalsFragment"
         android:label="@string/precious_metals" />
 
 </navigation>

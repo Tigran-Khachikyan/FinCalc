@@ -11,13 +11,13 @@
         android:id="@+id/ivSplash"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        app:layout_constraintWidth_percent="0.37"
+        app:layout_constraintWidth_percent="0.45"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="0.2"
-        android:src="@mipmap/buddy_circle"
+        android:src="@mipmap/ic_splash"
         tools:ignore="ContentDescription" />
 
     <su.levenetc.android.textsurface.TextSurface
