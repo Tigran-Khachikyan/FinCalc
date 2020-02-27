@@ -149,7 +149,7 @@ fun openCalendarHighOrderFunc(
 }
 
 @SuppressLint("InflateParams")
-fun getDialogCurHighOrderFunc(context: Context, func: (String) -> Unit) {
+fun showCurrencyDialog(context: Context, func: (String) -> Unit) {
     val dialogBuilder = AlertDialog.Builder(context)
     val inflater = LayoutInflater.from(context)
     val dialogView = inflater.inflate(R.layout.dialog_filter_currency, null)
@@ -256,18 +256,13 @@ fun Button.setViewChecked(checked: Boolean, icon: Int?) {
     if (checked) {
         background = context.getDrawable(R.drawable.btn_option_checked)
         setCustomSizeVector(
-            context,
-            resLeft = icon,
-            sizeLeftdp = 24,
-            resRight = R.drawable.ic_check,
-            sizeRightdp = 24
+            context, resLeft = icon, sizeLeftdp = 24, resRight = R.drawable.ic_check, sizeRightdp = 24
         )
         textSize = BUTTON_DIALOG_SIZE_PRESSED
         setTextColor(Color.WHITE)
     } else {
         background = context?.getDrawable(R.drawable.btn_expand)
         setCustomSizeVector(context, resLeft = icon, sizeLeftdp = 24)
-
         textSize = BUTTON_DIALOG_SIZE_UNPRESSED
         setTextColor(Color.BLACK)
     }

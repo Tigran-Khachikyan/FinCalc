@@ -31,16 +31,10 @@ interface ApiCrypto {
 
     companion object {
         operator fun invoke(context: Context): ApiCrypto {
-
             return Retrofit.Builder()
                 .client(
                     createOkHttpClient(
-                        context,
-                        HEADER,
-                        HEADER_CACHE_CONTROL,
-                        ACCESS_KEY,
-                        API_KEY,
-                        CACHE_SIZE
+                        context, HEADER, HEADER_CACHE_CONTROL, ACCESS_KEY, API_KEY, CACHE_SIZE
                     )
                 )
                 .addConverterFactory(GsonConverterFactory.create())

@@ -135,8 +135,10 @@ class CryptoViewModel(application: Application) : AndroidViewModel(application) 
                     }
                 }
             }
-            if (order == Order.PRICE) ratesBarList.sortByDescending { r -> r.price }
-            else ratesBarList.sortBy { r -> r.pop }
+            if (order == Order.PRICE)
+                ratesBarList.sortByDescending { crypto -> crypto.price }
+            else
+                ratesBarList.sortBy { crypto -> crypto.ranking }
 
             result = ResultCrypto(ratesBarList, selCur, date, status, order)
         }

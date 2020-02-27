@@ -75,7 +75,7 @@ class RateFragment : Fragment(), CoroutineScope {
         }
 
         btnBaseCur.setOnClickListener {
-            getDialogCurHighOrderFunc(requireContext()) { cur ->
+            showCurrencyDialog(requireContext()) { cur ->
                 curViewModel.setBaseCur(cur)
             }
         }
@@ -95,13 +95,13 @@ class RateFragment : Fragment(), CoroutineScope {
         }
 
         btnCurBase.setOnClickListener {
-            getDialogCurHighOrderFunc(requireContext()) { selCur ->
+            showCurrencyDialog(requireContext()) { selCur ->
                 curViewModel.setBaseCur(selCur)
             }
         }
 
         btnCurFrom.setOnClickListener {
-            getDialogCurHighOrderFunc(requireContext()) { selCur ->
+            showCurrencyDialog(requireContext()) { selCur ->
                 curViewModel.setCurFrom(selCur)
                 curViewModel.setAmount(1.0)
                 etCurAmountInput.setText("1.0")

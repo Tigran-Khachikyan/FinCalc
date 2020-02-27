@@ -82,7 +82,7 @@ class CryptoFragment : Fragment(), CoroutineScope {
         }
 
         btnBaseCrypto.setOnClickListener {
-            getDialogCurHighOrderFunc(requireContext()) { cur ->
+            showCurrencyDialog(requireContext()) { cur ->
                 cryptoViewModel.setCurrency(cur)
             }
         }

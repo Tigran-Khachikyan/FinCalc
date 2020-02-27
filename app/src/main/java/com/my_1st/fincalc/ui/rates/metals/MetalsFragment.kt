@@ -78,7 +78,7 @@ class MetalsFragment : Fragment(), CoroutineScope {
         }
 
         btnBaseMetals.setOnClickListener {
-            getDialogCurHighOrderFunc(requireContext()) { cur ->
+            showCurrencyDialog(requireContext()) { cur ->
                 metalViewModel.setCurrency(cur)
             }
         }

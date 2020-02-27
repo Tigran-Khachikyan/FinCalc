@@ -19,20 +19,20 @@ class AdapterRecyclerMultiChoice(
 ) : RecyclerView.Adapter<AdapterRecyclerMultiChoice.Holder>() {
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val raw: Button = itemView.findViewById(R.id.btnMultiChoice)
+        val rawButton: Button = itemView.findViewById(R.id.btnMultiChoice)
 
         init {
-            raw.setOnClickListener {
+            rawButton.setOnClickListener {
                 selOptions = when (val curPref = possibleOptions.elementAt(adapterPosition)) {
                     is LoanType -> {
-                        raw.changeSelection(
+                        rawButton.changeSelection(
                             selOptions as MutableSet<LoanType>,
                             possibleOptions as MutableSet<LoanType>,
                             adapterPosition, null
                         )
                     }
                     is Frequency -> {
-                        raw.changeSelection(
+                        rawButton.changeSelection(
                             selOptions as MutableSet<Frequency>,
                             possibleOptions as MutableSet<Frequency>,
                             adapterPosition, null
@@ -40,7 +40,7 @@ class AdapterRecyclerMultiChoice(
                     }
                     is String -> {
                         val flag = mapRatesNameIcon[curPref]?.second ?: 0
-                        raw.changeSelection(
+                        rawButton.changeSelection(
                             selOptions as MutableSet<String>,
                             possibleOptions as MutableSet<String>,
                             adapterPosition, flag
@@ -64,42 +64,37 @@ class AdapterRecyclerMultiChoice(
 
         val text = when (val rawPos = possibleOptions.elementAt(position)) {
             is LoanType -> {
-                holder.raw.setViewChecked(
+                holder.rawButton.setViewChecked(
                     (selOptions as MutableSet<LoanType>).contains(rawPos), null
                 )
                 context.getString(rawPos.id)
             }
             is Frequency -> {
-                holder.raw.setViewChecked(
+                holder.rawButton.setViewChecked(
                     (selOptions as MutableSet<Frequency>).contains(rawPos), null
                 )
                 context.getString(rawPos.id)
             }
             is String -> {
-                holder.raw.text = rawPos
+                holder.rawButton.text = rawPos
                 val nameRes = mapRatesNameIcon[rawPos]?.first
                 val iconRes = mapRatesNameIcon[rawPos]?.second
-                holder.raw.setViewChecked(
+                holder.rawButton.setViewChecked(
                     (selOptions as MutableSet<String>).contains(rawPos), iconRes
                 )
                 rawPos + " (${nameRes?.let { context.getString(it) }})"
             }
             else -> ""
         }
-        holder.raw.text = text
+        holder.rawButton.text = text
     }
 
     private fun <T> Button.changeSelection(
         selectedOptions: MutableSet<T>, possibleOptions: MutableSet<T>, position: Int, icon: Int?
     ): MutableSet<T> {
-
-        if (isChecked) {
-            selectedOptions.remove(possibleOptions.elementAt(position))
-            setViewChecked(false, icon)
-        } else {
-            selectedOptions.add(possibleOptions.elementAt(position))
-            setViewChecked(true, icon)
-        }
+        if (isChecked) selectedOptions.remove(possibleOptions.elementAt(position))
+        else selectedOptions.add(possibleOptions.elementAt(position))
+        setViewChecked(!isChecked, icon)
         return selectedOptions
     }
 }

@@ -133,7 +133,6 @@ object FireStoreApi {
     }
 
     suspend fun getHisRatesFromHisCollCache(date: String, type: RatesType): DocumentSnapshot? {
-
         return when (type) {
             CURRENCY -> fireStoreDb.collection(CURRENCY_HISTORICAL.name).document(date)
                 .get(Source.CACHE).asDeferred().await()

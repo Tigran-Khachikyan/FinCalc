@@ -8,7 +8,7 @@ class RatesBarCrypto(
     override val icon: Int,
     override var price: Double,
     override var growth: Float?,
-    val pop: Int
+    val ranking: Int
 ) : RatesBar(
     code,
     name,
